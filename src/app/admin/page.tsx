@@ -7,7 +7,7 @@ import { BO_COFFEE_OFFICE_CODE } from "@/lib/organization/bo-coffee";
 export default async function AdminPage() {
   const start = new Date(); start.setUTCHours(0, 0, 0, 0);
   const end = new Date(start); end.setUTCDate(end.getUTCDate() + 1);
-  const [office, interns, supervisors, schools, present, pending, hours, coordinators, pendingCorrections, pendingWorkLogs] = await Promise.all([
+  const [office, interns, supervisors, schools, present, pending, hours, coordinators, pendingCorrections, pendingWorkLogs, recentAttendance, recentWorkLogs] = await Promise.all([
     prisma.company.findUnique({ where: { companyCode: BO_COFFEE_OFFICE_CODE } }),
     prisma.user.count({ where: { role: "INTERN", isActive: true } }),
     prisma.user.count({ where: { role: "SUPERVISOR", isActive: true } }),
@@ -18,6 +18,8 @@ export default async function AdminPage() {
     prisma.user.count({ where: { role: "COORDINATOR", isActive: true } }),
     prisma.attendanceCorrection.count({ where: { status: "PENDING" } }),
     prisma.workLog.count({ where: { status: "SUBMITTED" } }),
+    prisma.attendance.findMany({orderBy:{createdAt:"desc"},take:4,select:{id:true,attendanceDate:true,status:true,assignment:{select:{internProfile:{select:{user:{select:{firstName:true,lastName:true}}}}}}}}),
+    prisma.workLog.findMany({orderBy:{updatedAt:"desc"},take:4,select:{id:true,title:true,status:true,updatedAt:true,assignment:{select:{internProfile:{select:{user:{select:{firstName:true,lastName:true}}}}}}}}),
   ]);
   const checklist = [
     ["Configure Main Office", Boolean(office?.isActive), "/admin/settings/office"],
@@ -45,6 +47,7 @@ export default async function AdminPage() {
       </section>
       <section className="ui-card overflow-hidden"><div className="border-b border-border px-5 py-4 sm:px-6"><h2 className="font-semibold text-brand-900">Workspace setup</h2><p className="mt-1 text-xs text-muted">Core program readiness</p></div><div className="divide-y divide-border">{checklist.map(([label, done, href]) => <Link key={label} href={href} className="flex items-center justify-between gap-4 px-5 py-3.5 transition-colors hover:bg-stone-50 sm:px-6"><span className="text-sm font-medium">{label}</span><StatusBadge tone={done ? "success" : "warning"}>{done ? "Complete" : "Action needed"}</StatusBadge></Link>)}</div></section>
     </div>
+    <section className="ui-card mt-6 overflow-hidden"><div className="border-b border-border px-5 py-4 sm:px-6"><h2 className="font-semibold text-brand-900">Recent operational activity</h2><p className="mt-1 text-xs text-muted">Latest attendance and work-log updates</p></div><div className="responsive-record-list border-0 shadow-none">{[...recentAttendance.map(item=>({key:`a-${item.id}`,name:`${item.assignment.internProfile.user.firstName} ${item.assignment.internProfile.user.lastName}`,title:"Attendance update",detail:item.status.replaceAll("_"," ").toLowerCase(),at:item.attendanceDate,href:`/attendance/review/${item.id}`})),...recentWorkLogs.map(item=>({key:`w-${item.id}`,name:`${item.assignment.internProfile.user.firstName} ${item.assignment.internProfile.user.lastName}`,title:item.title,detail:item.status.replaceAll("_"," ").toLowerCase(),at:item.updatedAt,href:`/work-logs/review/${item.id}`}))].sort((a,b)=>b.at.getTime()-a.at.getTime()).slice(0,6).map(item=><Link key={item.key} href={item.href} className="responsive-record"><span className="record-primary"><strong>{item.name}</strong><small>{item.title}</small></span><StatusBadge>{item.detail}</StatusBadge><span className="record-action">View activity</span></Link>)}</div></section>
   </>;
 }
 
