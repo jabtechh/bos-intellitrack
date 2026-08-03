@@ -25,6 +25,7 @@
     ,"pilot:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-pilot-data.ts"
     ,"pilot:cleanup": "tsx --env-file=.env --env-file=.env.local scripts/cleanup-pilot-data.ts"
     ,"pilot:test": "tsx --test scripts/test-pilot-setup.ts"
+    ,"pilot:normalize": "tsx --env-file=.env --env-file=.env.local scripts/normalize-pilot-data.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",
