@@ -14,7 +14,7 @@ export async function clockIn(_state: AttendanceActionState, formData: FormData)
   const context = await activeInternContext(); if (!context.ok) return context.error;
   const evidence = parseEvidence(formData); if (!evidence.ok) return evidence.error;
   const now = new Date(); const dateText = localDateValue(now, context.assignment.company.timezone);
-  if (dateText < dateOnly(context.assignment.startDate) || dateText > dateOnly(context.assignment.endDate)) return failure("The active assignment is outside its valid date range.");
+  if (dateText < dateOnly(context.assignment.startDate) || dateText > dateOnly(context.assignment.endDate)) return failure("Your active internship is outside its valid date range.");
   const duplicate = await prisma.attendance.findUnique({ where: { assignmentId_attendanceDate: { assignmentId: context.assignment.id, attendanceDate: localDate(now, context.assignment.company.timezone) } }, select: { id: true } });
   if (!canClockIn(Boolean(duplicate))) return failure("Attendance has already been recorded for today.");
   const attendanceId = randomUUID(); const path = evidencePath(context.assignment.id, attendanceId, "clock-in", evidence.file.type);
@@ -62,8 +62,8 @@ async function activeInternContext() {
   const profile = await prisma.internProfile.findUnique({ where: { userId: user.id }, select: { id: true } });
   if (!profile) return { ok: false as const, error: failure("Your intern profile is not available.") };
   const assignment = await prisma.internshipAssignment.findFirst({ where: { internProfileId: profile.id, status: "ACTIVE" }, include: { company: true } });
-  if (!assignment) return { ok: false as const, error: failure("No active internship assignment is available.") };
-  if (!assignment.company.isActive) return { ok: false as const, error: failure("The assigned Bo’s Coffee Branch is inactive.") };
+  if (!assignment) return { ok: false as const, error: failure("No active internship is available.") };
+  if (!assignment.company.isActive) return { ok: false as const, error: failure("Bo’s Coffee Main Office is not currently available for attendance.") };
   return { ok: true as const, user, assignment };
 }
 function parseEvidence(formData: FormData) {

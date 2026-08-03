@@ -16,7 +16,7 @@
     "admin:test": "tsx scripts/test-admin.ts",
     "assignment:test": "tsx --test scripts/test-assignment-foundation.ts",
     "attendance:test": "tsx --test scripts/test-attendance-foundation.ts",
-    "correction:test": "tsx --test scripts/test-attendance-corrections.ts",
+    "correction:test": "tsx --test scripts/test-attendance-corrections.ts scripts/test-single-office-ui.ts",
     "storage:attendance:setup": "tsx scripts/setup-attendance-storage.ts",
     "storage:corrections:setup": "tsx scripts/setup-attendance-correction-storage.ts",
     "provisioning:test": "tsx --test scripts/test-admin-provisioning.ts",
