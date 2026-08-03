@@ -105,6 +105,8 @@ enum TaskStatus {
   TODO
   IN_PROGRESS
   BLOCKED
+  SUBMITTED
+  REVISION_REQUESTED
   COMPLETED
   CANCELLED
 
@@ -247,6 +249,7 @@ model User {
   attendanceCorrectionsReviewed  AttendanceCorrection[] @relation("CorrectionReviewedBy")
   workLogsReviewed               WorkLog[]              @relation("WorkLogReviewedBy")
   tasksAssigned                  Task[]                 @relation("TaskAssignedBy")
+  tasksReviewed                  Task[]                 @relation("TaskReviewedBy")
   evaluationsCreated             Evaluation[]           @relation("EvaluationEvaluator")
   evaluationsAcknowledged        Evaluation[]           @relation("EvaluationAcknowledgedBy")
   feedbackAuthored               Feedback[]             @relation("FeedbackAuthor")
@@ -600,6 +603,10 @@ model Task {
   progressPercentage     Int          @default(0) @map("progress_percentage")
   completionNotes        String?      @map("completion_notes") @db.Text
   completionEvidencePath String?      @map("completion_evidence_path") @db.Text
+  submittedAt            DateTime?    @map("submitted_at") @db.Timestamptz(6)
+  reviewedById           String?      @map("reviewed_by_id") @db.Uuid
+  reviewedAt             DateTime?    @map("reviewed_at") @db.Timestamptz(6)
+  reviewRemarks          String?      @map("review_remarks") @db.Text
   completedAt            DateTime?    @map("completed_at") @db.Timestamptz(6)
   cancelledAt            DateTime?    @map("cancelled_at") @db.Timestamptz(6)
   createdAt              DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -607,10 +614,12 @@ model Task {
 
   assignment InternshipAssignment @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
   assignedBy User                 @relation("TaskAssignedBy", fields: [assignedById], references: [id], onDelete: Restrict)
+  reviewedBy User?                @relation("TaskReviewedBy", fields: [reviewedById], references: [id], onDelete: SetNull)
   feedback   Feedback[]
 
   @@index([assignmentId], map: "tasks_assignment_idx")
   @@index([assignedById], map: "tasks_assigned_by_idx")
+  @@index([reviewedById], map: "tasks_reviewed_by_idx")
   @@index([status], map: "tasks_status_idx")
   @@index([dueAt], map: "tasks_due_at_idx")
   @@index([priority], map: "tasks_priority_idx")

@@ -47,6 +47,10 @@ export type TaskMinAggregateOutputType = {
   progressPercentage: number | null
   completionNotes: string | null
   completionEvidencePath: string | null
+  submittedAt: Date | null
+  reviewedById: string | null
+  reviewedAt: Date | null
+  reviewRemarks: string | null
   completedAt: Date | null
   cancelledAt: Date | null
   createdAt: Date | null
@@ -66,6 +70,10 @@ export type TaskMaxAggregateOutputType = {
   progressPercentage: number | null
   completionNotes: string | null
   completionEvidencePath: string | null
+  submittedAt: Date | null
+  reviewedById: string | null
+  reviewedAt: Date | null
+  reviewRemarks: string | null
   completedAt: Date | null
   cancelledAt: Date | null
   createdAt: Date | null
@@ -85,6 +93,10 @@ export type TaskCountAggregateOutputType = {
   progressPercentage: number
   completionNotes: number
   completionEvidencePath: number
+  submittedAt: number
+  reviewedById: number
+  reviewedAt: number
+  reviewRemarks: number
   completedAt: number
   cancelledAt: number
   createdAt: number
@@ -114,6 +126,10 @@ export type TaskMinAggregateInputType = {
   progressPercentage?: true
   completionNotes?: true
   completionEvidencePath?: true
+  submittedAt?: true
+  reviewedById?: true
+  reviewedAt?: true
+  reviewRemarks?: true
   completedAt?: true
   cancelledAt?: true
   createdAt?: true
@@ -133,6 +149,10 @@ export type TaskMaxAggregateInputType = {
   progressPercentage?: true
   completionNotes?: true
   completionEvidencePath?: true
+  submittedAt?: true
+  reviewedById?: true
+  reviewedAt?: true
+  reviewRemarks?: true
   completedAt?: true
   cancelledAt?: true
   createdAt?: true
@@ -152,6 +172,10 @@ export type TaskCountAggregateInputType = {
   progressPercentage?: true
   completionNotes?: true
   completionEvidencePath?: true
+  submittedAt?: true
+  reviewedById?: true
+  reviewedAt?: true
+  reviewRemarks?: true
   completedAt?: true
   cancelledAt?: true
   createdAt?: true
@@ -258,6 +282,10 @@ export type TaskGroupByOutputType = {
   progressPercentage: number
   completionNotes: string | null
   completionEvidencePath: string | null
+  submittedAt: Date | null
+  reviewedById: string | null
+  reviewedAt: Date | null
+  reviewRemarks: string | null
   completedAt: Date | null
   cancelledAt: Date | null
   createdAt: Date
@@ -300,12 +328,17 @@ export type TaskWhereInput = {
   progressPercentage?: Prisma.IntFilter<"Task"> | number
   completionNotes?: Prisma.StringNullableFilter<"Task"> | string | null
   completionEvidencePath?: Prisma.StringNullableFilter<"Task"> | string | null
+  submittedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
+  reviewedById?: Prisma.UuidNullableFilter<"Task"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
+  reviewRemarks?: Prisma.StringNullableFilter<"Task"> | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   assignment?: Prisma.XOR<Prisma.InternshipAssignmentScalarRelationFilter, Prisma.InternshipAssignmentWhereInput>
   assignedBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  reviewedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   feedback?: Prisma.FeedbackListRelationFilter
 }
 
@@ -322,12 +355,17 @@ export type TaskOrderByWithRelationInput = {
   progressPercentage?: Prisma.SortOrder
   completionNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   completionEvidencePath?: Prisma.SortOrderInput | Prisma.SortOrder
+  submittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewRemarks?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   assignment?: Prisma.InternshipAssignmentOrderByWithRelationInput
   assignedBy?: Prisma.UserOrderByWithRelationInput
+  reviewedBy?: Prisma.UserOrderByWithRelationInput
   feedback?: Prisma.FeedbackOrderByRelationAggregateInput
 }
 
@@ -347,12 +385,17 @@ export type TaskWhereUniqueInput = Prisma.AtLeast<{
   progressPercentage?: Prisma.IntFilter<"Task"> | number
   completionNotes?: Prisma.StringNullableFilter<"Task"> | string | null
   completionEvidencePath?: Prisma.StringNullableFilter<"Task"> | string | null
+  submittedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
+  reviewedById?: Prisma.UuidNullableFilter<"Task"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
+  reviewRemarks?: Prisma.StringNullableFilter<"Task"> | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   assignment?: Prisma.XOR<Prisma.InternshipAssignmentScalarRelationFilter, Prisma.InternshipAssignmentWhereInput>
   assignedBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  reviewedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   feedback?: Prisma.FeedbackListRelationFilter
 }, "id">
 
@@ -369,6 +412,10 @@ export type TaskOrderByWithAggregationInput = {
   progressPercentage?: Prisma.SortOrder
   completionNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   completionEvidencePath?: Prisma.SortOrderInput | Prisma.SortOrder
+  submittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewRemarks?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -396,6 +443,10 @@ export type TaskScalarWhereWithAggregatesInput = {
   progressPercentage?: Prisma.IntWithAggregatesFilter<"Task"> | number
   completionNotes?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null
   completionEvidencePath?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null
+  submittedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
+  reviewedById?: Prisma.UuidNullableWithAggregatesFilter<"Task"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
+  reviewRemarks?: Prisma.StringNullableWithAggregatesFilter<"Task"> | string | null
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Task"> | Date | string
@@ -413,12 +464,16 @@ export type TaskCreateInput = {
   progressPercentage?: number
   completionNotes?: string | null
   completionEvidencePath?: string | null
+  submittedAt?: Date | string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   assignment: Prisma.InternshipAssignmentCreateNestedOneWithoutTasksInput
   assignedBy: Prisma.UserCreateNestedOneWithoutTasksAssignedInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutTasksReviewedInput
   feedback?: Prisma.FeedbackCreateNestedManyWithoutRelatedTaskInput
 }
 
@@ -435,6 +490,10 @@ export type TaskUncheckedCreateInput = {
   progressPercentage?: number
   completionNotes?: string | null
   completionEvidencePath?: string | null
+  submittedAt?: Date | string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   createdAt?: Date | string
@@ -453,12 +512,16 @@ export type TaskUpdateInput = {
   progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
   completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignment?: Prisma.InternshipAssignmentUpdateOneRequiredWithoutTasksNestedInput
   assignedBy?: Prisma.UserUpdateOneRequiredWithoutTasksAssignedNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutTasksReviewedNestedInput
   feedback?: Prisma.FeedbackUpdateManyWithoutRelatedTaskNestedInput
 }
 
@@ -475,6 +538,10 @@ export type TaskUncheckedUpdateInput = {
   progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
   completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -495,6 +562,10 @@ export type TaskCreateManyInput = {
   progressPercentage?: number
   completionNotes?: string | null
   completionEvidencePath?: string | null
+  submittedAt?: Date | string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   createdAt?: Date | string
@@ -512,6 +583,9 @@ export type TaskUpdateManyMutationInput = {
   progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
   completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -531,6 +605,10 @@ export type TaskUncheckedUpdateManyInput = {
   progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
   completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -560,6 +638,10 @@ export type TaskCountOrderByAggregateInput = {
   progressPercentage?: Prisma.SortOrder
   completionNotes?: Prisma.SortOrder
   completionEvidencePath?: Prisma.SortOrder
+  submittedAt?: Prisma.SortOrder
+  reviewedById?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
+  reviewRemarks?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -583,6 +665,10 @@ export type TaskMaxOrderByAggregateInput = {
   progressPercentage?: Prisma.SortOrder
   completionNotes?: Prisma.SortOrder
   completionEvidencePath?: Prisma.SortOrder
+  submittedAt?: Prisma.SortOrder
+  reviewedById?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
+  reviewRemarks?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -602,6 +688,10 @@ export type TaskMinOrderByAggregateInput = {
   progressPercentage?: Prisma.SortOrder
   completionNotes?: Prisma.SortOrder
   completionEvidencePath?: Prisma.SortOrder
+  submittedAt?: Prisma.SortOrder
+  reviewedById?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
+  reviewRemarks?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -624,10 +714,24 @@ export type TaskCreateNestedManyWithoutAssignedByInput = {
   connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
 }
 
+export type TaskCreateNestedManyWithoutReviewedByInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutReviewedByInput, Prisma.TaskUncheckedCreateWithoutReviewedByInput> | Prisma.TaskCreateWithoutReviewedByInput[] | Prisma.TaskUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutReviewedByInput | Prisma.TaskCreateOrConnectWithoutReviewedByInput[]
+  createMany?: Prisma.TaskCreateManyReviewedByInputEnvelope
+  connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+}
+
 export type TaskUncheckedCreateNestedManyWithoutAssignedByInput = {
   create?: Prisma.XOR<Prisma.TaskCreateWithoutAssignedByInput, Prisma.TaskUncheckedCreateWithoutAssignedByInput> | Prisma.TaskCreateWithoutAssignedByInput[] | Prisma.TaskUncheckedCreateWithoutAssignedByInput[]
   connectOrCreate?: Prisma.TaskCreateOrConnectWithoutAssignedByInput | Prisma.TaskCreateOrConnectWithoutAssignedByInput[]
   createMany?: Prisma.TaskCreateManyAssignedByInputEnvelope
+  connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+}
+
+export type TaskUncheckedCreateNestedManyWithoutReviewedByInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutReviewedByInput, Prisma.TaskUncheckedCreateWithoutReviewedByInput> | Prisma.TaskCreateWithoutReviewedByInput[] | Prisma.TaskUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutReviewedByInput | Prisma.TaskCreateOrConnectWithoutReviewedByInput[]
+  createMany?: Prisma.TaskCreateManyReviewedByInputEnvelope
   connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
 }
 
@@ -645,6 +749,20 @@ export type TaskUpdateManyWithoutAssignedByNestedInput = {
   deleteMany?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[]
 }
 
+export type TaskUpdateManyWithoutReviewedByNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutReviewedByInput, Prisma.TaskUncheckedCreateWithoutReviewedByInput> | Prisma.TaskCreateWithoutReviewedByInput[] | Prisma.TaskUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutReviewedByInput | Prisma.TaskCreateOrConnectWithoutReviewedByInput[]
+  upsert?: Prisma.TaskUpsertWithWhereUniqueWithoutReviewedByInput | Prisma.TaskUpsertWithWhereUniqueWithoutReviewedByInput[]
+  createMany?: Prisma.TaskCreateManyReviewedByInputEnvelope
+  set?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  disconnect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  delete?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  update?: Prisma.TaskUpdateWithWhereUniqueWithoutReviewedByInput | Prisma.TaskUpdateWithWhereUniqueWithoutReviewedByInput[]
+  updateMany?: Prisma.TaskUpdateManyWithWhereWithoutReviewedByInput | Prisma.TaskUpdateManyWithWhereWithoutReviewedByInput[]
+  deleteMany?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[]
+}
+
 export type TaskUncheckedUpdateManyWithoutAssignedByNestedInput = {
   create?: Prisma.XOR<Prisma.TaskCreateWithoutAssignedByInput, Prisma.TaskUncheckedCreateWithoutAssignedByInput> | Prisma.TaskCreateWithoutAssignedByInput[] | Prisma.TaskUncheckedCreateWithoutAssignedByInput[]
   connectOrCreate?: Prisma.TaskCreateOrConnectWithoutAssignedByInput | Prisma.TaskCreateOrConnectWithoutAssignedByInput[]
@@ -656,6 +774,20 @@ export type TaskUncheckedUpdateManyWithoutAssignedByNestedInput = {
   connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
   update?: Prisma.TaskUpdateWithWhereUniqueWithoutAssignedByInput | Prisma.TaskUpdateWithWhereUniqueWithoutAssignedByInput[]
   updateMany?: Prisma.TaskUpdateManyWithWhereWithoutAssignedByInput | Prisma.TaskUpdateManyWithWhereWithoutAssignedByInput[]
+  deleteMany?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[]
+}
+
+export type TaskUncheckedUpdateManyWithoutReviewedByNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutReviewedByInput, Prisma.TaskUncheckedCreateWithoutReviewedByInput> | Prisma.TaskCreateWithoutReviewedByInput[] | Prisma.TaskUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutReviewedByInput | Prisma.TaskCreateOrConnectWithoutReviewedByInput[]
+  upsert?: Prisma.TaskUpsertWithWhereUniqueWithoutReviewedByInput | Prisma.TaskUpsertWithWhereUniqueWithoutReviewedByInput[]
+  createMany?: Prisma.TaskCreateManyReviewedByInputEnvelope
+  set?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  disconnect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  delete?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  connect?: Prisma.TaskWhereUniqueInput | Prisma.TaskWhereUniqueInput[]
+  update?: Prisma.TaskUpdateWithWhereUniqueWithoutReviewedByInput | Prisma.TaskUpdateWithWhereUniqueWithoutReviewedByInput[]
+  updateMany?: Prisma.TaskUpdateManyWithWhereWithoutReviewedByInput | Prisma.TaskUpdateManyWithWhereWithoutReviewedByInput[]
   deleteMany?: Prisma.TaskScalarWhereInput | Prisma.TaskScalarWhereInput[]
 }
 
@@ -736,11 +868,15 @@ export type TaskCreateWithoutAssignedByInput = {
   progressPercentage?: number
   completionNotes?: string | null
   completionEvidencePath?: string | null
+  submittedAt?: Date | string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   assignment: Prisma.InternshipAssignmentCreateNestedOneWithoutTasksInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutTasksReviewedInput
   feedback?: Prisma.FeedbackCreateNestedManyWithoutRelatedTaskInput
 }
 
@@ -756,6 +892,10 @@ export type TaskUncheckedCreateWithoutAssignedByInput = {
   progressPercentage?: number
   completionNotes?: string | null
   completionEvidencePath?: string | null
+  submittedAt?: Date | string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   createdAt?: Date | string
@@ -770,6 +910,62 @@ export type TaskCreateOrConnectWithoutAssignedByInput = {
 
 export type TaskCreateManyAssignedByInputEnvelope = {
   data: Prisma.TaskCreateManyAssignedByInput | Prisma.TaskCreateManyAssignedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type TaskCreateWithoutReviewedByInput = {
+  id?: string
+  title: string
+  description?: string | null
+  priority?: $Enums.TaskPriority
+  status?: $Enums.TaskStatus
+  startAt?: Date | string | null
+  dueAt?: Date | string | null
+  progressPercentage?: number
+  completionNotes?: string | null
+  completionEvidencePath?: string | null
+  submittedAt?: Date | string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
+  completedAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  assignment: Prisma.InternshipAssignmentCreateNestedOneWithoutTasksInput
+  assignedBy: Prisma.UserCreateNestedOneWithoutTasksAssignedInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutRelatedTaskInput
+}
+
+export type TaskUncheckedCreateWithoutReviewedByInput = {
+  id?: string
+  assignmentId: string
+  assignedById: string
+  title: string
+  description?: string | null
+  priority?: $Enums.TaskPriority
+  status?: $Enums.TaskStatus
+  startAt?: Date | string | null
+  dueAt?: Date | string | null
+  progressPercentage?: number
+  completionNotes?: string | null
+  completionEvidencePath?: string | null
+  submittedAt?: Date | string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
+  completedAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRelatedTaskInput
+}
+
+export type TaskCreateOrConnectWithoutReviewedByInput = {
+  where: Prisma.TaskWhereUniqueInput
+  create: Prisma.XOR<Prisma.TaskCreateWithoutReviewedByInput, Prisma.TaskUncheckedCreateWithoutReviewedByInput>
+}
+
+export type TaskCreateManyReviewedByInputEnvelope = {
+  data: Prisma.TaskCreateManyReviewedByInput | Prisma.TaskCreateManyReviewedByInput[]
   skipDuplicates?: boolean
 }
 
@@ -805,10 +1001,30 @@ export type TaskScalarWhereInput = {
   progressPercentage?: Prisma.IntFilter<"Task"> | number
   completionNotes?: Prisma.StringNullableFilter<"Task"> | string | null
   completionEvidencePath?: Prisma.StringNullableFilter<"Task"> | string | null
+  submittedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
+  reviewedById?: Prisma.UuidNullableFilter<"Task"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
+  reviewRemarks?: Prisma.StringNullableFilter<"Task"> | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableFilter<"Task"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Task"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Task"> | Date | string
+}
+
+export type TaskUpsertWithWhereUniqueWithoutReviewedByInput = {
+  where: Prisma.TaskWhereUniqueInput
+  update: Prisma.XOR<Prisma.TaskUpdateWithoutReviewedByInput, Prisma.TaskUncheckedUpdateWithoutReviewedByInput>
+  create: Prisma.XOR<Prisma.TaskCreateWithoutReviewedByInput, Prisma.TaskUncheckedCreateWithoutReviewedByInput>
+}
+
+export type TaskUpdateWithWhereUniqueWithoutReviewedByInput = {
+  where: Prisma.TaskWhereUniqueInput
+  data: Prisma.XOR<Prisma.TaskUpdateWithoutReviewedByInput, Prisma.TaskUncheckedUpdateWithoutReviewedByInput>
+}
+
+export type TaskUpdateManyWithWhereWithoutReviewedByInput = {
+  where: Prisma.TaskScalarWhereInput
+  data: Prisma.XOR<Prisma.TaskUpdateManyMutationInput, Prisma.TaskUncheckedUpdateManyWithoutReviewedByInput>
 }
 
 export type TaskCreateWithoutAssignmentInput = {
@@ -822,11 +1038,15 @@ export type TaskCreateWithoutAssignmentInput = {
   progressPercentage?: number
   completionNotes?: string | null
   completionEvidencePath?: string | null
+  submittedAt?: Date | string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   assignedBy: Prisma.UserCreateNestedOneWithoutTasksAssignedInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutTasksReviewedInput
   feedback?: Prisma.FeedbackCreateNestedManyWithoutRelatedTaskInput
 }
 
@@ -842,6 +1062,10 @@ export type TaskUncheckedCreateWithoutAssignmentInput = {
   progressPercentage?: number
   completionNotes?: string | null
   completionEvidencePath?: string | null
+  submittedAt?: Date | string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   createdAt?: Date | string
@@ -886,12 +1110,16 @@ export type TaskCreateWithoutFeedbackInput = {
   progressPercentage?: number
   completionNotes?: string | null
   completionEvidencePath?: string | null
+  submittedAt?: Date | string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   assignment: Prisma.InternshipAssignmentCreateNestedOneWithoutTasksInput
   assignedBy: Prisma.UserCreateNestedOneWithoutTasksAssignedInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutTasksReviewedInput
 }
 
 export type TaskUncheckedCreateWithoutFeedbackInput = {
@@ -907,6 +1135,10 @@ export type TaskUncheckedCreateWithoutFeedbackInput = {
   progressPercentage?: number
   completionNotes?: string | null
   completionEvidencePath?: string | null
+  submittedAt?: Date | string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   createdAt?: Date | string
@@ -940,12 +1172,16 @@ export type TaskUpdateWithoutFeedbackInput = {
   progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
   completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignment?: Prisma.InternshipAssignmentUpdateOneRequiredWithoutTasksNestedInput
   assignedBy?: Prisma.UserUpdateOneRequiredWithoutTasksAssignedNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutTasksReviewedNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutFeedbackInput = {
@@ -961,6 +1197,10 @@ export type TaskUncheckedUpdateWithoutFeedbackInput = {
   progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
   completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -979,6 +1219,32 @@ export type TaskCreateManyAssignedByInput = {
   progressPercentage?: number
   completionNotes?: string | null
   completionEvidencePath?: string | null
+  submittedAt?: Date | string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
+  completedAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TaskCreateManyReviewedByInput = {
+  id?: string
+  assignmentId: string
+  assignedById: string
+  title: string
+  description?: string | null
+  priority?: $Enums.TaskPriority
+  status?: $Enums.TaskStatus
+  startAt?: Date | string | null
+  dueAt?: Date | string | null
+  progressPercentage?: number
+  completionNotes?: string | null
+  completionEvidencePath?: string | null
+  submittedAt?: Date | string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   createdAt?: Date | string
@@ -996,11 +1262,15 @@ export type TaskUpdateWithoutAssignedByInput = {
   progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
   completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignment?: Prisma.InternshipAssignmentUpdateOneRequiredWithoutTasksNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutTasksReviewedNestedInput
   feedback?: Prisma.FeedbackUpdateManyWithoutRelatedTaskNestedInput
 }
 
@@ -1016,6 +1286,10 @@ export type TaskUncheckedUpdateWithoutAssignedByInput = {
   progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
   completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1035,6 +1309,78 @@ export type TaskUncheckedUpdateManyWithoutAssignedByInput = {
   progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
   completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TaskUpdateWithoutReviewedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  startAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
+  completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignment?: Prisma.InternshipAssignmentUpdateOneRequiredWithoutTasksNestedInput
+  assignedBy?: Prisma.UserUpdateOneRequiredWithoutTasksAssignedNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutRelatedTaskNestedInput
+}
+
+export type TaskUncheckedUpdateWithoutReviewedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedById?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  startAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
+  completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutRelatedTaskNestedInput
+}
+
+export type TaskUncheckedUpdateManyWithoutReviewedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedById?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  startAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
+  completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1053,6 +1399,10 @@ export type TaskCreateManyAssignmentInput = {
   progressPercentage?: number
   completionNotes?: string | null
   completionEvidencePath?: string | null
+  submittedAt?: Date | string | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   createdAt?: Date | string
@@ -1070,11 +1420,15 @@ export type TaskUpdateWithoutAssignmentInput = {
   progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
   completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignedBy?: Prisma.UserUpdateOneRequiredWithoutTasksAssignedNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutTasksReviewedNestedInput
   feedback?: Prisma.FeedbackUpdateManyWithoutRelatedTaskNestedInput
 }
 
@@ -1090,6 +1444,10 @@ export type TaskUncheckedUpdateWithoutAssignmentInput = {
   progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
   completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1109,6 +1467,10 @@ export type TaskUncheckedUpdateManyWithoutAssignmentInput = {
   progressPercentage?: Prisma.IntFieldUpdateOperationsInput | number
   completionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completionEvidencePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1159,12 +1521,17 @@ export type TaskSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   progressPercentage?: boolean
   completionNotes?: boolean
   completionEvidencePath?: boolean
+  submittedAt?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
+  reviewRemarks?: boolean
   completedAt?: boolean
   cancelledAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   assignment?: boolean | Prisma.InternshipAssignmentDefaultArgs<ExtArgs>
   assignedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.Task$reviewedByArgs<ExtArgs>
   feedback?: boolean | Prisma.Task$feedbackArgs<ExtArgs>
   _count?: boolean | Prisma.TaskCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["task"]>
@@ -1182,12 +1549,17 @@ export type TaskSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   progressPercentage?: boolean
   completionNotes?: boolean
   completionEvidencePath?: boolean
+  submittedAt?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
+  reviewRemarks?: boolean
   completedAt?: boolean
   cancelledAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   assignment?: boolean | Prisma.InternshipAssignmentDefaultArgs<ExtArgs>
   assignedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.Task$reviewedByArgs<ExtArgs>
 }, ExtArgs["result"]["task"]>
 
 export type TaskSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1203,12 +1575,17 @@ export type TaskSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   progressPercentage?: boolean
   completionNotes?: boolean
   completionEvidencePath?: boolean
+  submittedAt?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
+  reviewRemarks?: boolean
   completedAt?: boolean
   cancelledAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   assignment?: boolean | Prisma.InternshipAssignmentDefaultArgs<ExtArgs>
   assignedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.Task$reviewedByArgs<ExtArgs>
 }, ExtArgs["result"]["task"]>
 
 export type TaskSelectScalar = {
@@ -1224,26 +1601,33 @@ export type TaskSelectScalar = {
   progressPercentage?: boolean
   completionNotes?: boolean
   completionEvidencePath?: boolean
+  submittedAt?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
+  reviewRemarks?: boolean
   completedAt?: boolean
   cancelledAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentId" | "assignedById" | "title" | "description" | "priority" | "status" | "startAt" | "dueAt" | "progressPercentage" | "completionNotes" | "completionEvidencePath" | "completedAt" | "cancelledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["task"]>
+export type TaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentId" | "assignedById" | "title" | "description" | "priority" | "status" | "startAt" | "dueAt" | "progressPercentage" | "completionNotes" | "completionEvidencePath" | "submittedAt" | "reviewedById" | "reviewedAt" | "reviewRemarks" | "completedAt" | "cancelledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["task"]>
 export type TaskInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignment?: boolean | Prisma.InternshipAssignmentDefaultArgs<ExtArgs>
   assignedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.Task$reviewedByArgs<ExtArgs>
   feedback?: boolean | Prisma.Task$feedbackArgs<ExtArgs>
   _count?: boolean | Prisma.TaskCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TaskIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignment?: boolean | Prisma.InternshipAssignmentDefaultArgs<ExtArgs>
   assignedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.Task$reviewedByArgs<ExtArgs>
 }
 export type TaskIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignment?: boolean | Prisma.InternshipAssignmentDefaultArgs<ExtArgs>
   assignedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.Task$reviewedByArgs<ExtArgs>
 }
 
 export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1251,6 +1635,7 @@ export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     assignment: Prisma.$InternshipAssignmentPayload<ExtArgs>
     assignedBy: Prisma.$UserPayload<ExtArgs>
+    reviewedBy: Prisma.$UserPayload<ExtArgs> | null
     feedback: Prisma.$FeedbackPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1266,6 +1651,10 @@ export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     progressPercentage: number
     completionNotes: string | null
     completionEvidencePath: string | null
+    submittedAt: Date | null
+    reviewedById: string | null
+    reviewedAt: Date | null
+    reviewRemarks: string | null
     completedAt: Date | null
     cancelledAt: Date | null
     createdAt: Date
@@ -1666,6 +2055,7 @@ export interface Prisma__TaskClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   assignment<T extends Prisma.InternshipAssignmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternshipAssignmentDefaultArgs<ExtArgs>>): Prisma.Prisma__InternshipAssignmentClient<runtime.Types.Result.GetResult<Prisma.$InternshipAssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   assignedBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  reviewedBy<T extends Prisma.Task$reviewedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$reviewedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   feedback<T extends Prisma.Task$feedbackArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$feedbackArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1708,6 +2098,10 @@ export interface TaskFieldRefs {
   readonly progressPercentage: Prisma.FieldRef<"Task", 'Int'>
   readonly completionNotes: Prisma.FieldRef<"Task", 'String'>
   readonly completionEvidencePath: Prisma.FieldRef<"Task", 'String'>
+  readonly submittedAt: Prisma.FieldRef<"Task", 'DateTime'>
+  readonly reviewedById: Prisma.FieldRef<"Task", 'String'>
+  readonly reviewedAt: Prisma.FieldRef<"Task", 'DateTime'>
+  readonly reviewRemarks: Prisma.FieldRef<"Task", 'String'>
   readonly completedAt: Prisma.FieldRef<"Task", 'DateTime'>
   readonly cancelledAt: Prisma.FieldRef<"Task", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Task", 'DateTime'>
@@ -2110,6 +2504,25 @@ export type TaskDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Tasks to delete.
    */
   limit?: number
+}
+
+/**
+ * Task.reviewedBy
+ */
+export type Task$reviewedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

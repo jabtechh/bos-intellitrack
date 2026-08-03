@@ -266,6 +266,7 @@ export type UserWhereInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionListRelationFilter
   workLogsReviewed?: Prisma.WorkLogListRelationFilter
   tasksAssigned?: Prisma.TaskListRelationFilter
+  tasksReviewed?: Prisma.TaskListRelationFilter
   evaluationsCreated?: Prisma.EvaluationListRelationFilter
   evaluationsAcknowledged?: Prisma.EvaluationListRelationFilter
   feedbackAuthored?: Prisma.FeedbackListRelationFilter
@@ -304,6 +305,7 @@ export type UserOrderByWithRelationInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionOrderByRelationAggregateInput
   workLogsReviewed?: Prisma.WorkLogOrderByRelationAggregateInput
   tasksAssigned?: Prisma.TaskOrderByRelationAggregateInput
+  tasksReviewed?: Prisma.TaskOrderByRelationAggregateInput
   evaluationsCreated?: Prisma.EvaluationOrderByRelationAggregateInput
   evaluationsAcknowledged?: Prisma.EvaluationOrderByRelationAggregateInput
   feedbackAuthored?: Prisma.FeedbackOrderByRelationAggregateInput
@@ -345,6 +347,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionListRelationFilter
   workLogsReviewed?: Prisma.WorkLogListRelationFilter
   tasksAssigned?: Prisma.TaskListRelationFilter
+  tasksReviewed?: Prisma.TaskListRelationFilter
   evaluationsCreated?: Prisma.EvaluationListRelationFilter
   evaluationsAcknowledged?: Prisma.EvaluationListRelationFilter
   feedbackAuthored?: Prisma.FeedbackListRelationFilter
@@ -423,6 +426,7 @@ export type UserCreateInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -461,6 +465,7 @@ export type UserUncheckedCreateInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -499,6 +504,7 @@ export type UserUpdateInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -537,6 +543,7 @@ export type UserUncheckedUpdateInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -854,12 +861,28 @@ export type UserCreateNestedOneWithoutTasksAssignedInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
+export type UserCreateNestedOneWithoutTasksReviewedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTasksReviewedInput, Prisma.UserUncheckedCreateWithoutTasksReviewedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTasksReviewedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
 export type UserUpdateOneRequiredWithoutTasksAssignedNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutTasksAssignedInput, Prisma.UserUncheckedCreateWithoutTasksAssignedInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutTasksAssignedInput
   upsert?: Prisma.UserUpsertWithoutTasksAssignedInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTasksAssignedInput, Prisma.UserUpdateWithoutTasksAssignedInput>, Prisma.UserUncheckedUpdateWithoutTasksAssignedInput>
+}
+
+export type UserUpdateOneWithoutTasksReviewedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTasksReviewedInput, Prisma.UserUncheckedCreateWithoutTasksReviewedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTasksReviewedInput
+  upsert?: Prisma.UserUpsertWithoutTasksReviewedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTasksReviewedInput, Prisma.UserUpdateWithoutTasksReviewedInput>, Prisma.UserUncheckedUpdateWithoutTasksReviewedInput>
 }
 
 export type UserCreateNestedOneWithoutEvaluationsCreatedInput = {
@@ -1022,6 +1045,7 @@ export type UserCreateWithoutInternProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -1059,6 +1083,7 @@ export type UserUncheckedCreateWithoutInternProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -1112,6 +1137,7 @@ export type UserUpdateWithoutInternProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -1149,6 +1175,7 @@ export type UserUncheckedUpdateWithoutInternProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1186,6 +1213,7 @@ export type UserCreateWithoutSupervisorProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -1223,6 +1251,7 @@ export type UserUncheckedCreateWithoutSupervisorProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -1276,6 +1305,7 @@ export type UserUpdateWithoutSupervisorProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -1313,6 +1343,7 @@ export type UserUncheckedUpdateWithoutSupervisorProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1350,6 +1381,7 @@ export type UserCreateWithoutCoordinatorProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -1387,6 +1419,7 @@ export type UserUncheckedCreateWithoutCoordinatorProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -1440,6 +1473,7 @@ export type UserUpdateWithoutCoordinatorProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -1477,6 +1511,7 @@ export type UserUncheckedUpdateWithoutCoordinatorProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1514,6 +1549,7 @@ export type UserCreateWithoutRepresentativeProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -1551,6 +1587,7 @@ export type UserUncheckedCreateWithoutRepresentativeProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -1604,6 +1641,7 @@ export type UserUpdateWithoutRepresentativeProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -1641,6 +1679,7 @@ export type UserUncheckedUpdateWithoutRepresentativeProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1678,6 +1717,7 @@ export type UserCreateWithoutAdminProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -1715,6 +1755,7 @@ export type UserUncheckedCreateWithoutAdminProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -1768,6 +1809,7 @@ export type UserUpdateWithoutAdminProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -1805,6 +1847,7 @@ export type UserUncheckedUpdateWithoutAdminProfileInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1842,6 +1885,7 @@ export type UserCreateWithoutAssignmentsCreatedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -1879,6 +1923,7 @@ export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -1921,6 +1966,7 @@ export type UserCreateWithoutRequiredHoursUpdatesInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -1958,6 +2004,7 @@ export type UserUncheckedCreateWithoutRequiredHoursUpdatesInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -2011,6 +2058,7 @@ export type UserUpdateWithoutAssignmentsCreatedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -2048,6 +2096,7 @@ export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -2096,6 +2145,7 @@ export type UserUpdateWithoutRequiredHoursUpdatesInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -2133,6 +2183,7 @@ export type UserUncheckedUpdateWithoutRequiredHoursUpdatesInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -2170,6 +2221,7 @@ export type UserCreateWithoutAttendanceReviewedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -2207,6 +2259,7 @@ export type UserUncheckedCreateWithoutAttendanceReviewedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -2260,6 +2313,7 @@ export type UserUpdateWithoutAttendanceReviewedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -2297,6 +2351,7 @@ export type UserUncheckedUpdateWithoutAttendanceReviewedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -2334,6 +2389,7 @@ export type UserCreateWithoutAttendanceCorrectionsRequestedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -2371,6 +2427,7 @@ export type UserUncheckedCreateWithoutAttendanceCorrectionsRequestedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -2413,6 +2470,7 @@ export type UserCreateWithoutAttendanceCorrectionsReviewedInput = {
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -2450,6 +2508,7 @@ export type UserUncheckedCreateWithoutAttendanceCorrectionsReviewedInput = {
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -2503,6 +2562,7 @@ export type UserUpdateWithoutAttendanceCorrectionsRequestedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -2540,6 +2600,7 @@ export type UserUncheckedUpdateWithoutAttendanceCorrectionsRequestedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -2588,6 +2649,7 @@ export type UserUpdateWithoutAttendanceCorrectionsReviewedInput = {
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -2625,6 +2687,7 @@ export type UserUncheckedUpdateWithoutAttendanceCorrectionsReviewedInput = {
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -2662,6 +2725,7 @@ export type UserCreateWithoutWorkLogsReviewedInput = {
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -2699,6 +2763,7 @@ export type UserUncheckedCreateWithoutWorkLogsReviewedInput = {
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -2752,6 +2817,7 @@ export type UserUpdateWithoutWorkLogsReviewedInput = {
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -2789,6 +2855,7 @@ export type UserUncheckedUpdateWithoutWorkLogsReviewedInput = {
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -2826,6 +2893,7 @@ export type UserCreateWithoutTasksAssignedInput = {
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -2863,6 +2931,7 @@ export type UserUncheckedCreateWithoutTasksAssignedInput = {
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -2877,6 +2946,87 @@ export type UserUncheckedCreateWithoutTasksAssignedInput = {
 export type UserCreateOrConnectWithoutTasksAssignedInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutTasksAssignedInput, Prisma.UserUncheckedCreateWithoutTasksAssignedInput>
+}
+
+export type UserCreateWithoutTasksReviewedInput = {
+  id?: string
+  authId: string
+  email: string
+  role: $Enums.UserRole
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  suffix?: string | null
+  phoneNumber?: string | null
+  profilePhotoPath?: string | null
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  internProfile?: Prisma.InternProfileCreateNestedOneWithoutUserInput
+  supervisorProfile?: Prisma.SupervisorProfileCreateNestedOneWithoutUserInput
+  coordinatorProfile?: Prisma.CoordinatorProfileCreateNestedOneWithoutUserInput
+  representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
+  adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
+  assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
+  attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
+  workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
+  tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
+  evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackReceived?: Prisma.FeedbackCreateNestedManyWithoutRecipientInput
+  documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
+  documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
+  portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
+}
+
+export type UserUncheckedCreateWithoutTasksReviewedInput = {
+  id?: string
+  authId: string
+  email: string
+  role: $Enums.UserRole
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  suffix?: string | null
+  phoneNumber?: string | null
+  profilePhotoPath?: string | null
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  internProfile?: Prisma.InternProfileUncheckedCreateNestedOneWithoutUserInput
+  supervisorProfile?: Prisma.SupervisorProfileUncheckedCreateNestedOneWithoutUserInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUncheckedCreateNestedOneWithoutUserInput
+  representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
+  adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
+  assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
+  attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
+  workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
+  tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
+  evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackReceived?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRecipientInput
+  documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
+  portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
+}
+
+export type UserCreateOrConnectWithoutTasksReviewedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTasksReviewedInput, Prisma.UserUncheckedCreateWithoutTasksReviewedInput>
 }
 
 export type UserUpsertWithoutTasksAssignedInput = {
@@ -2916,6 +3066,7 @@ export type UserUpdateWithoutTasksAssignedInput = {
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -2953,6 +3104,94 @@ export type UserUncheckedUpdateWithoutTasksAssignedInput = {
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
+  evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+  evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackReceived?: Prisma.FeedbackUncheckedUpdateManyWithoutRecipientNestedInput
+  documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
+  portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
+}
+
+export type UserUpsertWithoutTasksReviewedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTasksReviewedInput, Prisma.UserUncheckedUpdateWithoutTasksReviewedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTasksReviewedInput, Prisma.UserUncheckedCreateWithoutTasksReviewedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTasksReviewedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTasksReviewedInput, Prisma.UserUncheckedUpdateWithoutTasksReviewedInput>
+}
+
+export type UserUpdateWithoutTasksReviewedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  internProfile?: Prisma.InternProfileUpdateOneWithoutUserNestedInput
+  supervisorProfile?: Prisma.SupervisorProfileUpdateOneWithoutUserNestedInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneWithoutUserNestedInput
+  representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
+  adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
+  assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
+  attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
+  workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
+  tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
+  evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackReceived?: Prisma.FeedbackUpdateManyWithoutRecipientNestedInput
+  documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
+  documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
+  portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTasksReviewedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  internProfile?: Prisma.InternProfileUncheckedUpdateOneWithoutUserNestedInput
+  supervisorProfile?: Prisma.SupervisorProfileUncheckedUpdateOneWithoutUserNestedInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUncheckedUpdateOneWithoutUserNestedInput
+  representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
+  adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
+  attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
+  workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
+  tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -2991,6 +3230,7 @@ export type UserCreateWithoutEvaluationsCreatedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
   feedbackReceived?: Prisma.FeedbackCreateNestedManyWithoutRecipientInput
@@ -3028,6 +3268,7 @@ export type UserUncheckedCreateWithoutEvaluationsCreatedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
   feedbackReceived?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRecipientInput
@@ -3070,6 +3311,7 @@ export type UserCreateWithoutEvaluationsAcknowledgedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
   feedbackReceived?: Prisma.FeedbackCreateNestedManyWithoutRecipientInput
@@ -3107,6 +3349,7 @@ export type UserUncheckedCreateWithoutEvaluationsAcknowledgedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
   feedbackReceived?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRecipientInput
@@ -3160,6 +3403,7 @@ export type UserUpdateWithoutEvaluationsCreatedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
   feedbackReceived?: Prisma.FeedbackUpdateManyWithoutRecipientNestedInput
@@ -3197,6 +3441,7 @@ export type UserUncheckedUpdateWithoutEvaluationsCreatedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
   feedbackReceived?: Prisma.FeedbackUncheckedUpdateManyWithoutRecipientNestedInput
@@ -3245,6 +3490,7 @@ export type UserUpdateWithoutEvaluationsAcknowledgedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
   feedbackReceived?: Prisma.FeedbackUpdateManyWithoutRecipientNestedInput
@@ -3282,6 +3528,7 @@ export type UserUncheckedUpdateWithoutEvaluationsAcknowledgedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
   feedbackReceived?: Prisma.FeedbackUncheckedUpdateManyWithoutRecipientNestedInput
@@ -3319,6 +3566,7 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackReceived?: Prisma.FeedbackCreateNestedManyWithoutRecipientInput
@@ -3356,6 +3604,7 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackReceived?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRecipientInput
@@ -3398,6 +3647,7 @@ export type UserCreateWithoutFeedbackReceivedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -3435,6 +3685,7 @@ export type UserUncheckedCreateWithoutFeedbackReceivedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -3488,6 +3739,7 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackReceived?: Prisma.FeedbackUpdateManyWithoutRecipientNestedInput
@@ -3525,6 +3777,7 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackReceived?: Prisma.FeedbackUncheckedUpdateManyWithoutRecipientNestedInput
@@ -3573,6 +3826,7 @@ export type UserUpdateWithoutFeedbackReceivedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -3610,6 +3864,7 @@ export type UserUncheckedUpdateWithoutFeedbackReceivedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -3647,6 +3902,7 @@ export type UserCreateWithoutDocumentsUploadedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -3684,6 +3940,7 @@ export type UserUncheckedCreateWithoutDocumentsUploadedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -3726,6 +3983,7 @@ export type UserCreateWithoutDocumentsReviewedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -3763,6 +4021,7 @@ export type UserUncheckedCreateWithoutDocumentsReviewedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -3816,6 +4075,7 @@ export type UserUpdateWithoutDocumentsUploadedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -3853,6 +4113,7 @@ export type UserUncheckedUpdateWithoutDocumentsUploadedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -3901,6 +4162,7 @@ export type UserUpdateWithoutDocumentsReviewedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -3938,6 +4200,7 @@ export type UserUncheckedUpdateWithoutDocumentsReviewedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -3975,6 +4238,7 @@ export type UserCreateWithoutAnnouncementsCreatedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -4012,6 +4276,7 @@ export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -4065,6 +4330,7 @@ export type UserUpdateWithoutAnnouncementsCreatedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -4102,6 +4368,7 @@ export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -4139,6 +4406,7 @@ export type UserCreateWithoutPortfoliosGeneratedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -4176,6 +4444,7 @@ export type UserUncheckedCreateWithoutPortfoliosGeneratedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -4218,6 +4487,7 @@ export type UserCreateWithoutPortfoliosApprovedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
@@ -4255,6 +4525,7 @@ export type UserUncheckedCreateWithoutPortfoliosApprovedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
   tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
   evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
   feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
@@ -4308,6 +4579,7 @@ export type UserUpdateWithoutPortfoliosGeneratedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -4345,6 +4617,7 @@ export type UserUncheckedUpdateWithoutPortfoliosGeneratedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -4393,6 +4666,7 @@ export type UserUpdateWithoutPortfoliosApprovedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
@@ -4430,6 +4704,7 @@ export type UserUncheckedUpdateWithoutPortfoliosApprovedInput = {
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
   tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
   evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
   evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
   feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
@@ -4453,6 +4728,7 @@ export type UserCountOutputType = {
   attendanceCorrectionsReviewed: number
   workLogsReviewed: number
   tasksAssigned: number
+  tasksReviewed: number
   evaluationsCreated: number
   evaluationsAcknowledged: number
   feedbackAuthored: number
@@ -4472,6 +4748,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   attendanceCorrectionsReviewed?: boolean | UserCountOutputTypeCountAttendanceCorrectionsReviewedArgs
   workLogsReviewed?: boolean | UserCountOutputTypeCountWorkLogsReviewedArgs
   tasksAssigned?: boolean | UserCountOutputTypeCountTasksAssignedArgs
+  tasksReviewed?: boolean | UserCountOutputTypeCountTasksReviewedArgs
   evaluationsCreated?: boolean | UserCountOutputTypeCountEvaluationsCreatedArgs
   evaluationsAcknowledged?: boolean | UserCountOutputTypeCountEvaluationsAcknowledgedArgs
   feedbackAuthored?: boolean | UserCountOutputTypeCountFeedbackAuthoredArgs
@@ -4539,6 +4816,13 @@ export type UserCountOutputTypeCountWorkLogsReviewedArgs<ExtArgs extends runtime
  * UserCountOutputType without action
  */
 export type UserCountOutputTypeCountTasksAssignedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TaskWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTasksReviewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.TaskWhereInput
 }
 
@@ -4633,6 +4917,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   attendanceCorrectionsReviewed?: boolean | Prisma.User$attendanceCorrectionsReviewedArgs<ExtArgs>
   workLogsReviewed?: boolean | Prisma.User$workLogsReviewedArgs<ExtArgs>
   tasksAssigned?: boolean | Prisma.User$tasksAssignedArgs<ExtArgs>
+  tasksReviewed?: boolean | Prisma.User$tasksReviewedArgs<ExtArgs>
   evaluationsCreated?: boolean | Prisma.User$evaluationsCreatedArgs<ExtArgs>
   evaluationsAcknowledged?: boolean | Prisma.User$evaluationsAcknowledgedArgs<ExtArgs>
   feedbackAuthored?: boolean | Prisma.User$feedbackAuthoredArgs<ExtArgs>
@@ -4710,6 +4995,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   attendanceCorrectionsReviewed?: boolean | Prisma.User$attendanceCorrectionsReviewedArgs<ExtArgs>
   workLogsReviewed?: boolean | Prisma.User$workLogsReviewedArgs<ExtArgs>
   tasksAssigned?: boolean | Prisma.User$tasksAssignedArgs<ExtArgs>
+  tasksReviewed?: boolean | Prisma.User$tasksReviewedArgs<ExtArgs>
   evaluationsCreated?: boolean | Prisma.User$evaluationsCreatedArgs<ExtArgs>
   evaluationsAcknowledged?: boolean | Prisma.User$evaluationsAcknowledgedArgs<ExtArgs>
   feedbackAuthored?: boolean | Prisma.User$feedbackAuthoredArgs<ExtArgs>
@@ -4739,6 +5025,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     attendanceCorrectionsReviewed: Prisma.$AttendanceCorrectionPayload<ExtArgs>[]
     workLogsReviewed: Prisma.$WorkLogPayload<ExtArgs>[]
     tasksAssigned: Prisma.$TaskPayload<ExtArgs>[]
+    tasksReviewed: Prisma.$TaskPayload<ExtArgs>[]
     evaluationsCreated: Prisma.$EvaluationPayload<ExtArgs>[]
     evaluationsAcknowledged: Prisma.$EvaluationPayload<ExtArgs>[]
     feedbackAuthored: Prisma.$FeedbackPayload<ExtArgs>[]
@@ -5170,6 +5457,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   attendanceCorrectionsReviewed<T extends Prisma.User$attendanceCorrectionsReviewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$attendanceCorrectionsReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceCorrectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workLogsReviewed<T extends Prisma.User$workLogsReviewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$workLogsReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tasksAssigned<T extends Prisma.User$tasksAssignedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tasksAssignedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tasksReviewed<T extends Prisma.User$tasksReviewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tasksReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   evaluationsCreated<T extends Prisma.User$evaluationsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$evaluationsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EvaluationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   evaluationsAcknowledged<T extends Prisma.User$evaluationsAcknowledgedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$evaluationsAcknowledgedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EvaluationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   feedbackAuthored<T extends Prisma.User$feedbackAuthoredArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$feedbackAuthoredArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5857,6 +6145,30 @@ export type User$workLogsReviewedArgs<ExtArgs extends runtime.Types.Extensions.I
  * User.tasksAssigned
  */
 export type User$tasksAssignedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Task
+   */
+  select?: Prisma.TaskSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Task
+   */
+  omit?: Prisma.TaskOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TaskInclude<ExtArgs> | null
+  where?: Prisma.TaskWhereInput
+  orderBy?: Prisma.TaskOrderByWithRelationInput | Prisma.TaskOrderByWithRelationInput[]
+  cursor?: Prisma.TaskWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TaskScalarFieldEnum | Prisma.TaskScalarFieldEnum[]
+}
+
+/**
+ * User.tasksReviewed
+ */
+export type User$tasksReviewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Task
    */
