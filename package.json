@@ -13,6 +13,7 @@
     "auth:test": "tsx --test scripts/test-auth-foundation.ts",
     "db:test": "tsx scripts/test-db.ts",
     "admin:bootstrap": "tsx scripts/bootstrap-admin.ts",
+    "admin:test": "tsx scripts/test-admin.ts",
     "provisioning:test": "tsx --test scripts/test-admin-provisioning.ts"
   },
   "dependencies": {
