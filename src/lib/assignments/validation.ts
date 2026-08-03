@@ -22,7 +22,6 @@ export const assignmentInputSchema = z.object({
   department: optionalText(150),
   startDate: isoDate,
   endDate: isoDate,
-  requiredHours: z.coerce.number().int().positive("Required hours must be greater than zero."),
   scheduleStartTime: time,
   scheduleEndTime: time,
   gracePeriodMinutes: z.coerce.number().int().min(0, "Grace period cannot be negative."),

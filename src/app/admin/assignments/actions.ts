@@ -24,7 +24,7 @@ export async function createAssignment(formData: FormData) {
         supervisorProfileId: parsed.data.supervisorProfileId, coordinatorProfileId: parsed.data.coordinatorProfileId,
         assignmentCode: parsed.data.assignmentCode, positionTitle: parsed.data.positionTitle ?? null,
         department: parsed.data.department ?? null, startDate: toDateOnly(parsed.data.startDate), endDate: toDateOnly(parsed.data.endDate),
-        requiredHours: parsed.data.requiredHours, scheduleStartTime: toTime(parsed.data.scheduleStartTime), scheduleEndTime: toTime(parsed.data.scheduleEndTime),
+        requiredHours: null, scheduleStartTime: toTime(parsed.data.scheduleStartTime), scheduleEndTime: toTime(parsed.data.scheduleEndTime),
         gracePeriodMinutes: parsed.data.gracePeriodMinutes, notes: parsed.data.notes ?? null,
         status: "PENDING", createdById: administrator.id,
       }, select: { id: true },
@@ -58,7 +58,7 @@ async function transitionAssignment(formData: FormData, target: AssignmentStatus
           assignmentCode: assignment.assignmentCode, internProfileId: assignment.internProfileId, companyId: assignment.companyId,
           supervisorProfileId: assignment.supervisorProfileId, coordinatorProfileId: assignment.coordinatorProfileId,
           positionTitle: assignment.positionTitle ?? undefined, department: assignment.department ?? undefined,
-          startDate: dateValue(assignment.startDate), endDate: dateValue(assignment.endDate), requiredHours: assignment.requiredHours,
+          startDate: dateValue(assignment.startDate), endDate: dateValue(assignment.endDate),
           scheduleStartTime: timeValue(assignment.scheduleStartTime), scheduleEndTime: timeValue(assignment.scheduleEndTime),
           gracePeriodMinutes: assignment.gracePeriodMinutes, notes: assignment.notes ?? undefined,
         };

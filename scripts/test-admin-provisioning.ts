@@ -12,7 +12,7 @@ const common = { email: "person@example.com", firstName: "Ada", lastName: "Lovel
 const schoolId = "11111111-1111-4111-8111-111111111111";
 const supervisorProfileId = "33333333-3333-4333-8333-333333333333";
 const coordinatorProfileId = "44444444-4444-4444-8444-444444444444";
-const internship = { supervisorProfileId, coordinatorProfileId, startDate: "2026-08-01", endDate: "2026-12-01", requiredHours: "500", scheduleStartTime: "08:00", scheduleEndTime: "17:00", gracePeriodMinutes: "10" };
+const internship = { supervisorProfileId, coordinatorProfileId, startDate: "2026-08-01", endDate: "2026-12-01", scheduleStartTime: "08:00", scheduleEndTime: "17:00", gracePeriodMinutes: "10" };
 
 test("bootstrap validation normalizes input and requires a strong password", () => {
   const valid = bootstrapAdminSchema.parse({ email: " ADMIN@EXAMPLE.COM ", password: `Aa1!${"x".repeat(8)}`, firstName: " Ada ", lastName: " Admin " });

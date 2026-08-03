@@ -1,0 +1,9 @@
+import Link from "next/link";
+import { submitRequiredHours } from "./actions";
+import { requireInternAssignment } from "@/lib/required-hours/intern-context";
+
+export default async function InternshipHoursOnboarding({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+  const { assignment } = await requireInternAssignment({ allowUnset: true });
+  const { error } = await searchParams;
+  return <main className="min-h-screen bg-canvas px-4 py-8 sm:px-6 lg:py-12"><section className="ui-card mx-auto max-w-xl p-6 sm:p-8"><p className="eyebrow">Intern onboarding</p><h1 className="mt-2 font-heading text-3xl font-semibold text-brand-900">Required internship hours</h1>{assignment.requiredHours !== null ? <><p className="mt-4 text-secondary">Your partner school requirement has already been recorded.</p><dl className="mt-5 rounded-lg bg-stone-100 p-5"><dt className="text-sm text-secondary">Required Internship Hours</dt><dd className="mt-1 text-2xl font-semibold">{assignment.requiredHours}</dd></dl><Link href="/dashboard" className="button button-primary mt-6">Return to dashboard</Link></> : <><p className="mt-3 text-secondary">Enter the total internship hours required by your partner school.</p>{error ? <p role="alert" className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-800">{error}</p> : null}<form action={submitRequiredHours} className="mt-6 space-y-5"><label className="block text-sm font-medium">Required Internship Hours<input name="requiredHours" type="number" min="100" max="1500" step="1" required className="mt-2 min-h-11 w-full rounded-md border border-border px-3" /></label><label className="flex gap-3 text-sm leading-6"><input name="confirmed" type="checkbox" required className="mt-1 h-4 w-4"/><span>I confirm that this is the internship-hour requirement provided by my partner school.</span></label><button className="button button-primary w-full">Confirm required hours</button></form></>}</section></main>;
+}

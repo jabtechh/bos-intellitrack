@@ -5,10 +5,11 @@ import { Icon } from "@/components/icons";
 import { EmptyState, PageHeader, StatusBadge } from "@/components/ui";
 import { getAttendanceExceptions, localDate } from "@/lib/attendance/domain";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
+import { requireInternAssignment } from "@/lib/required-hours/intern-context";
 import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 export default async function AttendancePage() {
-  const user = await requireCurrentUser(); if (user.role !== "INTERN") return <Message title="Intern attendance" text="Attendance capture is available only to active intern accounts." />;
+  const user = await requireCurrentUser(); if (user.role !== "INTERN") return <Message title="Intern attendance" text="Attendance capture is available only to active intern accounts." />; await requireInternAssignment();
   const profile = await prisma.internProfile.findUnique({ where: { userId: user.id }, select: { assignments: { where: { status: "ACTIVE" }, take: 1, select: { id: true, scheduleStartTime: true, scheduleEndTime: true, company: { select: { timezone: true } }, supervisorProfile: { select: { user: { select: { firstName: true, lastName: true } } } }, attendance: { orderBy: { attendanceDate: "desc" }, take: 5, select: { id: true, attendanceDate: true, clockIn: true, clockOut: true, status: true } } } } } });
   const internship = profile?.assignments[0]; if (!internship) return <Message title="No active internship" text="Attendance becomes available after your internship details are configured." />;
   const todayDate = localDate(new Date(), internship.company.timezone); const today = internship.attendance.find(row => row.attendanceDate.getTime() === todayDate.getTime()) ?? null; const fullToday = today ? await prisma.attendance.findUnique({ where: { id: today.id } }) : null;

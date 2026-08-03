@@ -13,4 +13,6 @@ The internal **System Administrator** role exists for bootstrap, emergency recov
 
 The intended ownership is that an Intern enters required hours once during onboarding. A Company Representative may correct the value later; Company Supervisors and School Coordinators monitor it, and a System Administrator retains emergency correction access.
 
-The current immutable database design cannot represent “not entered.” `required_hours` is non-null and constrained to a positive integer. Until a future approved schema change provides an explicit unset/onboarding state, provisioning must collect the real verified requirement. IntelliTrack must not store a fabricated placeholder value.
+The forward-only `support_required_hours_onboarding` migration provides an honest unset state while retaining the positive-value rule whenever a requirement exists. Normal provisioning leaves the value unset; the Intern confirms it once through onboarding. Company Representatives and System Administrators can later correct it with a required reason.
+
+Version 1 stores only the latest correction actor and reason. It does not add a general onboarding table or persistent correction-history table.

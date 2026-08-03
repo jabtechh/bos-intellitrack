@@ -30,6 +30,7 @@
     ,"storage:work-logs:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-work-log-storage.ts"
     ,"navigation:test": "tsx --test scripts/test-navigation-ui.ts"
     ,"roles:test": "tsx --test scripts/test-role-alignment.ts"
+    ,"required-hours:test": "tsx --env-file=.env --env-file=.env.local --test scripts/test-required-hours.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",

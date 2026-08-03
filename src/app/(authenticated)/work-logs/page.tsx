@@ -2,11 +2,13 @@ import Link from "next/link";
 import { Icon } from "@/components/icons";
 import { EmptyState, PageHeader, StatusBadge } from "@/components/ui";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
+import { requireInternAssignment } from "@/lib/required-hours/intern-context";
 import { prisma } from "@/lib/prisma";
 import { workLogLabel } from "@/lib/work-logs/domain";
 
 export default async function WorkLogs() {
   const user = await requireCurrentUser();
+  if (user.role === "INTERN") await requireInternAssignment();
   const rows = user.role === "INTERN" ? await prisma.workLog.findMany({ where: { assignment: { internProfile: { userId: user.id } } }, orderBy: { workDate: "desc" } }) : [];
   return <div className="px-5 py-8 sm:px-8 lg:px-12 lg:py-12"><section className="mx-auto max-w-6xl">
     <PageHeader eyebrow="Internship documentation" title="Daily work logs" description="Capture your accomplishments, learning, and hours in one consistent record." actions={<Link href="/work-logs/new" className="button button-primary"><Icon name="plus" />Create work log</Link>} />

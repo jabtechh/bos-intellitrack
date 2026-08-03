@@ -63,6 +63,7 @@ async function activeInternContext() {
   if (!profile) return { ok: false as const, error: failure("Your intern profile is not available.") };
   const assignment = await prisma.internshipAssignment.findFirst({ where: { internProfileId: profile.id, status: "ACTIVE" }, include: { company: true } });
   if (!assignment) return { ok: false as const, error: failure("No active internship is available.") };
+  if (assignment.requiredHours === null) return { ok: false as const, error: failure("Complete required-hours onboarding before recording attendance.") };
   if (!assignment.company.isActive) return { ok: false as const, error: failure("Bo’s Coffee Main Office is not currently available for attendance.") };
   return { ok: true as const, user, assignment };
 }
