@@ -1,0 +1,790 @@
+// IntelliTrack database schema
+// Target: Prisma ORM 7 + PostgreSQL (Supabase)
+// Configure DATABASE_URL / DIRECT_URL in prisma.config.ts.
+//
+// The following database rules are intentionally delegated to SQL migrations
+// unless you enable and adopt Prisma's partialIndexes preview feature:
+// - one ACTIVE internship assignment per intern
+// - one PENDING attendance correction per attendance record
+// - filtered queue indexes for attendance, tasks, and announcements
+// - case-insensitive uniqueness for users.email (for example, unique index on LOWER(email))
+//
+// PostgreSQL CHECK constraints documented in 07_database_design.md must also be
+// added through a reviewed SQL migration.
+//
+// PostgreSQL RLS enablement and policies documented in 07_database_design.md
+// must be applied through SQL migrations where required by deployment architecture.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  INTERN
+  SUPERVISOR
+  COORDINATOR
+  REPRESENTATIVE
+  ADMIN
+
+  @@map("user_role")
+}
+
+enum AdminAccessLevel {
+  STANDARD
+  SUPER_ADMIN
+
+  @@map("admin_access_level")
+}
+
+enum InternshipStatus {
+  PENDING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  TERMINATED
+
+  @@map("internship_status")
+}
+
+enum AttendanceStatus {
+  CLOCKED_IN
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+  INCOMPLETE
+  ABSENT
+  VOIDED
+
+  @@map("attendance_status")
+}
+
+enum AttendanceClassification {
+  UNDETERMINED
+  ON_TIME
+  LATE
+  EARLY_DEPARTURE
+  LATE_AND_EARLY_DEPARTURE
+
+  @@map("attendance_classification")
+}
+
+enum CorrectionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+
+  @@map("correction_status")
+}
+
+enum WorkLogStatus {
+  DRAFT
+  SUBMITTED
+  REVISION_REQUIRED
+  APPROVED
+  REJECTED
+
+  @@map("work_log_status")
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+
+  @@map("task_priority")
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  BLOCKED
+  COMPLETED
+  CANCELLED
+
+  @@map("task_status")
+}
+
+enum EvaluationType {
+  INITIAL
+  MIDTERM
+  PROGRESS
+  FINAL
+
+  @@map("evaluation_type")
+}
+
+enum EvaluationStatus {
+  DRAFT
+  SUBMITTED
+  ACKNOWLEDGED
+  VOIDED
+
+  @@map("evaluation_status")
+}
+
+enum FeedbackType {
+  GENERAL
+  PRAISE
+  IMPROVEMENT
+  TASK_RELATED
+  ATTENDANCE_RELATED
+  PERFORMANCE
+
+  @@map("feedback_type")
+}
+
+enum FeedbackVisibility {
+  INTERN_AND_STAFF
+  STAFF_ONLY
+  INTERN_ONLY
+
+  @@map("feedback_visibility")
+}
+
+enum DocumentCategory {
+  INTERNSHIP_REQUIREMENT
+  ENDORSEMENT_LETTER
+  INTERNSHIP_AGREEMENT
+  IDENTIFICATION
+  MEDICAL_DOCUMENT
+  DAILY_REPORT
+  WEEKLY_REPORT
+  FINAL_REPORT
+  CERTIFICATE
+  WORK_SAMPLE
+  SUPPORTING_DOCUMENT
+  OTHER
+
+  @@map("document_category")
+}
+
+enum DocumentStatus {
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+  REPLACED
+  ARCHIVED
+
+  @@map("document_status")
+}
+
+enum AnnouncementPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+
+  @@map("announcement_priority")
+}
+
+enum AnnouncementAudience {
+  ALL_USERS
+  INTERNS
+  SUPERVISORS
+  COORDINATORS
+  REPRESENTATIVES
+  ADMINISTRATORS
+  SCHOOL
+  COMPANY
+
+  @@map("announcement_audience")
+}
+
+enum AnnouncementStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  EXPIRED
+  ARCHIVED
+  CANCELLED
+
+  @@map("announcement_status")
+}
+
+enum PortfolioStatus {
+  DRAFT
+  GENERATED
+  UNDER_REVIEW
+  FINALIZED
+  ARCHIVED
+
+  @@map("portfolio_status")
+}
+
+model User {
+  id               String    @id @default(uuid()) @db.Uuid
+  authId           String    @unique(map: "users_auth_id_key") @map("auth_id") @db.Uuid
+  email            String    @unique(map: "users_email_key") @db.VarChar(255)
+  role             UserRole
+  firstName        String    @map("first_name") @db.VarChar(100)
+  middleName       String?   @map("middle_name") @db.VarChar(100)
+  lastName         String    @map("last_name") @db.VarChar(100)
+  suffix           String?   @db.VarChar(20)
+  phoneNumber      String?   @map("phone_number") @db.VarChar(30)
+  profilePhotoPath String?   @map("profile_photo_path") @db.Text
+  isActive         Boolean   @default(true) @map("is_active")
+  lastLoginAt      DateTime? @map("last_login_at") @db.Timestamptz(6)
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  internProfile         InternProfile?
+  supervisorProfile     SupervisorProfile?
+  coordinatorProfile    CoordinatorProfile?
+  representativeProfile RepresentativeProfile?
+  adminProfile          AdminProfile?
+
+  assignmentsCreated             InternshipAssignment[] @relation("AssignmentCreatedBy")
+  attendanceReviewed             Attendance[]           @relation("AttendanceReviewedBy")
+  attendanceCorrectionsRequested AttendanceCorrection[] @relation("CorrectionRequestedBy")
+  attendanceCorrectionsReviewed  AttendanceCorrection[] @relation("CorrectionReviewedBy")
+  workLogsReviewed               WorkLog[]              @relation("WorkLogReviewedBy")
+  tasksAssigned                  Task[]                 @relation("TaskAssignedBy")
+  evaluationsCreated             Evaluation[]           @relation("EvaluationEvaluator")
+  evaluationsAcknowledged        Evaluation[]           @relation("EvaluationAcknowledgedBy")
+  feedbackAuthored               Feedback[]             @relation("FeedbackAuthor")
+  feedbackReceived               Feedback[]             @relation("FeedbackRecipient")
+  documentsUploaded              Document[]             @relation("DocumentUploadedBy")
+  documentsReviewed              Document[]             @relation("DocumentReviewedBy")
+  announcementsCreated           Announcement[]         @relation("AnnouncementCreatedBy")
+  portfoliosGenerated            Portfolio[]            @relation("PortfolioLastGeneratedBy")
+  portfoliosApproved             Portfolio[]            @relation("PortfolioApprovedBy")
+
+  @@index([role], map: "users_role_idx")
+  @@index([isActive, role], map: "users_active_role_idx")
+  @@index([lastName], map: "users_last_name_idx")
+  @@map("users")
+}
+
+model InternProfile {
+  id                           String    @id @default(uuid()) @db.Uuid
+  userId                       String    @unique(map: "intern_profiles_user_id_key") @map("user_id") @db.Uuid
+  schoolId                     String    @map("school_id") @db.Uuid
+  studentNumber                String    @map("student_number") @db.VarChar(100)
+  course                       String    @db.VarChar(150)
+  yearLevel                    String?   @map("year_level") @db.VarChar(50)
+  section                      String?   @db.VarChar(50)
+  dateOfBirth                  DateTime? @map("date_of_birth") @db.Date
+  address                      String?   @db.Text
+  emergencyContactName         String?   @map("emergency_contact_name") @db.VarChar(200)
+  emergencyContactNumber       String?   @map("emergency_contact_number") @db.VarChar(30)
+  emergencyContactRelationship String?   @map("emergency_contact_relationship") @db.VarChar(100)
+  createdAt                    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                    DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user        User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  school      School                 @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  assignments InternshipAssignment[]
+
+  @@unique([schoolId, studentNumber], map: "intern_profiles_school_student_key")
+  @@index([schoolId], map: "intern_profiles_school_id_idx")
+  @@index([course], map: "intern_profiles_course_idx")
+  @@map("intern_profiles")
+}
+
+model SupervisorProfile {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @unique(map: "supervisor_profiles_user_id_key") @map("user_id") @db.Uuid
+  companyId      String   @map("company_id") @db.Uuid
+  employeeNumber String?  @map("employee_number") @db.VarChar(100)
+  position       String   @db.VarChar(150)
+  department     String?  @db.VarChar(150)
+  officeLocation String?  @map("office_location") @db.VarChar(255)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user        User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company     Company                @relation(fields: [companyId], references: [id], onDelete: Restrict)
+  assignments InternshipAssignment[]
+
+  @@unique([companyId, employeeNumber], map: "supervisor_profiles_company_employee_key")
+  @@index([companyId], map: "supervisor_profiles_company_id_idx")
+  @@index([companyId, department], map: "supervisor_profiles_company_department_idx")
+  @@map("supervisor_profiles")
+}
+
+model CoordinatorProfile {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @unique(map: "coordinator_profiles_user_id_key") @map("user_id") @db.Uuid
+  schoolId       String   @map("school_id") @db.Uuid
+  employeeNumber String?  @map("employee_number") @db.VarChar(100)
+  position       String   @db.VarChar(150)
+  department     String?  @db.VarChar(150)
+  office         String?  @db.VarChar(150)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user        User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  school      School                 @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  assignments InternshipAssignment[]
+
+  @@unique([schoolId, employeeNumber], map: "coordinator_profiles_school_employee_key")
+  @@index([schoolId], map: "coordinator_profiles_school_id_idx")
+  @@index([schoolId, department], map: "coordinator_profiles_school_department_idx")
+  @@map("coordinator_profiles")
+}
+
+model RepresentativeProfile {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @unique(map: "representative_profiles_user_id_key") @map("user_id") @db.Uuid
+  companyId      String   @map("company_id") @db.Uuid
+  employeeNumber String?  @map("employee_number") @db.VarChar(100)
+  position       String   @db.VarChar(150)
+  department     String?  @db.VarChar(150)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company Company @relation(fields: [companyId], references: [id], onDelete: Restrict)
+
+  @@unique([companyId, employeeNumber], map: "representative_profiles_company_employee_key")
+  @@index([companyId], map: "representative_profiles_company_id_idx")
+  @@map("representative_profiles")
+}
+
+model AdminProfile {
+  id          String           @id @default(uuid()) @db.Uuid
+  userId      String           @unique(map: "admin_profiles_user_id_key") @map("user_id") @db.Uuid
+  accessLevel AdminAccessLevel @default(STANDARD) @map("access_level")
+  designation String?          @db.VarChar(150)
+  notes       String?          @db.Text
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([accessLevel], map: "admin_profiles_access_level_idx")
+  @@map("admin_profiles")
+}
+
+model School {
+  id            String   @id @default(uuid()) @db.Uuid
+  schoolCode    String?  @unique(map: "schools_school_code_key") @map("school_code") @db.VarChar(50)
+  name          String   @db.VarChar(255)
+  addressLine   String?  @map("address_line") @db.Text
+  city          String?  @db.VarChar(100)
+  province      String?  @db.VarChar(100)
+  postalCode    String?  @map("postal_code") @db.VarChar(20)
+  contactEmail  String?  @map("contact_email") @db.VarChar(255)
+  contactNumber String?  @map("contact_number") @db.VarChar(30)
+  websiteUrl    String?  @map("website_url") @db.Text
+  logoPath      String?  @map("logo_path") @db.Text
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  internProfiles      InternProfile[]
+  coordinatorProfiles CoordinatorProfile[]
+  announcements       Announcement[]
+
+  @@index([name], map: "schools_name_idx")
+  @@index([isActive], map: "schools_is_active_idx")
+  @@index([city], map: "schools_city_idx")
+  @@map("schools")
+}
+
+model Company {
+  id                   String   @id @default(uuid()) @db.Uuid
+  companyCode          String?  @unique(map: "companies_company_code_key") @map("company_code") @db.VarChar(50)
+  name                 String   @db.VarChar(255)
+  branchName           String?  @map("branch_name") @db.VarChar(255)
+  addressLine          String   @map("address_line") @db.Text
+  city                 String?  @db.VarChar(100)
+  province             String?  @db.VarChar(100)
+  postalCode           String?  @map("postal_code") @db.VarChar(20)
+  contactEmail         String?  @map("contact_email") @db.VarChar(255)
+  contactNumber        String?  @map("contact_number") @db.VarChar(30)
+  latitude             Decimal  @db.Decimal(10, 7)
+  longitude            Decimal  @db.Decimal(10, 7)
+  geofenceRadiusMeters Int      @default(100) @map("geofence_radius_meters")
+  timezone             String   @default("Asia/Manila") @db.VarChar(100)
+  logoPath             String?  @map("logo_path") @db.Text
+  isActive             Boolean  @default(true) @map("is_active")
+  createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  supervisorProfiles     SupervisorProfile[]
+  representativeProfiles RepresentativeProfile[]
+  assignments            InternshipAssignment[]
+  announcements          Announcement[]
+
+  @@index([name], map: "companies_name_idx")
+  @@index([isActive], map: "companies_active_idx")
+  @@index([city], map: "companies_city_idx")
+  @@index([name, branchName], map: "companies_name_branch_idx")
+  @@map("companies")
+}
+
+model InternshipAssignment {
+  id                   String           @id @default(uuid()) @db.Uuid
+  internProfileId      String           @map("intern_profile_id") @db.Uuid
+  companyId            String           @map("company_id") @db.Uuid
+  supervisorProfileId  String           @map("supervisor_profile_id") @db.Uuid
+  coordinatorProfileId String           @map("coordinator_profile_id") @db.Uuid
+  assignmentCode       String           @unique(map: "internship_assignments_code_key") @map("assignment_code") @db.VarChar(100)
+  positionTitle        String?          @map("position_title") @db.VarChar(150)
+  department           String?          @db.VarChar(150)
+  startDate            DateTime         @map("start_date") @db.Date
+  endDate              DateTime         @map("end_date") @db.Date
+  requiredHours        Int              @map("required_hours")
+  renderedHours        Decimal          @default(0) @map("rendered_hours") @db.Decimal(10, 2)
+  scheduleStartTime    DateTime?        @map("schedule_start_time") @db.Time(0)
+  scheduleEndTime      DateTime?        @map("schedule_end_time") @db.Time(0)
+  gracePeriodMinutes   Int              @default(0) @map("grace_period_minutes")
+  status               InternshipStatus @default(PENDING)
+  notes                String?          @db.Text
+  activatedAt          DateTime?        @map("activated_at") @db.Timestamptz(6)
+  completedAt          DateTime?        @map("completed_at") @db.Timestamptz(6)
+  createdById          String?          @map("created_by_id") @db.Uuid
+  createdAt            DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  internProfile      InternProfile      @relation(fields: [internProfileId], references: [id], onDelete: Restrict)
+  company            Company            @relation(fields: [companyId], references: [id], onDelete: Restrict)
+  supervisorProfile  SupervisorProfile  @relation(fields: [supervisorProfileId], references: [id], onDelete: Restrict)
+  coordinatorProfile CoordinatorProfile @relation(fields: [coordinatorProfileId], references: [id], onDelete: Restrict)
+  createdBy          User?              @relation("AssignmentCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  attendance  Attendance[]
+  workLogs    WorkLog[]
+  tasks       Task[]
+  evaluations Evaluation[]
+  feedback    Feedback[]
+  documents   Document[]
+  portfolio   Portfolio?
+
+  @@index([internProfileId], map: "internship_assignments_intern_idx")
+  @@index([companyId], map: "internship_assignments_company_idx")
+  @@index([supervisorProfileId], map: "internship_assignments_supervisor_idx")
+  @@index([coordinatorProfileId], map: "internship_assignments_coordinator_idx")
+  @@index([status], map: "internship_assignments_status_idx")
+  @@index([startDate, endDate], map: "internship_assignments_dates_idx")
+  @@index([companyId, status], map: "internship_assignments_company_status_idx")
+  @@index([supervisorProfileId, status], map: "internship_assignments_supervisor_status_idx")
+  @@map("internship_assignments")
+}
+
+model Attendance {
+  id                     String                   @id @default(uuid()) @db.Uuid
+  assignmentId           String                   @map("assignment_id") @db.Uuid
+  attendanceDate         DateTime                 @map("attendance_date") @db.Date
+  clockIn                DateTime?                @map("clock_in") @db.Timestamptz(6)
+  clockOut               DateTime?                @map("clock_out") @db.Timestamptz(6)
+  clockInLatitude        Decimal?                 @map("clock_in_latitude") @db.Decimal(10, 7)
+  clockInLongitude       Decimal?                 @map("clock_in_longitude") @db.Decimal(10, 7)
+  clockInAccuracyMeters  Decimal?                 @map("clock_in_accuracy_meters") @db.Decimal(10, 2)
+  clockInDistanceMeters  Decimal?                 @map("clock_in_distance_meters") @db.Decimal(10, 2)
+  clockInInsideGeofence  Boolean?                 @map("clock_in_inside_geofence")
+  clockInSelfiePath      String?                  @map("clock_in_selfie_path") @db.Text
+  clockOutLatitude       Decimal?                 @map("clock_out_latitude") @db.Decimal(10, 7)
+  clockOutLongitude      Decimal?                 @map("clock_out_longitude") @db.Decimal(10, 7)
+  clockOutAccuracyMeters Decimal?                 @map("clock_out_accuracy_meters") @db.Decimal(10, 2)
+  clockOutDistanceMeters Decimal?                 @map("clock_out_distance_meters") @db.Decimal(10, 2)
+  clockOutInsideGeofence Boolean?                 @map("clock_out_inside_geofence")
+  clockOutSelfiePath     String?                  @map("clock_out_selfie_path") @db.Text
+  workedMinutes          Int                      @default(0) @map("worked_minutes")
+  creditedMinutes        Int                      @default(0) @map("credited_minutes")
+  classification         AttendanceClassification @default(UNDETERMINED)
+  status                 AttendanceStatus         @default(CLOCKED_IN)
+  reviewRequired         Boolean                  @default(false) @map("review_required")
+  reviewedById           String?                  @map("reviewed_by_id") @db.Uuid
+  reviewedAt             DateTime?                @map("reviewed_at") @db.Timestamptz(6)
+  reviewRemarks          String?                  @map("review_remarks") @db.Text
+  internRemarks          String?                  @map("intern_remarks") @db.Text
+  createdAt              DateTime                 @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt              DateTime                 @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  assignment  InternshipAssignment   @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
+  reviewedBy  User?                  @relation("AttendanceReviewedBy", fields: [reviewedById], references: [id], onDelete: SetNull)
+  corrections AttendanceCorrection[]
+
+  @@unique([assignmentId, attendanceDate], map: "attendance_assignment_date_key")
+  @@index([assignmentId], map: "attendance_assignment_idx")
+  @@index([attendanceDate], map: "attendance_date_idx")
+  @@index([status], map: "attendance_status_idx")
+  @@index([reviewRequired], map: "attendance_review_required_idx")
+  @@index([assignmentId, status], map: "attendance_assignment_status_idx")
+  @@index([attendanceDate, status], map: "attendance_date_status_idx")
+  @@index([reviewedById], map: "attendance_reviewed_by_idx")
+  @@map("attendance")
+}
+
+model AttendanceCorrection {
+  id                       String           @id @default(uuid()) @db.Uuid
+  attendanceId             String           @map("attendance_id") @db.Uuid
+  requestedById            String           @map("requested_by_id") @db.Uuid
+  originalClockIn          DateTime?        @map("original_clock_in") @db.Timestamptz(6)
+  originalClockOut         DateTime?        @map("original_clock_out") @db.Timestamptz(6)
+  requestedClockIn         DateTime?        @map("requested_clock_in") @db.Timestamptz(6)
+  requestedClockOut        DateTime?        @map("requested_clock_out") @db.Timestamptz(6)
+  originalCreditedMinutes  Int              @default(0) @map("original_credited_minutes")
+  requestedCreditedMinutes Int?             @map("requested_credited_minutes")
+  reason                   String           @db.Text
+  supportingDocumentPath   String?          @map("supporting_document_path") @db.Text
+  status                   CorrectionStatus @default(PENDING)
+  reviewedById             String?          @map("reviewed_by_id") @db.Uuid
+  reviewedAt               DateTime?        @map("reviewed_at") @db.Timestamptz(6)
+  reviewRemarks            String?          @map("review_remarks") @db.Text
+  appliedAt                DateTime?        @map("applied_at") @db.Timestamptz(6)
+  createdAt                DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  attendance  Attendance @relation(fields: [attendanceId], references: [id], onDelete: Restrict)
+  requestedBy User       @relation("CorrectionRequestedBy", fields: [requestedById], references: [id], onDelete: Restrict)
+  reviewedBy  User?      @relation("CorrectionReviewedBy", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@index([attendanceId], map: "attendance_corrections_attendance_idx")
+  @@index([status], map: "attendance_corrections_status_idx")
+  @@index([requestedById], map: "attendance_corrections_requested_by_idx")
+  @@index([reviewedById], map: "attendance_corrections_reviewed_by_idx")
+  @@index([createdAt], map: "attendance_corrections_created_at_idx")
+  @@index([status, createdAt], map: "attendance_corrections_status_created_idx")
+  @@map("attendance_corrections")
+}
+
+model WorkLog {
+  id             String        @id @default(uuid()) @db.Uuid
+  assignmentId   String        @map("assignment_id") @db.Uuid
+  workDate       DateTime      @map("work_date") @db.Date
+  title          String        @db.VarChar(255)
+  description    String        @db.Text
+  skillsApplied  Json?         @map("skills_applied") @db.JsonB
+  challenges     String?       @db.Text
+  learnings      String?       @db.Text
+  hoursReported  Decimal?      @map("hours_reported") @db.Decimal(5, 2)
+  attachmentPath String?       @map("attachment_path") @db.Text
+  status         WorkLogStatus @default(DRAFT)
+  submittedAt    DateTime?     @map("submitted_at") @db.Timestamptz(6)
+  reviewedById   String?       @map("reviewed_by_id") @db.Uuid
+  reviewedAt     DateTime?     @map("reviewed_at") @db.Timestamptz(6)
+  reviewRemarks  String?       @map("review_remarks") @db.Text
+  approvedAt     DateTime?     @map("approved_at") @db.Timestamptz(6)
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime      @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  assignment InternshipAssignment @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
+  reviewedBy User?                @relation("WorkLogReviewedBy", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@unique([assignmentId, workDate], map: "work_logs_assignment_date_key")
+  @@index([assignmentId], map: "work_logs_assignment_idx")
+  @@index([workDate], map: "work_logs_work_date_idx")
+  @@index([status], map: "work_logs_status_idx")
+  @@index([assignmentId, status], map: "work_logs_assignment_status_idx")
+  @@index([reviewedById], map: "work_logs_reviewed_by_idx")
+  @@index([status, submittedAt], map: "work_logs_status_submitted_idx")
+  @@map("work_logs")
+}
+
+model Task {
+  id                     String       @id @default(uuid()) @db.Uuid
+  assignmentId           String       @map("assignment_id") @db.Uuid
+  assignedById           String       @map("assigned_by_id") @db.Uuid
+  title                  String       @db.VarChar(255)
+  description            String?      @db.Text
+  priority               TaskPriority @default(MEDIUM)
+  status                 TaskStatus   @default(TODO)
+  startAt                DateTime?    @map("start_at") @db.Timestamptz(6)
+  dueAt                  DateTime?    @map("due_at") @db.Timestamptz(6)
+  progressPercentage     Int          @default(0) @map("progress_percentage")
+  completionNotes        String?      @map("completion_notes") @db.Text
+  completionEvidencePath String?      @map("completion_evidence_path") @db.Text
+  completedAt            DateTime?    @map("completed_at") @db.Timestamptz(6)
+  cancelledAt            DateTime?    @map("cancelled_at") @db.Timestamptz(6)
+  createdAt              DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt              DateTime     @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  assignment InternshipAssignment @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
+  assignedBy User                 @relation("TaskAssignedBy", fields: [assignedById], references: [id], onDelete: Restrict)
+  feedback   Feedback[]
+
+  @@index([assignmentId], map: "tasks_assignment_idx")
+  @@index([assignedById], map: "tasks_assigned_by_idx")
+  @@index([status], map: "tasks_status_idx")
+  @@index([dueAt], map: "tasks_due_at_idx")
+  @@index([priority], map: "tasks_priority_idx")
+  @@index([assignmentId, status], map: "tasks_assignment_status_idx")
+  @@index([assignmentId, dueAt], map: "tasks_assignment_due_idx")
+  @@index([status, dueAt], map: "tasks_status_due_idx")
+  @@map("tasks")
+}
+
+model Evaluation {
+  id                  String           @id @default(uuid()) @db.Uuid
+  assignmentId        String           @map("assignment_id") @db.Uuid
+  evaluatorId         String           @map("evaluator_id") @db.Uuid
+  evaluationType      EvaluationType   @map("evaluation_type")
+  evaluationDate      DateTime         @map("evaluation_date") @db.Date
+  periodStart         DateTime?        @map("period_start") @db.Date
+  periodEnd           DateTime?        @map("period_end") @db.Date
+  criteriaScores      Json             @default("[]") @map("criteria_scores") @db.JsonB
+  overallScore        Decimal?         @map("overall_score") @db.Decimal(5, 2)
+  strengths           String?          @db.Text
+  areasForImprovement String?          @map("areas_for_improvement") @db.Text
+  comments            String?          @db.Text
+  aiSummary           String?          @map("ai_summary") @db.Text
+  status              EvaluationStatus @default(DRAFT)
+  submittedAt         DateTime?        @map("submitted_at") @db.Timestamptz(6)
+  acknowledgedById    String?          @map("acknowledged_by_id") @db.Uuid
+  acknowledgedAt      DateTime?        @map("acknowledged_at") @db.Timestamptz(6)
+  createdAt           DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  assignment     InternshipAssignment @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
+  evaluator      User                 @relation("EvaluationEvaluator", fields: [evaluatorId], references: [id], onDelete: Restrict)
+  acknowledgedBy User?                @relation("EvaluationAcknowledgedBy", fields: [acknowledgedById], references: [id], onDelete: SetNull)
+
+  @@unique([assignmentId, evaluationType], map: "evaluations_assignment_type_key")
+  @@index([assignmentId], map: "evaluations_assignment_idx")
+  @@index([evaluatorId], map: "evaluations_evaluator_idx")
+  @@index([evaluationType], map: "evaluations_type_idx")
+  @@index([status], map: "evaluations_status_idx")
+  @@index([evaluationDate], map: "evaluations_date_idx")
+  @@index([assignmentId, status], map: "evaluations_assignment_status_idx")
+  @@map("evaluations")
+}
+
+model Feedback {
+  id            String             @id @default(uuid()) @db.Uuid
+  assignmentId  String             @map("assignment_id") @db.Uuid
+  authorId      String             @map("author_id") @db.Uuid
+  recipientId   String             @map("recipient_id") @db.Uuid
+  feedbackType  FeedbackType       @default(GENERAL) @map("feedback_type")
+  title         String?            @db.VarChar(255)
+  content       String             @db.Text
+  visibility    FeedbackVisibility @default(INTERN_AND_STAFF)
+  isRead        Boolean            @default(false) @map("is_read")
+  readAt        DateTime?          @map("read_at") @db.Timestamptz(6)
+  relatedTaskId String?            @map("related_task_id") @db.Uuid
+  createdAt     DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime           @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  assignment  InternshipAssignment @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
+  author      User                 @relation("FeedbackAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+  recipient   User                 @relation("FeedbackRecipient", fields: [recipientId], references: [id], onDelete: Restrict)
+  relatedTask Task?                @relation(fields: [relatedTaskId], references: [id], onDelete: SetNull)
+
+  @@index([assignmentId], map: "feedback_assignment_idx")
+  @@index([authorId], map: "feedback_author_idx")
+  @@index([recipientId], map: "feedback_recipient_idx")
+  @@index([recipientId, isRead], map: "feedback_recipient_read_idx")
+  @@index([assignmentId, createdAt], map: "feedback_assignment_created_idx")
+  @@index([relatedTaskId], map: "feedback_related_task_idx")
+  @@index([visibility], map: "feedback_visibility_idx")
+  @@map("feedback")
+}
+
+model Document {
+  id                  String           @id @default(uuid()) @db.Uuid
+  assignmentId        String           @map("assignment_id") @db.Uuid
+  uploadedById        String           @map("uploaded_by_id") @db.Uuid
+  fileName            String           @map("file_name") @db.VarChar(255)
+  originalFileName    String           @map("original_file_name") @db.VarChar(255)
+  storageBucket       String           @default("internship-documents") @map("storage_bucket") @db.VarChar(100)
+  storagePath         String           @unique(map: "documents_storage_path_key") @map("storage_path") @db.Text
+  mimeType            String           @map("mime_type") @db.VarChar(150)
+  fileExtension       String?          @map("file_extension") @db.VarChar(20)
+  fileSizeBytes       BigInt           @map("file_size_bytes") @db.BigInt
+  checksum            String?          @db.VarChar(128)
+  category            DocumentCategory @default(OTHER)
+  description         String?          @db.Text
+  versionNumber       Int              @default(1) @map("version_number")
+  status              DocumentStatus   @default(PENDING_REVIEW)
+  isPortfolioEligible Boolean          @default(false) @map("is_portfolio_eligible")
+  reviewedById        String?          @map("reviewed_by_id") @db.Uuid
+  reviewedAt          DateTime?        @map("reviewed_at") @db.Timestamptz(6)
+  reviewRemarks       String?          @map("review_remarks") @db.Text
+  archivedAt          DateTime?        @map("archived_at") @db.Timestamptz(6)
+  createdAt           DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  assignment InternshipAssignment @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
+  uploadedBy User                 @relation("DocumentUploadedBy", fields: [uploadedById], references: [id], onDelete: Restrict)
+  reviewedBy User?                @relation("DocumentReviewedBy", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@index([assignmentId], map: "documents_assignment_idx")
+  @@index([uploadedById], map: "documents_uploaded_by_idx")
+  @@index([category], map: "documents_category_idx")
+  @@index([status], map: "documents_status_idx")
+  @@index([assignmentId, category], map: "documents_assignment_category_idx")
+  @@index([assignmentId, status], map: "documents_assignment_status_idx")
+  @@index([status, createdAt], map: "documents_status_created_idx")
+  @@index([assignmentId, isPortfolioEligible], map: "documents_portfolio_eligible_idx")
+  @@map("documents")
+}
+
+model Announcement {
+  id           String               @id @default(uuid()) @db.Uuid
+  createdById  String               @map("created_by_id") @db.Uuid
+  title        String               @db.VarChar(255)
+  content      String               @db.Text
+  priority     AnnouncementPriority @default(NORMAL)
+  audience     AnnouncementAudience @default(ALL_USERS)
+  schoolId     String?              @map("school_id") @db.Uuid
+  companyId    String?              @map("company_id") @db.Uuid
+  status       AnnouncementStatus   @default(DRAFT)
+  isPinned     Boolean              @default(false) @map("is_pinned")
+  scheduledFor DateTime?            @map("scheduled_for") @db.Timestamptz(6)
+  publishedAt  DateTime?            @map("published_at") @db.Timestamptz(6)
+  expiresAt    DateTime?            @map("expires_at") @db.Timestamptz(6)
+  archivedAt   DateTime?            @map("archived_at") @db.Timestamptz(6)
+  createdAt    DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime             @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  createdBy User     @relation("AnnouncementCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  school    School?  @relation(fields: [schoolId], references: [id], onDelete: Restrict)
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: Restrict)
+
+  @@index([createdById], map: "announcements_created_by_idx")
+  @@index([status], map: "announcements_status_idx")
+  @@index([audience], map: "announcements_audience_idx")
+  @@index([schoolId], map: "announcements_school_idx")
+  @@index([companyId], map: "announcements_company_idx")
+  @@index([scheduledFor], map: "announcements_scheduled_for_idx")
+  @@index([expiresAt], map: "announcements_expires_at_idx")
+  @@index([status, publishedAt], map: "announcements_feed_idx")
+  @@index([audience, status], map: "announcements_audience_status_idx")
+  @@index([isPinned, publishedAt], map: "announcements_pinned_idx")
+  @@map("announcements")
+}
+
+model Portfolio {
+  id                  String          @id @default(uuid()) @db.Uuid
+  assignmentId        String          @unique(map: "portfolios_assignment_key") @map("assignment_id") @db.Uuid
+  title               String          @db.VarChar(255)
+  professionalSummary String?         @map("professional_summary") @db.Text
+  skills              Json            @default("[]") @db.JsonB
+  achievements        Json            @default("[]") @db.JsonB
+  selectedWork        Json            @default("[]") @map("selected_work") @db.JsonB
+  evaluationSummary   String?         @map("evaluation_summary") @db.Text
+  reflection          String?         @db.Text
+  sourceSnapshot      Json?           @map("source_snapshot") @db.JsonB
+  aiGenerated         Boolean         @default(false) @map("ai_generated")
+  aiProvider          String?         @map("ai_provider") @db.VarChar(100)
+  aiModel             String?         @map("ai_model") @db.VarChar(150)
+  aiGeneratedAt       DateTime?       @map("ai_generated_at") @db.Timestamptz(6)
+  lastGeneratedById   String?         @map("last_generated_by_id") @db.Uuid
+  versionNumber       Int             @default(1) @map("version_number")
+  status              PortfolioStatus @default(DRAFT)
+  approvedById        String?         @map("approved_by_id") @db.Uuid
+  approvedAt          DateTime?       @map("approved_at") @db.Timestamptz(6)
+  exportedPdfPath     String?         @map("exported_pdf_path") @db.Text
+  exportedAt          DateTime?       @map("exported_at") @db.Timestamptz(6)
+  createdAt           DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime        @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  assignment      InternshipAssignment @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
+  lastGeneratedBy User?                @relation("PortfolioLastGeneratedBy", fields: [lastGeneratedById], references: [id], onDelete: SetNull)
+  approvedBy      User?                @relation("PortfolioApprovedBy", fields: [approvedById], references: [id], onDelete: SetNull)
+
+  @@index([status], map: "portfolios_status_idx")
+  @@index([lastGeneratedById], map: "portfolios_generated_by_idx")
+  @@index([approvedById], map: "portfolios_approved_by_idx")
+  @@index([updatedAt], map: "portfolios_updated_at_idx")
+  @@map("portfolios")
+}
