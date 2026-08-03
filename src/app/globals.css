@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  --brand-900: #3a2418;
+  --brand-700: #62412e;
+  --brand-600: #79543d;
+  --accent-700: #9b4f24;
+  --accent-500: #c8743b;
+  --canvas: #f4f1ec;
+  --surface: #fffefc;
+  --border: #d8d1c8;
+  --text-primary: #26211d;
+  --text-secondary: #675f58;
+  --text-muted: #8a8178;
+}
+
+@theme inline {
+  --color-brand-900: var(--brand-900);
+  --color-brand-700: var(--brand-700);
+  --color-brand-600: var(--brand-600);
+  --color-accent-700: var(--accent-700);
+  --color-accent-500: var(--accent-500);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Source Serif 4", Georgia, serif;
+  --shadow-surface: 0 1px 2px rgba(38, 33, 29, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--canvas);
+}
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--text-primary);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
