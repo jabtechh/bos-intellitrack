@@ -27,7 +27,7 @@ export default async function LoginPage({
           </h1>
           <p className="mt-6 max-w-lg leading-7 text-stone-200">
             Secure access is limited to accounts provisioned for approved
-            interns, supervisors, coordinators, representatives, and administrators.
+            Interns, Company Supervisors, School Coordinators, Company Representatives, and System Administrators.
           </p>
         </div>
       </section>
@@ -45,7 +45,7 @@ export default async function LoginPage({
           </p>
           <LoginForm next={next} />
           <p className="mt-6 border-t border-border pt-5 text-xs leading-5 text-muted">
-            Access is provisioned by an administrator. Public registration is not available.
+            Access is provisioned by Company Operations. Public registration is not available.
           </p>
         </div>
       </section>

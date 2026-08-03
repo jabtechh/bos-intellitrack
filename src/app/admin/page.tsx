@@ -35,12 +35,12 @@ export default async function AdminPage() {
       <MetricCard label="Pending corrections" value={pendingCorrections} icon="review" />
       <MetricCard label="Work log reviews" value={pendingWorkLogs} icon="journal" />
       <MetricCard label="Credited hours" value={Math.round((hours._sum.creditedMinutes ?? 0) / 60)} icon="journal" />
-      <MetricCard label="Supervisors" value={supervisors} icon="users" />
-      <MetricCard label="Active schools" value={schools} icon="school" />
+      <MetricCard label="Company Supervisors" value={supervisors} icon="users" />
+      <MetricCard label="Partner schools" value={schools} icon="school" />
     </section>
     <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1.4fr)_minmax(20rem,.8fr)]">
       <section className="ui-card overflow-hidden">
-        <div className="flex items-center justify-between border-b border-border px-5 py-4 sm:px-6"><div><h2 className="font-semibold text-brand-900">Priority queues</h2><p className="mt-1 text-xs text-muted">Items that may need administrator attention</p></div><StatusBadge tone={pending ? "warning" : "success"}>{pending ? `${pending} pending` : "All clear"}</StatusBadge></div>
+        <div className="flex items-center justify-between border-b border-border px-5 py-4 sm:px-6"><div><h2 className="font-semibold text-brand-900">Priority queues</h2><p className="mt-1 text-xs text-muted">Items that may need Company Operations attention</p></div><StatusBadge tone={pending ? "warning" : "success"}>{pending ? `${pending} pending` : "All clear"}</StatusBadge></div>
         <div className="grid gap-px bg-border sm:grid-cols-3"><QueueLink href="/attendance/review" icon="clock" title="Attendance exceptions" description={`${pending} awaiting review`} /><QueueLink href="/attendance/corrections/review" icon="review" title="Correction requests" description={`${pendingCorrections} awaiting review`} /><QueueLink href="/work-logs/review" icon="journal" title="Work log reviews" description={`${pendingWorkLogs} awaiting review`} /></div>
       </section>
       <section className="ui-card overflow-hidden"><div className="border-b border-border px-5 py-4 sm:px-6"><h2 className="font-semibold text-brand-900">Workspace setup</h2><p className="mt-1 text-xs text-muted">Core program readiness</p></div><div className="divide-y divide-border">{checklist.map(([label, done, href]) => <Link key={label} href={href} className="flex items-center justify-between gap-4 px-5 py-3.5 transition-colors hover:bg-stone-50 sm:px-6"><span className="text-sm font-medium">{label}</span><StatusBadge tone={done ? "success" : "warning"}>{done ? "Complete" : "Action needed"}</StatusBadge></Link>)}</div></section>

@@ -6,11 +6,11 @@ import { z } from "zod";
 
 import { verifyAssignmentEligibility } from "@/lib/assignments/eligibility";
 import { assignmentInputSchema, canTransition, toDateOnly, toTime, type AssignmentInput, type AssignmentStatus } from "@/lib/assignments/validation";
-import { requireAdmin } from "@/lib/auth/require-admin";
+import { requireCompanyOperationsManager } from "@/lib/auth/require-company-operations-manager";
 import { prisma } from "@/lib/prisma";
 
 export async function createAssignment(formData: FormData) {
-  const administrator = await requireAdmin();
+  const administrator = await requireCompanyOperationsManager();
   const parsed = assignmentInputSchema.safeParse(Object.fromEntries(formData.entries()));
   if (!parsed.success) redirectWithError("/admin/assignments/new", parsed.error.issues[0]?.message ?? "Review the submitted assignment.");
   const errors = await verifyAssignmentEligibility(parsed.data);
@@ -43,7 +43,7 @@ export async function completeAssignment(formData: FormData) { await transitionA
 export async function terminateAssignment(formData: FormData) { await transitionAssignment(formData, "TERMINATED", true); }
 
 async function transitionAssignment(formData: FormData, target: AssignmentStatus, needsConfirmation = false) {
-  await requireAdmin();
+  await requireCompanyOperationsManager();
   const assignmentId = z.string().uuid().safeParse(formData.get("assignmentId"));
   if (!assignmentId.success) redirect("/admin/assignments");
   if (needsConfirmation && formData.get("confirmed") !== "on") redirectWithError(`/admin/assignments/${assignmentId.data}`, "Confirm this lifecycle action before continuing.");

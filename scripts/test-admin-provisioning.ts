@@ -50,8 +50,8 @@ test("representative is automatically scoped to the office", () => {
   assert.equal(provisionUserSchema.safeParse({ ...common, role: "REPRESENTATIVE", position: "HR" }).success, true);
 });
 
-test("admin requires neither school nor company", () => {
-  assert.equal(provisionUserSchema.safeParse({ ...common, role: "ADMIN", accessLevel: "STANDARD" }).success, true);
+test("normal provisioning excludes System Administrator", () => {
+  assert.equal(provisionUserSchema.safeParse({ ...common, role: "ADMIN", accessLevel: "STANDARD" }).success, false);
 });
 
 test("external redirects are rejected", () => {

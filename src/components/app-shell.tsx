@@ -3,8 +3,9 @@ import type { ReactNode } from "react";
 import { logout } from "@/app/(auth)/actions";
 import { Icon } from "./icons";
 import { ShellNavigation, type ShellNavItem } from "./shell-navigation";
+import { roleLabel } from "@/lib/auth/roles";
 
-type ShellUser = { firstName: string; lastName: string; role: string };
+type ShellUser = { firstName: string; lastName: string; role: import("@/generated/prisma/enums").UserRole };
 const internNav: ShellNavItem[] = [
   { href: "/dashboard", label: "Home", icon: "home", exact: true },
   { href: "/attendance", label: "Attendance", icon: "clock" },
@@ -17,9 +18,17 @@ const reviewerNav: ShellNavItem[] = [
   { href: "/work-logs/review", label: "Work logs", icon: "journal" },
   { href: "/attendance/corrections/review", label: "Corrections", icon: "review" },
 ];
+const coordinatorNav: ShellNavItem[] = [{ href: "/dashboard", label: "Student Progress", icon: "home", exact: true }];
+const operationsNav: ShellNavItem[] = [
+  { href: "/dashboard", label: "Dashboard", icon: "home", exact: true },
+  { href: "/admin", label: "Company Operations", icon: "settings" },
+  { href: "/attendance/review", label: "Attendance Review", icon: "clock" },
+  { href: "/attendance/corrections/review", label: "Correction Review", icon: "review" },
+  { href: "/work-logs/review", label: "Work Log Review", icon: "journal" },
+];
 
 export function AppShell({ user, children }: { user: ShellUser; children: ReactNode }) {
-  const nav = user.role === "INTERN" ? internNav : reviewerNav;
+  const nav = user.role === "INTERN" ? internNav : user.role === "COORDINATOR" ? coordinatorNav : user.role === "REPRESENTATIVE" || user.role === "ADMIN" ? operationsNav : reviewerNav;
   const initials = `${user.firstName[0] ?? ""}${user.lastName[0] ?? ""}`;
   return <div className="app-shell" data-persistent-app-shell>
     <a href="#main-content" className="skip-link">Skip to main content</a>
@@ -32,4 +41,3 @@ export function AppShell({ user, children }: { user: ShellUser; children: ReactN
     {user.role === "INTERN" ? <ShellNavigation items={nav} mobile label="Mobile navigation" /> : null}
   </div>;
 }
-function roleLabel(role: string) { return role.charAt(0) + role.slice(1).toLowerCase(); }

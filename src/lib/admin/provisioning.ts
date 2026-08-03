@@ -54,12 +54,6 @@ export const provisionUserSchema = z.discriminatedUnion("role", [
     ...employeeFields,
     role: z.literal("REPRESENTATIVE"),
   }),
-  z.object({
-    ...common,
-    role: z.literal("ADMIN"),
-    accessLevel: z.enum(["STANDARD", "SUPER_ADMIN"]),
-    designation: optionalText(150),
-  }),
 ]);
 
 export type ProvisionUserInput = z.infer<typeof provisionUserSchema>;

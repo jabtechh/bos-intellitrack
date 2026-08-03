@@ -8,7 +8,7 @@ import {
   provisionUserSchema,
 } from "@/lib/admin/provisioning";
 import { emptyToNull, firstZodError } from "@/lib/admin/shared";
-import { requireAdmin } from "@/lib/auth/require-admin";
+import { requireCompanyOperationsManager } from "@/lib/auth/require-company-operations-manager";
 import { prisma } from "@/lib/prisma";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { BO_COFFEE_OFFICE_CODE, internalInternshipCode, timeOnReferenceDate } from "@/lib/organization/bo-coffee";
@@ -19,7 +19,7 @@ export async function provisionUser(
   _state: ProvisionUserState,
   formData: FormData,
 ): Promise<ProvisionUserState> {
-  const administrator = await requireAdmin();
+  const administrator = await requireCompanyOperationsManager();
   const parsed = provisionUserSchema.safeParse(formDataToProvisioningInput(formData));
   if (!parsed.success) return { success: false, message: firstZodError(parsed.error) };
 
@@ -86,11 +86,10 @@ export async function provisionUser(
       if (input.role === "SUPERVISOR") await tx.supervisorProfile.create({ data: { userId: user.id, companyId: office.id, employeeNumber: emptyToNull(input.employeeNumber), position: input.position, department: emptyToNull(input.department), officeLocation: emptyToNull(input.officeLocation) } });
       if (input.role === "COORDINATOR") await tx.coordinatorProfile.create({ data: { userId: user.id, schoolId: input.schoolId, employeeNumber: emptyToNull(input.employeeNumber), position: input.position, department: emptyToNull(input.department), office: emptyToNull(input.office) } });
       if (input.role === "REPRESENTATIVE") await tx.representativeProfile.create({ data: { userId: user.id, companyId: office.id, employeeNumber: emptyToNull(input.employeeNumber), position: input.position, department: emptyToNull(input.department) } });
-      if (input.role === "ADMIN") await tx.adminProfile.create({ data: { userId: user.id, accessLevel: input.accessLevel, designation: emptyToNull(input.designation) } });
     });
   } catch {
     const cleaned = await compensateAuthUser(data.user.id, (id) => supabase.auth.admin.deleteUser(id));
-    return { success: false, message: cleaned ? "Provisioning failed and the invitation was safely rolled back." : "Provisioning failed. An administrator must review the authentication account." };
+    return { success: false, message: cleaned ? "Provisioning failed and the invitation was safely rolled back." : "Provisioning failed. A System Administrator must review the authentication account." };
   }
 
   revalidatePath("/admin/users");

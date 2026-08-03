@@ -4,10 +4,11 @@ import { redirect } from "next/navigation";
 import { companySchema, schoolSchema } from "@/lib/admin/organizations";
 import { emptyToNull, firstZodError } from "@/lib/admin/shared";
 import { requireAdmin } from "@/lib/auth/require-admin";
+import { requireCompanyOperationsManager } from "@/lib/auth/require-company-operations-manager";
 import { prisma } from "@/lib/prisma";
 
 export async function createSchool(formData: FormData) {
-  await requireAdmin();
+  await requireCompanyOperationsManager();
   const parsed = schoolSchema.safeParse(Object.fromEntries(formData.entries()));
   if (!parsed.success) redirectWithMessage("/admin/schools/new", firstZodError(parsed.error));
   try {
