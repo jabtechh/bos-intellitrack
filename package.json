@@ -19,7 +19,9 @@
     "correction:test": "tsx --test scripts/test-attendance-corrections.ts",
     "storage:attendance:setup": "tsx scripts/setup-attendance-storage.ts",
     "storage:corrections:setup": "tsx scripts/setup-attendance-correction-storage.ts",
-    "provisioning:test": "tsx --test scripts/test-admin-provisioning.ts"
+    "provisioning:test": "tsx --test scripts/test-admin-provisioning.ts",
+    "organization:setup": "tsx scripts/setup-bo-coffee-office.ts",
+    "organization:test": "tsx --test scripts/test-single-organization.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",

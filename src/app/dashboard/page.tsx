@@ -20,8 +20,8 @@ export default async function DashboardPage() {
   });
   const organization = profile?.internProfile?.school.name
     ?? profile?.coordinatorProfile?.school.name
-    ?? profile?.supervisorProfile?.company.name
-    ?? profile?.representativeProfile?.company.name
+    ?? (profile?.supervisorProfile ? "Bo’s Coffee Main Office" : undefined)
+    ?? (profile?.representativeProfile ? "Bo’s Coffee Main Office" : undefined)
     ?? "System administration";
   const attendanceSummary = await getAttendanceSummary(user.id, user.role);
   const correctionSummary = await getCorrectionSummary(user.id, user.role);
@@ -64,12 +64,12 @@ export default async function DashboardPage() {
   );
 }
 
-async function getCorrectionSummary(userId:string,role:string){if(role==="INTERN")return{count:await prisma.attendanceCorrection.count({where:{requestedById:userId,status:"PENDING"}}),href:"/attendance/corrections",label:"Pending corrections"};if(role==="SUPERVISOR")return{count:await prisma.attendanceCorrection.count({where:{status:"PENDING",attendance:{assignment:{supervisorProfile:{userId}}}}}),href:"/attendance/corrections/review",label:"Correction reviews"};if(role==="REPRESENTATIVE"){const p=await prisma.representativeProfile.findUnique({where:{userId},select:{companyId:true}});return{count:p?await prisma.attendanceCorrection.count({where:{status:"PENDING",attendance:{assignment:{companyId:p.companyId}}}}):0,href:"/attendance/corrections/review",label:"Branch correction reviews"}}if(role==="ADMIN")return{count:await prisma.attendanceCorrection.count({where:{status:"PENDING"}}),href:"/attendance/corrections/review",label:"Correction reviews"};return null}
+async function getCorrectionSummary(userId:string,role:string){if(role==="INTERN")return{count:await prisma.attendanceCorrection.count({where:{requestedById:userId,status:"PENDING"}}),href:"/attendance/corrections",label:"Pending corrections"};if(role==="SUPERVISOR")return{count:await prisma.attendanceCorrection.count({where:{status:"PENDING",attendance:{assignment:{supervisorProfile:{userId}}}}}),href:"/attendance/corrections/review",label:"Correction reviews"};if(role==="REPRESENTATIVE"){const p=await prisma.representativeProfile.findUnique({where:{userId},select:{companyId:true}});return{count:p?await prisma.attendanceCorrection.count({where:{status:"PENDING",attendance:{assignment:{companyId:p.companyId}}}}):0,href:"/attendance/corrections/review",label:"Office correction reviews"}}if(role==="ADMIN")return{count:await prisma.attendanceCorrection.count({where:{status:"PENDING"}}),href:"/attendance/corrections/review",label:"Correction reviews"};return null}
 
 async function getAttendanceSummary(userId:string,role:string){
   if(role==="INTERN"){const assignment=await prisma.internshipAssignment.findFirst({where:{status:"ACTIVE",internProfile:{userId}},include:{company:true,attendance:{orderBy:{attendanceDate:"desc"},take:3}}});if(!assignment)return {items:[["Today","No active assignment"]] as [string,string][],href:"/attendance",link:"Open attendance"};const today=assignment.attendance.find(x=>x.attendanceDate.getTime()===localDate(new Date(),assignment.company.timezone).getTime());return {items:[["Today",today?.status??"Not started"],["Bo’s Coffee Branch",[assignment.company.name,assignment.company.branchName].filter(Boolean).join(" — ")],["Recent records",String(assignment.attendance.length)]] as [string,string][],href:"/attendance",link:today?.clockIn&&!today.clockOut?"Clock out":"Open attendance"};}
   if(role==="SUPERVISOR"){const count=await prisma.attendance.count({where:{status:"PENDING_REVIEW",assignment:{supervisorProfile:{userId}}}});return {items:[["Pending reviews",String(count)]] as [string,string][],href:"/attendance/review",link:"Open review queue"};}
-  if(role==="REPRESENTATIVE"){const profile=await prisma.representativeProfile.findUnique({where:{userId},select:{companyId:true}});const count=profile?await prisma.attendance.count({where:{status:"PENDING_REVIEW",assignment:{companyId:profile.companyId}}}):0;return {items:[["Branch reviews",String(count)]] as [string,string][],href:"/attendance/review",link:"Open review queue"};}
+  if(role==="REPRESENTATIVE"){const profile=await prisma.representativeProfile.findUnique({where:{userId},select:{companyId:true}});const count=profile?await prisma.attendance.count({where:{status:"PENDING_REVIEW",assignment:{companyId:profile.companyId}}}):0;return {items:[["Office reviews",String(count)]] as [string,string][],href:"/attendance/review",link:"Open review queue"};}
   if(role==="ADMIN"){const today=localDate(new Date(),"Asia/Manila");const [pending,total]=await Promise.all([prisma.attendance.count({where:{status:"PENDING_REVIEW"}}),prisma.attendance.count({where:{attendanceDate:today}})]);return {items:[["Pending reviews",String(pending)],["Today’s records",String(total)]] as [string,string][],href:"/attendance/review",link:"Open review queue"};}
   return null;
 }

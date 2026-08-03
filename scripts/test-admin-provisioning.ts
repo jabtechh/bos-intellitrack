@@ -10,7 +10,9 @@ import { getSafeRedirectPath } from "../src/lib/auth/redirects.ts";
 
 const common = { email: "person@example.com", firstName: "Ada", lastName: "Lovelace" };
 const schoolId = "11111111-1111-4111-8111-111111111111";
-const companyId = "22222222-2222-4222-8222-222222222222";
+const supervisorProfileId = "33333333-3333-4333-8333-333333333333";
+const coordinatorProfileId = "44444444-4444-4444-8444-444444444444";
+const internship = { supervisorProfileId, coordinatorProfileId, startDate: "2026-08-01", endDate: "2026-12-01", requiredHours: "500", scheduleStartTime: "08:00", scheduleEndTime: "17:00", gracePeriodMinutes: "10" };
 
 test("bootstrap validation normalizes input and requires a strong password", () => {
   const valid = bootstrapAdminSchema.parse({ email: " ADMIN@EXAMPLE.COM ", password: `Aa1!${"x".repeat(8)}`, firstName: " Ada ", lastName: " Admin " });
@@ -30,12 +32,12 @@ test("admin guard rejects every non-admin role", () => {
 
 test("intern requires school and academic fields", () => {
   assert.equal(provisionUserSchema.safeParse({ ...common, role: "INTERN" }).success, false);
-  assert.equal(provisionUserSchema.safeParse({ ...common, role: "INTERN", schoolId, studentNumber: "S-1", course: "BSIT", yearLevel: "4" }).success, true);
+  assert.equal(provisionUserSchema.safeParse({ ...common, role: "INTERN", schoolId, studentNumber: "S-1", course: "BSIT", yearLevel: "4", ...internship }).success, true);
 });
 
-test("supervisor requires company and position", () => {
-  assert.equal(provisionUserSchema.safeParse({ ...common, role: "SUPERVISOR", companyId }).success, false);
-  assert.equal(provisionUserSchema.safeParse({ ...common, role: "SUPERVISOR", companyId, position: "Manager" }).success, true);
+test("supervisor is automatically scoped to the office and requires position", () => {
+  assert.equal(provisionUserSchema.safeParse({ ...common, role: "SUPERVISOR" }).success, false);
+  assert.equal(provisionUserSchema.safeParse({ ...common, role: "SUPERVISOR", position: "Manager" }).success, true);
 });
 
 test("coordinator requires school", () => {
@@ -43,9 +45,9 @@ test("coordinator requires school", () => {
   assert.equal(provisionUserSchema.safeParse({ ...common, role: "COORDINATOR", schoolId, position: "Coordinator" }).success, true);
 });
 
-test("representative requires company", () => {
-  assert.equal(provisionUserSchema.safeParse({ ...common, role: "REPRESENTATIVE", position: "HR" }).success, false);
-  assert.equal(provisionUserSchema.safeParse({ ...common, role: "REPRESENTATIVE", companyId, position: "HR" }).success, true);
+test("representative is automatically scoped to the office", () => {
+  assert.equal(provisionUserSchema.safeParse({ ...common, role: "REPRESENTATIVE" }).success, false);
+  assert.equal(provisionUserSchema.safeParse({ ...common, role: "REPRESENTATIVE", position: "HR" }).success, true);
 });
 
 test("admin requires neither school nor company", () => {

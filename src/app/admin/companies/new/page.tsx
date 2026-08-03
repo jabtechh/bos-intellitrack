@@ -1,7 +1,2 @@
-import { createCompany } from "@/app/admin/organization-actions";
-import { Field, FormMessage } from "@/app/admin/form-fields";
-
-export default async function NewCompanyPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
-  const { error } = await searchParams;
-  return <section className="max-w-3xl"><p className="text-xs font-semibold uppercase tracking-wider text-accent-700">Companies</p><h1 className="mt-2 font-heading text-3xl font-semibold text-brand-900">Add a company</h1><form action={createCompany} className="mt-7 grid gap-5 rounded-lg border border-border bg-surface p-6 sm:grid-cols-2"><div className="sm:col-span-2"><FormMessage error={error} /></div><Field label="Company code" name="companyCode" /><Field label="Name" name="name" required /><Field label="Branch name" name="branchName" /><Field label="Contact email" name="contactEmail" type="email" /><div className="sm:col-span-2"><Field label="Address" name="addressLine" required /></div><Field label="City" name="city" /><Field label="Province" name="province" /><Field label="Postal code" name="postalCode" /><Field label="Contact number" name="contactNumber" /><Field label="Latitude" name="latitude" type="number" required min={-90} max={90} step="0.0000001" /><Field label="Longitude" name="longitude" type="number" required min={-180} max={180} step="0.0000001" /><Field label="Geofence radius (meters)" name="geofenceRadiusMeters" type="number" required defaultValue={100} min={25} max={5000} /><Field label="Timezone" name="timezone" required defaultValue="Asia/Manila" /><label className="flex items-center gap-3 pt-7 text-sm"><input name="isActive" type="checkbox" defaultChecked /> Active</label><button className="min-h-11 rounded-md bg-brand-700 px-4 font-semibold text-white sm:col-span-2">Create company</button></form></section>;
-}
+import { redirect } from "next/navigation";
+export default function LegacyNewCompanyPage(){redirect("/admin/settings/office")}
