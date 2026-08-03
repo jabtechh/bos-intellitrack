@@ -1,8 +1,11 @@
 import { z } from "zod";
+import { attendancePolicy } from "@/lib/attendance/config";
 
 export const MAX_SELFIE_BYTES = 10 * 1024 * 1024;
 export const ALLOWED_SELFIE_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
 export const DEFAULT_GPS_ACCURACY_METERS = 100;
+export type AttendanceExceptionCode="CLOCK_IN_OUTSIDE_GEOFENCE"|"CLOCK_OUT_OUTSIDE_GEOFENCE"|"CLOCK_IN_POOR_ACCURACY"|"CLOCK_OUT_POOR_ACCURACY"|"CLOCK_IN_SELFIE_MISSING"|"CLOCK_OUT_SELFIE_MISSING"|"LOCATION_EVIDENCE_MISSING"|"CLOCK_OUT_MISSING"|"SHIFT_TOO_SHORT"|"SHIFT_TOO_LONG"|"INVALID_TIME_SEQUENCE"|"MANUALLY_FLAGGED";
+export type AttendanceException={code:AttendanceExceptionCode;explanation:string};
 
 export const coordinatesSchema = z.object({
   latitude: z.coerce.number().min(-90).max(90),
@@ -59,11 +62,9 @@ export function classifyAttendance(input: { clockIn: Date; clockOut?: Date | nul
   return "ON_TIME" as const;
 }
 
-export function attendanceNeedsReview(input: { clockInInside: boolean; clockOutInside?: boolean; clockInAccuracy: number; clockOutAccuracy?: number; hasClockInSelfie: boolean; hasClockOutSelfie?: boolean; workedMinutes?: number }, threshold = DEFAULT_GPS_ACCURACY_METERS): boolean {
-  if (!input.clockInInside || !isGpsAccurate(input.clockInAccuracy, threshold) || !input.hasClockInSelfie) return true;
-  if (input.clockOutInside === undefined) return false;
-  return !input.clockOutInside || input.clockOutAccuracy === undefined || !isGpsAccurate(input.clockOutAccuracy, threshold) || !input.hasClockOutSelfie || input.workedMinutes === undefined || input.workedMinutes <= 0 || input.workedMinutes > 16 * 60;
-}
+type ExceptionInput={clockInInside?:boolean|null;clockOutInside?:boolean|null;clockInAccuracy?:number|null;clockOutAccuracy?:number|null;hasClockInSelfie:boolean;hasClockOutSelfie?:boolean;hasClockInLocation?:boolean;hasClockOutLocation?:boolean;clockOutPresent?:boolean;workedMinutes?:number;manuallyFlagged?:boolean};
+export function getAttendanceExceptions(input:ExceptionInput,policy=attendancePolicy):AttendanceException[]{const reasons:AttendanceException[]=[];const add=(code:AttendanceExceptionCode,explanation:string)=>reasons.push({code,explanation});if(input.hasClockInLocation===false||input.hasClockOutLocation===false)add("LOCATION_EVIDENCE_MISSING","Location evidence is incomplete.");if(input.clockInInside===false)add("CLOCK_IN_OUTSIDE_GEOFENCE","Clock-in location was outside the Main Office range.");if(input.clockOutInside===false)add("CLOCK_OUT_OUTSIDE_GEOFENCE","Clock-out location was outside the Main Office range.");if(input.clockInAccuracy!=null&&!isGpsAccurate(input.clockInAccuracy,policy.gpsAccuracyMeters))add("CLOCK_IN_POOR_ACCURACY","Clock-in GPS accuracy was limited.");if(input.clockOutAccuracy!=null&&!isGpsAccurate(input.clockOutAccuracy,policy.gpsAccuracyMeters))add("CLOCK_OUT_POOR_ACCURACY","Clock-out GPS accuracy was limited.");if(!input.hasClockInSelfie)add("CLOCK_IN_SELFIE_MISSING","Clock-in selfie evidence is missing.");if(input.clockOutPresent===false)add("CLOCK_OUT_MISSING","Clock-out is incomplete.");if(input.clockOutPresent!==false&&input.hasClockOutSelfie===false)add("CLOCK_OUT_SELFIE_MISSING","Clock-out selfie evidence is missing.");if(input.workedMinutes!==undefined){if(input.workedMinutes<0)add("INVALID_TIME_SEQUENCE","The recorded time sequence is invalid.");else if(input.workedMinutes<policy.minimumShiftMinutes)add("SHIFT_TOO_SHORT","The completed shift duration was unusually short.");else if(input.workedMinutes>policy.maximumShiftMinutes)add("SHIFT_TOO_LONG","The completed shift duration was unusually long.");}if(input.manuallyFlagged)add("MANUALLY_FLAGGED","A reviewer flagged this record for attention.");return reasons}
+export function attendanceNeedsReview(input:ExceptionInput,threshold=attendancePolicy.gpsAccuracyMeters):boolean{return getAttendanceExceptions(input,{...attendancePolicy,gpsAccuracyMeters:threshold}).length>0}
 
 export function finalAttendanceDecision(input: Parameters<typeof attendanceNeedsReview>[0], threshold = DEFAULT_GPS_ACCURACY_METERS) {
   const reviewRequired = attendanceNeedsReview(input, threshold);

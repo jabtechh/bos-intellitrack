@@ -1,0 +1,2 @@
+export const attendancePolicy={gpsAccuracyMeters:number("ATTENDANCE_GPS_ACCURACY_METERS",100,1,1000),minimumShiftMinutes:number("ATTENDANCE_MINIMUM_SHIFT_MINUTES",60,1,720),maximumShiftMinutes:number("ATTENDANCE_MAXIMUM_SHIFT_MINUTES",14*60,60,24*60)} as const;
+function number(name:string,fallback:number,min:number,max:number){const value=Number(process.env[name]);return Number.isFinite(value)&&value>=min&&value<=max?Math.trunc(value):fallback}

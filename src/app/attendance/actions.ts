@@ -43,7 +43,7 @@ export async function clockOut(_state: AttendanceActionState, formData: FormData
   const path = evidencePath(context.assignment.id, attendance!.id, "clock-out", evidence.file.type);
   const distance = distanceFor(context.assignment.company, evidence.coordinates); const inside = distance <= context.assignment.company.geofenceRadiusMeters;
   const workedMinutes = calculateWorkedMinutes(attendance!.clockIn!, now);
-  const decision = finalAttendanceDecision({ clockInInside: attendance!.clockInInsideGeofence === true, clockOutInside: inside, clockInAccuracy: Number(attendance!.clockInAccuracyMeters ?? Number.POSITIVE_INFINITY), clockOutAccuracy: evidence.coordinates.accuracy, hasClockInSelfie: Boolean(attendance!.clockInSelfiePath), hasClockOutSelfie: true, workedMinutes });
+  const decision = finalAttendanceDecision({ clockInInside: attendance!.clockInInsideGeofence, clockOutInside: inside, clockInAccuracy: attendance!.clockInAccuracyMeters===null?null:Number(attendance!.clockInAccuracyMeters), clockOutAccuracy: evidence.coordinates.accuracy, hasClockInLocation:attendance!.clockInLatitude!==null&&attendance!.clockInLongitude!==null,hasClockOutLocation:true,hasClockInSelfie: Boolean(attendance!.clockInSelfiePath), hasClockOutSelfie: true,clockOutPresent:true, workedMinutes });
   try { await uploadEvidence(path, evidence.file); } catch { return failure("The clock-out selfie could not be stored. Try again."); }
   try {
     const updated = await prisma.attendance.updateMany({ where: { id: attendance!.id, clockOut: null, status: "CLOCKED_IN" }, data: {
@@ -54,7 +54,7 @@ export async function clockOut(_state: AttendanceActionState, formData: FormData
     } });
     if (updated.count !== 1) throw new Error("concurrent update");
   } catch { await removeEvidence(path); return failure("Clock-out could not be recorded. Refresh and review today's attendance."); }
-  revalidateAttendance(); return { success: true, message: decision.reviewRequired ? "Clock-out recorded and sent for review." : "Clock-out recorded and automatically approved." };
+  revalidateAttendance(); return { success: true, message: decision.reviewRequired ? "Attendance recorded. A supervisor will review the flagged evidence before your rendered time is credited." : "Attendance recorded successfully. Your rendered time has been credited." };
 }
 
 async function activeInternContext() {
