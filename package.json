@@ -25,6 +25,7 @@
     ,"pilot:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-pilot-data.ts"
     ,"pilot:cleanup": "tsx --env-file=.env --env-file=.env.local scripts/cleanup-pilot-data.ts"
     ,"pilot:test": "tsx --test scripts/test-pilot-setup.ts"
+    ,"pilot:verify": "tsx --env-file=.env --env-file=.env.local scripts/verify-pilot-state.ts"
     ,"pilot:normalize": "tsx --env-file=.env --env-file=.env.local scripts/normalize-pilot-data.ts"
     ,"work-log:test": "tsx --test scripts/test-work-log-foundation.ts"
     ,"storage:work-logs:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-work-log-storage.ts"
