@@ -1,1 +1,22 @@
-import Link from"next/link";import{requireCurrentUser}from"@/lib/auth/require-current-user";import{prisma}from"@/lib/prisma";import{workLogLabel}from"@/lib/work-logs/domain";export default async function WorkLogs(){const u=await requireCurrentUser();const rows=u.role==="INTERN"?await prisma.workLog.findMany({where:{assignment:{internProfile:{userId:u.id}}},orderBy:{workDate:"desc"}}):[];return <main className="min-h-screen bg-canvas px-5 py-10"><section className="mx-auto max-w-5xl"><div className="flex items-end justify-between"><div><p className="text-xs font-semibold uppercase text-accent-700">Internship documentation</p><h1 className="mt-2 font-heading text-3xl font-semibold">Work Logs</h1></div><Link href="/work-logs/new" className="rounded-md bg-brand-700 px-4 py-3 font-semibold text-white">Create work log</Link></div><div className="mt-6 divide-y divide-border rounded-lg border border-border bg-surface">{rows.map(x=><Link key={x.id} href={`/work-logs/${x.id}`} className="grid gap-2 p-5 sm:grid-cols-4"><span>{x.workDate.toLocaleDateString("en-PH",{dateStyle:"medium",timeZone:"UTC"})}</span><strong>{x.title}</strong><span>{workLogLabel(x.status)}</span><span>{x.hoursReported?`${x.hoursReported} hours`:"Hours not reported"}</span></Link>)}{!rows.length?<p className="p-6 text-secondary">No Daily Work Logs yet. Create one after documenting today’s work.</p>:null}</div></section></main>}
+import Link from "next/link";
+import { Icon } from "@/components/icons";
+import { EmptyState, PageHeader, StatusBadge } from "@/components/ui";
+import { requireCurrentUser } from "@/lib/auth/require-current-user";
+import { prisma } from "@/lib/prisma";
+import { workLogLabel } from "@/lib/work-logs/domain";
+
+export default async function WorkLogs() {
+  const user = await requireCurrentUser();
+  const rows = user.role === "INTERN" ? await prisma.workLog.findMany({ where: { assignment: { internProfile: { userId: user.id } } }, orderBy: { workDate: "desc" } }) : [];
+  return <div className="px-5 py-8 sm:px-8 lg:px-12 lg:py-12"><section className="mx-auto max-w-6xl">
+    <PageHeader eyebrow="Internship documentation" title="Daily work logs" description="Capture your accomplishments, learning, and hours in one consistent record." actions={<Link href="/work-logs/new" className="button button-primary"><Icon name="plus" />Create work log</Link>} />
+    <section className="ui-card overflow-hidden">
+      {rows.length ? <div className="divide-y divide-border">{rows.map(row => <Link key={row.id} href={`/work-logs/${row.id}`} className="group grid gap-3 p-5 transition-colors hover:bg-stone-50 sm:grid-cols-[9rem_minmax(0,1fr)_auto_auto] sm:items-center sm:px-6">
+        <time className="text-sm text-secondary">{row.workDate.toLocaleDateString("en-PH", { dateStyle: "medium", timeZone: "UTC" })}</time>
+        <strong className="min-w-0 truncate text-sm text-brand-900">{row.title}</strong>
+        <StatusBadge tone={row.status === "APPROVED" ? "success" : row.status === "SUBMITTED" ? "info" : row.status === "REJECTED" ? "danger" : "neutral"}>{workLogLabel(row.status)}</StatusBadge>
+        <span className="flex items-center justify-between gap-3 text-xs text-muted sm:justify-end">{row.hoursReported ? `${row.hoursReported} hours` : "Hours not reported"}<Icon name="arrow" className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+      </Link>)}</div> : <EmptyState title="No daily work logs yet" description="Create your first log after documenting today’s work, learning, and rendered hours." action={{ href: "/work-logs/new", label: "Create work log" }} />}
+    </section>
+  </section></div>;
+}

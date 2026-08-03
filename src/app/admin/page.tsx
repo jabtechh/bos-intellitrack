@@ -1,5 +1,45 @@
 import Link from "next/link";
+import { Icon } from "@/components/icons";
+import { MetricCard, PageHeader, StatusBadge } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
 import { BO_COFFEE_OFFICE_CODE } from "@/lib/organization/bo-coffee";
 
-export default async function AdminPage(){const start=new Date();start.setUTCHours(0,0,0,0);const end=new Date(start);end.setUTCDate(end.getUTCDate()+1);const [office,interns,supervisors,schools,present,pending,hours,coordinators]=await Promise.all([prisma.company.findUnique({where:{companyCode:BO_COFFEE_OFFICE_CODE}}),prisma.user.count({where:{role:"INTERN",isActive:true}}),prisma.user.count({where:{role:"SUPERVISOR",isActive:true}}),prisma.school.count({where:{isActive:true}}),prisma.attendance.count({where:{attendanceDate:{gte:start,lt:end},clockIn:{not:null}}}),prisma.attendance.count({where:{status:"PENDING_REVIEW"}}),prisma.attendance.aggregate({_sum:{creditedMinutes:true}}),prisma.user.count({where:{role:"COORDINATOR",isActive:true}})]);const metrics=[["Active interns",interns],["Supervisors",supervisors],["Schools",schools],["Present today",present],["Pending reviews",pending],["Credited hours",Math.round((hours._sum.creditedMinutes??0)/60)]];const checklist=[["Configure Main Office",Boolean(office?.isActive),"/admin/settings/office"],["Add a school",schools>0,"/admin/schools/new"],["Add a coordinator",coordinators>0,"/admin/users/new"],["Add a supervisor",supervisors>0,"/admin/users/new"],["Enroll the first intern",interns>0,"/admin/users/new"]] as const;return <><p className="text-xs font-semibold uppercase tracking-wider text-accent-700">Bo’s Coffee Main Office</p><h1 className="mt-2 font-heading text-4xl font-semibold text-brand-900">Operations dashboard</h1><dl className="mt-7 grid overflow-hidden rounded-lg border border-border bg-surface sm:grid-cols-3 lg:grid-cols-6">{metrics.map(([label,value])=><div key={label} className="border-b border-border p-4 sm:border-r"><dt className="text-xs text-muted">{label}</dt><dd className="mt-1 text-2xl font-semibold text-brand-900">{value}</dd></div>)}</dl><section className="mt-8 max-w-2xl"><h2 className="font-heading text-2xl font-semibold text-brand-900">Onboarding checklist</h2><div className="mt-4 divide-y divide-border rounded-lg border border-border bg-surface">{checklist.map(([label,done,href])=><Link key={label} href={href} className="flex items-center justify-between p-4"><span>{label}</span><span className={done?"text-green-700":"text-amber-700"}>{done?"Complete":"Action needed"}</span></Link>)}</div></section></>}
+export default async function AdminPage() {
+  const start = new Date(); start.setUTCHours(0, 0, 0, 0);
+  const end = new Date(start); end.setUTCDate(end.getUTCDate() + 1);
+  const [office, interns, supervisors, schools, present, pending, hours, coordinators] = await Promise.all([
+    prisma.company.findUnique({ where: { companyCode: BO_COFFEE_OFFICE_CODE } }),
+    prisma.user.count({ where: { role: "INTERN", isActive: true } }),
+    prisma.user.count({ where: { role: "SUPERVISOR", isActive: true } }),
+    prisma.school.count({ where: { isActive: true } }),
+    prisma.attendance.count({ where: { attendanceDate: { gte: start, lt: end }, clockIn: { not: null } } }),
+    prisma.attendance.count({ where: { status: "PENDING_REVIEW" } }),
+    prisma.attendance.aggregate({ _sum: { creditedMinutes: true } }),
+    prisma.user.count({ where: { role: "COORDINATOR", isActive: true } }),
+  ]);
+  const checklist = [
+    ["Configure Main Office", Boolean(office?.isActive), "/admin/settings/office"],
+    ["Add a school", schools > 0, "/admin/schools/new"],
+    ["Add a coordinator", coordinators > 0, "/admin/users/new"],
+    ["Add a supervisor", supervisors > 0, "/admin/users/new"],
+    ["Enroll the first intern", interns > 0, "/admin/users/new"],
+  ] as const;
+  return <>
+    <PageHeader eyebrow="Bo’s Coffee Main Office" title="Operations overview" description="Monitor your internship program, review exceptions, and keep every participant moving forward." actions={<><Link href="/admin/users/new" className="button button-primary"><Icon name="plus" />Add user</Link><Link href="/attendance/review" className="button button-secondary">Review queue</Link></>} />
+    <section className="metric-grid" aria-label="Program metrics">
+      <MetricCard label="Active interns" value={interns} icon="users" />
+      <MetricCard label="Present today" value={present} icon="clock" />
+      <MetricCard label="Needs review" value={pending} icon="review" />
+      <MetricCard label="Credited hours" value={Math.round((hours._sum.creditedMinutes ?? 0) / 60)} icon="journal" />
+      <MetricCard label="Supervisors" value={supervisors} icon="users" />
+      <MetricCard label="Active schools" value={schools} icon="school" />
+    </section>
+    <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1.4fr)_minmax(20rem,.8fr)]">
+      <section className="ui-card overflow-hidden">
+        <div className="flex items-center justify-between border-b border-border px-5 py-4 sm:px-6"><div><h2 className="font-semibold text-brand-900">Priority queues</h2><p className="mt-1 text-xs text-muted">Items that may need administrator attention</p></div><StatusBadge tone={pending ? "warning" : "success"}>{pending ? `${pending} pending` : "All clear"}</StatusBadge></div>
+        <div className="grid gap-px bg-border sm:grid-cols-2"><Link href="/attendance/review" className="group bg-surface p-5 sm:p-6"><span className="metric-icon"><Icon name="clock" /></span><h3 className="mt-4 font-semibold text-brand-900">Attendance exceptions</h3><p className="mt-1 text-sm leading-6 text-secondary">Review location, evidence, and timing exceptions.</p><span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent-700">Open queue <Icon name="arrow" className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span></Link><Link href="/work-logs/review" className="group bg-surface p-5 sm:p-6"><span className="metric-icon"><Icon name="journal" /></span><h3 className="mt-4 font-semibold text-brand-900">Work log reviews</h3><p className="mt-1 text-sm leading-6 text-secondary">Review submitted daily work and supervisor notes.</p><span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-accent-700">Open queue <Icon name="arrow" className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span></Link></div>
+      </section>
+      <section className="ui-card overflow-hidden"><div className="border-b border-border px-5 py-4 sm:px-6"><h2 className="font-semibold text-brand-900">Workspace setup</h2><p className="mt-1 text-xs text-muted">Core program readiness</p></div><div className="divide-y divide-border">{checklist.map(([label, done, href]) => <Link key={label} href={href} className="flex items-center justify-between gap-4 px-5 py-3.5 transition-colors hover:bg-stone-50 sm:px-6"><span className="text-sm font-medium">{label}</span><StatusBadge tone={done ? "success" : "warning"}>{done ? "Complete" : "Action needed"}</StatusBadge></Link>)}</div></section>
+    </div>
+  </>;
+}

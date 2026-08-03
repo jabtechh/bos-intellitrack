@@ -8,7 +8,6 @@ export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
   const user = await requireCurrentUser();
-  const fullName = `${user.firstName} ${user.lastName}`;
   const profile = await prisma.user.findUnique({
     where: { id: user.id },
     include: {
@@ -27,13 +26,13 @@ export default async function DashboardPage() {
   const correctionSummary = await getCorrectionSummary(user.id, user.role);
 
   return (
-    <main className="min-h-screen bg-canvas px-5 py-12 sm:px-8">
-      <section className="mx-auto max-w-3xl rounded-lg border border-border bg-surface p-6 shadow-surface sm:p-8">
+    <div className="px-5 py-8 sm:px-8 lg:px-12 lg:py-12">
+      <section className="mx-auto max-w-6xl rounded-[1.25rem] border border-border bg-surface p-6 shadow-surface sm:p-8 lg:p-10">
         <p className="text-sm font-semibold uppercase tracking-[0.14em] text-accent-700">
           Signed in
         </p>
         <h1 className="mt-3 font-heading text-3xl font-semibold text-brand-900">
-          Welcome, {fullName}
+          Welcome back, {user.firstName}
         </h1>
         <dl className="mt-6 grid gap-4 border-y border-border py-5 sm:grid-cols-2">
           <div>
@@ -49,9 +48,7 @@ export default async function DashboardPage() {
             <dd className="mt-1 font-medium text-primary">{user.role}</dd>
           </div>
         </dl>
-        <p className="mt-5 text-sm leading-6 text-secondary">
-          Your role-specific dashboard will be added in a future implementation phase.
-        </p>
+        <p className="mt-5 max-w-2xl text-sm leading-6 text-secondary">Here is a clear view of your internship workspace and anything that needs your attention today.</p>
         <div className="mt-6 flex flex-wrap gap-3">{user.role === "ADMIN" ? <Link href="/admin" className="inline-flex min-h-11 items-center rounded-md bg-brand-700 px-4 text-sm font-semibold text-white">Open Admin area</Link> : null}{user.role==="INTERN"?<><Link href="/work-logs/new" className="inline-flex min-h-11 items-center rounded-md bg-brand-700 px-4 text-sm font-semibold text-white">Create work log</Link><Link href="/work-logs" className="inline-flex min-h-11 items-center rounded-md border border-brand-700 px-4 text-sm font-semibold text-brand-700">Work Logs</Link></>:null}{user.role==="SUPERVISOR"?<Link href="/work-logs/review" className="inline-flex min-h-11 items-center rounded-md border border-brand-700 px-4 text-sm font-semibold text-brand-700">Review work logs</Link>:null}</div>
         {attendanceSummary ? <section className="mt-7 border-t border-border pt-6"><h2 className="font-heading text-2xl font-semibold text-brand-900">Attendance operations</h2><div className="mt-4 grid gap-3 sm:grid-cols-3">{attendanceSummary.items.map(([label,value])=><div key={label} className="rounded-md bg-stone-100 p-4"><p className="text-xs uppercase text-muted">{label}</p><p className="mt-1 font-semibold">{value}</p></div>)}</div><div className="mt-5 flex flex-wrap gap-3"><Link href={attendanceSummary.href} className="inline-flex min-h-11 items-center rounded-md border border-brand-700 px-4 text-sm font-semibold text-brand-700">{attendanceSummary.link}</Link>{correctionSummary?<Link href={correctionSummary.href} className="inline-flex min-h-11 items-center rounded-md border border-brand-700 px-4 text-sm font-semibold text-brand-700">{correctionSummary.label} ({correctionSummary.count})</Link>:null}</div></section> : null}
         <form action={logout} className="mt-7">
@@ -60,7 +57,7 @@ export default async function DashboardPage() {
           </button>
         </form>
       </section>
-    </main>
+    </div>
   );
 }
 
