@@ -241,6 +241,7 @@ model User {
   adminProfile          AdminProfile?
 
   assignmentsCreated             InternshipAssignment[] @relation("AssignmentCreatedBy")
+  requiredHoursUpdates           InternshipAssignment[] @relation("RequiredHoursUpdatedBy")
   attendanceReviewed             Attendance[]           @relation("AttendanceReviewedBy")
   attendanceCorrectionsRequested AttendanceCorrection[] @relation("CorrectionRequestedBy")
   attendanceCorrectionsReviewed  AttendanceCorrection[] @relation("CorrectionReviewedBy")
@@ -432,7 +433,10 @@ model InternshipAssignment {
   department           String?          @db.VarChar(150)
   startDate            DateTime         @map("start_date") @db.Date
   endDate              DateTime         @map("end_date") @db.Date
-  requiredHours        Int              @map("required_hours")
+  requiredHours        Int?             @map("required_hours")
+  requiredHoursConfirmedAt DateTime?    @map("required_hours_confirmed_at") @db.Timestamptz(6)
+  requiredHoursUpdatedById String?      @map("required_hours_updated_by_id") @db.Uuid
+  requiredHoursUpdateReason String?     @map("required_hours_update_reason") @db.Text
   renderedHours        Decimal          @default(0) @map("rendered_hours") @db.Decimal(10, 2)
   scheduleStartTime    DateTime?        @map("schedule_start_time") @db.Time(0)
   scheduleEndTime      DateTime?        @map("schedule_end_time") @db.Time(0)
@@ -450,6 +454,7 @@ model InternshipAssignment {
   supervisorProfile  SupervisorProfile  @relation(fields: [supervisorProfileId], references: [id], onDelete: Restrict)
   coordinatorProfile CoordinatorProfile @relation(fields: [coordinatorProfileId], references: [id], onDelete: Restrict)
   createdBy          User?              @relation("AssignmentCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  requiredHoursUpdatedBy User?          @relation("RequiredHoursUpdatedBy", fields: [requiredHoursUpdatedById], references: [id], onDelete: SetNull)
 
   attendance  Attendance[]
   workLogs    WorkLog[]
@@ -467,6 +472,7 @@ model InternshipAssignment {
   @@index([startDate, endDate], map: "internship_assignments_dates_idx")
   @@index([companyId, status], map: "internship_assignments_company_status_idx")
   @@index([supervisorProfileId, status], map: "internship_assignments_supervisor_status_idx")
+  @@index([requiredHoursUpdatedById], map: "internship_assignments_required_hours_updater_idx")
   @@map("internship_assignments")
 }
 

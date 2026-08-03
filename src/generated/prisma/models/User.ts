@@ -260,6 +260,7 @@ export type UserWhereInput = {
   representativeProfile?: Prisma.XOR<Prisma.RepresentativeProfileNullableScalarRelationFilter, Prisma.RepresentativeProfileWhereInput> | null
   adminProfile?: Prisma.XOR<Prisma.AdminProfileNullableScalarRelationFilter, Prisma.AdminProfileWhereInput> | null
   assignmentsCreated?: Prisma.InternshipAssignmentListRelationFilter
+  requiredHoursUpdates?: Prisma.InternshipAssignmentListRelationFilter
   attendanceReviewed?: Prisma.AttendanceListRelationFilter
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionListRelationFilter
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionListRelationFilter
@@ -297,6 +298,7 @@ export type UserOrderByWithRelationInput = {
   representativeProfile?: Prisma.RepresentativeProfileOrderByWithRelationInput
   adminProfile?: Prisma.AdminProfileOrderByWithRelationInput
   assignmentsCreated?: Prisma.InternshipAssignmentOrderByRelationAggregateInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentOrderByRelationAggregateInput
   attendanceReviewed?: Prisma.AttendanceOrderByRelationAggregateInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionOrderByRelationAggregateInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionOrderByRelationAggregateInput
@@ -337,6 +339,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   representativeProfile?: Prisma.XOR<Prisma.RepresentativeProfileNullableScalarRelationFilter, Prisma.RepresentativeProfileWhereInput> | null
   adminProfile?: Prisma.XOR<Prisma.AdminProfileNullableScalarRelationFilter, Prisma.AdminProfileWhereInput> | null
   assignmentsCreated?: Prisma.InternshipAssignmentListRelationFilter
+  requiredHoursUpdates?: Prisma.InternshipAssignmentListRelationFilter
   attendanceReviewed?: Prisma.AttendanceListRelationFilter
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionListRelationFilter
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionListRelationFilter
@@ -414,6 +417,7 @@ export type UserCreateInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -451,6 +455,7 @@ export type UserUncheckedCreateInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -488,6 +493,7 @@ export type UserUpdateInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -525,6 +531,7 @@ export type UserUncheckedUpdateInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -753,6 +760,12 @@ export type UserCreateNestedOneWithoutAssignmentsCreatedInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
+export type UserCreateNestedOneWithoutRequiredHoursUpdatesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRequiredHoursUpdatesInput, Prisma.UserUncheckedCreateWithoutRequiredHoursUpdatesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRequiredHoursUpdatesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
 export type UserUpdateOneWithoutAssignmentsCreatedNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAssignmentsCreatedInput, Prisma.UserUncheckedCreateWithoutAssignmentsCreatedInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignmentsCreatedInput
@@ -761,6 +774,16 @@ export type UserUpdateOneWithoutAssignmentsCreatedNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignmentsCreatedInput, Prisma.UserUpdateWithoutAssignmentsCreatedInput>, Prisma.UserUncheckedUpdateWithoutAssignmentsCreatedInput>
+}
+
+export type UserUpdateOneWithoutRequiredHoursUpdatesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRequiredHoursUpdatesInput, Prisma.UserUncheckedCreateWithoutRequiredHoursUpdatesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRequiredHoursUpdatesInput
+  upsert?: Prisma.UserUpsertWithoutRequiredHoursUpdatesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRequiredHoursUpdatesInput, Prisma.UserUpdateWithoutRequiredHoursUpdatesInput>, Prisma.UserUncheckedUpdateWithoutRequiredHoursUpdatesInput>
 }
 
 export type UserCreateNestedOneWithoutAttendanceReviewedInput = {
@@ -993,6 +1016,7 @@ export type UserCreateWithoutInternProfileInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -1029,6 +1053,7 @@ export type UserUncheckedCreateWithoutInternProfileInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -1081,6 +1106,7 @@ export type UserUpdateWithoutInternProfileInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -1117,6 +1143,7 @@ export type UserUncheckedUpdateWithoutInternProfileInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -1153,6 +1180,7 @@ export type UserCreateWithoutSupervisorProfileInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -1189,6 +1217,7 @@ export type UserUncheckedCreateWithoutSupervisorProfileInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -1241,6 +1270,7 @@ export type UserUpdateWithoutSupervisorProfileInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -1277,6 +1307,7 @@ export type UserUncheckedUpdateWithoutSupervisorProfileInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -1313,6 +1344,7 @@ export type UserCreateWithoutCoordinatorProfileInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -1349,6 +1381,7 @@ export type UserUncheckedCreateWithoutCoordinatorProfileInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -1401,6 +1434,7 @@ export type UserUpdateWithoutCoordinatorProfileInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -1437,6 +1471,7 @@ export type UserUncheckedUpdateWithoutCoordinatorProfileInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -1473,6 +1508,7 @@ export type UserCreateWithoutRepresentativeProfileInput = {
   coordinatorProfile?: Prisma.CoordinatorProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -1509,6 +1545,7 @@ export type UserUncheckedCreateWithoutRepresentativeProfileInput = {
   coordinatorProfile?: Prisma.CoordinatorProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -1561,6 +1598,7 @@ export type UserUpdateWithoutRepresentativeProfileInput = {
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -1597,6 +1635,7 @@ export type UserUncheckedUpdateWithoutRepresentativeProfileInput = {
   coordinatorProfile?: Prisma.CoordinatorProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -1633,6 +1672,7 @@ export type UserCreateWithoutAdminProfileInput = {
   coordinatorProfile?: Prisma.CoordinatorProfileCreateNestedOneWithoutUserInput
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -1669,6 +1709,7 @@ export type UserUncheckedCreateWithoutAdminProfileInput = {
   coordinatorProfile?: Prisma.CoordinatorProfileUncheckedCreateNestedOneWithoutUserInput
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -1721,6 +1762,7 @@ export type UserUpdateWithoutAdminProfileInput = {
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneWithoutUserNestedInput
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -1757,6 +1799,7 @@ export type UserUncheckedUpdateWithoutAdminProfileInput = {
   coordinatorProfile?: Prisma.CoordinatorProfileUncheckedUpdateOneWithoutUserNestedInput
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -1793,6 +1836,7 @@ export type UserCreateWithoutAssignmentsCreatedInput = {
   coordinatorProfile?: Prisma.CoordinatorProfileCreateNestedOneWithoutUserInput
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -1829,6 +1873,7 @@ export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
   coordinatorProfile?: Prisma.CoordinatorProfileUncheckedCreateNestedOneWithoutUserInput
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -1848,6 +1893,85 @@ export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
 export type UserCreateOrConnectWithoutAssignmentsCreatedInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutAssignmentsCreatedInput, Prisma.UserUncheckedCreateWithoutAssignmentsCreatedInput>
+}
+
+export type UserCreateWithoutRequiredHoursUpdatesInput = {
+  id?: string
+  authId: string
+  email: string
+  role: $Enums.UserRole
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  suffix?: string | null
+  phoneNumber?: string | null
+  profilePhotoPath?: string | null
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  internProfile?: Prisma.InternProfileCreateNestedOneWithoutUserInput
+  supervisorProfile?: Prisma.SupervisorProfileCreateNestedOneWithoutUserInput
+  coordinatorProfile?: Prisma.CoordinatorProfileCreateNestedOneWithoutUserInput
+  representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
+  adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
+  assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
+  workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
+  tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
+  evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackReceived?: Prisma.FeedbackCreateNestedManyWithoutRecipientInput
+  documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
+  documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
+  portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
+}
+
+export type UserUncheckedCreateWithoutRequiredHoursUpdatesInput = {
+  id?: string
+  authId: string
+  email: string
+  role: $Enums.UserRole
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  suffix?: string | null
+  phoneNumber?: string | null
+  profilePhotoPath?: string | null
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  internProfile?: Prisma.InternProfileUncheckedCreateNestedOneWithoutUserInput
+  supervisorProfile?: Prisma.SupervisorProfileUncheckedCreateNestedOneWithoutUserInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUncheckedCreateNestedOneWithoutUserInput
+  representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
+  adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
+  assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
+  workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
+  tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
+  evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackReceived?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRecipientInput
+  documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
+  portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
+}
+
+export type UserCreateOrConnectWithoutRequiredHoursUpdatesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRequiredHoursUpdatesInput, Prisma.UserUncheckedCreateWithoutRequiredHoursUpdatesInput>
 }
 
 export type UserUpsertWithoutAssignmentsCreatedInput = {
@@ -1881,6 +2005,7 @@ export type UserUpdateWithoutAssignmentsCreatedInput = {
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneWithoutUserNestedInput
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -1917,6 +2042,92 @@ export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
   coordinatorProfile?: Prisma.CoordinatorProfileUncheckedUpdateOneWithoutUserNestedInput
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
+  attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
+  workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
+  tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+  evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackReceived?: Prisma.FeedbackUncheckedUpdateManyWithoutRecipientNestedInput
+  documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
+  portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
+}
+
+export type UserUpsertWithoutRequiredHoursUpdatesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRequiredHoursUpdatesInput, Prisma.UserUncheckedUpdateWithoutRequiredHoursUpdatesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRequiredHoursUpdatesInput, Prisma.UserUncheckedCreateWithoutRequiredHoursUpdatesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRequiredHoursUpdatesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRequiredHoursUpdatesInput, Prisma.UserUncheckedUpdateWithoutRequiredHoursUpdatesInput>
+}
+
+export type UserUpdateWithoutRequiredHoursUpdatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  internProfile?: Prisma.InternProfileUpdateOneWithoutUserNestedInput
+  supervisorProfile?: Prisma.SupervisorProfileUpdateOneWithoutUserNestedInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneWithoutUserNestedInput
+  representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
+  adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
+  assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
+  workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
+  tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
+  evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackReceived?: Prisma.FeedbackUpdateManyWithoutRecipientNestedInput
+  documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
+  documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
+  portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRequiredHoursUpdatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  internProfile?: Prisma.InternProfileUncheckedUpdateOneWithoutUserNestedInput
+  supervisorProfile?: Prisma.SupervisorProfileUncheckedUpdateOneWithoutUserNestedInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUncheckedUpdateOneWithoutUserNestedInput
+  representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
+  adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -1954,6 +2165,7 @@ export type UserCreateWithoutAttendanceReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
@@ -1990,6 +2202,7 @@ export type UserUncheckedCreateWithoutAttendanceReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
@@ -2042,6 +2255,7 @@ export type UserUpdateWithoutAttendanceReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
@@ -2078,6 +2292,7 @@ export type UserUncheckedUpdateWithoutAttendanceReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -2114,6 +2329,7 @@ export type UserCreateWithoutAttendanceCorrectionsRequestedInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
@@ -2150,6 +2366,7 @@ export type UserUncheckedCreateWithoutAttendanceCorrectionsRequestedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
@@ -2191,6 +2408,7 @@ export type UserCreateWithoutAttendanceCorrectionsReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
@@ -2227,6 +2445,7 @@ export type UserUncheckedCreateWithoutAttendanceCorrectionsReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
@@ -2279,6 +2498,7 @@ export type UserUpdateWithoutAttendanceCorrectionsRequestedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
@@ -2315,6 +2535,7 @@ export type UserUncheckedUpdateWithoutAttendanceCorrectionsRequestedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -2362,6 +2583,7 @@ export type UserUpdateWithoutAttendanceCorrectionsReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
@@ -2398,6 +2620,7 @@ export type UserUncheckedUpdateWithoutAttendanceCorrectionsReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -2434,6 +2657,7 @@ export type UserCreateWithoutWorkLogsReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -2470,6 +2694,7 @@ export type UserUncheckedCreateWithoutWorkLogsReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -2522,6 +2747,7 @@ export type UserUpdateWithoutWorkLogsReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -2558,6 +2784,7 @@ export type UserUncheckedUpdateWithoutWorkLogsReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -2594,6 +2821,7 @@ export type UserCreateWithoutTasksAssignedInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -2630,6 +2858,7 @@ export type UserUncheckedCreateWithoutTasksAssignedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -2682,6 +2911,7 @@ export type UserUpdateWithoutTasksAssignedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -2718,6 +2948,7 @@ export type UserUncheckedUpdateWithoutTasksAssignedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -2754,6 +2985,7 @@ export type UserCreateWithoutEvaluationsCreatedInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -2790,6 +3022,7 @@ export type UserUncheckedCreateWithoutEvaluationsCreatedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -2831,6 +3064,7 @@ export type UserCreateWithoutEvaluationsAcknowledgedInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -2867,6 +3101,7 @@ export type UserUncheckedCreateWithoutEvaluationsAcknowledgedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -2919,6 +3154,7 @@ export type UserUpdateWithoutEvaluationsCreatedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -2955,6 +3191,7 @@ export type UserUncheckedUpdateWithoutEvaluationsCreatedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -3002,6 +3239,7 @@ export type UserUpdateWithoutEvaluationsAcknowledgedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -3038,6 +3276,7 @@ export type UserUncheckedUpdateWithoutEvaluationsAcknowledgedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -3074,6 +3313,7 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -3110,6 +3350,7 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -3151,6 +3392,7 @@ export type UserCreateWithoutFeedbackReceivedInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -3187,6 +3429,7 @@ export type UserUncheckedCreateWithoutFeedbackReceivedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -3239,6 +3482,7 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -3275,6 +3519,7 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -3322,6 +3567,7 @@ export type UserUpdateWithoutFeedbackReceivedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -3358,6 +3604,7 @@ export type UserUncheckedUpdateWithoutFeedbackReceivedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -3394,6 +3641,7 @@ export type UserCreateWithoutDocumentsUploadedInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -3430,6 +3678,7 @@ export type UserUncheckedCreateWithoutDocumentsUploadedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -3471,6 +3720,7 @@ export type UserCreateWithoutDocumentsReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -3507,6 +3757,7 @@ export type UserUncheckedCreateWithoutDocumentsReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -3559,6 +3810,7 @@ export type UserUpdateWithoutDocumentsUploadedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -3595,6 +3847,7 @@ export type UserUncheckedUpdateWithoutDocumentsUploadedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -3642,6 +3895,7 @@ export type UserUpdateWithoutDocumentsReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -3678,6 +3932,7 @@ export type UserUncheckedUpdateWithoutDocumentsReviewedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -3714,6 +3969,7 @@ export type UserCreateWithoutAnnouncementsCreatedInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -3750,6 +4006,7 @@ export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -3802,6 +4059,7 @@ export type UserUpdateWithoutAnnouncementsCreatedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -3838,6 +4096,7 @@ export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -3874,6 +4133,7 @@ export type UserCreateWithoutPortfoliosGeneratedInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -3910,6 +4170,7 @@ export type UserUncheckedCreateWithoutPortfoliosGeneratedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -3951,6 +4212,7 @@ export type UserCreateWithoutPortfoliosApprovedInput = {
   representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
@@ -3987,6 +4249,7 @@ export type UserUncheckedCreateWithoutPortfoliosApprovedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
   adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
   attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
@@ -4039,6 +4302,7 @@ export type UserUpdateWithoutPortfoliosGeneratedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -4075,6 +4339,7 @@ export type UserUncheckedUpdateWithoutPortfoliosGeneratedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -4122,6 +4387,7 @@ export type UserUpdateWithoutPortfoliosApprovedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
@@ -4158,6 +4424,7 @@ export type UserUncheckedUpdateWithoutPortfoliosApprovedInput = {
   representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
   adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
   assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
   attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
   attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
   attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -4180,6 +4447,7 @@ export type UserUncheckedUpdateWithoutPortfoliosApprovedInput = {
 
 export type UserCountOutputType = {
   assignmentsCreated: number
+  requiredHoursUpdates: number
   attendanceReviewed: number
   attendanceCorrectionsRequested: number
   attendanceCorrectionsReviewed: number
@@ -4198,6 +4466,7 @@ export type UserCountOutputType = {
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignmentsCreated?: boolean | UserCountOutputTypeCountAssignmentsCreatedArgs
+  requiredHoursUpdates?: boolean | UserCountOutputTypeCountRequiredHoursUpdatesArgs
   attendanceReviewed?: boolean | UserCountOutputTypeCountAttendanceReviewedArgs
   attendanceCorrectionsRequested?: boolean | UserCountOutputTypeCountAttendanceCorrectionsRequestedArgs
   attendanceCorrectionsReviewed?: boolean | UserCountOutputTypeCountAttendanceCorrectionsReviewedArgs
@@ -4228,6 +4497,13 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
  * UserCountOutputType without action
  */
 export type UserCountOutputTypeCountAssignmentsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InternshipAssignmentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRequiredHoursUpdatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.InternshipAssignmentWhereInput
 }
 
@@ -4351,6 +4627,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   representativeProfile?: boolean | Prisma.User$representativeProfileArgs<ExtArgs>
   adminProfile?: boolean | Prisma.User$adminProfileArgs<ExtArgs>
   assignmentsCreated?: boolean | Prisma.User$assignmentsCreatedArgs<ExtArgs>
+  requiredHoursUpdates?: boolean | Prisma.User$requiredHoursUpdatesArgs<ExtArgs>
   attendanceReviewed?: boolean | Prisma.User$attendanceReviewedArgs<ExtArgs>
   attendanceCorrectionsRequested?: boolean | Prisma.User$attendanceCorrectionsRequestedArgs<ExtArgs>
   attendanceCorrectionsReviewed?: boolean | Prisma.User$attendanceCorrectionsReviewedArgs<ExtArgs>
@@ -4427,6 +4704,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   representativeProfile?: boolean | Prisma.User$representativeProfileArgs<ExtArgs>
   adminProfile?: boolean | Prisma.User$adminProfileArgs<ExtArgs>
   assignmentsCreated?: boolean | Prisma.User$assignmentsCreatedArgs<ExtArgs>
+  requiredHoursUpdates?: boolean | Prisma.User$requiredHoursUpdatesArgs<ExtArgs>
   attendanceReviewed?: boolean | Prisma.User$attendanceReviewedArgs<ExtArgs>
   attendanceCorrectionsRequested?: boolean | Prisma.User$attendanceCorrectionsRequestedArgs<ExtArgs>
   attendanceCorrectionsReviewed?: boolean | Prisma.User$attendanceCorrectionsReviewedArgs<ExtArgs>
@@ -4455,6 +4733,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     representativeProfile: Prisma.$RepresentativeProfilePayload<ExtArgs> | null
     adminProfile: Prisma.$AdminProfilePayload<ExtArgs> | null
     assignmentsCreated: Prisma.$InternshipAssignmentPayload<ExtArgs>[]
+    requiredHoursUpdates: Prisma.$InternshipAssignmentPayload<ExtArgs>[]
     attendanceReviewed: Prisma.$AttendancePayload<ExtArgs>[]
     attendanceCorrectionsRequested: Prisma.$AttendanceCorrectionPayload<ExtArgs>[]
     attendanceCorrectionsReviewed: Prisma.$AttendanceCorrectionPayload<ExtArgs>[]
@@ -4885,6 +5164,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   representativeProfile<T extends Prisma.User$representativeProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$representativeProfileArgs<ExtArgs>>): Prisma.Prisma__RepresentativeProfileClient<runtime.Types.Result.GetResult<Prisma.$RepresentativeProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   adminProfile<T extends Prisma.User$adminProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$adminProfileArgs<ExtArgs>>): Prisma.Prisma__AdminProfileClient<runtime.Types.Result.GetResult<Prisma.$AdminProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   assignmentsCreated<T extends Prisma.User$assignmentsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignmentsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InternshipAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  requiredHoursUpdates<T extends Prisma.User$requiredHoursUpdatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$requiredHoursUpdatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InternshipAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   attendanceReviewed<T extends Prisma.User$attendanceReviewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$attendanceReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   attendanceCorrectionsRequested<T extends Prisma.User$attendanceCorrectionsRequestedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$attendanceCorrectionsRequestedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceCorrectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   attendanceCorrectionsReviewed<T extends Prisma.User$attendanceCorrectionsReviewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$attendanceCorrectionsReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceCorrectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5433,6 +5713,30 @@ export type User$adminProfileArgs<ExtArgs extends runtime.Types.Extensions.Inter
  * User.assignmentsCreated
  */
 export type User$assignmentsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InternshipAssignment
+   */
+  select?: Prisma.InternshipAssignmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InternshipAssignment
+   */
+  omit?: Prisma.InternshipAssignmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InternshipAssignmentInclude<ExtArgs> | null
+  where?: Prisma.InternshipAssignmentWhereInput
+  orderBy?: Prisma.InternshipAssignmentOrderByWithRelationInput | Prisma.InternshipAssignmentOrderByWithRelationInput[]
+  cursor?: Prisma.InternshipAssignmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InternshipAssignmentScalarFieldEnum | Prisma.InternshipAssignmentScalarFieldEnum[]
+}
+
+/**
+ * User.requiredHoursUpdates
+ */
+export type User$requiredHoursUpdatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the InternshipAssignment
    */

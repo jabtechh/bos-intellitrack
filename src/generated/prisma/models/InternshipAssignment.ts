@@ -50,6 +50,9 @@ export type InternshipAssignmentMinAggregateOutputType = {
   startDate: Date | null
   endDate: Date | null
   requiredHours: number | null
+  requiredHoursConfirmedAt: Date | null
+  requiredHoursUpdatedById: string | null
+  requiredHoursUpdateReason: string | null
   renderedHours: runtime.Decimal | null
   scheduleStartTime: Date | null
   scheduleEndTime: Date | null
@@ -75,6 +78,9 @@ export type InternshipAssignmentMaxAggregateOutputType = {
   startDate: Date | null
   endDate: Date | null
   requiredHours: number | null
+  requiredHoursConfirmedAt: Date | null
+  requiredHoursUpdatedById: string | null
+  requiredHoursUpdateReason: string | null
   renderedHours: runtime.Decimal | null
   scheduleStartTime: Date | null
   scheduleEndTime: Date | null
@@ -100,6 +106,9 @@ export type InternshipAssignmentCountAggregateOutputType = {
   startDate: number
   endDate: number
   requiredHours: number
+  requiredHoursConfirmedAt: number
+  requiredHoursUpdatedById: number
+  requiredHoursUpdateReason: number
   renderedHours: number
   scheduleStartTime: number
   scheduleEndTime: number
@@ -139,6 +148,9 @@ export type InternshipAssignmentMinAggregateInputType = {
   startDate?: true
   endDate?: true
   requiredHours?: true
+  requiredHoursConfirmedAt?: true
+  requiredHoursUpdatedById?: true
+  requiredHoursUpdateReason?: true
   renderedHours?: true
   scheduleStartTime?: true
   scheduleEndTime?: true
@@ -164,6 +176,9 @@ export type InternshipAssignmentMaxAggregateInputType = {
   startDate?: true
   endDate?: true
   requiredHours?: true
+  requiredHoursConfirmedAt?: true
+  requiredHoursUpdatedById?: true
+  requiredHoursUpdateReason?: true
   renderedHours?: true
   scheduleStartTime?: true
   scheduleEndTime?: true
@@ -189,6 +204,9 @@ export type InternshipAssignmentCountAggregateInputType = {
   startDate?: true
   endDate?: true
   requiredHours?: true
+  requiredHoursConfirmedAt?: true
+  requiredHoursUpdatedById?: true
+  requiredHoursUpdateReason?: true
   renderedHours?: true
   scheduleStartTime?: true
   scheduleEndTime?: true
@@ -300,7 +318,10 @@ export type InternshipAssignmentGroupByOutputType = {
   department: string | null
   startDate: Date
   endDate: Date
-  requiredHours: number
+  requiredHours: number | null
+  requiredHoursConfirmedAt: Date | null
+  requiredHoursUpdatedById: string | null
+  requiredHoursUpdateReason: string | null
   renderedHours: runtime.Decimal
   scheduleStartTime: Date | null
   scheduleEndTime: Date | null
@@ -348,7 +369,10 @@ export type InternshipAssignmentWhereInput = {
   department?: Prisma.StringNullableFilter<"InternshipAssignment"> | string | null
   startDate?: Prisma.DateTimeFilter<"InternshipAssignment"> | Date | string
   endDate?: Prisma.DateTimeFilter<"InternshipAssignment"> | Date | string
-  requiredHours?: Prisma.IntFilter<"InternshipAssignment"> | number
+  requiredHours?: Prisma.IntNullableFilter<"InternshipAssignment"> | number | null
+  requiredHoursConfirmedAt?: Prisma.DateTimeNullableFilter<"InternshipAssignment"> | Date | string | null
+  requiredHoursUpdatedById?: Prisma.UuidNullableFilter<"InternshipAssignment"> | string | null
+  requiredHoursUpdateReason?: Prisma.StringNullableFilter<"InternshipAssignment"> | string | null
   renderedHours?: Prisma.DecimalFilter<"InternshipAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.DateTimeNullableFilter<"InternshipAssignment"> | Date | string | null
   scheduleEndTime?: Prisma.DateTimeNullableFilter<"InternshipAssignment"> | Date | string | null
@@ -365,6 +389,7 @@ export type InternshipAssignmentWhereInput = {
   supervisorProfile?: Prisma.XOR<Prisma.SupervisorProfileScalarRelationFilter, Prisma.SupervisorProfileWhereInput>
   coordinatorProfile?: Prisma.XOR<Prisma.CoordinatorProfileScalarRelationFilter, Prisma.CoordinatorProfileWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  requiredHoursUpdatedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   attendance?: Prisma.AttendanceListRelationFilter
   workLogs?: Prisma.WorkLogListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
@@ -385,7 +410,10 @@ export type InternshipAssignmentOrderByWithRelationInput = {
   department?: Prisma.SortOrderInput | Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
-  requiredHours?: Prisma.SortOrder
+  requiredHours?: Prisma.SortOrderInput | Prisma.SortOrder
+  requiredHoursConfirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  requiredHoursUpdatedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  requiredHoursUpdateReason?: Prisma.SortOrderInput | Prisma.SortOrder
   renderedHours?: Prisma.SortOrder
   scheduleStartTime?: Prisma.SortOrderInput | Prisma.SortOrder
   scheduleEndTime?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -402,6 +430,7 @@ export type InternshipAssignmentOrderByWithRelationInput = {
   supervisorProfile?: Prisma.SupervisorProfileOrderByWithRelationInput
   coordinatorProfile?: Prisma.CoordinatorProfileOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
+  requiredHoursUpdatedBy?: Prisma.UserOrderByWithRelationInput
   attendance?: Prisma.AttendanceOrderByRelationAggregateInput
   workLogs?: Prisma.WorkLogOrderByRelationAggregateInput
   tasks?: Prisma.TaskOrderByRelationAggregateInput
@@ -425,7 +454,10 @@ export type InternshipAssignmentWhereUniqueInput = Prisma.AtLeast<{
   department?: Prisma.StringNullableFilter<"InternshipAssignment"> | string | null
   startDate?: Prisma.DateTimeFilter<"InternshipAssignment"> | Date | string
   endDate?: Prisma.DateTimeFilter<"InternshipAssignment"> | Date | string
-  requiredHours?: Prisma.IntFilter<"InternshipAssignment"> | number
+  requiredHours?: Prisma.IntNullableFilter<"InternshipAssignment"> | number | null
+  requiredHoursConfirmedAt?: Prisma.DateTimeNullableFilter<"InternshipAssignment"> | Date | string | null
+  requiredHoursUpdatedById?: Prisma.UuidNullableFilter<"InternshipAssignment"> | string | null
+  requiredHoursUpdateReason?: Prisma.StringNullableFilter<"InternshipAssignment"> | string | null
   renderedHours?: Prisma.DecimalFilter<"InternshipAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.DateTimeNullableFilter<"InternshipAssignment"> | Date | string | null
   scheduleEndTime?: Prisma.DateTimeNullableFilter<"InternshipAssignment"> | Date | string | null
@@ -442,6 +474,7 @@ export type InternshipAssignmentWhereUniqueInput = Prisma.AtLeast<{
   supervisorProfile?: Prisma.XOR<Prisma.SupervisorProfileScalarRelationFilter, Prisma.SupervisorProfileWhereInput>
   coordinatorProfile?: Prisma.XOR<Prisma.CoordinatorProfileScalarRelationFilter, Prisma.CoordinatorProfileWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  requiredHoursUpdatedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   attendance?: Prisma.AttendanceListRelationFilter
   workLogs?: Prisma.WorkLogListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
@@ -462,7 +495,10 @@ export type InternshipAssignmentOrderByWithAggregationInput = {
   department?: Prisma.SortOrderInput | Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
-  requiredHours?: Prisma.SortOrder
+  requiredHours?: Prisma.SortOrderInput | Prisma.SortOrder
+  requiredHoursConfirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  requiredHoursUpdatedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  requiredHoursUpdateReason?: Prisma.SortOrderInput | Prisma.SortOrder
   renderedHours?: Prisma.SortOrder
   scheduleStartTime?: Prisma.SortOrderInput | Prisma.SortOrder
   scheduleEndTime?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -495,7 +531,10 @@ export type InternshipAssignmentScalarWhereWithAggregatesInput = {
   department?: Prisma.StringNullableWithAggregatesFilter<"InternshipAssignment"> | string | null
   startDate?: Prisma.DateTimeWithAggregatesFilter<"InternshipAssignment"> | Date | string
   endDate?: Prisma.DateTimeWithAggregatesFilter<"InternshipAssignment"> | Date | string
-  requiredHours?: Prisma.IntWithAggregatesFilter<"InternshipAssignment"> | number
+  requiredHours?: Prisma.IntNullableWithAggregatesFilter<"InternshipAssignment"> | number | null
+  requiredHoursConfirmedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"InternshipAssignment"> | Date | string | null
+  requiredHoursUpdatedById?: Prisma.UuidNullableWithAggregatesFilter<"InternshipAssignment"> | string | null
+  requiredHoursUpdateReason?: Prisma.StringNullableWithAggregatesFilter<"InternshipAssignment"> | string | null
   renderedHours?: Prisma.DecimalWithAggregatesFilter<"InternshipAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.DateTimeNullableWithAggregatesFilter<"InternshipAssignment"> | Date | string | null
   scheduleEndTime?: Prisma.DateTimeNullableWithAggregatesFilter<"InternshipAssignment"> | Date | string | null
@@ -516,7 +555,9 @@ export type InternshipAssignmentCreateInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -532,6 +573,7 @@ export type InternshipAssignmentCreateInput = {
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
   workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
   tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
@@ -552,7 +594,10 @@ export type InternshipAssignmentUncheckedCreateInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -580,7 +625,9 @@ export type InternshipAssignmentUpdateInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -596,6 +643,7 @@ export type InternshipAssignmentUpdateInput = {
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
   workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
@@ -616,7 +664,10 @@ export type InternshipAssignmentUncheckedUpdateInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -648,7 +699,10 @@ export type InternshipAssignmentCreateManyInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -669,7 +723,9 @@ export type InternshipAssignmentUpdateManyMutationInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -693,7 +749,10 @@ export type InternshipAssignmentUncheckedUpdateManyInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -729,6 +788,9 @@ export type InternshipAssignmentCountOrderByAggregateInput = {
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   requiredHours?: Prisma.SortOrder
+  requiredHoursConfirmedAt?: Prisma.SortOrder
+  requiredHoursUpdatedById?: Prisma.SortOrder
+  requiredHoursUpdateReason?: Prisma.SortOrder
   renderedHours?: Prisma.SortOrder
   scheduleStartTime?: Prisma.SortOrder
   scheduleEndTime?: Prisma.SortOrder
@@ -760,6 +822,9 @@ export type InternshipAssignmentMaxOrderByAggregateInput = {
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   requiredHours?: Prisma.SortOrder
+  requiredHoursConfirmedAt?: Prisma.SortOrder
+  requiredHoursUpdatedById?: Prisma.SortOrder
+  requiredHoursUpdateReason?: Prisma.SortOrder
   renderedHours?: Prisma.SortOrder
   scheduleStartTime?: Prisma.SortOrder
   scheduleEndTime?: Prisma.SortOrder
@@ -785,6 +850,9 @@ export type InternshipAssignmentMinOrderByAggregateInput = {
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   requiredHours?: Prisma.SortOrder
+  requiredHoursConfirmedAt?: Prisma.SortOrder
+  requiredHoursUpdatedById?: Prisma.SortOrder
+  requiredHoursUpdateReason?: Prisma.SortOrder
   renderedHours?: Prisma.SortOrder
   scheduleStartTime?: Prisma.SortOrder
   scheduleEndTime?: Prisma.SortOrder
@@ -816,10 +884,24 @@ export type InternshipAssignmentCreateNestedManyWithoutCreatedByInput = {
   connect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
 }
 
+export type InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput = {
+  create?: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutRequiredHoursUpdatedByInput, Prisma.InternshipAssignmentUncheckedCreateWithoutRequiredHoursUpdatedByInput> | Prisma.InternshipAssignmentCreateWithoutRequiredHoursUpdatedByInput[] | Prisma.InternshipAssignmentUncheckedCreateWithoutRequiredHoursUpdatedByInput[]
+  connectOrCreate?: Prisma.InternshipAssignmentCreateOrConnectWithoutRequiredHoursUpdatedByInput | Prisma.InternshipAssignmentCreateOrConnectWithoutRequiredHoursUpdatedByInput[]
+  createMany?: Prisma.InternshipAssignmentCreateManyRequiredHoursUpdatedByInputEnvelope
+  connect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+}
+
 export type InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput = {
   create?: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutCreatedByInput, Prisma.InternshipAssignmentUncheckedCreateWithoutCreatedByInput> | Prisma.InternshipAssignmentCreateWithoutCreatedByInput[] | Prisma.InternshipAssignmentUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.InternshipAssignmentCreateOrConnectWithoutCreatedByInput | Prisma.InternshipAssignmentCreateOrConnectWithoutCreatedByInput[]
   createMany?: Prisma.InternshipAssignmentCreateManyCreatedByInputEnvelope
+  connect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+}
+
+export type InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput = {
+  create?: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutRequiredHoursUpdatedByInput, Prisma.InternshipAssignmentUncheckedCreateWithoutRequiredHoursUpdatedByInput> | Prisma.InternshipAssignmentCreateWithoutRequiredHoursUpdatedByInput[] | Prisma.InternshipAssignmentUncheckedCreateWithoutRequiredHoursUpdatedByInput[]
+  connectOrCreate?: Prisma.InternshipAssignmentCreateOrConnectWithoutRequiredHoursUpdatedByInput | Prisma.InternshipAssignmentCreateOrConnectWithoutRequiredHoursUpdatedByInput[]
+  createMany?: Prisma.InternshipAssignmentCreateManyRequiredHoursUpdatedByInputEnvelope
   connect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
 }
 
@@ -837,6 +919,20 @@ export type InternshipAssignmentUpdateManyWithoutCreatedByNestedInput = {
   deleteMany?: Prisma.InternshipAssignmentScalarWhereInput | Prisma.InternshipAssignmentScalarWhereInput[]
 }
 
+export type InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutRequiredHoursUpdatedByInput, Prisma.InternshipAssignmentUncheckedCreateWithoutRequiredHoursUpdatedByInput> | Prisma.InternshipAssignmentCreateWithoutRequiredHoursUpdatedByInput[] | Prisma.InternshipAssignmentUncheckedCreateWithoutRequiredHoursUpdatedByInput[]
+  connectOrCreate?: Prisma.InternshipAssignmentCreateOrConnectWithoutRequiredHoursUpdatedByInput | Prisma.InternshipAssignmentCreateOrConnectWithoutRequiredHoursUpdatedByInput[]
+  upsert?: Prisma.InternshipAssignmentUpsertWithWhereUniqueWithoutRequiredHoursUpdatedByInput | Prisma.InternshipAssignmentUpsertWithWhereUniqueWithoutRequiredHoursUpdatedByInput[]
+  createMany?: Prisma.InternshipAssignmentCreateManyRequiredHoursUpdatedByInputEnvelope
+  set?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  disconnect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  delete?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  connect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  update?: Prisma.InternshipAssignmentUpdateWithWhereUniqueWithoutRequiredHoursUpdatedByInput | Prisma.InternshipAssignmentUpdateWithWhereUniqueWithoutRequiredHoursUpdatedByInput[]
+  updateMany?: Prisma.InternshipAssignmentUpdateManyWithWhereWithoutRequiredHoursUpdatedByInput | Prisma.InternshipAssignmentUpdateManyWithWhereWithoutRequiredHoursUpdatedByInput[]
+  deleteMany?: Prisma.InternshipAssignmentScalarWhereInput | Prisma.InternshipAssignmentScalarWhereInput[]
+}
+
 export type InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput = {
   create?: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutCreatedByInput, Prisma.InternshipAssignmentUncheckedCreateWithoutCreatedByInput> | Prisma.InternshipAssignmentCreateWithoutCreatedByInput[] | Prisma.InternshipAssignmentUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.InternshipAssignmentCreateOrConnectWithoutCreatedByInput | Prisma.InternshipAssignmentCreateOrConnectWithoutCreatedByInput[]
@@ -848,6 +944,20 @@ export type InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput =
   connect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
   update?: Prisma.InternshipAssignmentUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.InternshipAssignmentUpdateWithWhereUniqueWithoutCreatedByInput[]
   updateMany?: Prisma.InternshipAssignmentUpdateManyWithWhereWithoutCreatedByInput | Prisma.InternshipAssignmentUpdateManyWithWhereWithoutCreatedByInput[]
+  deleteMany?: Prisma.InternshipAssignmentScalarWhereInput | Prisma.InternshipAssignmentScalarWhereInput[]
+}
+
+export type InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutRequiredHoursUpdatedByInput, Prisma.InternshipAssignmentUncheckedCreateWithoutRequiredHoursUpdatedByInput> | Prisma.InternshipAssignmentCreateWithoutRequiredHoursUpdatedByInput[] | Prisma.InternshipAssignmentUncheckedCreateWithoutRequiredHoursUpdatedByInput[]
+  connectOrCreate?: Prisma.InternshipAssignmentCreateOrConnectWithoutRequiredHoursUpdatedByInput | Prisma.InternshipAssignmentCreateOrConnectWithoutRequiredHoursUpdatedByInput[]
+  upsert?: Prisma.InternshipAssignmentUpsertWithWhereUniqueWithoutRequiredHoursUpdatedByInput | Prisma.InternshipAssignmentUpsertWithWhereUniqueWithoutRequiredHoursUpdatedByInput[]
+  createMany?: Prisma.InternshipAssignmentCreateManyRequiredHoursUpdatedByInputEnvelope
+  set?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  disconnect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  delete?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  connect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  update?: Prisma.InternshipAssignmentUpdateWithWhereUniqueWithoutRequiredHoursUpdatedByInput | Prisma.InternshipAssignmentUpdateWithWhereUniqueWithoutRequiredHoursUpdatedByInput[]
+  updateMany?: Prisma.InternshipAssignmentUpdateManyWithWhereWithoutRequiredHoursUpdatedByInput | Prisma.InternshipAssignmentUpdateManyWithWhereWithoutRequiredHoursUpdatedByInput[]
   deleteMany?: Prisma.InternshipAssignmentScalarWhereInput | Prisma.InternshipAssignmentScalarWhereInput[]
 }
 
@@ -1019,6 +1129,14 @@ export type InternshipAssignmentUncheckedUpdateManyWithoutCompanyNestedInput = {
   deleteMany?: Prisma.InternshipAssignmentScalarWhereInput | Prisma.InternshipAssignmentScalarWhereInput[]
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type EnumInternshipStatusFieldUpdateOperationsInput = {
   set?: $Enums.InternshipStatus
 }
@@ -1128,7 +1246,9 @@ export type InternshipAssignmentCreateWithoutCreatedByInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1143,6 +1263,7 @@ export type InternshipAssignmentCreateWithoutCreatedByInput = {
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
   workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
   tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
@@ -1163,7 +1284,10 @@ export type InternshipAssignmentUncheckedCreateWithoutCreatedByInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1190,6 +1314,84 @@ export type InternshipAssignmentCreateOrConnectWithoutCreatedByInput = {
 
 export type InternshipAssignmentCreateManyCreatedByInputEnvelope = {
   data: Prisma.InternshipAssignmentCreateManyCreatedByInput | Prisma.InternshipAssignmentCreateManyCreatedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type InternshipAssignmentCreateWithoutRequiredHoursUpdatedByInput = {
+  id?: string
+  assignmentCode: string
+  positionTitle?: string | null
+  department?: string | null
+  startDate: Date | string
+  endDate: Date | string
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
+  renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Date | string | null
+  scheduleEndTime?: Date | string | null
+  gracePeriodMinutes?: number
+  status?: $Enums.InternshipStatus
+  notes?: string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
+  company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
+  supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
+  coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
+  workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutAssignmentInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
+  portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+}
+
+export type InternshipAssignmentUncheckedCreateWithoutRequiredHoursUpdatedByInput = {
+  id?: string
+  internProfileId: string
+  companyId: string
+  supervisorProfileId: string
+  coordinatorProfileId: string
+  assignmentCode: string
+  positionTitle?: string | null
+  department?: string | null
+  startDate: Date | string
+  endDate: Date | string
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
+  renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Date | string | null
+  scheduleEndTime?: Date | string | null
+  gracePeriodMinutes?: number
+  status?: $Enums.InternshipStatus
+  notes?: string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  attendance?: Prisma.AttendanceUncheckedCreateNestedManyWithoutAssignmentInput
+  workLogs?: Prisma.WorkLogUncheckedCreateNestedManyWithoutAssignmentInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignmentInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAssignmentInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
+  portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+}
+
+export type InternshipAssignmentCreateOrConnectWithoutRequiredHoursUpdatedByInput = {
+  where: Prisma.InternshipAssignmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutRequiredHoursUpdatedByInput, Prisma.InternshipAssignmentUncheckedCreateWithoutRequiredHoursUpdatedByInput>
+}
+
+export type InternshipAssignmentCreateManyRequiredHoursUpdatedByInputEnvelope = {
+  data: Prisma.InternshipAssignmentCreateManyRequiredHoursUpdatedByInput | Prisma.InternshipAssignmentCreateManyRequiredHoursUpdatedByInput[]
   skipDuplicates?: boolean
 }
 
@@ -1223,7 +1425,10 @@ export type InternshipAssignmentScalarWhereInput = {
   department?: Prisma.StringNullableFilter<"InternshipAssignment"> | string | null
   startDate?: Prisma.DateTimeFilter<"InternshipAssignment"> | Date | string
   endDate?: Prisma.DateTimeFilter<"InternshipAssignment"> | Date | string
-  requiredHours?: Prisma.IntFilter<"InternshipAssignment"> | number
+  requiredHours?: Prisma.IntNullableFilter<"InternshipAssignment"> | number | null
+  requiredHoursConfirmedAt?: Prisma.DateTimeNullableFilter<"InternshipAssignment"> | Date | string | null
+  requiredHoursUpdatedById?: Prisma.UuidNullableFilter<"InternshipAssignment"> | string | null
+  requiredHoursUpdateReason?: Prisma.StringNullableFilter<"InternshipAssignment"> | string | null
   renderedHours?: Prisma.DecimalFilter<"InternshipAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.DateTimeNullableFilter<"InternshipAssignment"> | Date | string | null
   scheduleEndTime?: Prisma.DateTimeNullableFilter<"InternshipAssignment"> | Date | string | null
@@ -1237,6 +1442,22 @@ export type InternshipAssignmentScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"InternshipAssignment"> | Date | string
 }
 
+export type InternshipAssignmentUpsertWithWhereUniqueWithoutRequiredHoursUpdatedByInput = {
+  where: Prisma.InternshipAssignmentWhereUniqueInput
+  update: Prisma.XOR<Prisma.InternshipAssignmentUpdateWithoutRequiredHoursUpdatedByInput, Prisma.InternshipAssignmentUncheckedUpdateWithoutRequiredHoursUpdatedByInput>
+  create: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutRequiredHoursUpdatedByInput, Prisma.InternshipAssignmentUncheckedCreateWithoutRequiredHoursUpdatedByInput>
+}
+
+export type InternshipAssignmentUpdateWithWhereUniqueWithoutRequiredHoursUpdatedByInput = {
+  where: Prisma.InternshipAssignmentWhereUniqueInput
+  data: Prisma.XOR<Prisma.InternshipAssignmentUpdateWithoutRequiredHoursUpdatedByInput, Prisma.InternshipAssignmentUncheckedUpdateWithoutRequiredHoursUpdatedByInput>
+}
+
+export type InternshipAssignmentUpdateManyWithWhereWithoutRequiredHoursUpdatedByInput = {
+  where: Prisma.InternshipAssignmentScalarWhereInput
+  data: Prisma.XOR<Prisma.InternshipAssignmentUpdateManyMutationInput, Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByInput>
+}
+
 export type InternshipAssignmentCreateWithoutInternProfileInput = {
   id?: string
   assignmentCode: string
@@ -1244,7 +1465,9 @@ export type InternshipAssignmentCreateWithoutInternProfileInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1259,6 +1482,7 @@ export type InternshipAssignmentCreateWithoutInternProfileInput = {
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
   workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
   tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
@@ -1278,7 +1502,10 @@ export type InternshipAssignmentUncheckedCreateWithoutInternProfileInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1332,7 +1559,9 @@ export type InternshipAssignmentCreateWithoutSupervisorProfileInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1347,6 +1576,7 @@ export type InternshipAssignmentCreateWithoutSupervisorProfileInput = {
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
   workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
   tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
@@ -1366,7 +1596,10 @@ export type InternshipAssignmentUncheckedCreateWithoutSupervisorProfileInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1420,7 +1653,9 @@ export type InternshipAssignmentCreateWithoutCoordinatorProfileInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1435,6 +1670,7 @@ export type InternshipAssignmentCreateWithoutCoordinatorProfileInput = {
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
   workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
   tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
@@ -1454,7 +1690,10 @@ export type InternshipAssignmentUncheckedCreateWithoutCoordinatorProfileInput = 
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1508,7 +1747,9 @@ export type InternshipAssignmentCreateWithoutCompanyInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1523,6 +1764,7 @@ export type InternshipAssignmentCreateWithoutCompanyInput = {
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
   workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
   tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
@@ -1542,7 +1784,10 @@ export type InternshipAssignmentUncheckedCreateWithoutCompanyInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1596,7 +1841,9 @@ export type InternshipAssignmentCreateWithoutAttendanceInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1612,6 +1859,7 @@ export type InternshipAssignmentCreateWithoutAttendanceInput = {
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
   workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
   tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutAssignmentInput
@@ -1631,7 +1879,10 @@ export type InternshipAssignmentUncheckedCreateWithoutAttendanceInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1674,7 +1925,9 @@ export type InternshipAssignmentUpdateWithoutAttendanceInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1690,6 +1943,7 @@ export type InternshipAssignmentUpdateWithoutAttendanceInput = {
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
   workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
   evaluations?: Prisma.EvaluationUpdateManyWithoutAssignmentNestedInput
@@ -1709,7 +1963,10 @@ export type InternshipAssignmentUncheckedUpdateWithoutAttendanceInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1736,7 +1993,9 @@ export type InternshipAssignmentCreateWithoutWorkLogsInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1752,6 +2011,7 @@ export type InternshipAssignmentCreateWithoutWorkLogsInput = {
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
   tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutAssignmentInput
@@ -1771,7 +2031,10 @@ export type InternshipAssignmentUncheckedCreateWithoutWorkLogsInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1814,7 +2077,9 @@ export type InternshipAssignmentUpdateWithoutWorkLogsInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1830,6 +2095,7 @@ export type InternshipAssignmentUpdateWithoutWorkLogsInput = {
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
   evaluations?: Prisma.EvaluationUpdateManyWithoutAssignmentNestedInput
@@ -1849,7 +2115,10 @@ export type InternshipAssignmentUncheckedUpdateWithoutWorkLogsInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1876,7 +2145,9 @@ export type InternshipAssignmentCreateWithoutTasksInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1892,6 +2163,7 @@ export type InternshipAssignmentCreateWithoutTasksInput = {
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
   workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutAssignmentInput
@@ -1911,7 +2183,10 @@ export type InternshipAssignmentUncheckedCreateWithoutTasksInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -1954,7 +2229,9 @@ export type InternshipAssignmentUpdateWithoutTasksInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1970,6 +2247,7 @@ export type InternshipAssignmentUpdateWithoutTasksInput = {
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
   workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
   evaluations?: Prisma.EvaluationUpdateManyWithoutAssignmentNestedInput
@@ -1989,7 +2267,10 @@ export type InternshipAssignmentUncheckedUpdateWithoutTasksInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2016,7 +2297,9 @@ export type InternshipAssignmentCreateWithoutEvaluationsInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -2032,6 +2315,7 @@ export type InternshipAssignmentCreateWithoutEvaluationsInput = {
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
   workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
   tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
@@ -2051,7 +2335,10 @@ export type InternshipAssignmentUncheckedCreateWithoutEvaluationsInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -2094,7 +2381,9 @@ export type InternshipAssignmentUpdateWithoutEvaluationsInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2110,6 +2399,7 @@ export type InternshipAssignmentUpdateWithoutEvaluationsInput = {
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
   workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
@@ -2129,7 +2419,10 @@ export type InternshipAssignmentUncheckedUpdateWithoutEvaluationsInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2156,7 +2449,9 @@ export type InternshipAssignmentCreateWithoutFeedbackInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -2172,6 +2467,7 @@ export type InternshipAssignmentCreateWithoutFeedbackInput = {
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
   workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
   tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
@@ -2191,7 +2487,10 @@ export type InternshipAssignmentUncheckedCreateWithoutFeedbackInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -2234,7 +2533,9 @@ export type InternshipAssignmentUpdateWithoutFeedbackInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2250,6 +2551,7 @@ export type InternshipAssignmentUpdateWithoutFeedbackInput = {
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
   workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
@@ -2269,7 +2571,10 @@ export type InternshipAssignmentUncheckedUpdateWithoutFeedbackInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2296,7 +2601,9 @@ export type InternshipAssignmentCreateWithoutDocumentsInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -2312,6 +2619,7 @@ export type InternshipAssignmentCreateWithoutDocumentsInput = {
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
   workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
   tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
@@ -2331,7 +2639,10 @@ export type InternshipAssignmentUncheckedCreateWithoutDocumentsInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -2374,7 +2685,9 @@ export type InternshipAssignmentUpdateWithoutDocumentsInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2390,6 +2703,7 @@ export type InternshipAssignmentUpdateWithoutDocumentsInput = {
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
   workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
@@ -2409,7 +2723,10 @@ export type InternshipAssignmentUncheckedUpdateWithoutDocumentsInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2436,7 +2753,9 @@ export type InternshipAssignmentCreateWithoutPortfolioInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -2452,6 +2771,7 @@ export type InternshipAssignmentCreateWithoutPortfolioInput = {
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
   attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
   workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
   tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
@@ -2471,7 +2791,10 @@ export type InternshipAssignmentUncheckedCreateWithoutPortfolioInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -2514,7 +2837,9 @@ export type InternshipAssignmentUpdateWithoutPortfolioInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2530,6 +2855,7 @@ export type InternshipAssignmentUpdateWithoutPortfolioInput = {
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
   workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
@@ -2549,7 +2875,10 @@ export type InternshipAssignmentUncheckedUpdateWithoutPortfolioInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2580,7 +2909,10 @@ export type InternshipAssignmentCreateManyCreatedByInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -2593,6 +2925,33 @@ export type InternshipAssignmentCreateManyCreatedByInput = {
   updatedAt?: Date | string
 }
 
+export type InternshipAssignmentCreateManyRequiredHoursUpdatedByInput = {
+  id?: string
+  internProfileId: string
+  companyId: string
+  supervisorProfileId: string
+  coordinatorProfileId: string
+  assignmentCode: string
+  positionTitle?: string | null
+  department?: string | null
+  startDate: Date | string
+  endDate: Date | string
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
+  renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Date | string | null
+  scheduleEndTime?: Date | string | null
+  gracePeriodMinutes?: number
+  status?: $Enums.InternshipStatus
+  notes?: string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
 export type InternshipAssignmentUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   assignmentCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2600,7 +2959,9 @@ export type InternshipAssignmentUpdateWithoutCreatedByInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2615,6 +2976,7 @@ export type InternshipAssignmentUpdateWithoutCreatedByInput = {
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
   workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
@@ -2635,7 +2997,10 @@ export type InternshipAssignmentUncheckedUpdateWithoutCreatedByInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2666,7 +3031,10 @@ export type InternshipAssignmentUncheckedUpdateManyWithoutCreatedByInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2675,6 +3043,101 @@ export type InternshipAssignmentUncheckedUpdateManyWithoutCreatedByInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type InternshipAssignmentUpdateWithoutRequiredHoursUpdatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentCode?: Prisma.StringFieldUpdateOperationsInput | string
+  positionTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gracePeriodMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumInternshipStatusFieldUpdateOperationsInput | $Enums.InternshipStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
+  supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
+  workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutAssignmentNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
+  portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+}
+
+export type InternshipAssignmentUncheckedUpdateWithoutRequiredHoursUpdatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  companyId?: Prisma.StringFieldUpdateOperationsInput | string
+  supervisorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  coordinatorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentCode?: Prisma.StringFieldUpdateOperationsInput | string
+  positionTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gracePeriodMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumInternshipStatusFieldUpdateOperationsInput | $Enums.InternshipStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attendance?: Prisma.AttendanceUncheckedUpdateManyWithoutAssignmentNestedInput
+  workLogs?: Prisma.WorkLogUncheckedUpdateManyWithoutAssignmentNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignmentNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutAssignmentNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
+  portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+}
+
+export type InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  companyId?: Prisma.StringFieldUpdateOperationsInput | string
+  supervisorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  coordinatorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentCode?: Prisma.StringFieldUpdateOperationsInput | string
+  positionTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gracePeriodMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumInternshipStatusFieldUpdateOperationsInput | $Enums.InternshipStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2689,7 +3152,10 @@ export type InternshipAssignmentCreateManyInternProfileInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -2710,7 +3176,9 @@ export type InternshipAssignmentUpdateWithoutInternProfileInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2725,6 +3193,7 @@ export type InternshipAssignmentUpdateWithoutInternProfileInput = {
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
   workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
@@ -2744,7 +3213,10 @@ export type InternshipAssignmentUncheckedUpdateWithoutInternProfileInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2775,7 +3247,10 @@ export type InternshipAssignmentUncheckedUpdateManyWithoutInternProfileInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2799,7 +3274,10 @@ export type InternshipAssignmentCreateManySupervisorProfileInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -2820,7 +3298,9 @@ export type InternshipAssignmentUpdateWithoutSupervisorProfileInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2835,6 +3315,7 @@ export type InternshipAssignmentUpdateWithoutSupervisorProfileInput = {
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
   workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
@@ -2854,7 +3335,10 @@ export type InternshipAssignmentUncheckedUpdateWithoutSupervisorProfileInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2885,7 +3369,10 @@ export type InternshipAssignmentUncheckedUpdateManyWithoutSupervisorProfileInput
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2909,7 +3396,10 @@ export type InternshipAssignmentCreateManyCoordinatorProfileInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -2930,7 +3420,9 @@ export type InternshipAssignmentUpdateWithoutCoordinatorProfileInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2945,6 +3437,7 @@ export type InternshipAssignmentUpdateWithoutCoordinatorProfileInput = {
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
   workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
@@ -2964,7 +3457,10 @@ export type InternshipAssignmentUncheckedUpdateWithoutCoordinatorProfileInput = 
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2995,7 +3491,10 @@ export type InternshipAssignmentUncheckedUpdateManyWithoutCoordinatorProfileInpu
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3019,7 +3518,10 @@ export type InternshipAssignmentCreateManyCompanyInput = {
   department?: string | null
   startDate: Date | string
   endDate: Date | string
-  requiredHours: number
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
   renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Date | string | null
   scheduleEndTime?: Date | string | null
@@ -3040,7 +3542,9 @@ export type InternshipAssignmentUpdateWithoutCompanyInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3055,6 +3559,7 @@ export type InternshipAssignmentUpdateWithoutCompanyInput = {
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
   attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
   workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
@@ -3074,7 +3579,10 @@ export type InternshipAssignmentUncheckedUpdateWithoutCompanyInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3105,7 +3613,10 @@ export type InternshipAssignmentUncheckedUpdateManyWithoutCompanyInput = {
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  requiredHours?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3207,6 +3718,9 @@ export type InternshipAssignmentSelect<ExtArgs extends runtime.Types.Extensions.
   startDate?: boolean
   endDate?: boolean
   requiredHours?: boolean
+  requiredHoursConfirmedAt?: boolean
+  requiredHoursUpdatedById?: boolean
+  requiredHoursUpdateReason?: boolean
   renderedHours?: boolean
   scheduleStartTime?: boolean
   scheduleEndTime?: boolean
@@ -3223,6 +3737,7 @@ export type InternshipAssignmentSelect<ExtArgs extends runtime.Types.Extensions.
   supervisorProfile?: boolean | Prisma.SupervisorProfileDefaultArgs<ExtArgs>
   coordinatorProfile?: boolean | Prisma.CoordinatorProfileDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.InternshipAssignment$createdByArgs<ExtArgs>
+  requiredHoursUpdatedBy?: boolean | Prisma.InternshipAssignment$requiredHoursUpdatedByArgs<ExtArgs>
   attendance?: boolean | Prisma.InternshipAssignment$attendanceArgs<ExtArgs>
   workLogs?: boolean | Prisma.InternshipAssignment$workLogsArgs<ExtArgs>
   tasks?: boolean | Prisma.InternshipAssignment$tasksArgs<ExtArgs>
@@ -3245,6 +3760,9 @@ export type InternshipAssignmentSelectCreateManyAndReturn<ExtArgs extends runtim
   startDate?: boolean
   endDate?: boolean
   requiredHours?: boolean
+  requiredHoursConfirmedAt?: boolean
+  requiredHoursUpdatedById?: boolean
+  requiredHoursUpdateReason?: boolean
   renderedHours?: boolean
   scheduleStartTime?: boolean
   scheduleEndTime?: boolean
@@ -3261,6 +3779,7 @@ export type InternshipAssignmentSelectCreateManyAndReturn<ExtArgs extends runtim
   supervisorProfile?: boolean | Prisma.SupervisorProfileDefaultArgs<ExtArgs>
   coordinatorProfile?: boolean | Prisma.CoordinatorProfileDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.InternshipAssignment$createdByArgs<ExtArgs>
+  requiredHoursUpdatedBy?: boolean | Prisma.InternshipAssignment$requiredHoursUpdatedByArgs<ExtArgs>
 }, ExtArgs["result"]["internshipAssignment"]>
 
 export type InternshipAssignmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -3275,6 +3794,9 @@ export type InternshipAssignmentSelectUpdateManyAndReturn<ExtArgs extends runtim
   startDate?: boolean
   endDate?: boolean
   requiredHours?: boolean
+  requiredHoursConfirmedAt?: boolean
+  requiredHoursUpdatedById?: boolean
+  requiredHoursUpdateReason?: boolean
   renderedHours?: boolean
   scheduleStartTime?: boolean
   scheduleEndTime?: boolean
@@ -3291,6 +3813,7 @@ export type InternshipAssignmentSelectUpdateManyAndReturn<ExtArgs extends runtim
   supervisorProfile?: boolean | Prisma.SupervisorProfileDefaultArgs<ExtArgs>
   coordinatorProfile?: boolean | Prisma.CoordinatorProfileDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.InternshipAssignment$createdByArgs<ExtArgs>
+  requiredHoursUpdatedBy?: boolean | Prisma.InternshipAssignment$requiredHoursUpdatedByArgs<ExtArgs>
 }, ExtArgs["result"]["internshipAssignment"]>
 
 export type InternshipAssignmentSelectScalar = {
@@ -3305,6 +3828,9 @@ export type InternshipAssignmentSelectScalar = {
   startDate?: boolean
   endDate?: boolean
   requiredHours?: boolean
+  requiredHoursConfirmedAt?: boolean
+  requiredHoursUpdatedById?: boolean
+  requiredHoursUpdateReason?: boolean
   renderedHours?: boolean
   scheduleStartTime?: boolean
   scheduleEndTime?: boolean
@@ -3318,13 +3844,14 @@ export type InternshipAssignmentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type InternshipAssignmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "internProfileId" | "companyId" | "supervisorProfileId" | "coordinatorProfileId" | "assignmentCode" | "positionTitle" | "department" | "startDate" | "endDate" | "requiredHours" | "renderedHours" | "scheduleStartTime" | "scheduleEndTime" | "gracePeriodMinutes" | "status" | "notes" | "activatedAt" | "completedAt" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["internshipAssignment"]>
+export type InternshipAssignmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "internProfileId" | "companyId" | "supervisorProfileId" | "coordinatorProfileId" | "assignmentCode" | "positionTitle" | "department" | "startDate" | "endDate" | "requiredHours" | "requiredHoursConfirmedAt" | "requiredHoursUpdatedById" | "requiredHoursUpdateReason" | "renderedHours" | "scheduleStartTime" | "scheduleEndTime" | "gracePeriodMinutes" | "status" | "notes" | "activatedAt" | "completedAt" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["internshipAssignment"]>
 export type InternshipAssignmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   internProfile?: boolean | Prisma.InternProfileDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   supervisorProfile?: boolean | Prisma.SupervisorProfileDefaultArgs<ExtArgs>
   coordinatorProfile?: boolean | Prisma.CoordinatorProfileDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.InternshipAssignment$createdByArgs<ExtArgs>
+  requiredHoursUpdatedBy?: boolean | Prisma.InternshipAssignment$requiredHoursUpdatedByArgs<ExtArgs>
   attendance?: boolean | Prisma.InternshipAssignment$attendanceArgs<ExtArgs>
   workLogs?: boolean | Prisma.InternshipAssignment$workLogsArgs<ExtArgs>
   tasks?: boolean | Prisma.InternshipAssignment$tasksArgs<ExtArgs>
@@ -3340,6 +3867,7 @@ export type InternshipAssignmentIncludeCreateManyAndReturn<ExtArgs extends runti
   supervisorProfile?: boolean | Prisma.SupervisorProfileDefaultArgs<ExtArgs>
   coordinatorProfile?: boolean | Prisma.CoordinatorProfileDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.InternshipAssignment$createdByArgs<ExtArgs>
+  requiredHoursUpdatedBy?: boolean | Prisma.InternshipAssignment$requiredHoursUpdatedByArgs<ExtArgs>
 }
 export type InternshipAssignmentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   internProfile?: boolean | Prisma.InternProfileDefaultArgs<ExtArgs>
@@ -3347,6 +3875,7 @@ export type InternshipAssignmentIncludeUpdateManyAndReturn<ExtArgs extends runti
   supervisorProfile?: boolean | Prisma.SupervisorProfileDefaultArgs<ExtArgs>
   coordinatorProfile?: boolean | Prisma.CoordinatorProfileDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.InternshipAssignment$createdByArgs<ExtArgs>
+  requiredHoursUpdatedBy?: boolean | Prisma.InternshipAssignment$requiredHoursUpdatedByArgs<ExtArgs>
 }
 
 export type $InternshipAssignmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3357,6 +3886,7 @@ export type $InternshipAssignmentPayload<ExtArgs extends runtime.Types.Extension
     supervisorProfile: Prisma.$SupervisorProfilePayload<ExtArgs>
     coordinatorProfile: Prisma.$CoordinatorProfilePayload<ExtArgs>
     createdBy: Prisma.$UserPayload<ExtArgs> | null
+    requiredHoursUpdatedBy: Prisma.$UserPayload<ExtArgs> | null
     attendance: Prisma.$AttendancePayload<ExtArgs>[]
     workLogs: Prisma.$WorkLogPayload<ExtArgs>[]
     tasks: Prisma.$TaskPayload<ExtArgs>[]
@@ -3376,7 +3906,10 @@ export type $InternshipAssignmentPayload<ExtArgs extends runtime.Types.Extension
     department: string | null
     startDate: Date
     endDate: Date
-    requiredHours: number
+    requiredHours: number | null
+    requiredHoursConfirmedAt: Date | null
+    requiredHoursUpdatedById: string | null
+    requiredHoursUpdateReason: string | null
     renderedHours: runtime.Decimal
     scheduleStartTime: Date | null
     scheduleEndTime: Date | null
@@ -3787,6 +4320,7 @@ export interface Prisma__InternshipAssignmentClient<T, Null = never, ExtArgs ext
   supervisorProfile<T extends Prisma.SupervisorProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SupervisorProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__SupervisorProfileClient<runtime.Types.Result.GetResult<Prisma.$SupervisorProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   coordinatorProfile<T extends Prisma.CoordinatorProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CoordinatorProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__CoordinatorProfileClient<runtime.Types.Result.GetResult<Prisma.$CoordinatorProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.InternshipAssignment$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternshipAssignment$createdByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  requiredHoursUpdatedBy<T extends Prisma.InternshipAssignment$requiredHoursUpdatedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternshipAssignment$requiredHoursUpdatedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   attendance<T extends Prisma.InternshipAssignment$attendanceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternshipAssignment$attendanceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workLogs<T extends Prisma.InternshipAssignment$workLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternshipAssignment$workLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tasks<T extends Prisma.InternshipAssignment$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternshipAssignment$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3834,6 +4368,9 @@ export interface InternshipAssignmentFieldRefs {
   readonly startDate: Prisma.FieldRef<"InternshipAssignment", 'DateTime'>
   readonly endDate: Prisma.FieldRef<"InternshipAssignment", 'DateTime'>
   readonly requiredHours: Prisma.FieldRef<"InternshipAssignment", 'Int'>
+  readonly requiredHoursConfirmedAt: Prisma.FieldRef<"InternshipAssignment", 'DateTime'>
+  readonly requiredHoursUpdatedById: Prisma.FieldRef<"InternshipAssignment", 'String'>
+  readonly requiredHoursUpdateReason: Prisma.FieldRef<"InternshipAssignment", 'String'>
   readonly renderedHours: Prisma.FieldRef<"InternshipAssignment", 'Decimal'>
   readonly scheduleStartTime: Prisma.FieldRef<"InternshipAssignment", 'DateTime'>
   readonly scheduleEndTime: Prisma.FieldRef<"InternshipAssignment", 'DateTime'>
@@ -4249,6 +4786,25 @@ export type InternshipAssignmentDeleteManyArgs<ExtArgs extends runtime.Types.Ext
  * InternshipAssignment.createdBy
  */
 export type InternshipAssignment$createdByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * InternshipAssignment.requiredHoursUpdatedBy
+ */
+export type InternshipAssignment$requiredHoursUpdatedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */
