@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Icon } from "@/components/icons";
 import { EmptyState, MetricCard, PageHeader, StatusBadge } from "@/components/ui";
+import { TaskDashboardSummary } from "@/components/task-dashboard-summary";
 import { localDate } from "@/lib/attendance/domain";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
 import { prisma } from "@/lib/prisma";
@@ -12,8 +13,8 @@ export const dynamic = "force-dynamic";
 export default async function DashboardPage() {
   const user = await requireCurrentUser();
   if (user.role === "INTERN") return <InternDashboard user={user} />;
-  if (user.role === "COORDINATOR") return <CoordinatorDashboard user={user} />;
-  if (user.role === "SUPERVISOR") return <SupervisorDashboard user={user} />;
+  if (user.role === "COORDINATOR") return <><CoordinatorDashboard user={user} /><TaskDashboardSummary userId={user.id} role={user.role} /></>;
+  if (user.role === "SUPERVISOR") return <><SupervisorDashboard user={user} /><TaskDashboardSummary userId={user.id} role={user.role} /></>;
 
   const attendance = await getReviewerAttendance(user.id, user.role);
   const corrections = await getCorrectionSummary(user.id, user.role);
@@ -50,6 +51,7 @@ async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requi
       supervisorProfile: { select: { user: { select: { firstName: true, lastName: true } } } },
       attendance: { orderBy: { attendanceDate: "desc" }, take: 5, select: { id: true, attendanceDate: true, clockIn: true, clockOut: true, creditedMinutes: true, status: true, createdAt: true } },
       workLogs: { orderBy: { workDate: "desc" }, take: 5, select: { id: true, workDate: true, title: true, status: true, updatedAt: true } },
+      tasks: { where: { status: { notIn: ["COMPLETED", "CANCELLED"] } }, orderBy: { dueAt: "asc" }, take: 3, select: { id: true, title: true, status: true, dueAt: true } },
     },
   });
   const pendingCorrections = await prisma.attendanceCorrection.count({ where: { requestedById: user.id, status: "PENDING" } });
@@ -77,7 +79,7 @@ async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requi
     </section>
     <section className="dashboard-grid-secondary">
       <article className="ui-card worklog-focus"><div className="section-heading"><div><p className="eyebrow">Today’s documentation</p><h2>Daily work log</h2></div><StatusBadge tone={todayLog?.status === "APPROVED" ? "success" : todayLog?.status === "SUBMITTED" ? "info" : todayLog?.status === "REJECTED" || todayLog?.status === "REVISION_REQUIRED" ? "warning" : "neutral"}>{todayLog ? workLogLabel(todayLog.status) : "Not started"}</StatusBadge></div><p className="mt-3 text-sm leading-6 text-secondary">{todayLog?.title ?? "Document today’s accomplishments, learning, and rendered hours."}</p><Link href={logAction.href} className="button button-secondary mt-5">{logAction.label}<Icon name="arrow" /></Link></article>
-      <article className="ui-card pending-panel"><p className="eyebrow">Pending items</p><h2>Needs attention</h2><Link href="/attendance/corrections" className="pending-row"><span className="metric-icon"><Icon name="review" /></span><span><strong>Attendance corrections</strong><small>{pendingCorrections ? `${pendingCorrections} awaiting review` : "No pending requests"}</small></span><Icon name="arrow" /></Link></article>
+      <article className="ui-card pending-panel"><p className="eyebrow">Pending items</p><h2>Needs attention</h2><Link href="/tasks" className="pending-row"><span className="metric-icon"><Icon name="review" /></span><span><strong>Assigned tasks</strong><small>{assignment.tasks.length ? `${assignment.tasks.length} active or awaiting review` : "No active tasks"}</small></span><Icon name="arrow" /></Link><Link href="/attendance/corrections" className="pending-row"><span className="metric-icon"><Icon name="review" /></span><span><strong>Attendance corrections</strong><small>{pendingCorrections ? `${pendingCorrections} awaiting review` : "No pending requests"}</small></span><Icon name="arrow" /></Link></article>
     </section>
     <section className="dashboard-grid-bottom">
       <article className="ui-card activity-panel"><div className="section-heading"><div><p className="eyebrow">Latest updates</p><h2>Recent activity</h2></div></div>{activities.length ? <ol className="activity-list">{activities.map(item => <li key={item.key}><span className="activity-dot" /><div><strong>{item.title}</strong><p>{item.detail}</p></div></li>)}</ol> : <p className="empty-copy">Your attendance and work-log activity will appear here.</p>}</article>

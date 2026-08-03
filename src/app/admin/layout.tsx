@@ -16,6 +16,7 @@ const navigation: ShellNavItem[] = [
   { href: "/attendance/review", label: "Attendance Review", icon: "clock" },
   { href: "/attendance/corrections/review", label: "Correction Review", icon: "review" },
   { href: "/work-logs/review", label: "Work log review", icon: "journal" },
+  { href: "/tasks", label: "Tasks", icon: "review" },
   { href: "/admin/users", label: "All users", icon: "users", exact: true, activeQuery: { key: "role", value: null } },
   { href: "/admin/settings/office", label: "Office settings", icon: "settings" },
 ];

@@ -10,6 +10,7 @@ const internNav: ShellNavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: "home", exact: true },
   { href: "/attendance", label: "Attendance", icon: "clock" },
   { href: "/work-logs", label: "Work logs", icon: "journal" },
+  { href: "/tasks", label: "Tasks", icon: "review" },
   { href: "/attendance/corrections", label: "Corrections", icon: "review" },
 ];
 const internBottomNav: ShellNavItem[] = [
@@ -22,15 +23,17 @@ const reviewerNav: ShellNavItem[] = [
   { href: "/dashboard", label: "Overview", icon: "home", exact: true },
   { href: "/attendance/review", label: "Attendance", icon: "clock" },
   { href: "/work-logs/review", label: "Work logs", icon: "journal" },
+  { href: "/tasks/review", label: "Task review", icon: "review" },
   { href: "/attendance/corrections/review", label: "Corrections", icon: "review" },
 ];
-const coordinatorNav: ShellNavItem[] = [{ href: "/dashboard", label: "Student Progress", icon: "home", exact: true }];
+const coordinatorNav: ShellNavItem[] = [{ href: "/dashboard", label: "Student Progress", icon: "home", exact: true },{ href: "/tasks", label: "Tasks", icon: "review" }];
 const operationsNav: ShellNavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: "home", exact: true },
   { href: "/admin", label: "Company Operations", icon: "settings" },
   { href: "/attendance/review", label: "Attendance Review", icon: "clock" },
   { href: "/attendance/corrections/review", label: "Correction Review", icon: "review" },
   { href: "/work-logs/review", label: "Work Log Review", icon: "journal" },
+  { href: "/tasks", label: "Tasks", icon: "review" },
 ];
 
 export function AppShell({ user, children }: { user: ShellUser; children: ReactNode }) {

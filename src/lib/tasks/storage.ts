@@ -1,0 +1,7 @@
+import { randomUUID } from "node:crypto";import { createAdminClient } from "@/lib/supabase/admin";
+export const TASK_EVIDENCE_BUCKET="task-evidence",MAX_TASK_EVIDENCE=25*1024*1024;const types={"application/pdf":"pdf","image/jpeg":"jpg","image/png":"png","image/webp":"webp","application/vnd.openxmlformats-officedocument.wordprocessingml.document":"docx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":"xlsx"} as Record<string,string>;
+export function validateTaskEvidence(file:File|null){if(!file||!file.size)return null;if(!types[file.type])return"Use a PDF, image, DOCX, or XLSX file.";if(file.size>MAX_TASK_EVIDENCE)return"Evidence must be 25 MB or smaller.";return null}
+export function taskEvidencePath(assignmentId:string,taskId:string,type:string){return`${assignmentId}/${taskId}/${randomUUID()}.${types[type]}`}
+export async function uploadTaskEvidence(path:string,file:File){const{error}=await createAdminClient().storage.from(TASK_EVIDENCE_BUCKET).upload(path,file,{contentType:file.type,upsert:false});if(error)throw new Error("upload failed")}
+export async function removeTaskEvidence(path:string){const{error}=await createAdminClient().storage.from(TASK_EVIDENCE_BUCKET).remove([path]);return!error}
+export async function signedTaskEvidence(path:string|null){if(!path)return null;const{data,error}=await createAdminClient().storage.from(TASK_EVIDENCE_BUCKET).createSignedUrl(path,300);return error?null:data.signedUrl}
