@@ -11,7 +11,9 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "auth:test": "tsx --test scripts/test-auth-foundation.ts",
-    "db:test": "tsx scripts/test-db.ts"
+    "db:test": "tsx scripts/test-db.ts",
+    "admin:bootstrap": "tsx scripts/bootstrap-admin.ts",
+    "provisioning:test": "tsx --test scripts/test-admin-provisioning.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",
