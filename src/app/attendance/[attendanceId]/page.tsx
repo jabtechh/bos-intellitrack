@@ -1,0 +1,14 @@
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import { signedEvidenceUrl } from "@/lib/attendance/storage";
+import { requireCurrentUser } from "@/lib/auth/require-current-user";
+import { prisma } from "@/lib/prisma";
+
+export default async function AttendanceDetailPage({params}:{params:Promise<{attendanceId:string}>}){
+  const user=await requireCurrentUser(); if(user.role!=="INTERN") notFound(); const {attendanceId}=await params;
+  const record=await prisma.attendance.findFirst({where:{id:attendanceId,assignment:{internProfile:{userId:user.id}}},include:{assignment:{include:{company:true}}}}); if(!record)notFound();
+  const [clockInUrl,clockOutUrl]=await Promise.all([signedEvidenceUrl(record.clockInSelfiePath),signedEvidenceUrl(record.clockOutSelfiePath)]);
+  return <main className="min-h-screen bg-canvas px-5 py-10"><section className="mx-auto max-w-4xl"><p className="text-xs font-semibold uppercase tracking-wider text-accent-700">Attendance evidence</p><h1 className="mt-2 font-heading text-3xl font-semibold text-brand-900">{record.attendanceDate.toLocaleDateString("en-PH",{dateStyle:"long",timeZone:"UTC"})}</h1><div className="mt-6 grid gap-5 md:grid-cols-2"><Evidence title="Clock-in evidence" url={clockInUrl} distance={record.clockInDistanceMeters} accuracy={record.clockInAccuracyMeters} inside={record.clockInInsideGeofence}/><Evidence title="Clock-out evidence" url={clockOutUrl} distance={record.clockOutDistanceMeters} accuracy={record.clockOutAccuracyMeters} inside={record.clockOutInsideGeofence}/></div><dl className="mt-5 rounded-lg border border-border bg-surface p-6"><Row label="Review status" value={record.status}/><Row label="Review required" value={record.reviewRequired?"Yes":"No"}/><Row label="Reviewer remarks" value={record.reviewRemarks??"—"}/><Row label="Intern remarks" value={record.internRemarks??"—"}/></dl></section></main>;
+}
+function Evidence({title,url,distance,accuracy,inside}:{title:string;url:string|null;distance:unknown;accuracy:unknown;inside:boolean|null}){return <article className="rounded-lg border border-border bg-surface p-5"><h2 className="font-heading text-xl font-semibold">{title}</h2>{url?<Image unoptimized width={720} height={480} src={url} alt={title} className="mt-4 h-64 w-full rounded-md object-cover"/>:<p className="mt-4 text-sm text-secondary">No selfie evidence available.</p>}<dl className="mt-4"><Row label="Distance from Branch" value={distance===null?"—":`${Number(distance).toFixed(1)} m`}/><Row label="GPS accuracy" value={accuracy===null?"—":`${Number(accuracy).toFixed(1)} m`}/><Row label="Inside geofence" value={inside===null?"—":inside?"Yes":"No"}/></dl></article>}
+function Row({label,value}:{label:string;value:string}){return <div className="flex justify-between gap-4 border-b border-border py-2 last:border-0"><dt className="text-sm text-muted">{label}</dt><dd className="text-right text-sm font-medium">{value}</dd></div>}

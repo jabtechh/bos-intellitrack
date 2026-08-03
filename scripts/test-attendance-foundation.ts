@@ -1,0 +1,28 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { attendanceNeedsReview, calculateWorkedMinutes, canClockIn, canClockOut, canReviewAttendance, classifyAttendance, coordinatesSchema, finalAttendanceDecision, haversineDistanceMeters, isInsideGeofence, ownsAttendance, rejectionRemarksValid, validateSelfie } from "../src/lib/attendance/domain.ts";
+
+test("Haversine distance for identical coordinates is zero",()=>assert.equal(haversineDistanceMeters({latitude:14.5,longitude:121},{latitude:14.5,longitude:121}),0));
+test("Haversine distance is nonnegative",()=>assert.ok(haversineDistanceMeters({latitude:14.5,longitude:121},{latitude:14.6,longitude:121.1})>=0));
+test("invalid latitude is rejected",()=>assert.equal(coordinatesSchema.safeParse({latitude:91,longitude:0,accuracy:1}).success,false));
+test("invalid longitude is rejected",()=>assert.equal(coordinatesSchema.safeParse({latitude:0,longitude:181,accuracy:1}).success,false));
+test("negative accuracy is rejected",()=>assert.equal(coordinatesSchema.safeParse({latitude:0,longitude:0,accuracy:-1}).success,false));
+test("inside-geofence boundary is accepted",()=>assert.equal(isInsideGeofence(100,100),true));
+test("outside-geofence evidence requires review",()=>assert.equal(attendanceNeedsReview({clockInInside:false,clockInAccuracy:5,hasClockInSelfie:true}),true));
+test("poor GPS accuracy requires review",()=>assert.equal(attendanceNeedsReview({clockInInside:true,clockInAccuracy:101,hasClockInSelfie:true}),true));
+test("duplicate daily clock-in is rejected",()=>assert.equal(canClockIn(true),false));
+test("clock-out without an open attendance record is rejected",()=>assert.equal(canClockOut(null),false));
+test("repeated clock-out is rejected",()=>assert.equal(canClockOut({clockIn:new Date(),clockOut:new Date()}),false));
+test("worked-minute calculation is correct",()=>assert.equal(calculateWorkedMinutes(new Date("2026-08-01T08:00:00Z"),new Date("2026-08-01T17:15:00Z")),555));
+const schedule={scheduleStart:new Date("1970-01-01T08:00:00Z"),scheduleEnd:new Date("1970-01-01T17:00:00Z"),graceMinutes:10,timezone:"UTC"};
+test("late classification is correct",()=>assert.equal(classifyAttendance({...schedule,clockIn:new Date("2026-08-01T08:11:00Z"),clockOut:new Date("2026-08-01T17:00:00Z")}),"LATE"));
+test("early-departure classification is correct",()=>assert.equal(classifyAttendance({...schedule,clockIn:new Date("2026-08-01T08:00:00Z"),clockOut:new Date("2026-08-01T16:59:00Z")}),"EARLY_DEPARTURE"));
+test("valid evidence can be automatically approved",()=>assert.deepEqual(finalAttendanceDecision({clockInInside:true,clockOutInside:true,clockInAccuracy:10,clockOutAccuracy:10,hasClockInSelfie:true,hasClockOutSelfie:true,workedMinutes:480}),{reviewRequired:false,status:"APPROVED",creditedMinutes:480}));
+test("incomplete or unusual evidence becomes pending review",()=>assert.equal(finalAttendanceDecision({clockInInside:true,clockOutInside:true,clockInAccuracy:10,clockOutAccuracy:10,hasClockInSelfie:true,hasClockOutSelfie:false,workedMinutes:480}).status,"PENDING_REVIEW"));
+test("rejecting attendance requires remarks",()=>{assert.equal(rejectionRemarksValid(""),false);assert.equal(rejectionRemarksValid("Evidence mismatch"),true)});
+test("intern ownership rejects another intern record",()=>assert.equal(ownsAttendance("intern-a","intern-b"),false));
+test("supervisor scope rejects another assignment",()=>assert.equal(canReviewAttendance({role:"SUPERVISOR",userId:"a",supervisorUserId:"b",representativeUserIds:[]}),false));
+test("representative scope rejects another Branch",()=>assert.equal(canReviewAttendance({role:"REPRESENTATIVE",userId:"a",supervisorUserId:"b",representativeUserIds:["c"]}),false));
+test("non-reviewer roles cannot approve attendance",()=>assert.equal(canReviewAttendance({role:"COORDINATOR",userId:"a",supervisorUserId:"a",representativeUserIds:["a"]}),false));
+test("client-supplied status and assignment identifiers are ignored",()=>{const parsed=coordinatesSchema.parse({latitude:1,longitude:2,accuracy:3,status:"APPROVED",assignmentId:"unsafe"});assert.equal("status" in parsed,false);assert.equal("assignmentId" in parsed,false)});
+test("selfie validation enforces type and size",()=>{assert.match(validateSelfie({type:"text/plain",size:1})??"",/JPEG/);assert.match(validateSelfie({type:"image/jpeg",size:11*1024*1024})??"",/10 MB/)});

@@ -15,6 +15,8 @@
     "admin:bootstrap": "tsx scripts/bootstrap-admin.ts",
     "admin:test": "tsx scripts/test-admin.ts",
     "assignment:test": "tsx --test scripts/test-assignment-foundation.ts",
+    "attendance:test": "tsx --test scripts/test-attendance-foundation.ts",
+    "storage:attendance:setup": "tsx scripts/setup-attendance-storage.ts",
     "provisioning:test": "tsx --test scripts/test-admin-provisioning.ts"
   },
   "dependencies": {
