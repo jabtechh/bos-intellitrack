@@ -1,10 +1,12 @@
-import "dotenv/config";
+import { config } from "dotenv";
 import { chmod,readFile,writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { prisma } from "@/lib/prisma";
 import { BO_COFFEE_OFFICE_CODE,internalInternshipCode,timeOnReferenceDate } from "@/lib/organization/bo-coffee";
 import { PILOT_ROLES,PILOT_SCHOOL_CODE,pilotDates,pilotEmail,securePilotPassword,shouldCompensateAuth,validatePilotEnvironment,type PilotRole } from "@/lib/pilot/setup";
+
+config({path:[".env.local",".env"],quiet:true});
 
 const credentialsPath=".pilot-credentials.local.json";
 type Credential={email:string;password:string};type Credentials=Record<PilotRole,Credential>;

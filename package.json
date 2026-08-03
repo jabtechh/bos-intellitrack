@@ -22,8 +22,8 @@
     "provisioning:test": "tsx --test scripts/test-admin-provisioning.ts",
     "organization:setup": "tsx scripts/setup-bo-coffee-office.ts",
     "organization:test": "tsx --test scripts/test-single-organization.ts"
-    ,"pilot:setup": "tsx scripts/setup-pilot-data.ts"
-    ,"pilot:cleanup": "tsx scripts/cleanup-pilot-data.ts"
+    ,"pilot:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-pilot-data.ts"
+    ,"pilot:cleanup": "tsx --env-file=.env --env-file=.env.local scripts/cleanup-pilot-data.ts"
     ,"pilot:test": "tsx --test scripts/test-pilot-setup.ts"
   },
   "dependencies": {
