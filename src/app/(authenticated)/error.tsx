@@ -1,0 +1,3 @@
+"use client";
+import Link from "next/link";
+export default function AuthenticatedError({reset}:{error:Error;reset:()=>void}){return <div className="operational-page"><section className="ui-card mx-auto max-w-xl p-6 text-center sm:p-8"><p className="eyebrow">Unable to load this view</p><h1 className="mt-3 font-heading text-3xl font-semibold text-brand-900">Your workspace is still available</h1><p className="mt-3 text-secondary">Try this page again or return to the dashboard. No changes were made.</p><div className="action-bar mt-6 justify-center"><button className="button button-primary" onClick={reset}>Try again</button><Link href="/dashboard" prefetch className="button button-secondary">Dashboard</Link></div></section></div>}

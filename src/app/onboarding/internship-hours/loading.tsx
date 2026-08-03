@@ -1,0 +1,2 @@
+import { Skeleton } from "@/components/ui";
+export default function Loading(){return <main className="min-h-screen bg-canvas px-4 py-8 sm:px-6 lg:py-12"><section className="ui-card mx-auto max-w-xl p-6 sm:p-8" role="status" aria-busy="true"><span className="sr-only">Loading internship-hours setup</span><Skeleton className="h-3 w-28"/><Skeleton className="mt-4 h-10 w-4/5"/><Skeleton className="mt-4 h-4 w-full"/><Skeleton className="mt-8 h-20 w-full"/><Skeleton className="mt-5 h-12 w-full"/></section></main>}

@@ -17,19 +17,24 @@ test("authenticated routes share one persistent shell layout", () => {
 });
 test("internal shell navigation uses Next Link without hard navigation", () => {
   assert.match(navigation, /import Link from "next\/link"/);
+  assert.match(navigation, /prefetch/);
   assert.doesNotMatch(shell + navigation, /window\.location|location\.assign|document\.location/);
 });
 test("active navigation and mobile persistence are exposed accessibly", () => {
   assert.match(navigation, /usePathname/); assert.match(navigation, /aria-current/);
-  assert.match(shell, /mobile label="Mobile navigation"/); assert.match(shell, /id="main-content"/); assert.match(shell, /Skip to main content/);
+  assert.match(shell, /mobile label="Intern mobile navigation"/); assert.match(shell, /id="main-content"/); assert.match(shell, /Skip to main content/); assert.match(shell,/Mobile application navigation/);
+  assert.match(shell,/Dashboard[\s\S]*Attendance[\s\S]*Work Logs[\s\S]*More/);
 });
 test("shell-preserving destination skeletons exist", () => {
-  for (const path of ["dashboard/loading.tsx", "attendance/loading.tsx", "attendance/review/loading.tsx", "attendance/corrections/loading.tsx", "work-logs/loading.tsx", "work-logs/review/loading.tsx"]) assert.equal(existsSync(`src/app/(authenticated)/${path}`), true);
+  for (const path of ["dashboard/loading.tsx", "attendance/loading.tsx", "attendance/history/loading.tsx", "attendance/review/loading.tsx", "attendance/corrections/loading.tsx", "work-logs/loading.tsx", "work-logs/review/loading.tsx"]) assert.equal(existsSync(`src/app/(authenticated)/${path}`), true);
+  assert.equal(existsSync("src/app/onboarding/internship-hours/loading.tsx"),true);
 });
 test("dashboard uses real operational data and primary actions", () => {
   assert.match(dashboard, /requiredHours/); assert.match(dashboard, /renderedHours/); assert.match(dashboard, /Today’s attendance/); assert.match(dashboard, /Create work log/); assert.match(attendance, /Submit clock-in/); assert.match(workLogs, /Create work log/);
   assert.doesNotMatch(dashboard, /AI productivity score|evaluation score|fake analytics|branch selector/i);
 });
+test("loading and error UI preserve page-shaped content inside the shell",()=>{const ui=read("src/components/ui.tsx");assert.match(ui,/skeleton-header/);assert.match(ui,/skeleton-summary/);assert.match(ui,/skeleton-row/);assert.equal(existsSync("src/app/(authenticated)/error.tsx"),true)});
+test("required-hours and workflow controls remain real and reachable",()=>{assert.match(dashboard,/Required hours/);assert.doesNotMatch(dashboard,/requiredHours===null[\s\S]{0,500}progress-percent/);const form=read("src/app/work-logs/work-log-form.tsx");assert.match(form,/Save Draft/);assert.match(form,/Submit for Review/);assert.match(attendance,/Submit clock-in/);assert.match(attendance,/Submit clock-out/)});
 test("navigation does not expose multi-organization terminology", () => {
   assert.doesNotMatch(shell + navigation, />\s*(Companies|Branches|Assignments|Placements)\s*</);
 });

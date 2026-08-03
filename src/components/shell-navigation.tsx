@@ -14,7 +14,7 @@ export function ShellNavigation({ items, mobile = false, label }: { items: Shell
       const target = item.activePath ?? item.href.split("?")[0];
       const pathActive = item.exact ? pathname === target : pathname === target || pathname.startsWith(`${target}/`);
       const active = pathActive && (!item.activeQuery || searchParams.get(item.activeQuery.key) === item.activeQuery.value);
-      return <Link key={item.href} href={item.href} aria-current={active ? "page" : undefined} className={active ? "is-active" : undefined}>
+      return <Link key={item.href} href={item.href} prefetch aria-current={active ? "page" : undefined} className={active ? "is-active" : undefined}>
         <Icon name={item.icon} /><span>{item.label}</span>
       </Link>;
     })}

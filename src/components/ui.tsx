@@ -22,10 +22,14 @@ export function EmptyState({ title, description, action }: { title: string; desc
   return <div className="empty-state"><span><Icon name="journal" /></span><h2>{title}</h2><p>{description}</p>{action ? <Link className="button button-primary" href={action.href}><Icon name="plus" />{action.label}</Link> : null}</div>;
 }
 
+export function ResponsiveRecordList({ children, label }: { children: ReactNode; label: string }) {
+  return <section className="responsive-record-list" aria-label={label}>{children}</section>;
+}
+
 export function Skeleton({ className = "" }: { className?: string }) { return <span aria-hidden="true" className={`skeleton ${className}`} />; }
 
 export function RouteSkeleton({ rows = 3 }: { rows?: number }) {
-  return <div className="route-skeleton" role="status" aria-live="polite"><span className="sr-only">Loading page content</span><Skeleton className="h-3 w-28" /><Skeleton className="mt-4 h-10 max-w-md" /><Skeleton className="mt-3 h-4 max-w-xl" /><div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{Array.from({ length: 4 }, (_, index) => <Skeleton key={index} className="h-24" />)}</div><div className="ui-card mt-6 overflow-hidden p-5">{Array.from({ length: rows }, (_, index) => <Skeleton key={index} className="mb-4 h-14 last:mb-0" />)}</div></div>;
+  return <div className="route-skeleton" role="status" aria-live="polite" aria-busy="true"><span className="sr-only">Loading page content</span><header className="skeleton-header"><div><Skeleton className="h-3 w-28" /><Skeleton className="mt-4 h-10 max-w-md" /><Skeleton className="mt-3 h-4 max-w-xl" /></div><Skeleton className="h-11 w-36" /></header><div className="skeleton-summary">{Array.from({ length: 4 }, (_, index) => <Skeleton key={index} className="h-24" />)}</div><div className="skeleton-panel"><Skeleton className="h-5 w-44" />{Array.from({ length: rows }, (_, index) => <div className="skeleton-row" key={index}><Skeleton className="h-4 w-32"/><Skeleton className="h-4 w-full"/><Skeleton className="h-9 w-24"/></div>)}</div></div>;
 }
 
 export function Timeline({ items }: { items: { title: string; detail?: string; complete?: boolean }[] }) {
