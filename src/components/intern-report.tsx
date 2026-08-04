@@ -1,0 +1,24 @@
+import Link from "next/link";
+import { StatusBadge } from "@/components/ui";
+import { CATEGORY_LABELS } from "@/lib/documents/domain";
+import { reportTotals, type getInternReport } from "@/lib/reports/data";
+type Report=NonNullable<Awaited<ReturnType<typeof getInternReport>>>;
+const date=(x:Date|null)=>x?x.toLocaleDateString("en-PH",{dateStyle:"medium",timeZone:"UTC"}):"Not available";
+const hours=(m:number|null)=>m==null?"Not available":`${Math.floor(m/60)}h ${m%60}m`;
+export function InternReport({report:r,period,exportHref}:{report:Report;period:{from?:string;to?:string};exportHref:string}) {
+ const t=reportTotals(r),name=`${r.internProfile.user.firstName} ${r.internProfile.user.lastName}`;
+ return <><section className="ui-card mb-6 grid gap-5 p-5 sm:grid-cols-2 lg:grid-cols-4"><Metric label="Required hours" value={hours(t.requiredMinutes)}/><Metric label="Credited hours" value={hours(t.creditedMinutes)}/><Metric label="Remaining hours" value={hours(t.remainingMinutes)}/><Metric label="Attendance exceptions" value={String(t.exceptionCount)}/></section><div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]"><div className="space-y-6">
+ <Section title="Internship information"><dl className="grid gap-4 sm:grid-cols-2"><Item label="Intern" value={name}/><Item label="Partner school" value={r.internProfile.school.name}/><Item label="Program" value={r.internProfile.course}/><Item label="Internship period" value={`${date(r.startDate)} – ${date(r.endDate)}`}/><Item label="Company Supervisor" value={`${r.supervisorProfile.user.firstName} ${r.supervisorProfile.user.lastName}`}/><Item label="Required-hours source" value={r.requiredHoursConfirmedAt?"Confirmed internship requirement":"Not available"}/></dl></Section>
+ <Section title="Attendance summary">{r.attendance.length?<div className="divide-y divide-border">{r.attendance.map(x=><div className="grid gap-2 py-3 sm:grid-cols-[1fr_1fr_auto]" key={x.attendanceDate.toISOString()}><span>{date(x.attendanceDate)}</span><span>{hours(x.creditedMinutes)}</span><StatusBadge>{x.reviewRequired?"Needs review":x.status.replaceAll("_"," ").toLowerCase()}</StatusBadge></div>)}</div>:<Unavailable/>}</Section>
+ <Section title="Approved Daily Work Logs"><Records rows={r.workLogs.map(x=>({key:x.workDate.toISOString(),title:x.title,meta:date(x.workDate),body:x.description}))}/></Section>
+ <Section title="Completed Tasks"><Records rows={r.tasks.map((x,i)=>({key:`${x.title}-${i}`,title:x.title,meta:`Completed ${date(x.completedAt)}`,body:x.description}))}/></Section>
+ <Section title="Finalized Evaluations"><Records rows={r.evaluations.map(x=>({key:`${x.evaluationType}-${x.evaluationDate.toISOString()}`,title:`${x.evaluationType.replaceAll("_"," ").toLowerCase()} evaluation`,meta:date(x.evaluationDate),body:[x.overallScore!=null?`Recorded score: ${x.overallScore}`:"No overall score recorded.",x.strengths&&`Strengths: ${x.strengths}`,x.areasForImprovement&&`Development areas: ${x.areasForImprovement}`,x.comments].filter(Boolean).join(" · ")}))}/></Section>
+ <Section title="Visible Feedback"><Records rows={r.feedback.map((x,i)=>({key:`${x.createdAt.toISOString()}-${i}`,title:x.title||"Feedback",meta:date(x.createdAt),body:x.content}))}/></Section>
+ <Section title="Approved portfolio documents"><Records rows={r.documents.map((x,i)=>({key:`${x.fileName}-${i}`,title:x.fileName,meta:`${CATEGORY_LABELS[x.category]} · ${date(x.createdAt)}`,body:x.description}))}/></Section>
+ </div><aside><section className="ui-card sticky top-6 p-5"><h2 className="section-title">Report controls</h2><p className="mt-2 text-sm text-secondary">Period: {period.from||"Internship start"} to {period.to||"Present"}</p><Link href={exportHref} className="button button-primary mt-5 w-full">Export private PDF</Link><p className="mt-3 text-xs text-muted">The PDF excludes evidence, private files, restricted documents, and internal identifiers.</p></section></aside></div></>;
+}
+function Records({rows}:{rows:{key:string;title:string;meta:string;body?:string|null}[]}){return rows.length?<ul className="space-y-4">{rows.map(x=><li key={x.key}><strong>{x.title}</strong><small className="block text-muted">{x.meta}</small>{x.body?<p className="mt-1 text-secondary">{x.body}</p>:null}</li>)}</ul>:<Unavailable/>}
+function Section({title,children}:{title:string;children:React.ReactNode}){return <section className="ui-card p-5 sm:p-6"><h2 className="section-title">{title}</h2><div className="mt-4">{children}</div></section>}
+function Metric({label,value}:{label:string;value:string}){return <div><small className="text-muted">{label}</small><strong className="mt-1 block text-xl">{value}</strong></div>}
+function Item({label,value}:{label:string;value:string|null}){return <div><dt className="text-xs text-muted">{label}</dt><dd>{value||"Not available"}</dd></div>}
+function Unavailable(){return <p className="text-secondary">No eligible records are available for this report period.</p>}

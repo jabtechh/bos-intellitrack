@@ -1,0 +1,16 @@
+import { NextResponse } from "next/server";
+import { requirePortfolioViewer } from "@/lib/portfolio/authorization";
+import { getInternReport, reportTotals } from "@/lib/reports/data";
+import { createReportPdf } from "@/lib/reports/pdf";
+import { reportPeriod, safePdfFilename } from "@/lib/reports/domain";
+import { CATEGORY_LABELS } from "@/lib/documents/domain";
+const d=(x:Date|null|undefined)=>x?x.toLocaleDateString("en-PH",{dateStyle:"medium",timeZone:"UTC"}):"Not available",h=(m:number|null)=>m==null?"Not available":`${Math.floor(m/60)}h ${m%60}m`;
+export async function GET(request:Request,{params}:{params:Promise<{internId:string}>}) {
+ const c=await requirePortfolioViewer(),{internId}=await params,url=new URL(request.url),period=reportPeriod({from:url.searchParams.get("from")??undefined,to:url.searchParams.get("to")??undefined});
+ if("error" in period)return NextResponse.json({error:period.error},{status:400});
+ const r=await getInternReport(c,internId,period);if(!r)return new NextResponse("Not found",{status:404});
+ const t=reportTotals(r),name=`${r.internProfile.user.firstName} ${r.internProfile.user.lastName}`;
+ const lines=["INTELLITRACK - BO'S COFFEE MAIN OFFICE","PRIVATE INTERNSHIP REPORT",`Generated: ${d(new Date())}`,`Report period: ${d(period.from)} to ${d(period.to)}`,"",`Intern: ${name}`,`Partner school: ${r.internProfile.school.name}`,`Program: ${r.internProfile.course??"Not available"}`,`Internship period: ${d(r.startDate)} to ${d(r.endDate)}`,`Company Supervisor: ${r.supervisorProfile.user.firstName} ${r.supervisorProfile.user.lastName}`,"","HOURS",`Required: ${h(t.requiredMinutes)}`,`Credited: ${h(t.creditedMinutes)}`,`Remaining: ${h(t.remainingMinutes)}`,"","ATTENDANCE SUMMARY",`${r.attendance.length} eligible attendance records; ${t.exceptionCount} exceptions.`,...r.attendance.map(x=>`${d(x.attendanceDate)} - ${h(x.creditedMinutes)} - ${x.reviewRequired?"Needs review":"Recorded"}`),"","APPROVED DAILY WORK LOGS",...(r.workLogs.length?r.workLogs.map(x=>`${d(x.workDate)} - ${x.title}: ${x.description}`):["No eligible records available."]),"","COMPLETED TASKS",...(r.tasks.length?r.tasks.map(x=>`${d(x.completedAt)} - ${x.title}${x.description?`: ${x.description}`:""}`):["No eligible records available."]),"","FINALIZED EVALUATIONS",...(r.evaluations.length?r.evaluations.map(x=>`${d(x.evaluationDate)} - ${x.evaluationType.replaceAll("_"," ")} - Score: ${x.overallScore??"Not recorded"}${x.comments?` - ${x.comments}`:""}`):["No eligible records available."]),"","VISIBLE FEEDBACK",...(r.feedback.length?r.feedback.map(x=>`${d(x.createdAt)} - ${x.title??"Feedback"}: ${x.content}`):["No eligible records available."]),"","APPROVED PORTFOLIO DOCUMENTS",...(r.documents.length?r.documents.map(x=>`${x.fileName} - ${CATEGORY_LABELS[x.category]} - ${d(x.createdAt)}`):["No eligible records available."]),"","This report intentionally excludes private evidence, file locations, restricted documents, credentials, and internal identifiers."];
+ const pdf=createReportPdf(lines);
+ return new NextResponse(new Uint8Array(pdf),{headers:{"Content-Type":"application/pdf","Content-Disposition":`attachment; filename="${safePdfFilename(name)}"`,"Cache-Control":"private, no-store","X-Content-Type-Options":"nosniff"}});
+}

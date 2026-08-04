@@ -36,6 +36,7 @@
     ,"storage:tasks:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-task-storage.ts"
     ,"evaluation:test": "tsx --test scripts/test-evaluation-foundation.ts"
     ,"document:test": "tsx --test scripts/test-document-foundation.ts"
+    ,"portfolio:test": "tsx --test scripts/test-portfolio-report-foundation.ts"
     ,"storage:documents:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-document-storage.ts"
   },
   "dependencies": {
