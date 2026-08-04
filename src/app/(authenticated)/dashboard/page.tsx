@@ -4,6 +4,7 @@ import { Icon } from "@/components/icons";
 import { EmptyState, MetricCard, PageHeader, StatusBadge } from "@/components/ui";
 import { TaskDashboardSummary } from "@/components/task-dashboard-summary";
 import { EvaluationDashboardSummary } from "@/components/evaluation-dashboard-summary";
+import { DocumentDashboardSummary } from "@/components/document-dashboard-summary";
 import { localDate } from "@/lib/attendance/domain";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
 import { prisma } from "@/lib/prisma";
@@ -14,8 +15,8 @@ export const dynamic = "force-dynamic";
 export default async function DashboardPage() {
   const user = await requireCurrentUser();
   if (user.role === "INTERN") return <InternDashboard user={user} />;
-  if (user.role === "COORDINATOR") return <><CoordinatorDashboard user={user} /><TaskDashboardSummary userId={user.id} role={user.role} /><EvaluationDashboardSummary userId={user.id} role={user.role}/></>;
-  if (user.role === "SUPERVISOR") return <><SupervisorDashboard user={user} /><TaskDashboardSummary userId={user.id} role={user.role} /><EvaluationDashboardSummary userId={user.id} role={user.role}/></>;
+  if (user.role === "COORDINATOR") return <><CoordinatorDashboard user={user} /><TaskDashboardSummary userId={user.id} role={user.role} /><EvaluationDashboardSummary userId={user.id} role={user.role}/><DocumentDashboardSummary userId={user.id} role={user.role}/></>;
+  if (user.role === "SUPERVISOR") return <><SupervisorDashboard user={user} /><TaskDashboardSummary userId={user.id} role={user.role} /><EvaluationDashboardSummary userId={user.id} role={user.role}/><DocumentDashboardSummary userId={user.id} role={user.role}/></>;
 
   const attendance = await getReviewerAttendance(user.id, user.role);
   const corrections = await getCorrectionSummary(user.id, user.role);
@@ -54,6 +55,7 @@ async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requi
       workLogs: { orderBy: { workDate: "desc" }, take: 5, select: { id: true, workDate: true, title: true, status: true, updatedAt: true } },
       tasks: { where: { status: { notIn: ["COMPLETED", "CANCELLED"] } }, orderBy: { dueAt: "asc" }, take: 3, select: { id: true, title: true, status: true, dueAt: true } },
       evaluations: { where: { status: { in: ["SUBMITTED", "ACKNOWLEDGED"] } }, orderBy: { submittedAt: "desc" }, take: 1, select: { id: true, evaluationType: true, overallScore: true, submittedAt: true } },
+      documents: { where: { status: { not: "ARCHIVED" } }, orderBy: { createdAt: "desc" }, take: 3, select: { id: true, fileName: true, status: true, createdAt: true } },
     },
   });
   const pendingCorrections = await prisma.attendanceCorrection.count({ where: { requestedById: user.id, status: "PENDING" } });
@@ -72,6 +74,7 @@ async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requi
     ...assignment.attendance.map(row => ({ key: `a-${row.id}`, at: row.createdAt, title: `Attendance ${attendanceLabel(row.status).toLowerCase()}`, detail: formatDate(row.attendanceDate) })),
     ...assignment.workLogs.map(row => ({ key: `w-${row.id}`, at: row.updatedAt, title: workLogLabel(row.status), detail: row.title })),
     ...assignment.evaluations.map(row => ({ key: `e-${row.id}`, at: row.submittedAt??new Date(0), title: "Finalized evaluation", detail: `${row.evaluationType.charAt(0)+row.evaluationType.slice(1).toLowerCase()} · ${row.overallScore?.toString()??"Score not provided"}` })),
+    ...assignment.documents.map(row => ({ key: `d-${row.id}`, at: row.createdAt, title: "Document update", detail: row.fileName })),
   ].sort((a, b) => b.at.getTime() - a.at.getTime()).slice(0, 5);
 
   return <div className="dashboard-page">

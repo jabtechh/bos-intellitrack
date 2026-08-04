@@ -7,7 +7,7 @@ import { BO_COFFEE_OFFICE_CODE } from "@/lib/organization/bo-coffee";
 export default async function AdminPage() {
   const start = new Date(); start.setUTCHours(0, 0, 0, 0);
   const end = new Date(start); end.setUTCDate(end.getUTCDate() + 1);
-  const [office, interns, supervisors, schools, present, pending, hours, coordinators, pendingCorrections, pendingWorkLogs, pendingTasks, finalizedEvaluations, recentAttendance, recentWorkLogs] = await Promise.all([
+  const [office, interns, supervisors, schools, present, pending, hours, coordinators, pendingCorrections, pendingWorkLogs, pendingTasks, finalizedEvaluations, documents, recentAttendance, recentWorkLogs] = await Promise.all([
     prisma.company.findUnique({ where: { companyCode: BO_COFFEE_OFFICE_CODE } }),
     prisma.user.count({ where: { role: "INTERN", isActive: true } }),
     prisma.user.count({ where: { role: "SUPERVISOR", isActive: true } }),
@@ -20,6 +20,7 @@ export default async function AdminPage() {
     prisma.workLog.count({ where: { status: "SUBMITTED" } }),
     prisma.task.count({ where: { status: "SUBMITTED" } }),
     prisma.evaluation.count({ where: { status: { in: ["SUBMITTED", "ACKNOWLEDGED"] } } }),
+    prisma.document.count({ where: { status: { not: "ARCHIVED" } } }),
     prisma.attendance.findMany({orderBy:{createdAt:"desc"},take:4,select:{id:true,attendanceDate:true,status:true,assignment:{select:{internProfile:{select:{user:{select:{firstName:true,lastName:true}}}}}}}}),
     prisma.workLog.findMany({orderBy:{updatedAt:"desc"},take:4,select:{id:true,title:true,status:true,updatedAt:true,assignment:{select:{internProfile:{select:{user:{select:{firstName:true,lastName:true}}}}}}}}),
   ]);
@@ -40,6 +41,7 @@ export default async function AdminPage() {
       <MetricCard label="Work log reviews" value={pendingWorkLogs} icon="journal" />
       <MetricCard label="Task submissions" value={pendingTasks} icon="review" />
       <MetricCard label="Finalized evaluations" value={finalizedEvaluations} icon="journal" />
+      <MetricCard label="Documents" value={documents} icon="journal" />
       <MetricCard label="Credited hours" value={Math.round((hours._sum.creditedMinutes ?? 0) / 60)} icon="journal" />
       <MetricCard label="Company Supervisors" value={supervisors} icon="users" />
       <MetricCard label="Partner schools" value={schools} icon="school" />

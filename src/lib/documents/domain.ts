@@ -1,0 +1,8 @@
+import{z}from"zod";import type{DocumentCategory,DocumentStatus}from"@/generated/prisma/enums";
+export const CATEGORY_LABELS:Record<DocumentCategory,string>={INTERNSHIP_REQUIREMENT:"Internship requirement",ENDORSEMENT_LETTER:"Endorsement letter",INTERNSHIP_AGREEMENT:"Internship agreement",IDENTIFICATION:"Identification",MEDICAL_DOCUMENT:"Medical document",DAILY_REPORT:"Daily report",WEEKLY_REPORT:"Weekly report",FINAL_REPORT:"Final report",CERTIFICATE:"Certificate",WORK_SAMPLE:"Work sample",SUPPORTING_DOCUMENT:"Supporting document",OTHER:"Other"};
+export const STATUS_LABELS:Record<DocumentStatus,string>={PENDING_REVIEW:"Pending review",APPROVED:"Approved",REJECTED:"Needs replacement",REPLACED:"Replaced",ARCHIVED:"Archived"};
+const optionalIntern=z.preprocess(x=>x===""?undefined:x,z.string().uuid("Select a valid Intern.").optional());
+export const documentInputSchema=z.object({internUserId:optionalIntern,fileName:z.string().trim().min(1,"Document title is required.").max(255),category:z.enum(["INTERNSHIP_REQUIREMENT","ENDORSEMENT_LETTER","INTERNSHIP_AGREEMENT","IDENTIFICATION","MEDICAL_DOCUMENT","DAILY_REPORT","WEEKLY_REPORT","FINAL_REPORT","CERTIFICATE","WORK_SAMPLE","SUPPORTING_DOCUMENT","OTHER"]),description:z.string().trim().max(5000).optional()});
+export const reviewSchema=z.object({decision:z.enum(["APPROVED","REJECTED"]),remarks:z.string().trim().max(5000)}).superRefine((x,c)=>{if(x.decision==="REJECTED"&&!x.remarks)c.addIssue({code:"custom",path:["remarks"],message:"Explain why replacement is needed."})});
+export const isReplaceable=(status:DocumentStatus)=>status==="PENDING_REVIEW"||status==="REJECTED";
+export const extensionOf=(name:string)=>name.includes(".")?name.split(".").pop()!.toLowerCase().slice(0,20):null;

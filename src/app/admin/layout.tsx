@@ -18,6 +18,7 @@ const navigation: ShellNavItem[] = [
   { href: "/work-logs/review", label: "Work log review", icon: "journal" },
   { href: "/tasks", label: "Tasks", icon: "review" },
   { href: "/evaluations", label: "Evaluations", icon: "journal" },
+  { href: "/documents/manage", label: "Documents", icon: "journal" },
   { href: "/admin/users", label: "All users", icon: "users", exact: true, activeQuery: { key: "role", value: null } },
   { href: "/admin/settings/office", label: "Office settings", icon: "settings" },
 ];
