@@ -34,6 +34,7 @@
     ,"required-hours:test": "tsx --env-file=.env --env-file=.env.local --test scripts/test-required-hours.ts"
     ,"task:test": "tsx scripts/test-task-foundation.ts"
     ,"storage:tasks:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-task-storage.ts"
+    ,"evaluation:test": "tsx --test scripts/test-evaluation-foundation.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",
