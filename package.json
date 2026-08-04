@@ -21,25 +21,27 @@
     "storage:corrections:setup": "tsx scripts/setup-attendance-correction-storage.ts",
     "provisioning:test": "tsx --test scripts/test-admin-provisioning.ts",
     "organization:setup": "tsx scripts/setup-bo-coffee-office.ts",
-    "organization:test": "tsx --test scripts/test-single-organization.ts"
-    ,"pilot:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-pilot-data.ts"
-    ,"pilot:cleanup": "tsx --env-file=.env --env-file=.env.local scripts/cleanup-pilot-data.ts"
-    ,"pilot:test": "tsx --test scripts/test-pilot-setup.ts"
-    ,"pilot:verify": "tsx --env-file=.env --env-file=.env.local scripts/verify-pilot-state.ts"
-    ,"pilot:normalize": "tsx --env-file=.env --env-file=.env.local scripts/normalize-pilot-data.ts"
-    ,"work-log:test": "tsx --test scripts/test-work-log-foundation.ts"
-    ,"storage:work-logs:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-work-log-storage.ts"
-    ,"navigation:test": "tsx --test scripts/test-navigation-ui.ts"
-    ,"roles:test": "tsx --test scripts/test-role-alignment.ts"
-    ,"required-hours:test": "tsx --env-file=.env --env-file=.env.local --test scripts/test-required-hours.ts"
-    ,"task:test": "tsx scripts/test-task-foundation.ts"
-    ,"storage:tasks:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-task-storage.ts"
-    ,"evaluation:test": "tsx --test scripts/test-evaluation-foundation.ts"
-    ,"document:test": "tsx --test scripts/test-document-foundation.ts"
-    ,"portfolio:test": "tsx --test scripts/test-portfolio-report-foundation.ts"
-    ,"storage:documents:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-document-storage.ts"
+    "organization:test": "tsx --test scripts/test-single-organization.ts",
+    "pilot:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-pilot-data.ts",
+    "pilot:cleanup": "tsx --env-file=.env --env-file=.env.local scripts/cleanup-pilot-data.ts",
+    "pilot:test": "tsx --test scripts/test-pilot-setup.ts",
+    "pilot:verify": "tsx --env-file=.env --env-file=.env.local scripts/verify-pilot-state.ts",
+    "pilot:normalize": "tsx --env-file=.env --env-file=.env.local scripts/normalize-pilot-data.ts",
+    "work-log:test": "tsx --test scripts/test-work-log-foundation.ts",
+    "storage:work-logs:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-work-log-storage.ts",
+    "navigation:test": "tsx --test scripts/test-navigation-ui.ts",
+    "roles:test": "tsx --test scripts/test-role-alignment.ts",
+    "required-hours:test": "tsx --env-file=.env --env-file=.env.local --test scripts/test-required-hours.ts",
+    "task:test": "tsx scripts/test-task-foundation.ts",
+    "storage:tasks:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-task-storage.ts",
+    "evaluation:test": "tsx --test scripts/test-evaluation-foundation.ts",
+    "document:test": "tsx --test scripts/test-document-foundation.ts",
+    "portfolio:test": "tsx --test scripts/test-portfolio-report-foundation.ts",
+    "ai:test": "tsx --test scripts/test-ai-foundation.ts",
+    "storage:documents:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-document-storage.ts"
   },
   "dependencies": {
+    "@google/genai": "^2.15.0",
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
     "@supabase/ssr": "^0.12.4",
