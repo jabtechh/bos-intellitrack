@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Icon } from "@/components/icons";
+import { AnnouncementManagerSummary, AnnouncementReaderSummary } from "@/components/announcement-dashboard-summary";
 import { EmptyState, MetricCard, PageHeader, StatusBadge } from "@/components/ui";
 import { TaskDashboardSummary } from "@/components/task-dashboard-summary";
 import { EvaluationDashboardSummary } from "@/components/evaluation-dashboard-summary";
 import { DocumentDashboardSummary } from "@/components/document-dashboard-summary";
 import { localDate } from "@/lib/attendance/domain";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
+import { requireAnnouncementViewer } from "@/lib/announcements/authorization";
 import { prisma } from "@/lib/prisma";
 import { workLogLabel } from "@/lib/work-logs/domain";
 
@@ -15,12 +17,19 @@ export const dynamic = "force-dynamic";
 export default async function DashboardPage() {
   const user = await requireCurrentUser();
   if (user.role === "INTERN") return <InternDashboard user={user} />;
-  if (user.role === "COORDINATOR") return <><CoordinatorDashboard user={user} /><TaskDashboardSummary userId={user.id} role={user.role} /><EvaluationDashboardSummary userId={user.id} role={user.role}/><DocumentDashboardSummary userId={user.id} role={user.role}/></>;
-  if (user.role === "SUPERVISOR") return <><SupervisorDashboard user={user} /><TaskDashboardSummary userId={user.id} role={user.role} /><EvaluationDashboardSummary userId={user.id} role={user.role}/><DocumentDashboardSummary userId={user.id} role={user.role}/></>;
+  if (user.role === "COORDINATOR") {
+    const viewer = await requireAnnouncementViewer();
+    return <><CoordinatorDashboard user={user} /><TaskDashboardSummary userId={user.id} role={user.role} /><EvaluationDashboardSummary userId={user.id} role={user.role}/><DocumentDashboardSummary userId={user.id} role={user.role}/><AnnouncementReaderSummary viewer={viewer} /></>;
+  }
+  if (user.role === "SUPERVISOR") {
+    const viewer = await requireAnnouncementViewer();
+    return <><SupervisorDashboard user={user} /><TaskDashboardSummary userId={user.id} role={user.role} /><EvaluationDashboardSummary userId={user.id} role={user.role}/><DocumentDashboardSummary userId={user.id} role={user.role}/><AnnouncementReaderSummary viewer={viewer} /></>;
+  }
 
+  const viewer = await requireAnnouncementViewer();
   const attendance = await getReviewerAttendance(user.id, user.role);
   const corrections = await getCorrectionSummary(user.id, user.role);
-  return <div className="dashboard-page"><PageHeader eyebrow="Bo’s Coffee Main Office" title={`Welcome back, ${user.firstName}`} description="Review current operations and the items that need your attention." actions={user.role === "ADMIN" ? <Link href="/admin" className="button button-primary">Open administration <Icon name="arrow" /></Link> : undefined} /><div className="metric-grid">{attendance.items.map(([label, value]) => <MetricCard key={label} label={label} value={value} icon="clock" />)}{corrections ? <MetricCard label={corrections.label} value={corrections.count} icon="review" /> : null}</div><section className="ui-card mt-6 flex flex-wrap items-center justify-between gap-4 p-5 sm:p-6"><div><h2 className="font-semibold text-brand-900">Review workspace</h2><p className="mt-1 text-sm text-secondary">Open the relevant queue to continue reviewing operational exceptions.</p></div><div className="action-bar"><Link href={attendance.href} className="button button-primary">{attendance.link}</Link><Link href="/work-logs/review" className="button button-secondary">Review work logs</Link></div></section></div>;
+  return <div className="dashboard-page"><PageHeader eyebrow="Bo’s Coffee Main Office" title={`Welcome back, ${user.firstName}`} description="Review current operations and the items that need your attention." actions={user.role === "ADMIN" ? <Link href="/admin" className="button button-primary">Open administration <Icon name="arrow" /></Link> : undefined} /><div className="metric-grid">{attendance.items.map(([label, value]) => <MetricCard key={label} label={label} value={value} icon="clock" />)}{corrections ? <MetricCard label={corrections.label} value={corrections.count} icon="review" /> : null}</div><section className="ui-card mt-6 flex flex-wrap items-center justify-between gap-4 p-5 sm:p-6"><div><h2 className="font-semibold text-brand-900">Review workspace</h2><p className="mt-1 text-sm text-secondary">Open the relevant queue to continue reviewing operational exceptions.</p></div><div className="action-bar"><Link href={attendance.href} className="button button-primary">{attendance.link}</Link><Link href="/work-logs/review" className="button button-secondary">Review work logs</Link></div></section><AnnouncementManagerSummary viewer={viewer} /></div>;
 }
 
 async function SupervisorDashboard({ user }: { user: Awaited<ReturnType<typeof requireCurrentUser>> }) {
@@ -43,7 +52,8 @@ async function CoordinatorDashboard({ user }: { user: Awaited<ReturnType<typeof 
 }
 
 async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requireCurrentUser>> }) {
-  const assignment = await prisma.internshipAssignment.findFirst({
+  const [assignment, announcementViewer] = await Promise.all([
+    prisma.internshipAssignment.findFirst({
     where: { status: "ACTIVE", internProfile: { userId: user.id } },
     select: {
       id: true, status: true, positionTitle: true, department: true, requiredHours: true, renderedHours: true,
@@ -57,7 +67,9 @@ async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requi
       evaluations: { where: { status: { in: ["SUBMITTED", "ACKNOWLEDGED"] } }, orderBy: { submittedAt: "desc" }, take: 1, select: { id: true, evaluationType: true, overallScore: true, submittedAt: true } },
       documents: { where: { status: { not: "ARCHIVED" } }, orderBy: { createdAt: "desc" }, take: 3, select: { id: true, fileName: true, status: true, createdAt: true } },
     },
-  });
+  }),
+    requireAnnouncementViewer(),
+  ]);
   const pendingCorrections = await prisma.attendanceCorrection.count({ where: { requestedById: user.id, status: "PENDING" } });
   if (!assignment) return <div className="dashboard-page"><PageHeader eyebrow="Intern workspace" title={`Welcome, ${user.firstName}`} description="Your dashboard will become available after an active internship is configured." /><section className="ui-card"><EmptyState title="No active internship" description="Contact your coordinator if you expected an active internship to appear here." /></section></div>;
 
@@ -91,6 +103,7 @@ async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requi
       <article className="ui-card activity-panel"><div className="section-heading"><div><p className="eyebrow">Latest updates</p><h2>Recent activity</h2></div></div>{activities.length ? <ol className="activity-list">{activities.map(item => <li key={item.key}><span className="activity-dot" /><div><strong>{item.title}</strong><p>{item.detail}</p></div></li>)}</ol> : <p className="empty-copy">Your attendance and work-log activity will appear here.</p>}</article>
       <article className="ui-card internship-panel"><p className="eyebrow">Internship details</p><h2>Your placement</h2><dl><Detail label="Office" value="Bo’s Coffee Main Office" /><Detail label="School" value={assignment.internProfile.school.name} /><Detail label="Program" value={[assignment.internProfile.course, assignment.internProfile.yearLevel].filter(Boolean).join(" · ")} /><Detail label="Supervisor" value={`${assignment.supervisorProfile.user.firstName} ${assignment.supervisorProfile.user.lastName}`} /><Detail label="Team" value={[assignment.positionTitle, assignment.department].filter(Boolean).join(" · ") || "Not specified"} /></dl></article>
     </section>
+    <AnnouncementReaderSummary viewer={announcementViewer} />
   </div>;
 }
 

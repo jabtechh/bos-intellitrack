@@ -2,7 +2,7 @@ import type { SVGProps } from "react";
 
 export type IconName =
   | "home" | "clock" | "journal" | "users" | "school" | "settings"
-  | "review" | "arrow" | "check" | "alert" | "menu" | "logout" | "plus";
+  | "review" | "arrow" | "check" | "alert" | "menu" | "logout" | "plus" | "bell";
 
 export function Icon({ name, ...props }: SVGProps<SVGSVGElement> & { name: IconName }) {
   const paths: Record<IconName, React.ReactNode> = {
@@ -16,6 +16,7 @@ export function Icon({ name, ...props }: SVGProps<SVGSVGElement> & { name: IconN
     arrow: <><path d="M5 12h14M13 6l6 6-6 6"/></>,
     check: <path d="m5 12 4 4L19 6"/>, alert: <><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 17h.01"/></>,
     menu: <path d="M4 7h16M4 12h16M4 17h16"/>, logout: <><path d="M10 17l5-5-5-5M15 12H3"/><path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"/></>, plus: <path d="M12 5v14M5 12h14"/>,
+    bell: <><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></>,
   };
   return <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>{paths[name]}</svg>;
 }

@@ -14,6 +14,7 @@ const internNav: ShellNavItem[] = [
   { href: "/evaluations", label: "Evaluations", icon: "journal" },
   { href: "/documents", label: "Documents", icon: "journal" },
   { href: "/portfolio", label: "Portfolio", icon: "journal" },
+  { href: "/announcements", label: "Announcements", icon: "bell" },
   { href: "/reports", label: "Reports", icon: "review" },
   { href: "/attendance/corrections", label: "Corrections", icon: "review" },
 ];
@@ -31,10 +32,11 @@ const reviewerNav: ShellNavItem[] = [
   { href: "/evaluations/review", label: "Evaluations", icon: "journal" },
   { href: "/documents", label: "Documents", icon: "journal" },
   { href: "/portfolio", label: "Portfolios", icon: "journal" },
+  { href: "/announcements", label: "Announcements", icon: "bell" },
   { href: "/reports", label: "Reports", icon: "review" },
   { href: "/attendance/corrections/review", label: "Corrections", icon: "review" },
 ];
-const coordinatorNav: ShellNavItem[] = [{ href: "/dashboard", label: "Student Progress", icon: "home", exact: true },{ href: "/tasks", label: "Tasks", icon: "review" },{ href: "/evaluations", label: "Evaluations", icon: "journal" },{ href: "/documents", label: "Documents", icon: "journal" },{ href: "/portfolio", label: "Portfolios", icon: "journal" },{ href: "/reports", label: "Reports", icon: "review" }];
+const coordinatorNav: ShellNavItem[] = [{ href: "/dashboard", label: "Student Progress", icon: "home", exact: true },{ href: "/tasks", label: "Tasks", icon: "review" },{ href: "/evaluations", label: "Evaluations", icon: "journal" },{ href: "/documents", label: "Documents", icon: "journal" },{ href: "/portfolio", label: "Portfolios", icon: "journal" },{ href: "/announcements", label: "Announcements", icon: "bell" },{ href: "/reports", label: "Reports", icon: "review" }];
 const operationsNav: ShellNavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: "home", exact: true },
   { href: "/admin", label: "Company Operations", icon: "settings" },
@@ -44,6 +46,7 @@ const operationsNav: ShellNavItem[] = [
   { href: "/tasks", label: "Tasks", icon: "review" },
   { href: "/evaluations", label: "Evaluations", icon: "journal" },
   { href: "/documents/manage", label: "Documents", icon: "journal" },
+  { href: "/announcements", label: "Announcements", icon: "bell" },
   { href: "/portfolio", label: "Portfolios", icon: "journal" },
   { href: "/reports", label: "Reports", icon: "review" },
 ];
