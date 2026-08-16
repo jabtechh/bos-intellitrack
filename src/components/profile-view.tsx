@@ -5,14 +5,15 @@ import { TYPE_LABELS } from "@/lib/evaluations/domain";
 import type { getProfile } from "@/lib/profile/data";
 import { initials } from "@/lib/profile/domain";
 import { recordedSkills } from "@/lib/insights/domain";
+import { InternshipProgress } from "@/components/internship-progress";
+import { creditedMinutesFromAttendance, internshipProgress, projectedCompletionDate } from "@/lib/internship-progress/domain";
 
 type Profile=NonNullable<Awaited<ReturnType<typeof getProfile>>>;
 const date=(value:Date)=>value.toLocaleDateString("en-PH",{dateStyle:"medium",timeZone:"UTC"});
-const hours=(value:number)=>Number.isInteger(value)?String(value):value.toFixed(1);
 
 export function ProfileView({profile,isOwn}:{profile:Profile;isOwn:boolean}){
   const name=[profile.firstName,profile.middleName,profile.lastName,profile.suffix].filter(Boolean).join(" ");
-  const internship=profile.internship,credited=internship?Number(internship.renderedHours):0,remaining=internship?.requiredHours==null?null:Math.max(internship.requiredHours-credited,0);
+  const internship=profile.internship,creditedMinutes=internship?creditedMinutesFromAttendance(internship.attendance):0;
   const skills=internship?recordedSkills([internship.portfolio?.skills,...internship.workLogs.map(item=>item.skillsApplied)]):[];
   return <div className="profile-page"><section className="profile-hero ui-card">
     <div className="profile-cover" style={profile.coverUrl?{backgroundImage:`url(${JSON.stringify(profile.coverUrl).slice(1,-1)})`}:undefined}/>
@@ -25,7 +26,7 @@ export function ProfileView({profile,isOwn}:{profile:Profile;isOwn:boolean}){
   {isOwn?<nav className="profile-shortcuts" aria-label="Profile shortcuts"><Link href="/dashboard">Dashboard</Link>{profile.role==="INTERN"?<Link href="/portfolio">Portfolio</Link>:null}<Link href="/reports">Reports</Link><Link href="/insights">Insights</Link></nav>:null}
   <div className="profile-layout">
     <aside className="space-y-5"><Card title="About"><p className="profile-copy">{profile.bio||"No About information has been added yet."}</p>{isOwn&&profile.phoneNumber?<Item label="Phone" value={profile.phoneNumber}/>:null}</Card><RoleContext profile={profile}/></aside>
-    <main className="space-y-5">{internship?<InternshipProfile profile={profile} skills={skills} credited={credited} remaining={remaining} isOwn={isOwn}/>:<RoleActivity profile={profile}/>}</main>
+    <main className="space-y-5">{internship?<InternshipProfile profile={profile} skills={skills} creditedMinutes={creditedMinutes} isOwn={isOwn}/>:<RoleActivity profile={profile}/>}</main>
   </div></div>;
 }
 
@@ -37,8 +38,8 @@ function RoleContext({profile}:{profile:Profile}){
   return <Card title="Work context"><Item label="Role" value={profile.adminProfile?.designation||"System administration"}/><Item label="Workplace" value="Bo’s Coffee Main Office"/></Card>;
 }
 
-function InternshipProfile({profile,skills,credited,remaining,isOwn}:{profile:Profile;skills:string[];credited:number;remaining:number|null;isOwn:boolean}){const item=profile.internship!;return <>
-  <Card title="Internship progress"><div className="grid gap-4 sm:grid-cols-2"><Item label="Company Supervisor" value={`${item.supervisorProfile.user.firstName} ${item.supervisorProfile.user.lastName}`}/><Item label="School Coordinator" value={`${item.coordinatorProfile.user.firstName} ${item.coordinatorProfile.user.lastName}`}/><Item label="Internship dates" value={`${date(item.startDate)} – ${date(item.endDate)}`}/><Item label="Required hours" value={item.requiredHours==null?"Not provided":`${item.requiredHours} hours`}/><Item label="Credited hours" value={`${hours(credited)} hours`}/><Item label="Remaining hours" value={remaining==null?"Not available":`${hours(remaining)} hours`}/></div></Card>
+function InternshipProfile({profile,skills,creditedMinutes,isOwn}:{profile:Profile;skills:string[];creditedMinutes:number;isOwn:boolean}){const item=profile.internship!,progress=internshipProgress(item.requiredHours,creditedMinutes),projection=projectedCompletionDate({remainingMinutes:(progress.remainingHours??0)*60,scheduleStart:item.scheduleStartTime,scheduleEnd:item.scheduleEndTime,attendance:item.attendance});return <>
+  <Card title="Internship progress"><InternshipProgress requiredHours={item.requiredHours} creditedMinutes={creditedMinutes} startDate={item.startDate} endDate={item.endDate} projectedDate={projection}/><div className="profile-context-grid"><Item label="Company Supervisor" value={`${item.supervisorProfile.user.firstName} ${item.supervisorProfile.user.lastName}`}/><Item label="School Coordinator" value={`${item.coordinatorProfile.user.firstName} ${item.coordinatorProfile.user.lastName}`}/><Item label="Partner School" value={profile.internProfile!.school.name}/></div>{isOwn?<Link href="/attendance/calendar" className="button button-secondary mt-4">View Attendance</Link>:null}</Card>
   <Card title="Recent approved Work Logs">{item.workLogs.length?<div className="divide-y divide-border">{item.workLogs.map(log=><div className="py-3" key={`${log.workDate.toISOString()}-${log.title}`}><strong className="text-sm">{log.title}</strong><small className="block text-muted">{date(log.workDate)}</small></div>)}</div>:<Empty/>}</Card>
   <Card title="Skills and evidence">{skills.length?<><ul className="flex flex-wrap gap-2">{skills.map(skill=><li className="status-badge status-info" key={skill}>{skill}</li>)}</ul><p className="mt-3 text-xs text-muted">Explicitly recorded in approved Work Logs or the Intern-maintained Portfolio.</p></>:<Empty/>}</Card>
   <Card title="Completed work and evaluations"><Item label="Completed Tasks" value={String(item.tasks.length)}/>{profile.latestEvaluation?<><Item label="Latest finalized Evaluation" value={`${TYPE_LABELS[profile.latestEvaluation.evaluationType]} · ${profile.latestEvaluation.overallScore===null?"No overall score":`${profile.latestEvaluation.overallScore.toString()} / 100`}`}/><p className="mt-3 text-xs text-muted">Evaluation criteria retain their original 1–5 rating scale.</p></>:<Empty/>}{item.portfolio&&isOwn?<Link href="/portfolio" className="button button-secondary mt-4">Open Portfolio</Link>:item.portfolio?<p className="mt-3 text-sm text-secondary">Portfolio available in the authorized Portfolio workspace.</p>:null}</Card>

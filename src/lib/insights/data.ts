@@ -9,7 +9,7 @@ export async function listInsightInterns(context: InsightsContext) {
     select: {
       internProfile: { select: { userId: true, user: { select: { firstName: true, lastName: true } }, school: { select: { name: true } } } },
       requiredHours: true,
-      attendance: { where: { status: { not: "VOIDED" } }, select: { creditedMinutes: true } },
+      attendance: { where: { status: "APPROVED" }, select: { status:true,creditedMinutes: true } },
       tasks: { where: { status: { not: "CANCELLED" } }, select: { status: true, dueAt: true } },
       workLogs: { where: { status: "APPROVED" }, select: { id: true } },
     },
@@ -23,7 +23,7 @@ export async function getInternInsights(context: InsightsContext, internUserId: 
   const row = await prisma.internshipAssignment.findFirst({
     where: insightForInternWhere(context, internUserId),
     select: {
-      startDate: true, endDate: true, requiredHours: true, renderedHours: true,
+      id:true,startDate: true, endDate: true, requiredHours: true,
       internProfile: { select: { userId: true, course: true, user: { select: { firstName: true, lastName: true } }, school: { select: { name: true } } } },
       attendance: { where: { attendanceDate: date, status: { not: "VOIDED" } }, select: { attendanceDate: true, creditedMinutes: true, classification: true }, orderBy: { attendanceDate: "asc" } },
       workLogs: { where: { workDate: date, status: "APPROVED" }, select: { workDate: true, skillsApplied: true }, orderBy: { workDate: "asc" } },
@@ -34,9 +34,10 @@ export async function getInternInsights(context: InsightsContext, internUserId: 
     },
   });
   if (!row) return null;
+  const credited=await prisma.attendance.aggregate({where:{assignmentId:row.id,status:"APPROVED"},_sum:{creditedMinutes:true}});
   const tasks = taskCounts(row.tasks);
   const attendance = attendanceCounts(row.attendance);
-  const hours = hoursProgress(row.requiredHours, Math.round(Number(row.renderedHours) * 60));
+  const hours = hoursProgress(row.requiredHours, credited._sum.creditedMinutes??0);
   const latestEvaluation = row.evaluations[0] ? { ...row.evaluations[0], criteria: criteriaFromJson(row.evaluations[0].criteriaScores) } : null;
   const skills = recordedSkills([row.portfolio?.skills, ...row.workLogs.map((item) => item.skillsApplied)]);
   const activity = new Map<string, { attendance: number; workLogs: number; tasks: number }>();

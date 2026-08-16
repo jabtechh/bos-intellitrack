@@ -21,7 +21,7 @@ export async function getInternReport(c: PortfolioContext, internUserId: string,
   });
 }
 export function reportTotals(report: NonNullable<Awaited<ReturnType<typeof getInternReport>>>) {
-  const creditedMinutes = report.attendance.reduce((sum, row) => sum + row.creditedMinutes, 0);
+  const creditedMinutes = report.attendance.reduce((sum, row) => row.status==="APPROVED"?sum + row.creditedMinutes:sum, 0);
   const requiredMinutes = report.requiredHours == null ? null : Number(report.requiredHours) * 60;
   return { creditedMinutes, requiredMinutes, remainingMinutes: requiredMinutes == null ? null : Math.max(0, requiredMinutes - creditedMinutes), exceptionCount: report.attendance.filter((x) => x.reviewRequired || ["PENDING_REVIEW", "REJECTED", "INCOMPLETE", "ABSENT"].includes(x.status)).length };
 }

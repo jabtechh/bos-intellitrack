@@ -41,6 +41,7 @@
     "insights:test": "tsx --test scripts/test-insights-foundation.ts",
     "profile:test": "tsx --test scripts/test-profile-foundation.ts",
     "ui-polish:test": "tsx --test scripts/test-ui-polish.ts",
+    "progress-ux:test": "tsx --test scripts/test-internship-progress.ts",
     "ai:test": "tsx --test scripts/test-ai-foundation.ts",
     "storage:documents:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-document-storage.ts",
     "storage:profile:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-profile-storage.ts"
