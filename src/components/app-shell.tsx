@@ -11,49 +11,52 @@ type ShellUser = { firstName: string; lastName: string; role: import("@/generate
 const internNav: ShellNavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: "home", exact: true },
   { href: "/attendance", label: "Attendance", icon: "clock" },
+  { href: "/attendance/corrections", label: "Corrections", icon: "review" },
   { href: "/work-logs", label: "Work logs", icon: "journal" },
   { href: "/tasks", label: "Tasks", icon: "review" },
   { href: "/evaluations", label: "Evaluations", icon: "journal" },
+  { href: "/feedback", label: "Feedback", icon: "review" },
+  { href: "/insights", label: "Insights", icon: "review" },
   { href: "/documents", label: "Documents", icon: "journal" },
   { href: "/portfolio", label: "Portfolio", icon: "journal" },
   { href: "/announcements", label: "Announcements", icon: "bell" },
-  { href: "/insights", label: "Insights", icon: "review" },
   { href: "/reports", label: "Reports", icon: "review" },
-  { href: "/attendance/corrections", label: "Corrections", icon: "review" },
 ];
 const internBottomNav: ShellNavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: "home", exact: true },
   { href: "/attendance", label: "Attendance", icon: "clock" },
   { href: "/work-logs", label: "Work Logs", icon: "journal" },
-  { href: "/attendance/corrections", label: "More", icon: "menu" },
+  { href: "/more", label: "More", icon: "menu" },
 ];
 const reviewerNav: ShellNavItem[] = [
   { href: "/dashboard", label: "Overview", icon: "home", exact: true },
   { href: "/attendance/review", label: "Attendance", icon: "clock" },
+  { href: "/attendance/corrections/review", label: "Corrections", icon: "review" },
   { href: "/work-logs/review", label: "Work logs", icon: "journal" },
   { href: "/tasks/review", label: "Task review", icon: "review" },
   { href: "/evaluations/review", label: "Evaluations", icon: "journal" },
+  { href: "/feedback", label: "Feedback", icon: "review" },
+  { href: "/insights", label: "Insights", icon: "review" },
   { href: "/documents", label: "Documents", icon: "journal" },
   { href: "/portfolio", label: "Portfolios", icon: "journal" },
   { href: "/announcements", label: "Announcements", icon: "bell" },
-  { href: "/insights", label: "Insights", icon: "review" },
   { href: "/reports", label: "Reports", icon: "review" },
-  { href: "/attendance/corrections/review", label: "Corrections", icon: "review" },
 ];
-const coordinatorNav: ShellNavItem[] = [{ href: "/dashboard", label: "Student Progress", icon: "home", exact: true },{ href: "/tasks", label: "Tasks", icon: "review" },{ href: "/evaluations", label: "Evaluations", icon: "journal" },{ href: "/documents", label: "Documents", icon: "journal" },{ href: "/portfolio", label: "Portfolios", icon: "journal" },{ href: "/announcements", label: "Announcements", icon: "bell" },{ href: "/insights", label: "Insights", icon: "review" },{ href: "/reports", label: "Reports", icon: "review" }];
+const coordinatorNav: ShellNavItem[] = [{ href: "/dashboard", label: "Student Progress", icon: "home", exact: true },{ href: "/tasks", label: "Tasks", icon: "review" },{ href: "/evaluations", label: "Evaluations", icon: "journal" },{ href: "/feedback", label: "Feedback", icon: "review" },{ href: "/insights", label: "Insights", icon: "review" },{ href: "/documents", label: "Documents", icon: "journal" },{ href: "/portfolio", label: "Portfolios", icon: "journal" },{ href: "/announcements", label: "Announcements", icon: "bell" },{ href: "/reports", label: "Reports", icon: "review" }];
 const operationsNav: ShellNavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: "home", exact: true },
-  { href: "/admin", label: "Company Operations", icon: "settings" },
   { href: "/attendance/review", label: "Attendance Review", icon: "clock" },
   { href: "/attendance/corrections/review", label: "Correction Review", icon: "review" },
   { href: "/work-logs/review", label: "Work Log Review", icon: "journal" },
   { href: "/tasks", label: "Tasks", icon: "review" },
   { href: "/evaluations", label: "Evaluations", icon: "journal" },
+  { href: "/feedback", label: "Feedback", icon: "review" },
+  { href: "/insights", label: "Insights", icon: "review" },
   { href: "/documents/manage", label: "Documents", icon: "journal" },
   { href: "/announcements", label: "Announcements", icon: "bell" },
-  { href: "/insights", label: "Insights", icon: "review" },
   { href: "/portfolio", label: "Portfolios", icon: "journal" },
   { href: "/reports", label: "Reports", icon: "review" },
+  { href: "/admin", label: "Company Operations", icon: "settings" },
 ];
 
 export async function AppShell({ user, children }: { user: ShellUser; children: ReactNode }) {

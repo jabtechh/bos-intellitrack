@@ -37,7 +37,7 @@ export default async function AnnouncementsPage() {
 
   return (
     <div className="px-5 py-8 sm:px-8 lg:px-12 lg:py-12">
-      <section className="mx-auto max-w-4xl">
+      <section className="mx-auto max-w-6xl">
         <PageHeader
           eyebrow="Announcements"
           title="Announcements"

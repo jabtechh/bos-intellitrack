@@ -15,8 +15,17 @@ export function MetricCard({ label, value, detail, icon = "review" }: { label: s
 }
 
 export function StatusBadge({ children, tone = "neutral" }: { children: ReactNode; tone?: "success" | "warning" | "danger" | "info" | "neutral" }) {
-  return <span className={`status-badge status-${tone}`}>{children}</span>;
+  return <span className={`status-badge status-${tone}`}><span className="status-dot" aria-hidden="true"/>{children}</span>;
 }
+export function PriorityBadge({ children, level="normal" }: { children:ReactNode; level?:"low"|"normal"|"medium"|"high"|"urgent" }) { return <span className={`priority-badge priority-${level}`}>{children}</span>; }
+
+export function SectionHeader({ title, description, actions }: { title: string; description?: string; actions?: ReactNode }) { return <header className="section-header"><div><h2>{title}</h2>{description?<p>{description}</p>:null}</div>{actions?<div className="action-bar">{actions}</div>:null}</header>; }
+export function SummaryStrip({ children, label="Summary" }: { children: ReactNode; label?: string }) { return <section className="summary-strip" aria-label={label}>{children}</section>; }
+export function MetricItem({ label, value, detail }: { label:string; value:ReactNode; detail?:string }) { return <div className="metric-item"><span>{label}</span><strong>{value}</strong>{detail?<small>{detail}</small>:null}</div>; }
+export function ProgressBar({ value, label }: { value:number; label:string }) { const safe=Math.min(100,Math.max(0,value));return <div className="progress-bar" role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={safe}><span style={{width:`${safe}%`}}/></div>; }
+export function InlineNotice({ children, tone="info" }: { children:ReactNode; tone?:"info"|"success"|"warning"|"danger" }) { return <p className={`inline-notice notice-${tone}`} role={tone==="danger"?"alert":"status"}>{children}</p>; }
+export function FilterBar({ children, label="Filters" }: { children:ReactNode; label?:string }) { return <div className="filter-bar" role="group" aria-label={label}>{children}</div>; }
+export function FormActions({ children }: { children:ReactNode }) { return <div className="form-actions">{children}</div>; }
 
 export function EmptyState({ title, description, action }: { title: string; description: string; action?: { href: string; label: string } }) {
   return <div className="empty-state"><span><Icon name="journal" /></span><h2>{title}</h2><p>{description}</p>{action ? <Link className="button button-primary" href={action.href}><Icon name="plus" />{action.label}</Link> : null}</div>;

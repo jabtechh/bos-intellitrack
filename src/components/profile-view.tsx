@@ -22,6 +22,7 @@ export function ProfileView({profile,isOwn}:{profile:Profile;isOwn:boolean}){
       {isOwn?<Link href="/profile/edit" className="button button-primary">Edit profile</Link>:null}
     </div>
   </section>
+  {isOwn?<nav className="profile-shortcuts" aria-label="Profile shortcuts"><Link href="/dashboard">Dashboard</Link>{profile.role==="INTERN"?<Link href="/portfolio">Portfolio</Link>:null}<Link href="/reports">Reports</Link><Link href="/insights">Insights</Link></nav>:null}
   <div className="profile-layout">
     <aside className="space-y-5"><Card title="About"><p className="profile-copy">{profile.bio||"No About information has been added yet."}</p>{isOwn&&profile.phoneNumber?<Item label="Phone" value={profile.phoneNumber}/>:null}</Card><RoleContext profile={profile}/></aside>
     <main className="space-y-5">{internship?<InternshipProfile profile={profile} skills={skills} credited={credited} remaining={remaining} isOwn={isOwn}/>:<RoleActivity profile={profile}/>}</main>
