@@ -12,7 +12,7 @@ export type DemoWorkLog = { key: string; date: Date; status: "DRAFT" | "SUBMITTE
 export type DemoTask = { key: string; title: string; description: string; status: "TODO" | "IN_PROGRESS" | "SUBMITTED" | "COMPLETED"; priority: "LOW" | "MEDIUM" | "HIGH"; startAt: Date; dueAt: Date; progress: number; submittedAt: Date | null; completedAt: Date | null };
 export type DemoEvaluation = { key: string; type: "MIDTERM" | "PROGRESS" | "FINAL"; date: Date; score: number; status: "SUBMITTED" | "ACKNOWLEDGED" };
 export type DemoFeedback = { key: string; type: "GENERAL" | "PRAISE" | "IMPROVEMENT" | "ATTENDANCE_RELATED"; title: string; content: string; createdAt: Date };
-export type DemoInternPlan = { identity: DemoIdentity; studentNumber: string; supervisorKey: string; coordinatorKey: string; startDate: Date; endDate: Date; attendance: DemoAttendance[]; workLogs: DemoWorkLog[]; tasks: DemoTask[]; evaluations: DemoEvaluation[]; feedback: DemoFeedback[]; correctionAttendanceKey: string | null };
+export type DemoInternPlan = { identity: DemoIdentity; persona: string; studentNumber: string; supervisorKey: string; coordinatorKey: string; startDate: Date; endDate: Date; attendance: DemoAttendance[]; workLogs: DemoWorkLog[]; tasks: DemoTask[]; evaluations: DemoEvaluation[]; feedback: DemoFeedback[]; correctionAttendanceKey: string | null };
 
 const existing: DemoIdentity[] = [
   { key: "intern-01", role: "INTERN", firstName: "John", lastName: "DemoAcc", email: "john.demoacc@paterostechnologicalcollege.edu.ph", existing: true },
@@ -47,7 +47,12 @@ const taskContent = [
   ["Document filing workflow", "Create a concise reference for the office filing sequence."],
   ["Verify operations spreadsheet", "Check formulas, labels, and totals before the weekly review."],
   ["Prepare orientation notes", "Summarize the key workplace procedures covered during orientation."],
+  ["Review records index", "Verify that the records index matches the current filing structure."],
+  ["Draft weekly activity summary", "Prepare a factual summary of verified internship activities for the week."],
+  ["Check report formatting", "Review the report layout, headings, and referenced totals before submission."],
 ] as const;
+
+const personaLabels = ["recent-starter", "normal-performer", "frequently-late", "strong-task-performer", "correction-history", "attendance-exception", "near-completion", "draft-heavy-logs", "many-completed-tasks", "limited-activity"];
 
 function day(value: Date) { return new Date(Date.UTC(value.getUTCFullYear(), value.getUTCMonth(), value.getUTCDate())); }
 function plusDays(value: Date, amount: number) { const result = day(value); result.setUTCDate(result.getUTCDate() + amount); return result; }
@@ -59,7 +64,7 @@ function attendanceFor(index: number, count: number): DemoAttendance[] {
   return previousWeekdays(count).map((date, position) => {
     const late = (index === 2 || index === 7) && position % 7 === 2;
     const early = index === 3 && position % 11 === 5;
-    const genuineException = index === 6 && position === count - 3;
+    const genuineException = index === 5 && position === count - 3;
     const incomplete = index === 8 && position === count - 2;
     const inMinute = late ? 14 + (position % 5) : 50 + ((index * 3 + position) % 21);
     const clockIn = inMinute >= 60 ? atManila(date, 8, inMinute - 60) : atManila(date, 7, inMinute);
@@ -70,23 +75,25 @@ function attendanceFor(index: number, count: number): DemoAttendance[] {
 }
 
 function logsFor(index: number, attendance: DemoAttendance[]): DemoWorkLog[] {
-  return attendance.filter((row, position) => row.status === "APPROVED" && position % 3 !== 1).map((row, position) => { const item = workContent[(index + position) % workContent.length]; return { key: `work-log-${index + 1}-${row.date.toISOString().slice(0, 10)}`, date: row.date, status: position === attendance.length - 1 && index % 4 === 0 ? "DRAFT" : "SUBMITTED", description: item[0], skills: [...item[1]], challenges: position % 6 === 3 ? "A few source entries used inconsistent labels, so I confirmed the intended format before continuing." : null, learnings: position % 3 === 0 ? item[2] : null }; });
+  return attendance.filter((row, position) => row.status === "APPROVED" && position % 4 !== 1).map((row, position) => { const item = workContent[(index * 3 + position) % workContent.length]; const status = index === 7 && position % 6 === 1 ? "DRAFT" : "SUBMITTED"; const context = [`I coordinated the final entries with the assigned checklist for week ${Math.floor(position / 5) + 1}.`, `The work covered batch ${position + 1} and was checked before I recorded the result.`, `I noted the completed steps and the remaining follow-up for the next workday.`][(index + position) % 3]; return { key: `work-log-${index + 1}-${row.date.toISOString().slice(0, 10)}`, date: row.date, status, description: `${item[0]} ${context} This was activity ${position + 1} in the current internship record.`, skills: [...item[1]], challenges: position % 6 === 3 ? "A few source entries used inconsistent labels, so I confirmed the intended format before continuing." : null, learnings: position % 3 === 0 ? item[2] : null }; });
 }
 
-function tasksFor(index: number, dates: Date[]): DemoTask[] {
+function tasksFor(index: number, dates: Date[], count: number): DemoTask[] {
   const statuses = ["TODO", "IN_PROGRESS", "SUBMITTED", "COMPLETED"] as const;
-  return taskContent.map((item, position) => { const status = statuses[(index + position) % statuses.length]; const startAt = dates[Math.min(position * 3, dates.length - 1)]; const dueAt = plusDays(startAt, 7); const submittedAt = status === "SUBMITTED" || status === "COMPLETED" ? plusDays(dueAt, -1) : null; const completedAt = status === "COMPLETED" ? dueAt : null; return { key: `task-${index + 1}-${position + 1}`, title: item[0], description: item[1], status, priority: position === 2 ? "HIGH" : position === 0 ? "LOW" : "MEDIUM", startAt, dueAt, progress: status === "TODO" ? 0 : status === "IN_PROGRESS" ? 45 + index % 4 * 10 : 100, submittedAt, completedAt }; });
+  return taskContent.slice(0, count).map((item, position) => { const status = index === 8 ? (position < count - 1 ? "COMPLETED" : "IN_PROGRESS") : index === 3 ? (position < count - 2 ? "COMPLETED" : statuses[position % 3]) : index === 0 ? statuses[position % 2] : statuses[(index + position) % statuses.length]; const startAt = dates[Math.min(position * 3, dates.length - 1)]; const dueAt = plusDays(startAt, 7); const submittedAt = status === "SUBMITTED" || status === "COMPLETED" ? plusDays(dueAt, -1) : null; const completedAt = status === "COMPLETED" ? dueAt : null; return { key: `task-${index + 1}-${position + 1}`, title: item[0], description: item[1], status, priority: position === 2 ? "HIGH" : position === 0 ? "LOW" : "MEDIUM", startAt, dueAt, progress: status === "TODO" ? 0 : status === "IN_PROGRESS" ? 45 + index % 4 * 10 : 100, submittedAt, completedAt }; });
 }
 
 export function createDemoDataPlan(): { identities: DemoIdentity[]; interns: DemoInternPlan[]; announcementKeys: string[] } {
   const internIdentities = DEMO_DATA_IDENTITIES.filter((identity) => identity.role === "INTERN");
-  const counts = [14, 25, 30, 35, 38, 41, 44, 46, 49, 50];
+  const counts = [25, 29, 32, 34, 33, 31, 40, 36, 38, 25];
+  const taskCounts = [4, 5, 5, 6, 5, 4, 6, 5, 7, 4];
+  const feedbackCounts = [1, 1, 2, 2, 2, 2, 2, 1, 3, 1];
   const interns = internIdentities.map((identity, index) => {
     const attendance = attendanceFor(index, counts[index]); const dates = attendance.map((row) => row.date); const startDate = plusDays(dates[0], -3); const endDate = plusDays(startDate, 180);
-    const evaluationCount = index < 2 ? 0 : index < 7 ? 1 : 2;
+    const evaluationCount = index < 2 ? 0 : index < 6 ? 1 : 2;
     const evaluations: DemoEvaluation[] = Array.from({ length: evaluationCount }, (_, position) => ({ key: `evaluation-${index + 1}-${position}`, type: position === 0 ? (index > 7 ? "MIDTERM" : "PROGRESS") : "FINAL", date: dates[Math.floor(dates.length * (position ? .9 : .55))], score: 78 + ((index * 3 + position * 2) % 14), status: position === 1 && index % 2 === 0 ? "ACKNOWLEDGED" : "SUBMITTED" }));
-    const feedback: DemoFeedback[] = index % 3 === 0 ? [{ key: `feedback-${index + 1}`, type: index === 6 ? "ATTENDANCE_RELATED" : index >= 7 ? "PRAISE" : "GENERAL", title: index >= 7 ? "Consistent follow-through" : "Progress note", content: index === 6 ? "Please continue checking arrival time against the agreed schedule." : "Continue documenting completed work clearly and confirming details before final submission.", createdAt: dates[Math.floor(dates.length * .72)] }] : [];
-    return { identity, studentNumber: `DEMO-${DEMO_DATA_SEED}-${String(index + 1).padStart(2, "0")}`, supervisorKey: `supervisor-0${index % 3 + 1}`, coordinatorKey: `coordinator-0${index % 2 + 1}`, startDate, endDate, attendance, workLogs: logsFor(index, attendance), tasks: tasksFor(index, dates), evaluations, feedback, correctionAttendanceKey: index === 4 ? attendance[Math.floor(attendance.length / 2)].key : null };
+    const feedback: DemoFeedback[] = Array.from({ length: feedbackCounts[index] }, (_, position) => ({ key: `feedback-${index + 1}-${position + 1}`, type: index === 2 || index === 5 ? "ATTENDANCE_RELATED" : index === 3 || index === 8 ? "PRAISE" : position % 2 ? "IMPROVEMENT" : "GENERAL", title: index === 3 || index === 8 ? "Consistent follow-through" : position % 2 ? "Next development focus" : "Progress note", content: index === 2 ? "Please continue planning travel time so arrival remains within the agreed schedule." : index === 5 ? "Review the incomplete attendance entry and confirm future clock-out records before leaving." : position % 2 ? "Continue prioritizing the most time-sensitive record checks before moving to routine filing." : "Continue documenting completed work clearly and confirming details before final submission.", createdAt: dates[Math.floor(dates.length * (.55 + position * .15))] }));
+    return { identity, persona: personaLabels[index], studentNumber: `DEMO-${DEMO_DATA_SEED}-${String(index + 1).padStart(2, "0")}`, supervisorKey: `supervisor-0${index % 3 + 1}`, coordinatorKey: `coordinator-0${index % 2 + 1}`, startDate, endDate, attendance, workLogs: logsFor(index, attendance), tasks: tasksFor(index, dates, taskCounts[index]), evaluations, feedback, correctionAttendanceKey: index === 4 ? attendance[Math.floor(attendance.length / 2)].key : null };
   });
   return { identities: DEMO_DATA_IDENTITIES, interns, announcementKeys: ["orientation-reminder", "reporting-deadline", "office-schedule"] };
 }

@@ -31,6 +31,7 @@
     "demo:users:test": "tsx --test scripts/test-demo-users.ts",
     "demo:data:seed": "tsx --env-file=.env --env-file=.env.local scripts/setup-demo-data.ts",
     "demo:data:test": "tsx --test scripts/test-demo-data.ts",
+    "demo:data:verify": "tsx --env-file=.env --env-file=.env.local scripts/verify-demo-data.ts",
     "work-log:test": "tsx --test scripts/test-work-log-foundation.ts",
     "storage:work-logs:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-work-log-storage.ts",
     "navigation:test": "tsx --test scripts/test-navigation-ui.ts scripts/test-shell-refinement.ts",
