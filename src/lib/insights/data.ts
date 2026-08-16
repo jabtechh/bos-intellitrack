@@ -11,7 +11,7 @@ export async function listInsightInterns(context: InsightsContext) {
       requiredHours: true,
       attendance: { where: { status: "APPROVED" }, select: { status:true,creditedMinutes: true } },
       tasks: { where: { status: { not: "CANCELLED" } }, select: { status: true, dueAt: true } },
-      workLogs: { where: { status: "APPROVED" }, select: { id: true } },
+      workLogs: { where: { status: { in: ["SUBMITTED", "APPROVED"] } }, select: { id: true } },
     },
     orderBy: [{ internProfile: { user: { lastName: "asc" } } }, { internProfile: { user: { firstName: "asc" } } }],
   });
@@ -26,7 +26,7 @@ export async function getInternInsights(context: InsightsContext, internUserId: 
       id:true,startDate: true, endDate: true, requiredHours: true,
       internProfile: { select: { userId: true, course: true, user: { select: { firstName: true, lastName: true } }, school: { select: { name: true } } } },
       attendance: { where: { attendanceDate: date, status: { not: "VOIDED" } }, select: { attendanceDate: true, creditedMinutes: true, classification: true }, orderBy: { attendanceDate: "asc" } },
-      workLogs: { where: { workDate: date, status: "APPROVED" }, select: { workDate: true, skillsApplied: true }, orderBy: { workDate: "asc" } },
+      workLogs: { where: { workDate: date, status: { in: ["SUBMITTED", "APPROVED"] } }, select: { workDate: true, skillsApplied: true }, orderBy: { workDate: "asc" } },
       tasks: { where: taskDateWhere, select: { status: true, dueAt: true, completedAt: true, createdAt: true } },
       evaluations: { where: { evaluationDate: date, status: { in: ["SUBMITTED", "ACKNOWLEDGED"] } }, select: { evaluationDate: true, evaluationType: true, overallScore: true, criteriaScores: true, status: true }, orderBy: { evaluationDate: "desc" } },
       feedback: { where: { createdAt: date, ...(context.kind === "INTERN" ? { visibility: { in: ["INTERN_AND_STAFF", "INTERN_ONLY"] } } : { visibility: { in: ["INTERN_AND_STAFF", "STAFF_ONLY"] } }) }, select: { title: true, content: true, feedbackType: true, createdAt: true }, orderBy: { createdAt: "desc" }, take: 5 },

@@ -35,7 +35,7 @@ test("dashboard uses real operational data and primary actions", () => {
   assert.doesNotMatch(dashboard, /AI productivity score|evaluation score|fake analytics|branch selector/i);
 });
 test("loading and error UI preserve page-shaped content inside the shell",()=>{const ui=read("src/components/ui.tsx");assert.match(ui,/skeleton-header/);assert.match(ui,/skeleton-summary/);assert.match(ui,/skeleton-row/);assert.equal(existsSync("src/app/(authenticated)/error.tsx"),true)});
-test("required-hours and workflow controls remain real and reachable",()=>{assert.match(dashboard,/InternProgressPanel/);assert.doesNotMatch(dashboard,/requiredHours===null[\s\S]{0,500}progress-percent/);const form=read("src/app/work-logs/work-log-form.tsx");assert.match(form,/Save Draft/);assert.match(form,/Submit for Review/);assert.match(attendance,/Submit clock-in/);assert.match(attendance,/Submit clock-out/)});
+test("required-hours and workflow controls remain real and reachable",()=>{assert.match(dashboard,/InternProgressPanel/);assert.doesNotMatch(dashboard,/requiredHours===null[\s\S]{0,500}progress-percent/);const form=read("src/app/work-logs/work-log-form.tsx");assert.match(form,/Save Draft/);assert.match(form,/Submit Work Log/);assert.match(attendance,/Submit clock-in/);assert.match(attendance,/Submit clock-out/)});
 test("navigation does not expose multi-organization terminology", () => {
   assert.doesNotMatch(shell + navigation, />\s*(Companies|Branches|Assignments|Placements)\s*</);
 });

@@ -35,7 +35,7 @@ test("task calculations exclude cancelled",()=>assert.deepEqual(taskCounts([{sta
 test("overdue requires unfinished past due task",()=>assert.equal(taskCounts([{status:"TODO",dueAt:new Date(0)},{status:"COMPLETED",dueAt:new Date(0)}],new Date(1)).overdue,1));
 test("task rate is absent without denominator",()=>assert.equal(taskCounts([],new Date()).completionRate,null));
 test("recorded skills use only explicit arrays",()=>assert.deepEqual(recordedSkills([["Teamwork"," Service "],["teamwork"],"inferred"]),["teamwork","Service"]));
-test("draft and rejected Work Logs excluded",()=>assert.match(data,/workLogs: \{ where: \{ workDate: date, status: "APPROVED" \}/));
+test("submitted and legacy approved Work Logs included while other states are excluded",()=>assert.match(data,/workLogs: \{ where: \{ workDate: date, status: \{ in: \["SUBMITTED", "APPROVED"\] \}/));
 test("voided attendance excluded",()=>assert.match(data,/status: \{ not: "VOIDED" \}/));
 test("cancelled tasks excluded from calculations",()=>assert.match(domain,/status !== "CANCELLED"/));
 test("only finalized Evaluations included",()=>assert.match(data,/status: \{ in: \["SUBMITTED", "ACKNOWLEDGED"\] \}/));
@@ -47,7 +47,7 @@ test("safe empty data language is present",()=>assert.match(detail,/Not enough d
 test("source period is visible",()=>assert.match(detail,/sourcePeriodLabel/));
 test("navigation exists for every role",()=>assert.ok((shell.match(/href: "\/insights"/g)||[]).length>=4));
 test("dashboard is role aware",()=>{assert.match(dashboard,/role==="SUPERVISOR"/);assert.match(dashboard,/role==="COORDINATOR"/);assert.match(dashboard,/Main Office operational insights/)});
-test("objective attention conditions only",()=>{assert.match(dashboard,/overdue tasks/);assert.match(dashboard,/approved work log/)});
+test("objective attention conditions only",()=>{assert.match(dashboard,/overdue tasks/);assert.match(dashboard,/work log/)});
 test("no arbitrary or subjective analytics in visible UI",()=>assert.doesNotMatch(`${list}\n${detail}\n${dashboard}`,/productivity score|personality|high performer|poor performer|unproductive|ranking|employment recommendation|disciplinary recommendation/i));
 test("no fabricated skill inference",()=>{assert.match(detail,/Explicitly recorded/);assert.doesNotMatch(data,/title.*skill|description.*skill/i)});
 test("no prohibited internal business terminology in visible insight UI",()=>assert.doesNotMatch(`${list}\n${detail}\n${dashboard}`,/\b(?:Company|Branch|Assignment|Placement)\b/));

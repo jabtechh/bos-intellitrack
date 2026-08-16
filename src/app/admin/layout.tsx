@@ -15,7 +15,7 @@ const navigation: ShellNavItem[] = [
   { href: "/admin/schools", label: "Partner Schools", icon: "school" },
   { href: "/attendance/review", label: "Attendance Review", icon: "clock" },
   { href: "/attendance/corrections/review", label: "Correction Review", icon: "review" },
-  { href: "/work-logs/review", label: "Work log review", icon: "journal" },
+  { href: "/work-logs", label: "Work log journals", icon: "journal" },
   { href: "/tasks", label: "Tasks", icon: "review" },
   { href: "/evaluations", label: "Evaluations", icon: "journal" },
   { href: "/documents/manage", label: "Documents", icon: "journal" },

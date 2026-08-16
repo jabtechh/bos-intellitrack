@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { portfolioInputSchema, portfolioCompleteness } from "../src/lib/portfolio/domain";
-import { reportPeriod, safePdfFilename } from "../src/lib/reports/domain";
-import { createReportPdf } from "../src/lib/reports/pdf";
+import { portfolioInputSchema, portfolioCompleteness } from "../src/lib/portfolio/domain.ts";
+import { reportPeriod, safePdfFilename } from "../src/lib/reports/domain.ts";
+import { createReportPdf } from "../src/lib/reports/pdf.ts";
 const read=(x:string)=>readFileSync(x,"utf8"),auth=read("src/lib/portfolio/authorization.ts"),data=read("src/lib/reports/data.ts"),route=read("src/app/(authenticated)/reports/intern/[internId]/pdf/route.ts"),actions=read("src/app/portfolio/actions.ts"),shell=read("src/components/app-shell.tsx"),schema=read("prisma/schema.prisma");
 test("existing Portfolio model is reused",()=>{assert.match(schema,/assignmentId\s+String\s+@unique/);assert.doesNotMatch(actions,/sourceSnapshot: \{/)});
 test("Intern ownership isolation",()=>assert.match(auth,/internProfileId: c\.profileId/));
@@ -13,7 +13,7 @@ test("Company Representative company scope",()=>assert.match(auth,/companyId: c\
 test("System Administrator access stays at Main Office",()=>assert.match(auth,/kind === "ADMIN"[\s\S]+companyCode: BO_COFFEE_OFFICE_CODE/));
 test("direct mutation authorizes Intern",()=>assert.match(actions,/requirePortfolioViewer[\s\S]+kind !== "INTERN"/));
 test("date range validation",()=>{assert("error" in reportPeriod({from:"2026-02-02",to:"2026-01-01"}));assert.equal(reportPeriod({from:"2026-01-01",to:"2026-02-02"}).from?.toISOString().slice(0,10),"2026-01-01")});
-test("drafts and restricted records excluded",()=>{assert.match(data,/workLogs:[\s\S]+status: "APPROVED"/);assert.match(data,/tasks:[\s\S]+status: "COMPLETED"/);assert.match(data,/evaluations:[\s\S]+SUBMITTED[\s\S]+ACKNOWLEDGED/);assert.match(data,/documents:[\s\S]+status: "APPROVED"[\s\S]+IDENTIFICATION[\s\S]+MEDICAL_DOCUMENT/)});
+test("only completed Work Logs and unrestricted records included",()=>{assert.match(data,/workLogs:[\s\S]+status: \{ in: \["SUBMITTED", "APPROVED"\] \}/);assert.match(data,/tasks:[\s\S]+status: "COMPLETED"/);assert.match(data,/evaluations:[\s\S]+SUBMITTED[\s\S]+ACKNOWLEDGED/);assert.match(data,/documents:[\s\S]+status: "APPROVED"[\s\S]+IDENTIFICATION[\s\S]+MEDICAL_DOCUMENT/)});
 test("private paths and signed URLs absent",()=>assert.doesNotMatch(data,/storagePath|attachmentPath|EvidencePath|signed/i));
 test("visibility is role scoped",()=>assert.match(data,/INTERN_AND_STAFF[\s\S]+INTERN_ONLY[\s\S]+STAFF_ONLY/));
 test("unavailable values are not fabricated",()=>assert.deepEqual(portfolioCompleteness(null),{completed:0,total:6}));
