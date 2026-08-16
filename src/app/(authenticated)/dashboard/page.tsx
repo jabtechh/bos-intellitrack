@@ -6,6 +6,7 @@ import { EmptyState, MetricCard, PageHeader, StatusBadge } from "@/components/ui
 import { TaskDashboardSummary } from "@/components/task-dashboard-summary";
 import { EvaluationDashboardSummary } from "@/components/evaluation-dashboard-summary";
 import { DocumentDashboardSummary } from "@/components/document-dashboard-summary";
+import { InsightsDashboardSummary } from "@/components/insights-dashboard-summary";
 import { localDate } from "@/lib/attendance/domain";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
 import { requireAnnouncementViewer } from "@/lib/announcements/authorization";
@@ -16,20 +17,20 @@ export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
   const user = await requireCurrentUser();
-  if (user.role === "INTERN") return <InternDashboard user={user} />;
+  if (user.role === "INTERN") return <><InternDashboard user={user} /><InsightsDashboardSummary role={user.role}/></>;
   if (user.role === "COORDINATOR") {
     const viewer = await requireAnnouncementViewer();
-    return <><CoordinatorDashboard user={user} /><TaskDashboardSummary userId={user.id} role={user.role} /><EvaluationDashboardSummary userId={user.id} role={user.role}/><DocumentDashboardSummary userId={user.id} role={user.role}/><AnnouncementReaderSummary viewer={viewer} /></>;
+    return <><CoordinatorDashboard user={user} /><InsightsDashboardSummary role={user.role}/><TaskDashboardSummary userId={user.id} role={user.role} /><EvaluationDashboardSummary userId={user.id} role={user.role}/><DocumentDashboardSummary userId={user.id} role={user.role}/><AnnouncementReaderSummary viewer={viewer} /></>;
   }
   if (user.role === "SUPERVISOR") {
     const viewer = await requireAnnouncementViewer();
-    return <><SupervisorDashboard user={user} /><TaskDashboardSummary userId={user.id} role={user.role} /><EvaluationDashboardSummary userId={user.id} role={user.role}/><DocumentDashboardSummary userId={user.id} role={user.role}/><AnnouncementReaderSummary viewer={viewer} /></>;
+    return <><SupervisorDashboard user={user} /><InsightsDashboardSummary role={user.role}/><TaskDashboardSummary userId={user.id} role={user.role} /><EvaluationDashboardSummary userId={user.id} role={user.role}/><DocumentDashboardSummary userId={user.id} role={user.role}/><AnnouncementReaderSummary viewer={viewer} /></>;
   }
 
   const viewer = await requireAnnouncementViewer();
   const attendance = await getReviewerAttendance(user.id, user.role);
   const corrections = await getCorrectionSummary(user.id, user.role);
-  return <div className="dashboard-page"><PageHeader eyebrow="Bo’s Coffee Main Office" title={`Welcome back, ${user.firstName}`} description="Review current operations and the items that need your attention." actions={user.role === "ADMIN" ? <Link href="/admin" className="button button-primary">Open administration <Icon name="arrow" /></Link> : undefined} /><div className="metric-grid">{attendance.items.map(([label, value]) => <MetricCard key={label} label={label} value={value} icon="clock" />)}{corrections ? <MetricCard label={corrections.label} value={corrections.count} icon="review" /> : null}</div><section className="ui-card mt-6 flex flex-wrap items-center justify-between gap-4 p-5 sm:p-6"><div><h2 className="font-semibold text-brand-900">Review workspace</h2><p className="mt-1 text-sm text-secondary">Open the relevant queue to continue reviewing operational exceptions.</p></div><div className="action-bar"><Link href={attendance.href} className="button button-primary">{attendance.link}</Link><Link href="/work-logs/review" className="button button-secondary">Review work logs</Link></div></section><AnnouncementManagerSummary viewer={viewer} /></div>;
+  return <div className="dashboard-page"><PageHeader eyebrow="Bo’s Coffee Main Office" title={`Welcome back, ${user.firstName}`} description="Review current operations and the items that need your attention." actions={user.role === "ADMIN" ? <Link href="/admin" className="button button-primary">Open administration <Icon name="arrow" /></Link> : undefined} /><div className="metric-grid">{attendance.items.map(([label, value]) => <MetricCard key={label} label={label} value={value} icon="clock" />)}{corrections ? <MetricCard label={corrections.label} value={corrections.count} icon="review" /> : null}</div><section className="ui-card mt-6 flex flex-wrap items-center justify-between gap-4 p-5 sm:p-6"><div><h2 className="font-semibold text-brand-900">Review workspace</h2><p className="mt-1 text-sm text-secondary">Open the relevant queue to continue reviewing operational exceptions.</p></div><div className="action-bar"><Link href={attendance.href} className="button button-primary">{attendance.link}</Link><Link href="/work-logs/review" className="button button-secondary">Review work logs</Link></div></section><InsightsDashboardSummary role={user.role}/><AnnouncementManagerSummary viewer={viewer} /></div>;
 }
 
 async function SupervisorDashboard({ user }: { user: Awaited<ReturnType<typeof requireCurrentUser>> }) {

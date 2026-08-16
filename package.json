@@ -38,6 +38,7 @@
     "document:test": "tsx --test scripts/test-document-foundation.ts",
     "portfolio:test": "tsx --test scripts/test-portfolio-report-foundation.ts",
     "announcement:test": "tsx --test scripts/test-announcement-foundation.ts",
+    "insights:test": "tsx --test scripts/test-insights-foundation.ts",
     "ai:test": "tsx --test scripts/test-ai-foundation.ts",
     "storage:documents:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-document-storage.ts"
   },
