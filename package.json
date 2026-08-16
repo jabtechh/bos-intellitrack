@@ -31,7 +31,7 @@
     "demo:users:test": "tsx --test scripts/test-demo-users.ts",
     "work-log:test": "tsx --test scripts/test-work-log-foundation.ts",
     "storage:work-logs:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-work-log-storage.ts",
-    "navigation:test": "tsx --test scripts/test-navigation-ui.ts",
+    "navigation:test": "tsx --test scripts/test-navigation-ui.ts scripts/test-shell-refinement.ts",
     "roles:test": "tsx --test scripts/test-role-alignment.ts",
     "required-hours:test": "tsx --env-file=.env --env-file=.env.local --test scripts/test-required-hours.ts",
     "task:test": "tsx scripts/test-task-foundation.ts",

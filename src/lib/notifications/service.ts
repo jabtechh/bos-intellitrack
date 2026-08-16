@@ -19,10 +19,10 @@ export async function createNotification(input: NotificationInput) {
   }
 }
 
-export async function getNotificationsForCurrentUser(options: { unreadOnly?: boolean } = {}) {
+export async function getNotificationsForCurrentUser(options: { unreadOnly?: boolean; limit?: number } = {}) {
   const user = await requireCurrentUser();
   try {
-    const items = await prisma.notification.findMany({ where: { recipientId: user.id, ...(options.unreadOnly ? { readAt: null } : {}) }, include: { actor: { select: actorSelect } }, orderBy: [{ createdAt: "desc" }, { id: "desc" }] });
+    const items = await prisma.notification.findMany({ where: { recipientId: user.id, ...(options.unreadOnly ? { readAt: null } : {}) }, include: { actor: { select: actorSelect } }, orderBy: [{ createdAt: "desc" }, { id: "desc" }], ...(options.limit ? { take: Math.min(20, Math.max(1, options.limit)) } : {}) });
     return { initialized: true as const, items };
   } catch (error) {
     return missingNotificationTableFallback(error, { initialized: false as const, items: [] });

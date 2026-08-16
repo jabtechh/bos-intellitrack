@@ -17,7 +17,8 @@ const auth = readFileSync("src/lib/announcements/authorization.ts", "utf8");
 const actions = readFileSync("src/app/announcements/actions.ts", "utf8");
 const schema = readFileSync("prisma/schema.prisma", "utf8");
 const shell = readFileSync("src/components/app-shell.tsx", "utf8");
-const mobileNavigation = readFileSync("src/components/mobile-intern-navigation.tsx", "utf8");
+const utilities = readFileSync("src/components/application-utilities.tsx", "utf8");
+const mobileNavigation = readFileSync("src/components/mobile-navigation.tsx", "utf8");
 const listPage = readFileSync("src/app/(authenticated)/announcements/page.tsx", "utf8");
 const detailPage = readFileSync("src/app/(authenticated)/announcements/[announcementId]/page.tsx", "utf8");
 const managePage = readFileSync("src/app/(authenticated)/announcements/manage/page.tsx", "utf8");
@@ -100,8 +101,8 @@ test("navigation exists for all roles", () => {
   assert.match(shell, /\/announcements/);
   assert.ok((shell.match(/\/announcements/g) || []).length >= 4);
 });
-test("intern bottom nav preserved", () => { assert.match(shell, /MobileInternNavigation/); assert.match(mobileNavigation, /aria-label="Intern mobile navigation"/); });
-test("bell icon used", () => assert.match(shell, /icon: "bell"/));
+test("intern bottom nav preserved", () => { assert.match(shell, /MobileNavigation/); assert.match(mobileNavigation, /aria-label="Mobile application navigation"/); });
+test("bell icon used", () => assert.match(utilities, /name="bell"/));
 
 test("dashboard integrates announcements", () => {
   assert.match(dashboard, /AnnouncementReaderSummary/);

@@ -4,7 +4,7 @@ import test from "node:test";
 import { formatNotificationBadge, notificationInputSchema, safeNotificationHrefSchema } from "../src/lib/notifications/domain.ts";
 import { NotificationUnavailableError, missingNotificationTableFallback, throwNotificationUnavailable } from "../src/lib/notifications/errors.ts";
 
-const schema=readFileSync("prisma/schema.prisma","utf8"),service=readFileSync("src/lib/notifications/service.ts","utf8"),migration=readFileSync("prisma/migrations/20260817120000_add_notification_foundation/migration.sql","utf8"),page=readFileSync("src/app/(authenticated)/notifications/page.tsx","utf8"),item=readFileSync("src/components/notification-item.tsx","utf8"),shell=readFileSync("src/components/app-shell.tsx","utf8"),mobile=readFileSync("src/components/mobile-intern-navigation.tsx","utf8");
+const schema=readFileSync("prisma/schema.prisma","utf8"),service=readFileSync("src/lib/notifications/service.ts","utf8"),migration=readFileSync("prisma/migrations/20260817120000_add_notification_foundation/migration.sql","utf8"),page=readFileSync("src/app/(authenticated)/notifications/page.tsx","utf8"),item=readFileSync("src/components/notification-item.tsx","utf8"),shell=readFileSync("src/components/app-shell.tsx","utf8"),mobile=readFileSync("src/components/mobile-navigation.tsx","utf8");
 const base={recipientId:"00000000-0000-4000-8000-000000000001",type:"task.assigned",title:"Assigned"} as const;
 
 test("create notification contract is accepted",()=>assert(notificationInputSchema.safeParse(base).success));
@@ -26,7 +26,7 @@ test("badge formatting handles zero normal and 99+",()=>{assert.equal(formatNoti
 test("empty state exists",()=>assert.match(page,/No notifications/));
 test("restricted fields are absent from strict input contract",()=>{for(const key of ["password","authId","token","cookie","latitude","longitude","selfiePath","signedUrl","storagePath","medicalContents","identificationContents"])assert(!notificationInputSchema.safeParse({...base,[key]:"secret"}).success)});
 test("notification click marks read before safe navigation",()=>assert.match(item,/await markNotificationReadAction\(item\.id\);if\(item\.href\)router\.push/));
-test("navigation includes persisted badge without replacing intern primary items",()=>{assert.match(shell,/getUnreadNotificationCount/);assert.match(shell,/\/notifications/);assert.match(mobile,/Dashboard[\s\S]*Attendance[\s\S]*Work Logs[\s\S]*More/);assert.match(mobile,/Notifications/)});
+test("utility bell includes persisted badge without replacing Intern primary items",()=>{assert.match(shell,/getUnreadNotificationCount/);assert.match(shell,/ApplicationUtilities/);assert.match(mobile,/"\/dashboard","\/attendance","\/work-logs"[\s\S]*More/)});
 
 function prismaError(code:string,meta?:Record<string,unknown>){return Object.assign(new Error("Prisma request failed"),{code,meta})}
 const missingTable=prismaError("P2021",{modelName:"Notification",table:"public.notifications"});

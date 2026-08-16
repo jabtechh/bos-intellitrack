@@ -8,7 +8,7 @@ const navigation = read("src/components/shell-navigation.tsx");
 const dashboard = read("src/app/(authenticated)/dashboard/page.tsx");
 const attendance = read("src/app/(authenticated)/attendance/page.tsx");
 const workLogs = read("src/app/(authenticated)/work-logs/page.tsx");
-const mobile = read("src/components/mobile-intern-navigation.tsx");
+const mobile = read("src/components/mobile-navigation.tsx");
 
 test("authenticated routes share one persistent shell layout", () => {
   const layout = read("src/app/(authenticated)/layout.tsx");
@@ -23,8 +23,8 @@ test("internal shell navigation uses Next Link without hard navigation", () => {
 });
 test("active navigation and mobile persistence are exposed accessibly", () => {
   assert.match(navigation, /usePathname/); assert.match(navigation, /aria-current/);
-  assert.match(mobile, /aria-label="Intern mobile navigation"/); assert.match(shell, /id="main-content"/); assert.match(shell, /Skip to main content/);
-  assert.match(mobile,/Dashboard[\s\S]*Attendance[\s\S]*Work Logs[\s\S]*More/);
+  assert.match(mobile, /aria-label="Mobile application navigation"/); assert.match(shell, /id="main-content"/); assert.match(shell, /Skip to main content/);
+  assert.match(mobile,/"\/dashboard","\/attendance","\/work-logs"[\s\S]*More/);
 });
 test("shell-preserving destination skeletons exist", () => {
   for (const path of ["dashboard/loading.tsx", "attendance/loading.tsx", "attendance/history/loading.tsx", "attendance/review/loading.tsx", "attendance/corrections/loading.tsx", "work-logs/loading.tsx", "work-logs/review/loading.tsx"]) assert.equal(existsSync(`src/app/(authenticated)/${path}`), true);
