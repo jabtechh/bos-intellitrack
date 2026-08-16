@@ -42,6 +42,7 @@ yarn-error.log*
 next-env.d.ts
 .pilot-credentials.local.json
 .demo-credentials.local.json
+.demo-data-credentials.local.json
 
 # prisma generated client
 /src/generated/
