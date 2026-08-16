@@ -24,7 +24,7 @@ export function scheduledPeriod(startDate: Date, endDate: Date) {
   return `${start} – ${end}`;
 }
 
-type ProjectionInput = { remainingMinutes: number; scheduleStart: Date | null; scheduleEnd: Date | null; attendance: { attendanceDate: Date; status: string; creditedMinutes: number }[]; from?: Date };
+type ProjectionInput = { remainingMinutes: number; scheduleStart: Date | null; scheduleEnd: Date | null; attendance: { attendanceDate: Date; status: string; creditedMinutes: number }[]; holidays?:Date[]; from?: Date };
 export function projectedCompletionDate(input: ProjectionInput): Date | null {
   if (input.remainingMinutes <= 0 || !input.scheduleStart || !input.scheduleEnd) return null;
   const eligible = input.attendance.filter(row => row.status === "APPROVED" && row.creditedMinutes > 0);
@@ -37,9 +37,10 @@ export function projectedCompletionDate(input: ProjectionInput): Date | null {
   if (expectedMinutes <= 0) return null;
   let remaining = input.remainingMinutes;
   const cursor = new Date(Date.UTC((input.from ?? new Date()).getUTCFullYear(), (input.from ?? new Date()).getUTCMonth(), (input.from ?? new Date()).getUTCDate()));
+  const holidays=new Set((input.holidays??[]).map(date=>date.toISOString().slice(0,10)));
   for (let day = 0; day < 3660; day++) {
     cursor.setUTCDate(cursor.getUTCDate() + 1);
-    if (!weekdays.has(cursor.getUTCDay())) continue;
+    if (!weekdays.has(cursor.getUTCDay())||holidays.has(cursor.toISOString().slice(0,10))) continue;
     remaining -= expectedMinutes;
     if (remaining <= 0) return new Date(cursor);
   }
