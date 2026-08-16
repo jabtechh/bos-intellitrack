@@ -134,6 +134,29 @@ table { width: 100%; border-collapse: collapse; } th { color: var(--text-muted);
   .operational-page { padding: 2.5rem clamp(2rem,4vw,4.5rem) 5rem; }.attendance-layout { grid-template-columns: minmax(0,1.35fr) minmax(20rem,.65fr); gap: 1.25rem; }.attendance-capture { padding: 1.5rem; }.attendance-summary { grid-template-columns: repeat(4,minmax(0,1fr)); }.mobile-action-region { position: static; padding: 0; }
 }
 
+/* Authenticated shell visibility is controlled only by the CSS viewport. Keep
+   both sides explicit so resizing across lg never relies on a stale base rule. */
+@media (max-width: 1023px) {
+  .app-shell { display: block; }
+  .app-sidebar { display: none; }
+  .app-utility-bar { display: flex; height: 4rem; padding: 0 1rem; }
+  .mobile-brand { display: flex; }
+  .desktop-context { display: none; }
+  .bottom-nav { display: grid; }
+  .app-content { padding-bottom: calc(6.75rem + env(safe-area-inset-bottom)); }
+}
+
+@media (min-width: 1024px) {
+  .app-shell { display: grid; }
+  .app-sidebar { display: flex; }
+  .app-utility-bar { display: flex; height: 3.75rem; padding: 0 1.5rem; }
+  .mobile-brand { display: none; }
+  .desktop-context { display: block; }
+  .bottom-nav,
+  .mobile-sheet-backdrop { display: none; }
+  .app-content { padding-bottom: 0; }
+}
+
 @media (max-width: 639px) { .page-header .action-bar,.page-header .button { width:100%; }.route-skeleton { padding-top:1.5rem; }.attendance-times,.progress-stats { grid-template-columns:1fr; }.form-actions { padding-bottom:max(.6rem,env(safe-area-inset-bottom)); } }
 
 :where(a, button, input, select, textarea):focus-visible {
