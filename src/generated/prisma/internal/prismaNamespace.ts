@@ -1816,6 +1816,8 @@ export const UserScalarFieldEnum = {
   suffix: 'suffix',
   phoneNumber: 'phoneNumber',
   profilePhotoPath: 'profilePhotoPath',
+  coverPhotoPath: 'coverPhotoPath',
+  bio: 'bio',
   isActive: 'isActive',
   lastLoginAt: 'lastLoginAt',
   createdAt: 'createdAt',

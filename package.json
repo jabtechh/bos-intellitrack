@@ -39,8 +39,10 @@
     "portfolio:test": "tsx --test scripts/test-portfolio-report-foundation.ts",
     "announcement:test": "tsx --test scripts/test-announcement-foundation.ts",
     "insights:test": "tsx --test scripts/test-insights-foundation.ts",
+    "profile:test": "tsx --test scripts/test-profile-foundation.ts",
     "ai:test": "tsx --test scripts/test-ai-foundation.ts",
-    "storage:documents:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-document-storage.ts"
+    "storage:documents:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-document-storage.ts",
+    "storage:profile:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-profile-storage.ts"
   },
   "dependencies": {
     "@google/genai": "^2.15.0",

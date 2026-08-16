@@ -8,6 +8,7 @@ export type ApplicationUser = {
   role: UserRole;
   firstName: string;
   lastName: string;
+  profilePhotoPath?: string | null;
   isActive: boolean;
 };
 

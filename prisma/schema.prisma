@@ -231,6 +231,8 @@ model User {
   suffix           String?   @db.VarChar(20)
   phoneNumber      String?   @map("phone_number") @db.VarChar(30)
   profilePhotoPath String?   @map("profile_photo_path") @db.Text
+  coverPhotoPath   String?   @map("cover_photo_path") @db.Text
+  bio              String?   @db.Text
   isActive         Boolean   @default(true) @map("is_active")
   lastLoginAt      DateTime? @map("last_login_at") @db.Timestamptz(6)
   createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)

@@ -35,6 +35,8 @@ export type UserMinAggregateOutputType = {
   suffix: string | null
   phoneNumber: string | null
   profilePhotoPath: string | null
+  coverPhotoPath: string | null
+  bio: string | null
   isActive: boolean | null
   lastLoginAt: Date | null
   createdAt: Date | null
@@ -52,6 +54,8 @@ export type UserMaxAggregateOutputType = {
   suffix: string | null
   phoneNumber: string | null
   profilePhotoPath: string | null
+  coverPhotoPath: string | null
+  bio: string | null
   isActive: boolean | null
   lastLoginAt: Date | null
   createdAt: Date | null
@@ -69,6 +73,8 @@ export type UserCountAggregateOutputType = {
   suffix: number
   phoneNumber: number
   profilePhotoPath: number
+  coverPhotoPath: number
+  bio: number
   isActive: number
   lastLoginAt: number
   createdAt: number
@@ -88,6 +94,8 @@ export type UserMinAggregateInputType = {
   suffix?: true
   phoneNumber?: true
   profilePhotoPath?: true
+  coverPhotoPath?: true
+  bio?: true
   isActive?: true
   lastLoginAt?: true
   createdAt?: true
@@ -105,6 +113,8 @@ export type UserMaxAggregateInputType = {
   suffix?: true
   phoneNumber?: true
   profilePhotoPath?: true
+  coverPhotoPath?: true
+  bio?: true
   isActive?: true
   lastLoginAt?: true
   createdAt?: true
@@ -122,6 +132,8 @@ export type UserCountAggregateInputType = {
   suffix?: true
   phoneNumber?: true
   profilePhotoPath?: true
+  coverPhotoPath?: true
+  bio?: true
   isActive?: true
   lastLoginAt?: true
   createdAt?: true
@@ -212,6 +224,8 @@ export type UserGroupByOutputType = {
   suffix: string | null
   phoneNumber: string | null
   profilePhotoPath: string | null
+  coverPhotoPath: string | null
+  bio: string | null
   isActive: boolean
   lastLoginAt: Date | null
   createdAt: Date
@@ -250,6 +264,8 @@ export type UserWhereInput = {
   suffix?: Prisma.StringNullableFilter<"User"> | string | null
   phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
   profilePhotoPath?: Prisma.StringNullableFilter<"User"> | string | null
+  coverPhotoPath?: Prisma.StringNullableFilter<"User"> | string | null
+  bio?: Prisma.StringNullableFilter<"User"> | string | null
   isActive?: Prisma.BoolFilter<"User"> | boolean
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -289,6 +305,8 @@ export type UserOrderByWithRelationInput = {
   suffix?: Prisma.SortOrderInput | Prisma.SortOrder
   phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   profilePhotoPath?: Prisma.SortOrderInput | Prisma.SortOrder
+  coverPhotoPath?: Prisma.SortOrderInput | Prisma.SortOrder
+  bio?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -331,6 +349,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   suffix?: Prisma.StringNullableFilter<"User"> | string | null
   phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
   profilePhotoPath?: Prisma.StringNullableFilter<"User"> | string | null
+  coverPhotoPath?: Prisma.StringNullableFilter<"User"> | string | null
+  bio?: Prisma.StringNullableFilter<"User"> | string | null
   isActive?: Prisma.BoolFilter<"User"> | boolean
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -370,6 +390,8 @@ export type UserOrderByWithAggregationInput = {
   suffix?: Prisma.SortOrderInput | Prisma.SortOrder
   phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   profilePhotoPath?: Prisma.SortOrderInput | Prisma.SortOrder
+  coverPhotoPath?: Prisma.SortOrderInput | Prisma.SortOrder
+  bio?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -393,6 +415,8 @@ export type UserScalarWhereWithAggregatesInput = {
   suffix?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   phoneNumber?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   profilePhotoPath?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  coverPhotoPath?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  bio?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   lastLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -410,6 +434,8 @@ export type UserCreateInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -449,6 +475,8 @@ export type UserUncheckedCreateInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -488,6 +516,8 @@ export type UserUpdateInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -527,6 +557,8 @@ export type UserUncheckedUpdateInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -566,6 +598,8 @@ export type UserCreateManyInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -583,6 +617,8 @@ export type UserUpdateManyMutationInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -600,6 +636,8 @@ export type UserUncheckedUpdateManyInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -617,6 +655,8 @@ export type UserCountOrderByAggregateInput = {
   suffix?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
   profilePhotoPath?: Prisma.SortOrder
+  coverPhotoPath?: Prisma.SortOrder
+  bio?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -634,6 +674,8 @@ export type UserMaxOrderByAggregateInput = {
   suffix?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
   profilePhotoPath?: Prisma.SortOrder
+  coverPhotoPath?: Prisma.SortOrder
+  bio?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -651,6 +693,8 @@ export type UserMinOrderByAggregateInput = {
   suffix?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
   profilePhotoPath?: Prisma.SortOrder
+  coverPhotoPath?: Prisma.SortOrder
+  bio?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -1030,6 +1074,8 @@ export type UserCreateWithoutInternProfileInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -1068,6 +1114,8 @@ export type UserUncheckedCreateWithoutInternProfileInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -1122,6 +1170,8 @@ export type UserUpdateWithoutInternProfileInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1160,6 +1210,8 @@ export type UserUncheckedUpdateWithoutInternProfileInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1198,6 +1250,8 @@ export type UserCreateWithoutSupervisorProfileInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -1236,6 +1290,8 @@ export type UserUncheckedCreateWithoutSupervisorProfileInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -1290,6 +1346,8 @@ export type UserUpdateWithoutSupervisorProfileInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1328,6 +1386,8 @@ export type UserUncheckedUpdateWithoutSupervisorProfileInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1366,6 +1426,8 @@ export type UserCreateWithoutCoordinatorProfileInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -1404,6 +1466,8 @@ export type UserUncheckedCreateWithoutCoordinatorProfileInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -1458,6 +1522,8 @@ export type UserUpdateWithoutCoordinatorProfileInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1496,6 +1562,8 @@ export type UserUncheckedUpdateWithoutCoordinatorProfileInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1534,6 +1602,8 @@ export type UserCreateWithoutRepresentativeProfileInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -1572,6 +1642,8 @@ export type UserUncheckedCreateWithoutRepresentativeProfileInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -1626,6 +1698,8 @@ export type UserUpdateWithoutRepresentativeProfileInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1664,6 +1738,8 @@ export type UserUncheckedUpdateWithoutRepresentativeProfileInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1702,6 +1778,8 @@ export type UserCreateWithoutAdminProfileInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -1740,6 +1818,8 @@ export type UserUncheckedCreateWithoutAdminProfileInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -1794,6 +1874,8 @@ export type UserUpdateWithoutAdminProfileInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1832,6 +1914,8 @@ export type UserUncheckedUpdateWithoutAdminProfileInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1870,6 +1954,8 @@ export type UserCreateWithoutAssignmentsCreatedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -1908,6 +1994,8 @@ export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -1951,6 +2039,8 @@ export type UserCreateWithoutRequiredHoursUpdatesInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -1989,6 +2079,8 @@ export type UserUncheckedCreateWithoutRequiredHoursUpdatesInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -2043,6 +2135,8 @@ export type UserUpdateWithoutAssignmentsCreatedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2081,6 +2175,8 @@ export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2130,6 +2226,8 @@ export type UserUpdateWithoutRequiredHoursUpdatesInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2168,6 +2266,8 @@ export type UserUncheckedUpdateWithoutRequiredHoursUpdatesInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2206,6 +2306,8 @@ export type UserCreateWithoutAttendanceReviewedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -2244,6 +2346,8 @@ export type UserUncheckedCreateWithoutAttendanceReviewedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -2298,6 +2402,8 @@ export type UserUpdateWithoutAttendanceReviewedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2336,6 +2442,8 @@ export type UserUncheckedUpdateWithoutAttendanceReviewedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2374,6 +2482,8 @@ export type UserCreateWithoutAttendanceCorrectionsRequestedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -2412,6 +2522,8 @@ export type UserUncheckedCreateWithoutAttendanceCorrectionsRequestedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -2455,6 +2567,8 @@ export type UserCreateWithoutAttendanceCorrectionsReviewedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -2493,6 +2607,8 @@ export type UserUncheckedCreateWithoutAttendanceCorrectionsReviewedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -2547,6 +2663,8 @@ export type UserUpdateWithoutAttendanceCorrectionsRequestedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2585,6 +2703,8 @@ export type UserUncheckedUpdateWithoutAttendanceCorrectionsRequestedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2634,6 +2754,8 @@ export type UserUpdateWithoutAttendanceCorrectionsReviewedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2672,6 +2794,8 @@ export type UserUncheckedUpdateWithoutAttendanceCorrectionsReviewedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2710,6 +2834,8 @@ export type UserCreateWithoutWorkLogsReviewedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -2748,6 +2874,8 @@ export type UserUncheckedCreateWithoutWorkLogsReviewedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -2802,6 +2930,8 @@ export type UserUpdateWithoutWorkLogsReviewedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2840,6 +2970,8 @@ export type UserUncheckedUpdateWithoutWorkLogsReviewedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2878,6 +3010,8 @@ export type UserCreateWithoutTasksAssignedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -2916,6 +3050,8 @@ export type UserUncheckedCreateWithoutTasksAssignedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -2959,6 +3095,8 @@ export type UserCreateWithoutTasksReviewedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -2997,6 +3135,8 @@ export type UserUncheckedCreateWithoutTasksReviewedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -3051,6 +3191,8 @@ export type UserUpdateWithoutTasksAssignedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3089,6 +3231,8 @@ export type UserUncheckedUpdateWithoutTasksAssignedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3138,6 +3282,8 @@ export type UserUpdateWithoutTasksReviewedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3176,6 +3322,8 @@ export type UserUncheckedUpdateWithoutTasksReviewedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3214,6 +3362,8 @@ export type UserCreateWithoutEvaluationsCreatedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -3252,6 +3402,8 @@ export type UserUncheckedCreateWithoutEvaluationsCreatedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -3295,6 +3447,8 @@ export type UserCreateWithoutEvaluationsAcknowledgedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -3333,6 +3487,8 @@ export type UserUncheckedCreateWithoutEvaluationsAcknowledgedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -3387,6 +3543,8 @@ export type UserUpdateWithoutEvaluationsCreatedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3425,6 +3583,8 @@ export type UserUncheckedUpdateWithoutEvaluationsCreatedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3474,6 +3634,8 @@ export type UserUpdateWithoutEvaluationsAcknowledgedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3512,6 +3674,8 @@ export type UserUncheckedUpdateWithoutEvaluationsAcknowledgedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3550,6 +3714,8 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -3588,6 +3754,8 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -3631,6 +3799,8 @@ export type UserCreateWithoutFeedbackReceivedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -3669,6 +3839,8 @@ export type UserUncheckedCreateWithoutFeedbackReceivedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -3723,6 +3895,8 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3761,6 +3935,8 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3810,6 +3986,8 @@ export type UserUpdateWithoutFeedbackReceivedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3848,6 +4026,8 @@ export type UserUncheckedUpdateWithoutFeedbackReceivedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3886,6 +4066,8 @@ export type UserCreateWithoutDocumentsUploadedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -3924,6 +4106,8 @@ export type UserUncheckedCreateWithoutDocumentsUploadedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -3967,6 +4151,8 @@ export type UserCreateWithoutDocumentsReviewedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -4005,6 +4191,8 @@ export type UserUncheckedCreateWithoutDocumentsReviewedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -4059,6 +4247,8 @@ export type UserUpdateWithoutDocumentsUploadedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4097,6 +4287,8 @@ export type UserUncheckedUpdateWithoutDocumentsUploadedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4146,6 +4338,8 @@ export type UserUpdateWithoutDocumentsReviewedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4184,6 +4378,8 @@ export type UserUncheckedUpdateWithoutDocumentsReviewedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4222,6 +4418,8 @@ export type UserCreateWithoutAnnouncementsCreatedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -4260,6 +4458,8 @@ export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -4314,6 +4514,8 @@ export type UserUpdateWithoutAnnouncementsCreatedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4352,6 +4554,8 @@ export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4390,6 +4594,8 @@ export type UserCreateWithoutPortfoliosGeneratedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -4428,6 +4634,8 @@ export type UserUncheckedCreateWithoutPortfoliosGeneratedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -4471,6 +4679,8 @@ export type UserCreateWithoutPortfoliosApprovedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -4509,6 +4719,8 @@ export type UserUncheckedCreateWithoutPortfoliosApprovedInput = {
   suffix?: string | null
   phoneNumber?: string | null
   profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
   isActive?: boolean
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
@@ -4563,6 +4775,8 @@ export type UserUpdateWithoutPortfoliosGeneratedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4601,6 +4815,8 @@ export type UserUncheckedUpdateWithoutPortfoliosGeneratedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4650,6 +4866,8 @@ export type UserUpdateWithoutPortfoliosApprovedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4688,6 +4906,8 @@ export type UserUncheckedUpdateWithoutPortfoliosApprovedInput = {
   suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4901,6 +5121,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   suffix?: boolean
   phoneNumber?: boolean
   profilePhotoPath?: boolean
+  coverPhotoPath?: boolean
+  bio?: boolean
   isActive?: boolean
   lastLoginAt?: boolean
   createdAt?: boolean
@@ -4941,6 +5163,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   suffix?: boolean
   phoneNumber?: boolean
   profilePhotoPath?: boolean
+  coverPhotoPath?: boolean
+  bio?: boolean
   isActive?: boolean
   lastLoginAt?: boolean
   createdAt?: boolean
@@ -4958,6 +5182,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   suffix?: boolean
   phoneNumber?: boolean
   profilePhotoPath?: boolean
+  coverPhotoPath?: boolean
+  bio?: boolean
   isActive?: boolean
   lastLoginAt?: boolean
   createdAt?: boolean
@@ -4975,13 +5201,15 @@ export type UserSelectScalar = {
   suffix?: boolean
   phoneNumber?: boolean
   profilePhotoPath?: boolean
+  coverPhotoPath?: boolean
+  bio?: boolean
   isActive?: boolean
   lastLoginAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "authId" | "email" | "role" | "firstName" | "middleName" | "lastName" | "suffix" | "phoneNumber" | "profilePhotoPath" | "isActive" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "authId" | "email" | "role" | "firstName" | "middleName" | "lastName" | "suffix" | "phoneNumber" | "profilePhotoPath" | "coverPhotoPath" | "bio" | "isActive" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   internProfile?: boolean | Prisma.User$internProfileArgs<ExtArgs>
   supervisorProfile?: boolean | Prisma.User$supervisorProfileArgs<ExtArgs>
@@ -5047,6 +5275,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     suffix: string | null
     phoneNumber: string | null
     profilePhotoPath: string | null
+    coverPhotoPath: string | null
+    bio: string | null
     isActive: boolean
     lastLoginAt: Date | null
     createdAt: Date
@@ -5506,6 +5736,8 @@ export interface UserFieldRefs {
   readonly suffix: Prisma.FieldRef<"User", 'String'>
   readonly phoneNumber: Prisma.FieldRef<"User", 'String'>
   readonly profilePhotoPath: Prisma.FieldRef<"User", 'String'>
+  readonly coverPhotoPath: Prisma.FieldRef<"User", 'String'>
+  readonly bio: Prisma.FieldRef<"User", 'String'>
   readonly isActive: Prisma.FieldRef<"User", 'Boolean'>
   readonly lastLoginAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>

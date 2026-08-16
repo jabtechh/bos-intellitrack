@@ -21,6 +21,7 @@ export async function getCurrentUser(): Promise<CurrentUserState> {
       role: true,
       firstName: true,
       lastName: true,
+      profilePhotoPath: true,
       isActive: true,
     },
   });
