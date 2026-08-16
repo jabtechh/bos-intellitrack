@@ -213,6 +213,45 @@ export const AnnouncementStatus = {
 export type AnnouncementStatus = (typeof AnnouncementStatus)[keyof typeof AnnouncementStatus]
 
 
+export const CalendarEventType = {
+  ORIENTATION: 'ORIENTATION',
+  SEMINAR: 'SEMINAR',
+  MEETING: 'MEETING',
+  TRAINING: 'TRAINING',
+  COMPANY_ACTIVITY: 'COMPANY_ACTIVITY',
+  OTHER: 'OTHER'
+} as const
+
+export type CalendarEventType = (typeof CalendarEventType)[keyof typeof CalendarEventType]
+
+
+export const CalendarEventStatus = {
+  ACTIVE: 'ACTIVE',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type CalendarEventStatus = (typeof CalendarEventStatus)[keyof typeof CalendarEventStatus]
+
+
+export const HolidayType = {
+  REGULAR: 'REGULAR',
+  SPECIAL_NON_WORKING: 'SPECIAL_NON_WORKING',
+  SPECIAL_WORKING: 'SPECIAL_WORKING',
+  LOCAL: 'LOCAL'
+} as const
+
+export type HolidayType = (typeof HolidayType)[keyof typeof HolidayType]
+
+
+export const HolidayScope = {
+  NATIONAL: 'NATIONAL',
+  LOCAL: 'LOCAL',
+  COMPANY: 'COMPANY'
+} as const
+
+export type HolidayScope = (typeof HolidayScope)[keyof typeof HolidayScope]
+
+
 export const PortfolioStatus = {
   DRAFT: 'DRAFT',
   GENERATED: 'GENERATED',

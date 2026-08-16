@@ -68,6 +68,8 @@ export const ModelName = {
   Feedback: 'Feedback',
   Document: 'Document',
   Announcement: 'Announcement',
+  CalendarEvent: 'CalendarEvent',
+  Holiday: 'Holiday',
   Portfolio: 'Portfolio'
 } as const
 
@@ -461,6 +463,46 @@ export const AnnouncementScalarFieldEnum = {
 } as const
 
 export type AnnouncementScalarFieldEnum = (typeof AnnouncementScalarFieldEnum)[keyof typeof AnnouncementScalarFieldEnum]
+
+
+export const CalendarEventScalarFieldEnum = {
+  id: 'id',
+  createdById: 'createdById',
+  companyId: 'companyId',
+  schoolId: 'schoolId',
+  title: 'title',
+  description: 'description',
+  eventDate: 'eventDate',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  location: 'location',
+  audience: 'audience',
+  eventType: 'eventType',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CalendarEventScalarFieldEnum = (typeof CalendarEventScalarFieldEnum)[keyof typeof CalendarEventScalarFieldEnum]
+
+
+export const HolidayScalarFieldEnum = {
+  id: 'id',
+  createdById: 'createdById',
+  companyId: 'companyId',
+  holidayDate: 'holidayDate',
+  name: 'name',
+  holidayType: 'holidayType',
+  scope: 'scope',
+  locality: 'locality',
+  sourceReference: 'sourceReference',
+  isActive: 'isActive',
+  isManual: 'isManual',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HolidayScalarFieldEnum = (typeof HolidayScalarFieldEnum)[keyof typeof HolidayScalarFieldEnum]
 
 
 export const PortfolioScalarFieldEnum = {

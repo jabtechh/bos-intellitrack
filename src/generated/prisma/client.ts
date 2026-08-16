@@ -127,6 +127,16 @@ export type Document = Prisma.DocumentModel
  */
 export type Announcement = Prisma.AnnouncementModel
 /**
+ * Model CalendarEvent
+ * 
+ */
+export type CalendarEvent = Prisma.CalendarEventModel
+/**
+ * Model Holiday
+ * 
+ */
+export type Holiday = Prisma.HolidayModel
+/**
  * Model Portfolio
  * 
  */

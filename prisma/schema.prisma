@@ -210,6 +210,34 @@ enum AnnouncementStatus {
   @@map("announcement_status")
 }
 
+enum CalendarEventType {
+  ORIENTATION
+  SEMINAR
+  MEETING
+  TRAINING
+  COMPANY_ACTIVITY
+  OTHER
+  @@map("calendar_event_type")
+}
+enum CalendarEventStatus {
+  ACTIVE
+  CANCELLED
+  @@map("calendar_event_status")
+}
+enum HolidayType {
+  REGULAR
+  SPECIAL_NON_WORKING
+  SPECIAL_WORKING
+  LOCAL
+  @@map("holiday_type")
+}
+enum HolidayScope {
+  NATIONAL
+  LOCAL
+  COMPANY
+  @@map("holiday_scope")
+}
+
 enum PortfolioStatus {
   DRAFT
   GENERATED
@@ -259,6 +287,8 @@ model User {
   documentsUploaded              Document[]             @relation("DocumentUploadedBy")
   documentsReviewed              Document[]             @relation("DocumentReviewedBy")
   announcementsCreated           Announcement[]         @relation("AnnouncementCreatedBy")
+  calendarEventsCreated          CalendarEvent[]        @relation("CalendarEventCreatedBy")
+  holidaysCreated                Holiday[]              @relation("HolidayCreatedBy")
   portfoliosGenerated            Portfolio[]            @relation("PortfolioLastGeneratedBy")
   portfoliosApproved             Portfolio[]            @relation("PortfolioApprovedBy")
 
@@ -388,6 +418,7 @@ model School {
   internProfiles      InternProfile[]
   coordinatorProfiles CoordinatorProfile[]
   announcements       Announcement[]
+  calendarEvents      CalendarEvent[]
 
   @@index([name], map: "schools_name_idx")
   @@index([isActive], map: "schools_is_active_idx")
@@ -419,6 +450,8 @@ model Company {
   representativeProfiles RepresentativeProfile[]
   assignments            InternshipAssignment[]
   announcements          Announcement[]
+  calendarEvents         CalendarEvent[]
+  holidays               Holiday[]
 
   @@index([name], map: "companies_name_idx")
   @@index([isActive], map: "companies_active_idx")
@@ -768,6 +801,54 @@ model Announcement {
   @@index([audience, status], map: "announcements_audience_status_idx")
   @@index([isPinned, publishedAt], map: "announcements_pinned_idx")
   @@map("announcements")
+}
+
+model CalendarEvent {
+  id String @id @default(uuid()) @db.Uuid
+  createdById String @map("created_by_id") @db.Uuid
+  companyId String? @map("company_id") @db.Uuid
+  schoolId String? @map("school_id") @db.Uuid
+  title String @db.VarChar(255)
+  description String? @db.Text
+  eventDate DateTime @map("event_date") @db.Date
+  startTime DateTime? @map("start_time") @db.Time(0)
+  endTime DateTime? @map("end_time") @db.Time(0)
+  location String? @db.VarChar(255)
+  audience AnnouncementAudience @default(ALL_USERS)
+  eventType CalendarEventType @default(OTHER) @map("event_type")
+  status CalendarEventStatus @default(ACTIVE)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdBy User @relation("CalendarEventCreatedBy",fields:[createdById],references:[id],onDelete:Restrict)
+  company Company? @relation(fields:[companyId],references:[id],onDelete:Restrict)
+  school School? @relation(fields:[schoolId],references:[id],onDelete:Restrict)
+  @@index([eventDate,status],map:"calendar_events_date_status_idx")
+  @@index([companyId],map:"calendar_events_company_idx")
+  @@index([schoolId],map:"calendar_events_school_idx")
+  @@index([audience],map:"calendar_events_audience_idx")
+  @@map("calendar_events")
+}
+
+model Holiday {
+  id String @id @default(uuid()) @db.Uuid
+  createdById String @map("created_by_id") @db.Uuid
+  companyId String? @map("company_id") @db.Uuid
+  holidayDate DateTime @map("holiday_date") @db.Date
+  name String @db.VarChar(255)
+  holidayType HolidayType @map("holiday_type")
+  scope HolidayScope @default(NATIONAL)
+  locality String? @db.VarChar(255)
+  sourceReference String? @map("source_reference") @db.Text
+  isActive Boolean @default(true) @map("is_active")
+  isManual Boolean @default(true) @map("is_manual")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdBy User @relation("HolidayCreatedBy",fields:[createdById],references:[id],onDelete:Restrict)
+  company Company? @relation(fields:[companyId],references:[id],onDelete:Restrict)
+  @@unique([holidayDate,name,scope,companyId],map:"holidays_date_name_scope_company_key")
+  @@index([holidayDate,isActive],map:"holidays_date_active_idx")
+  @@index([companyId],map:"holidays_company_idx")
+  @@map("holidays")
 }
 
 model Portfolio {

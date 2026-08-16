@@ -257,6 +257,7 @@ export type SchoolWhereInput = {
   internProfiles?: Prisma.InternProfileListRelationFilter
   coordinatorProfiles?: Prisma.CoordinatorProfileListRelationFilter
   announcements?: Prisma.AnnouncementListRelationFilter
+  calendarEvents?: Prisma.CalendarEventListRelationFilter
 }
 
 export type SchoolOrderByWithRelationInput = {
@@ -277,6 +278,7 @@ export type SchoolOrderByWithRelationInput = {
   internProfiles?: Prisma.InternProfileOrderByRelationAggregateInput
   coordinatorProfiles?: Prisma.CoordinatorProfileOrderByRelationAggregateInput
   announcements?: Prisma.AnnouncementOrderByRelationAggregateInput
+  calendarEvents?: Prisma.CalendarEventOrderByRelationAggregateInput
 }
 
 export type SchoolWhereUniqueInput = Prisma.AtLeast<{
@@ -300,6 +302,7 @@ export type SchoolWhereUniqueInput = Prisma.AtLeast<{
   internProfiles?: Prisma.InternProfileListRelationFilter
   coordinatorProfiles?: Prisma.CoordinatorProfileListRelationFilter
   announcements?: Prisma.AnnouncementListRelationFilter
+  calendarEvents?: Prisma.CalendarEventListRelationFilter
 }, "id" | "schoolCode">
 
 export type SchoolOrderByWithAggregationInput = {
@@ -360,6 +363,7 @@ export type SchoolCreateInput = {
   internProfiles?: Prisma.InternProfileCreateNestedManyWithoutSchoolInput
   coordinatorProfiles?: Prisma.CoordinatorProfileCreateNestedManyWithoutSchoolInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutSchoolInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateInput = {
@@ -380,6 +384,7 @@ export type SchoolUncheckedCreateInput = {
   internProfiles?: Prisma.InternProfileUncheckedCreateNestedManyWithoutSchoolInput
   coordinatorProfiles?: Prisma.CoordinatorProfileUncheckedCreateNestedManyWithoutSchoolInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutSchoolInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUpdateInput = {
@@ -400,6 +405,7 @@ export type SchoolUpdateInput = {
   internProfiles?: Prisma.InternProfileUpdateManyWithoutSchoolNestedInput
   coordinatorProfiles?: Prisma.CoordinatorProfileUpdateManyWithoutSchoolNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutSchoolNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateInput = {
@@ -420,6 +426,7 @@ export type SchoolUncheckedUpdateInput = {
   internProfiles?: Prisma.InternProfileUncheckedUpdateManyWithoutSchoolNestedInput
   coordinatorProfiles?: Prisma.CoordinatorProfileUncheckedUpdateManyWithoutSchoolNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutSchoolNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateManyInput = {
@@ -578,6 +585,22 @@ export type SchoolUpdateOneWithoutAnnouncementsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SchoolUpdateToOneWithWhereWithoutAnnouncementsInput, Prisma.SchoolUpdateWithoutAnnouncementsInput>, Prisma.SchoolUncheckedUpdateWithoutAnnouncementsInput>
 }
 
+export type SchoolCreateNestedOneWithoutCalendarEventsInput = {
+  create?: Prisma.XOR<Prisma.SchoolCreateWithoutCalendarEventsInput, Prisma.SchoolUncheckedCreateWithoutCalendarEventsInput>
+  connectOrCreate?: Prisma.SchoolCreateOrConnectWithoutCalendarEventsInput
+  connect?: Prisma.SchoolWhereUniqueInput
+}
+
+export type SchoolUpdateOneWithoutCalendarEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.SchoolCreateWithoutCalendarEventsInput, Prisma.SchoolUncheckedCreateWithoutCalendarEventsInput>
+  connectOrCreate?: Prisma.SchoolCreateOrConnectWithoutCalendarEventsInput
+  upsert?: Prisma.SchoolUpsertWithoutCalendarEventsInput
+  disconnect?: Prisma.SchoolWhereInput | boolean
+  delete?: Prisma.SchoolWhereInput | boolean
+  connect?: Prisma.SchoolWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SchoolUpdateToOneWithWhereWithoutCalendarEventsInput, Prisma.SchoolUpdateWithoutCalendarEventsInput>, Prisma.SchoolUncheckedUpdateWithoutCalendarEventsInput>
+}
+
 export type SchoolCreateWithoutInternProfilesInput = {
   id?: string
   schoolCode?: string | null
@@ -595,6 +618,7 @@ export type SchoolCreateWithoutInternProfilesInput = {
   updatedAt?: Date | string
   coordinatorProfiles?: Prisma.CoordinatorProfileCreateNestedManyWithoutSchoolInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutSchoolInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutInternProfilesInput = {
@@ -614,6 +638,7 @@ export type SchoolUncheckedCreateWithoutInternProfilesInput = {
   updatedAt?: Date | string
   coordinatorProfiles?: Prisma.CoordinatorProfileUncheckedCreateNestedManyWithoutSchoolInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutSchoolInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutInternProfilesInput = {
@@ -649,6 +674,7 @@ export type SchoolUpdateWithoutInternProfilesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   coordinatorProfiles?: Prisma.CoordinatorProfileUpdateManyWithoutSchoolNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutSchoolNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutInternProfilesInput = {
@@ -668,6 +694,7 @@ export type SchoolUncheckedUpdateWithoutInternProfilesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   coordinatorProfiles?: Prisma.CoordinatorProfileUncheckedUpdateManyWithoutSchoolNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutSchoolNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutCoordinatorProfilesInput = {
@@ -687,6 +714,7 @@ export type SchoolCreateWithoutCoordinatorProfilesInput = {
   updatedAt?: Date | string
   internProfiles?: Prisma.InternProfileCreateNestedManyWithoutSchoolInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutSchoolInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutCoordinatorProfilesInput = {
@@ -706,6 +734,7 @@ export type SchoolUncheckedCreateWithoutCoordinatorProfilesInput = {
   updatedAt?: Date | string
   internProfiles?: Prisma.InternProfileUncheckedCreateNestedManyWithoutSchoolInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutSchoolInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutCoordinatorProfilesInput = {
@@ -741,6 +770,7 @@ export type SchoolUpdateWithoutCoordinatorProfilesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   internProfiles?: Prisma.InternProfileUpdateManyWithoutSchoolNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutSchoolNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutCoordinatorProfilesInput = {
@@ -760,6 +790,7 @@ export type SchoolUncheckedUpdateWithoutCoordinatorProfilesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   internProfiles?: Prisma.InternProfileUncheckedUpdateManyWithoutSchoolNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutSchoolNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutAnnouncementsInput = {
@@ -779,6 +810,7 @@ export type SchoolCreateWithoutAnnouncementsInput = {
   updatedAt?: Date | string
   internProfiles?: Prisma.InternProfileCreateNestedManyWithoutSchoolInput
   coordinatorProfiles?: Prisma.CoordinatorProfileCreateNestedManyWithoutSchoolInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutAnnouncementsInput = {
@@ -798,6 +830,7 @@ export type SchoolUncheckedCreateWithoutAnnouncementsInput = {
   updatedAt?: Date | string
   internProfiles?: Prisma.InternProfileUncheckedCreateNestedManyWithoutSchoolInput
   coordinatorProfiles?: Prisma.CoordinatorProfileUncheckedCreateNestedManyWithoutSchoolInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutAnnouncementsInput = {
@@ -833,6 +866,7 @@ export type SchoolUpdateWithoutAnnouncementsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   internProfiles?: Prisma.InternProfileUpdateManyWithoutSchoolNestedInput
   coordinatorProfiles?: Prisma.CoordinatorProfileUpdateManyWithoutSchoolNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutAnnouncementsInput = {
@@ -852,6 +886,103 @@ export type SchoolUncheckedUpdateWithoutAnnouncementsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   internProfiles?: Prisma.InternProfileUncheckedUpdateManyWithoutSchoolNestedInput
   coordinatorProfiles?: Prisma.CoordinatorProfileUncheckedUpdateManyWithoutSchoolNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutSchoolNestedInput
+}
+
+export type SchoolCreateWithoutCalendarEventsInput = {
+  id?: string
+  schoolCode?: string | null
+  name: string
+  addressLine?: string | null
+  city?: string | null
+  province?: string | null
+  postalCode?: string | null
+  contactEmail?: string | null
+  contactNumber?: string | null
+  websiteUrl?: string | null
+  logoPath?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  internProfiles?: Prisma.InternProfileCreateNestedManyWithoutSchoolInput
+  coordinatorProfiles?: Prisma.CoordinatorProfileCreateNestedManyWithoutSchoolInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutSchoolInput
+}
+
+export type SchoolUncheckedCreateWithoutCalendarEventsInput = {
+  id?: string
+  schoolCode?: string | null
+  name: string
+  addressLine?: string | null
+  city?: string | null
+  province?: string | null
+  postalCode?: string | null
+  contactEmail?: string | null
+  contactNumber?: string | null
+  websiteUrl?: string | null
+  logoPath?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  internProfiles?: Prisma.InternProfileUncheckedCreateNestedManyWithoutSchoolInput
+  coordinatorProfiles?: Prisma.CoordinatorProfileUncheckedCreateNestedManyWithoutSchoolInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutSchoolInput
+}
+
+export type SchoolCreateOrConnectWithoutCalendarEventsInput = {
+  where: Prisma.SchoolWhereUniqueInput
+  create: Prisma.XOR<Prisma.SchoolCreateWithoutCalendarEventsInput, Prisma.SchoolUncheckedCreateWithoutCalendarEventsInput>
+}
+
+export type SchoolUpsertWithoutCalendarEventsInput = {
+  update: Prisma.XOR<Prisma.SchoolUpdateWithoutCalendarEventsInput, Prisma.SchoolUncheckedUpdateWithoutCalendarEventsInput>
+  create: Prisma.XOR<Prisma.SchoolCreateWithoutCalendarEventsInput, Prisma.SchoolUncheckedCreateWithoutCalendarEventsInput>
+  where?: Prisma.SchoolWhereInput
+}
+
+export type SchoolUpdateToOneWithWhereWithoutCalendarEventsInput = {
+  where?: Prisma.SchoolWhereInput
+  data: Prisma.XOR<Prisma.SchoolUpdateWithoutCalendarEventsInput, Prisma.SchoolUncheckedUpdateWithoutCalendarEventsInput>
+}
+
+export type SchoolUpdateWithoutCalendarEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  schoolCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  addressLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  websiteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  internProfiles?: Prisma.InternProfileUpdateManyWithoutSchoolNestedInput
+  coordinatorProfiles?: Prisma.CoordinatorProfileUpdateManyWithoutSchoolNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutSchoolNestedInput
+}
+
+export type SchoolUncheckedUpdateWithoutCalendarEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  schoolCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  addressLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  websiteUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  internProfiles?: Prisma.InternProfileUncheckedUpdateManyWithoutSchoolNestedInput
+  coordinatorProfiles?: Prisma.CoordinatorProfileUncheckedUpdateManyWithoutSchoolNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 
@@ -863,12 +994,14 @@ export type SchoolCountOutputType = {
   internProfiles: number
   coordinatorProfiles: number
   announcements: number
+  calendarEvents: number
 }
 
 export type SchoolCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   internProfiles?: boolean | SchoolCountOutputTypeCountInternProfilesArgs
   coordinatorProfiles?: boolean | SchoolCountOutputTypeCountCoordinatorProfilesArgs
   announcements?: boolean | SchoolCountOutputTypeCountAnnouncementsArgs
+  calendarEvents?: boolean | SchoolCountOutputTypeCountCalendarEventsArgs
 }
 
 /**
@@ -902,6 +1035,13 @@ export type SchoolCountOutputTypeCountAnnouncementsArgs<ExtArgs extends runtime.
   where?: Prisma.AnnouncementWhereInput
 }
 
+/**
+ * SchoolCountOutputType without action
+ */
+export type SchoolCountOutputTypeCountCalendarEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CalendarEventWhereInput
+}
+
 
 export type SchoolSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -921,6 +1061,7 @@ export type SchoolSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   internProfiles?: boolean | Prisma.School$internProfilesArgs<ExtArgs>
   coordinatorProfiles?: boolean | Prisma.School$coordinatorProfilesArgs<ExtArgs>
   announcements?: boolean | Prisma.School$announcementsArgs<ExtArgs>
+  calendarEvents?: boolean | Prisma.School$calendarEventsArgs<ExtArgs>
   _count?: boolean | Prisma.SchoolCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["school"]>
 
@@ -980,6 +1121,7 @@ export type SchoolInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   internProfiles?: boolean | Prisma.School$internProfilesArgs<ExtArgs>
   coordinatorProfiles?: boolean | Prisma.School$coordinatorProfilesArgs<ExtArgs>
   announcements?: boolean | Prisma.School$announcementsArgs<ExtArgs>
+  calendarEvents?: boolean | Prisma.School$calendarEventsArgs<ExtArgs>
   _count?: boolean | Prisma.SchoolCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SchoolIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -991,6 +1133,7 @@ export type $SchoolPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     internProfiles: Prisma.$InternProfilePayload<ExtArgs>[]
     coordinatorProfiles: Prisma.$CoordinatorProfilePayload<ExtArgs>[]
     announcements: Prisma.$AnnouncementPayload<ExtArgs>[]
+    calendarEvents: Prisma.$CalendarEventPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1404,6 +1547,7 @@ export interface Prisma__SchoolClient<T, Null = never, ExtArgs extends runtime.T
   internProfiles<T extends Prisma.School$internProfilesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.School$internProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InternProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   coordinatorProfiles<T extends Prisma.School$coordinatorProfilesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.School$coordinatorProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoordinatorProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   announcements<T extends Prisma.School$announcementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.School$announcementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  calendarEvents<T extends Prisma.School$calendarEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.School$calendarEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1909,6 +2053,30 @@ export type School$announcementsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.AnnouncementScalarFieldEnum | Prisma.AnnouncementScalarFieldEnum[]
+}
+
+/**
+ * School.calendarEvents
+ */
+export type School$calendarEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CalendarEvent
+   */
+  select?: Prisma.CalendarEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CalendarEvent
+   */
+  omit?: Prisma.CalendarEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CalendarEventInclude<ExtArgs> | null
+  where?: Prisma.CalendarEventWhereInput
+  orderBy?: Prisma.CalendarEventOrderByWithRelationInput | Prisma.CalendarEventOrderByWithRelationInput[]
+  cursor?: Prisma.CalendarEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CalendarEventScalarFieldEnum | Prisma.CalendarEventScalarFieldEnum[]
 }
 
 /**

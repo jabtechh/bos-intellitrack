@@ -290,6 +290,8 @@ export type UserWhereInput = {
   documentsUploaded?: Prisma.DocumentListRelationFilter
   documentsReviewed?: Prisma.DocumentListRelationFilter
   announcementsCreated?: Prisma.AnnouncementListRelationFilter
+  calendarEventsCreated?: Prisma.CalendarEventListRelationFilter
+  holidaysCreated?: Prisma.HolidayListRelationFilter
   portfoliosGenerated?: Prisma.PortfolioListRelationFilter
   portfoliosApproved?: Prisma.PortfolioListRelationFilter
 }
@@ -331,6 +333,8 @@ export type UserOrderByWithRelationInput = {
   documentsUploaded?: Prisma.DocumentOrderByRelationAggregateInput
   documentsReviewed?: Prisma.DocumentOrderByRelationAggregateInput
   announcementsCreated?: Prisma.AnnouncementOrderByRelationAggregateInput
+  calendarEventsCreated?: Prisma.CalendarEventOrderByRelationAggregateInput
+  holidaysCreated?: Prisma.HolidayOrderByRelationAggregateInput
   portfoliosGenerated?: Prisma.PortfolioOrderByRelationAggregateInput
   portfoliosApproved?: Prisma.PortfolioOrderByRelationAggregateInput
 }
@@ -375,6 +379,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   documentsUploaded?: Prisma.DocumentListRelationFilter
   documentsReviewed?: Prisma.DocumentListRelationFilter
   announcementsCreated?: Prisma.AnnouncementListRelationFilter
+  calendarEventsCreated?: Prisma.CalendarEventListRelationFilter
+  holidaysCreated?: Prisma.HolidayListRelationFilter
   portfoliosGenerated?: Prisma.PortfolioListRelationFilter
   portfoliosApproved?: Prisma.PortfolioListRelationFilter
 }, "id" | "authId" | "email">
@@ -460,6 +466,8 @@ export type UserCreateInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -501,6 +509,8 @@ export type UserUncheckedCreateInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -542,6 +552,8 @@ export type UserUpdateInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -583,6 +595,8 @@ export type UserUncheckedUpdateInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -1031,6 +1045,34 @@ export type UserUpdateOneRequiredWithoutAnnouncementsCreatedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAnnouncementsCreatedInput, Prisma.UserUpdateWithoutAnnouncementsCreatedInput>, Prisma.UserUncheckedUpdateWithoutAnnouncementsCreatedInput>
 }
 
+export type UserCreateNestedOneWithoutCalendarEventsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCalendarEventsCreatedInput, Prisma.UserUncheckedCreateWithoutCalendarEventsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCalendarEventsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCalendarEventsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCalendarEventsCreatedInput, Prisma.UserUncheckedCreateWithoutCalendarEventsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCalendarEventsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutCalendarEventsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCalendarEventsCreatedInput, Prisma.UserUpdateWithoutCalendarEventsCreatedInput>, Prisma.UserUncheckedUpdateWithoutCalendarEventsCreatedInput>
+}
+
+export type UserCreateNestedOneWithoutHolidaysCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutHolidaysCreatedInput, Prisma.UserUncheckedCreateWithoutHolidaysCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutHolidaysCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutHolidaysCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutHolidaysCreatedInput, Prisma.UserUncheckedCreateWithoutHolidaysCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutHolidaysCreatedInput
+  upsert?: Prisma.UserUpsertWithoutHolidaysCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutHolidaysCreatedInput, Prisma.UserUpdateWithoutHolidaysCreatedInput>, Prisma.UserUncheckedUpdateWithoutHolidaysCreatedInput>
+}
+
 export type UserCreateNestedOneWithoutPortfoliosGeneratedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutPortfoliosGeneratedInput, Prisma.UserUncheckedCreateWithoutPortfoliosGeneratedInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutPortfoliosGeneratedInput
@@ -1099,6 +1141,8 @@ export type UserCreateWithoutInternProfileInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -1139,6 +1183,8 @@ export type UserUncheckedCreateWithoutInternProfileInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -1195,6 +1241,8 @@ export type UserUpdateWithoutInternProfileInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -1235,6 +1283,8 @@ export type UserUncheckedUpdateWithoutInternProfileInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -1275,6 +1325,8 @@ export type UserCreateWithoutSupervisorProfileInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -1315,6 +1367,8 @@ export type UserUncheckedCreateWithoutSupervisorProfileInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -1371,6 +1425,8 @@ export type UserUpdateWithoutSupervisorProfileInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -1411,6 +1467,8 @@ export type UserUncheckedUpdateWithoutSupervisorProfileInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -1451,6 +1509,8 @@ export type UserCreateWithoutCoordinatorProfileInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -1491,6 +1551,8 @@ export type UserUncheckedCreateWithoutCoordinatorProfileInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -1547,6 +1609,8 @@ export type UserUpdateWithoutCoordinatorProfileInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -1587,6 +1651,8 @@ export type UserUncheckedUpdateWithoutCoordinatorProfileInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -1627,6 +1693,8 @@ export type UserCreateWithoutRepresentativeProfileInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -1667,6 +1735,8 @@ export type UserUncheckedCreateWithoutRepresentativeProfileInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -1723,6 +1793,8 @@ export type UserUpdateWithoutRepresentativeProfileInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -1763,6 +1835,8 @@ export type UserUncheckedUpdateWithoutRepresentativeProfileInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -1803,6 +1877,8 @@ export type UserCreateWithoutAdminProfileInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -1843,6 +1919,8 @@ export type UserUncheckedCreateWithoutAdminProfileInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -1899,6 +1977,8 @@ export type UserUpdateWithoutAdminProfileInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -1939,6 +2019,8 @@ export type UserUncheckedUpdateWithoutAdminProfileInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -1979,6 +2061,8 @@ export type UserCreateWithoutAssignmentsCreatedInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -2019,6 +2103,8 @@ export type UserUncheckedCreateWithoutAssignmentsCreatedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -2064,6 +2150,8 @@ export type UserCreateWithoutRequiredHoursUpdatesInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -2104,6 +2192,8 @@ export type UserUncheckedCreateWithoutRequiredHoursUpdatesInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -2160,6 +2250,8 @@ export type UserUpdateWithoutAssignmentsCreatedInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -2200,6 +2292,8 @@ export type UserUncheckedUpdateWithoutAssignmentsCreatedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -2251,6 +2345,8 @@ export type UserUpdateWithoutRequiredHoursUpdatesInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -2291,6 +2387,8 @@ export type UserUncheckedUpdateWithoutRequiredHoursUpdatesInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -2331,6 +2429,8 @@ export type UserCreateWithoutAttendanceReviewedInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -2371,6 +2471,8 @@ export type UserUncheckedCreateWithoutAttendanceReviewedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -2427,6 +2529,8 @@ export type UserUpdateWithoutAttendanceReviewedInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -2467,6 +2571,8 @@ export type UserUncheckedUpdateWithoutAttendanceReviewedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -2507,6 +2613,8 @@ export type UserCreateWithoutAttendanceCorrectionsRequestedInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -2547,6 +2655,8 @@ export type UserUncheckedCreateWithoutAttendanceCorrectionsRequestedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -2592,6 +2702,8 @@ export type UserCreateWithoutAttendanceCorrectionsReviewedInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -2632,6 +2744,8 @@ export type UserUncheckedCreateWithoutAttendanceCorrectionsReviewedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -2688,6 +2802,8 @@ export type UserUpdateWithoutAttendanceCorrectionsRequestedInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -2728,6 +2844,8 @@ export type UserUncheckedUpdateWithoutAttendanceCorrectionsRequestedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -2779,6 +2897,8 @@ export type UserUpdateWithoutAttendanceCorrectionsReviewedInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -2819,6 +2939,8 @@ export type UserUncheckedUpdateWithoutAttendanceCorrectionsReviewedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -2859,6 +2981,8 @@ export type UserCreateWithoutWorkLogsReviewedInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -2899,6 +3023,8 @@ export type UserUncheckedCreateWithoutWorkLogsReviewedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -2955,6 +3081,8 @@ export type UserUpdateWithoutWorkLogsReviewedInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -2995,6 +3123,8 @@ export type UserUncheckedUpdateWithoutWorkLogsReviewedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -3035,6 +3165,8 @@ export type UserCreateWithoutTasksAssignedInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -3075,6 +3207,8 @@ export type UserUncheckedCreateWithoutTasksAssignedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -3120,6 +3254,8 @@ export type UserCreateWithoutTasksReviewedInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -3160,6 +3296,8 @@ export type UserUncheckedCreateWithoutTasksReviewedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -3216,6 +3354,8 @@ export type UserUpdateWithoutTasksAssignedInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -3256,6 +3396,8 @@ export type UserUncheckedUpdateWithoutTasksAssignedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -3307,6 +3449,8 @@ export type UserUpdateWithoutTasksReviewedInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -3347,6 +3491,8 @@ export type UserUncheckedUpdateWithoutTasksReviewedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -3387,6 +3533,8 @@ export type UserCreateWithoutEvaluationsCreatedInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -3427,6 +3575,8 @@ export type UserUncheckedCreateWithoutEvaluationsCreatedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -3472,6 +3622,8 @@ export type UserCreateWithoutEvaluationsAcknowledgedInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -3512,6 +3664,8 @@ export type UserUncheckedCreateWithoutEvaluationsAcknowledgedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -3568,6 +3722,8 @@ export type UserUpdateWithoutEvaluationsCreatedInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -3608,6 +3764,8 @@ export type UserUncheckedUpdateWithoutEvaluationsCreatedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -3659,6 +3817,8 @@ export type UserUpdateWithoutEvaluationsAcknowledgedInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -3699,6 +3859,8 @@ export type UserUncheckedUpdateWithoutEvaluationsAcknowledgedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -3739,6 +3901,8 @@ export type UserCreateWithoutFeedbackAuthoredInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -3779,6 +3943,8 @@ export type UserUncheckedCreateWithoutFeedbackAuthoredInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -3824,6 +3990,8 @@ export type UserCreateWithoutFeedbackReceivedInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -3864,6 +4032,8 @@ export type UserUncheckedCreateWithoutFeedbackReceivedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -3920,6 +4090,8 @@ export type UserUpdateWithoutFeedbackAuthoredInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -3960,6 +4132,8 @@ export type UserUncheckedUpdateWithoutFeedbackAuthoredInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -4011,6 +4185,8 @@ export type UserUpdateWithoutFeedbackReceivedInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -4051,6 +4227,8 @@ export type UserUncheckedUpdateWithoutFeedbackReceivedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -4091,6 +4269,8 @@ export type UserCreateWithoutDocumentsUploadedInput = {
   feedbackReceived?: Prisma.FeedbackCreateNestedManyWithoutRecipientInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -4131,6 +4311,8 @@ export type UserUncheckedCreateWithoutDocumentsUploadedInput = {
   feedbackReceived?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRecipientInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -4176,6 +4358,8 @@ export type UserCreateWithoutDocumentsReviewedInput = {
   feedbackReceived?: Prisma.FeedbackCreateNestedManyWithoutRecipientInput
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -4216,6 +4400,8 @@ export type UserUncheckedCreateWithoutDocumentsReviewedInput = {
   feedbackReceived?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRecipientInput
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -4272,6 +4458,8 @@ export type UserUpdateWithoutDocumentsUploadedInput = {
   feedbackReceived?: Prisma.FeedbackUpdateManyWithoutRecipientNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -4312,6 +4500,8 @@ export type UserUncheckedUpdateWithoutDocumentsUploadedInput = {
   feedbackReceived?: Prisma.FeedbackUncheckedUpdateManyWithoutRecipientNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -4363,6 +4553,8 @@ export type UserUpdateWithoutDocumentsReviewedInput = {
   feedbackReceived?: Prisma.FeedbackUpdateManyWithoutRecipientNestedInput
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -4403,6 +4595,8 @@ export type UserUncheckedUpdateWithoutDocumentsReviewedInput = {
   feedbackReceived?: Prisma.FeedbackUncheckedUpdateManyWithoutRecipientNestedInput
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -4443,6 +4637,8 @@ export type UserCreateWithoutAnnouncementsCreatedInput = {
   feedbackReceived?: Prisma.FeedbackCreateNestedManyWithoutRecipientInput
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
@@ -4483,6 +4679,8 @@ export type UserUncheckedCreateWithoutAnnouncementsCreatedInput = {
   feedbackReceived?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRecipientInput
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
@@ -4539,6 +4737,8 @@ export type UserUpdateWithoutAnnouncementsCreatedInput = {
   feedbackReceived?: Prisma.FeedbackUpdateManyWithoutRecipientNestedInput
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
@@ -4579,6 +4779,376 @@ export type UserUncheckedUpdateWithoutAnnouncementsCreatedInput = {
   feedbackReceived?: Prisma.FeedbackUncheckedUpdateManyWithoutRecipientNestedInput
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
+  portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
+  portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
+}
+
+export type UserCreateWithoutCalendarEventsCreatedInput = {
+  id?: string
+  authId: string
+  email: string
+  role: $Enums.UserRole
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  suffix?: string | null
+  phoneNumber?: string | null
+  profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  internProfile?: Prisma.InternProfileCreateNestedOneWithoutUserInput
+  supervisorProfile?: Prisma.SupervisorProfileCreateNestedOneWithoutUserInput
+  coordinatorProfile?: Prisma.CoordinatorProfileCreateNestedOneWithoutUserInput
+  representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
+  adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
+  assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
+  attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
+  workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
+  tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
+  evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
+  evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackReceived?: Prisma.FeedbackCreateNestedManyWithoutRecipientInput
+  documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
+  documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
+  portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
+  portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
+}
+
+export type UserUncheckedCreateWithoutCalendarEventsCreatedInput = {
+  id?: string
+  authId: string
+  email: string
+  role: $Enums.UserRole
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  suffix?: string | null
+  phoneNumber?: string | null
+  profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  internProfile?: Prisma.InternProfileUncheckedCreateNestedOneWithoutUserInput
+  supervisorProfile?: Prisma.SupervisorProfileUncheckedCreateNestedOneWithoutUserInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUncheckedCreateNestedOneWithoutUserInput
+  representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
+  adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
+  assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
+  attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
+  workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
+  tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
+  evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
+  evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackReceived?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRecipientInput
+  documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
+  portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
+  portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
+}
+
+export type UserCreateOrConnectWithoutCalendarEventsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCalendarEventsCreatedInput, Prisma.UserUncheckedCreateWithoutCalendarEventsCreatedInput>
+}
+
+export type UserUpsertWithoutCalendarEventsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCalendarEventsCreatedInput, Prisma.UserUncheckedUpdateWithoutCalendarEventsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCalendarEventsCreatedInput, Prisma.UserUncheckedCreateWithoutCalendarEventsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCalendarEventsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCalendarEventsCreatedInput, Prisma.UserUncheckedUpdateWithoutCalendarEventsCreatedInput>
+}
+
+export type UserUpdateWithoutCalendarEventsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  internProfile?: Prisma.InternProfileUpdateOneWithoutUserNestedInput
+  supervisorProfile?: Prisma.SupervisorProfileUpdateOneWithoutUserNestedInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneWithoutUserNestedInput
+  representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
+  adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
+  assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
+  attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
+  workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
+  tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
+  evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
+  evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackReceived?: Prisma.FeedbackUpdateManyWithoutRecipientNestedInput
+  documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
+  documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
+  portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
+  portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCalendarEventsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  internProfile?: Prisma.InternProfileUncheckedUpdateOneWithoutUserNestedInput
+  supervisorProfile?: Prisma.SupervisorProfileUncheckedUpdateOneWithoutUserNestedInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUncheckedUpdateOneWithoutUserNestedInput
+  representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
+  adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
+  attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
+  workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
+  tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
+  evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+  evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackReceived?: Prisma.FeedbackUncheckedUpdateManyWithoutRecipientNestedInput
+  documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
+  portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
+  portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
+}
+
+export type UserCreateWithoutHolidaysCreatedInput = {
+  id?: string
+  authId: string
+  email: string
+  role: $Enums.UserRole
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  suffix?: string | null
+  phoneNumber?: string | null
+  profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  internProfile?: Prisma.InternProfileCreateNestedOneWithoutUserInput
+  supervisorProfile?: Prisma.SupervisorProfileCreateNestedOneWithoutUserInput
+  coordinatorProfile?: Prisma.CoordinatorProfileCreateNestedOneWithoutUserInput
+  representativeProfile?: Prisma.RepresentativeProfileCreateNestedOneWithoutUserInput
+  adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutUserInput
+  assignmentsCreated?: Prisma.InternshipAssignmentCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentCreateNestedManyWithoutRequiredHoursUpdatedByInput
+  attendanceReviewed?: Prisma.AttendanceCreateNestedManyWithoutReviewedByInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionCreateNestedManyWithoutRequestedByInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionCreateNestedManyWithoutReviewedByInput
+  workLogsReviewed?: Prisma.WorkLogCreateNestedManyWithoutReviewedByInput
+  tasksAssigned?: Prisma.TaskCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskCreateNestedManyWithoutReviewedByInput
+  evaluationsCreated?: Prisma.EvaluationCreateNestedManyWithoutEvaluatorInput
+  evaluationsAcknowledged?: Prisma.EvaluationCreateNestedManyWithoutAcknowledgedByInput
+  feedbackAuthored?: Prisma.FeedbackCreateNestedManyWithoutAuthorInput
+  feedbackReceived?: Prisma.FeedbackCreateNestedManyWithoutRecipientInput
+  documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
+  documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
+  announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
+  portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
+}
+
+export type UserUncheckedCreateWithoutHolidaysCreatedInput = {
+  id?: string
+  authId: string
+  email: string
+  role: $Enums.UserRole
+  firstName: string
+  middleName?: string | null
+  lastName: string
+  suffix?: string | null
+  phoneNumber?: string | null
+  profilePhotoPath?: string | null
+  coverPhotoPath?: string | null
+  bio?: string | null
+  isActive?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  internProfile?: Prisma.InternProfileUncheckedCreateNestedOneWithoutUserInput
+  supervisorProfile?: Prisma.SupervisorProfileUncheckedCreateNestedOneWithoutUserInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUncheckedCreateNestedOneWithoutUserInput
+  representativeProfile?: Prisma.RepresentativeProfileUncheckedCreateNestedOneWithoutUserInput
+  adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutUserInput
+  assignmentsCreated?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCreatedByInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutRequiredHoursUpdatedByInput
+  attendanceReviewed?: Prisma.AttendanceUncheckedCreateNestedManyWithoutReviewedByInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutRequestedByInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutReviewedByInput
+  workLogsReviewed?: Prisma.WorkLogUncheckedCreateNestedManyWithoutReviewedByInput
+  tasksAssigned?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignedByInput
+  tasksReviewed?: Prisma.TaskUncheckedCreateNestedManyWithoutReviewedByInput
+  evaluationsCreated?: Prisma.EvaluationUncheckedCreateNestedManyWithoutEvaluatorInput
+  evaluationsAcknowledged?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAcknowledgedByInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAuthorInput
+  feedbackReceived?: Prisma.FeedbackUncheckedCreateNestedManyWithoutRecipientInput
+  documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
+  portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
+}
+
+export type UserCreateOrConnectWithoutHolidaysCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutHolidaysCreatedInput, Prisma.UserUncheckedCreateWithoutHolidaysCreatedInput>
+}
+
+export type UserUpsertWithoutHolidaysCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutHolidaysCreatedInput, Prisma.UserUncheckedUpdateWithoutHolidaysCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutHolidaysCreatedInput, Prisma.UserUncheckedCreateWithoutHolidaysCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutHolidaysCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutHolidaysCreatedInput, Prisma.UserUncheckedUpdateWithoutHolidaysCreatedInput>
+}
+
+export type UserUpdateWithoutHolidaysCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  internProfile?: Prisma.InternProfileUpdateOneWithoutUserNestedInput
+  supervisorProfile?: Prisma.SupervisorProfileUpdateOneWithoutUserNestedInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneWithoutUserNestedInput
+  representativeProfile?: Prisma.RepresentativeProfileUpdateOneWithoutUserNestedInput
+  adminProfile?: Prisma.AdminProfileUpdateOneWithoutUserNestedInput
+  assignmentsCreated?: Prisma.InternshipAssignmentUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUpdateManyWithoutRequiredHoursUpdatedByNestedInput
+  attendanceReviewed?: Prisma.AttendanceUpdateManyWithoutReviewedByNestedInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUpdateManyWithoutRequestedByNestedInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUpdateManyWithoutReviewedByNestedInput
+  workLogsReviewed?: Prisma.WorkLogUpdateManyWithoutReviewedByNestedInput
+  tasksAssigned?: Prisma.TaskUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUpdateManyWithoutReviewedByNestedInput
+  evaluationsCreated?: Prisma.EvaluationUpdateManyWithoutEvaluatorNestedInput
+  evaluationsAcknowledged?: Prisma.EvaluationUpdateManyWithoutAcknowledgedByNestedInput
+  feedbackAuthored?: Prisma.FeedbackUpdateManyWithoutAuthorNestedInput
+  feedbackReceived?: Prisma.FeedbackUpdateManyWithoutRecipientNestedInput
+  documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
+  documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
+  announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
+  portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutHolidaysCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPhotoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  internProfile?: Prisma.InternProfileUncheckedUpdateOneWithoutUserNestedInput
+  supervisorProfile?: Prisma.SupervisorProfileUncheckedUpdateOneWithoutUserNestedInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUncheckedUpdateOneWithoutUserNestedInput
+  representativeProfile?: Prisma.RepresentativeProfileUncheckedUpdateOneWithoutUserNestedInput
+  adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutUserNestedInput
+  assignmentsCreated?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCreatedByNestedInput
+  requiredHoursUpdates?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByNestedInput
+  attendanceReviewed?: Prisma.AttendanceUncheckedUpdateManyWithoutReviewedByNestedInput
+  attendanceCorrectionsRequested?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutRequestedByNestedInput
+  attendanceCorrectionsReviewed?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutReviewedByNestedInput
+  workLogsReviewed?: Prisma.WorkLogUncheckedUpdateManyWithoutReviewedByNestedInput
+  tasksAssigned?: Prisma.TaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  tasksReviewed?: Prisma.TaskUncheckedUpdateManyWithoutReviewedByNestedInput
+  evaluationsCreated?: Prisma.EvaluationUncheckedUpdateManyWithoutEvaluatorNestedInput
+  evaluationsAcknowledged?: Prisma.EvaluationUncheckedUpdateManyWithoutAcknowledgedByNestedInput
+  feedbackAuthored?: Prisma.FeedbackUncheckedUpdateManyWithoutAuthorNestedInput
+  feedbackReceived?: Prisma.FeedbackUncheckedUpdateManyWithoutRecipientNestedInput
+  documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+  announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
@@ -4620,6 +5190,8 @@ export type UserCreateWithoutPortfoliosGeneratedInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosApproved?: Prisma.PortfolioCreateNestedManyWithoutApprovedByInput
 }
 
@@ -4660,6 +5232,8 @@ export type UserUncheckedCreateWithoutPortfoliosGeneratedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosApproved?: Prisma.PortfolioUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
@@ -4705,6 +5279,8 @@ export type UserCreateWithoutPortfoliosApprovedInput = {
   documentsUploaded?: Prisma.DocumentCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioCreateNestedManyWithoutLastGeneratedByInput
 }
 
@@ -4745,6 +5321,8 @@ export type UserUncheckedCreateWithoutPortfoliosApprovedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedCreateNestedManyWithoutUploadedByInput
   documentsReviewed?: Prisma.DocumentUncheckedCreateNestedManyWithoutReviewedByInput
   announcementsCreated?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCreatedByInput
+  holidaysCreated?: Prisma.HolidayUncheckedCreateNestedManyWithoutCreatedByInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedCreateNestedManyWithoutLastGeneratedByInput
 }
 
@@ -4801,6 +5379,8 @@ export type UserUpdateWithoutPortfoliosGeneratedInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUpdateManyWithoutApprovedByNestedInput
 }
 
@@ -4841,6 +5421,8 @@ export type UserUncheckedUpdateWithoutPortfoliosGeneratedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosApproved?: Prisma.PortfolioUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
@@ -4892,6 +5474,8 @@ export type UserUpdateWithoutPortfoliosApprovedInput = {
   documentsUploaded?: Prisma.DocumentUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUpdateManyWithoutLastGeneratedByNestedInput
 }
 
@@ -4932,6 +5516,8 @@ export type UserUncheckedUpdateWithoutPortfoliosApprovedInput = {
   documentsUploaded?: Prisma.DocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   documentsReviewed?: Prisma.DocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   announcementsCreated?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  calendarEventsCreated?: Prisma.CalendarEventUncheckedUpdateManyWithoutCreatedByNestedInput
+  holidaysCreated?: Prisma.HolidayUncheckedUpdateManyWithoutCreatedByNestedInput
   portfoliosGenerated?: Prisma.PortfolioUncheckedUpdateManyWithoutLastGeneratedByNestedInput
 }
 
@@ -4956,6 +5542,8 @@ export type UserCountOutputType = {
   documentsUploaded: number
   documentsReviewed: number
   announcementsCreated: number
+  calendarEventsCreated: number
+  holidaysCreated: number
   portfoliosGenerated: number
   portfoliosApproved: number
 }
@@ -4976,6 +5564,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   documentsUploaded?: boolean | UserCountOutputTypeCountDocumentsUploadedArgs
   documentsReviewed?: boolean | UserCountOutputTypeCountDocumentsReviewedArgs
   announcementsCreated?: boolean | UserCountOutputTypeCountAnnouncementsCreatedArgs
+  calendarEventsCreated?: boolean | UserCountOutputTypeCountCalendarEventsCreatedArgs
+  holidaysCreated?: boolean | UserCountOutputTypeCountHolidaysCreatedArgs
   portfoliosGenerated?: boolean | UserCountOutputTypeCountPortfoliosGeneratedArgs
   portfoliosApproved?: boolean | UserCountOutputTypeCountPortfoliosApprovedArgs
 }
@@ -5098,6 +5688,20 @@ export type UserCountOutputTypeCountAnnouncementsCreatedArgs<ExtArgs extends run
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountCalendarEventsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CalendarEventWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountHolidaysCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HolidayWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountPortfoliosGeneratedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PortfolioWhereInput
 }
@@ -5147,6 +5751,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   documentsUploaded?: boolean | Prisma.User$documentsUploadedArgs<ExtArgs>
   documentsReviewed?: boolean | Prisma.User$documentsReviewedArgs<ExtArgs>
   announcementsCreated?: boolean | Prisma.User$announcementsCreatedArgs<ExtArgs>
+  calendarEventsCreated?: boolean | Prisma.User$calendarEventsCreatedArgs<ExtArgs>
+  holidaysCreated?: boolean | Prisma.User$holidaysCreatedArgs<ExtArgs>
   portfoliosGenerated?: boolean | Prisma.User$portfoliosGeneratedArgs<ExtArgs>
   portfoliosApproved?: boolean | Prisma.User$portfoliosApprovedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -5231,6 +5837,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   documentsUploaded?: boolean | Prisma.User$documentsUploadedArgs<ExtArgs>
   documentsReviewed?: boolean | Prisma.User$documentsReviewedArgs<ExtArgs>
   announcementsCreated?: boolean | Prisma.User$announcementsCreatedArgs<ExtArgs>
+  calendarEventsCreated?: boolean | Prisma.User$calendarEventsCreatedArgs<ExtArgs>
+  holidaysCreated?: boolean | Prisma.User$holidaysCreatedArgs<ExtArgs>
   portfoliosGenerated?: boolean | Prisma.User$portfoliosGeneratedArgs<ExtArgs>
   portfoliosApproved?: boolean | Prisma.User$portfoliosApprovedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -5261,6 +5869,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     documentsUploaded: Prisma.$DocumentPayload<ExtArgs>[]
     documentsReviewed: Prisma.$DocumentPayload<ExtArgs>[]
     announcementsCreated: Prisma.$AnnouncementPayload<ExtArgs>[]
+    calendarEventsCreated: Prisma.$CalendarEventPayload<ExtArgs>[]
+    holidaysCreated: Prisma.$HolidayPayload<ExtArgs>[]
     portfoliosGenerated: Prisma.$PortfolioPayload<ExtArgs>[]
     portfoliosApproved: Prisma.$PortfolioPayload<ExtArgs>[]
   }
@@ -5695,6 +6305,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   documentsUploaded<T extends Prisma.User$documentsUploadedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$documentsUploadedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documentsReviewed<T extends Prisma.User$documentsReviewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$documentsReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   announcementsCreated<T extends Prisma.User$announcementsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$announcementsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  calendarEventsCreated<T extends Prisma.User$calendarEventsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$calendarEventsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  holidaysCreated<T extends Prisma.User$holidaysCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$holidaysCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HolidayPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   portfoliosGenerated<T extends Prisma.User$portfoliosGeneratedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$portfoliosGeneratedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PortfolioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   portfoliosApproved<T extends Prisma.User$portfoliosApprovedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$portfoliosApprovedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PortfolioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -6587,6 +7199,54 @@ export type User$announcementsCreatedArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.AnnouncementScalarFieldEnum | Prisma.AnnouncementScalarFieldEnum[]
+}
+
+/**
+ * User.calendarEventsCreated
+ */
+export type User$calendarEventsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CalendarEvent
+   */
+  select?: Prisma.CalendarEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CalendarEvent
+   */
+  omit?: Prisma.CalendarEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CalendarEventInclude<ExtArgs> | null
+  where?: Prisma.CalendarEventWhereInput
+  orderBy?: Prisma.CalendarEventOrderByWithRelationInput | Prisma.CalendarEventOrderByWithRelationInput[]
+  cursor?: Prisma.CalendarEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CalendarEventScalarFieldEnum | Prisma.CalendarEventScalarFieldEnum[]
+}
+
+/**
+ * User.holidaysCreated
+ */
+export type User$holidaysCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Holiday
+   */
+  select?: Prisma.HolidaySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Holiday
+   */
+  omit?: Prisma.HolidayOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HolidayInclude<ExtArgs> | null
+  where?: Prisma.HolidayWhereInput
+  orderBy?: Prisma.HolidayOrderByWithRelationInput | Prisma.HolidayOrderByWithRelationInput[]
+  cursor?: Prisma.HolidayWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HolidayScalarFieldEnum | Prisma.HolidayScalarFieldEnum[]
 }
 
 /**

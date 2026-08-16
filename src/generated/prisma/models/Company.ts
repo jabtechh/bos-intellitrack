@@ -332,6 +332,8 @@ export type CompanyWhereInput = {
   representativeProfiles?: Prisma.RepresentativeProfileListRelationFilter
   assignments?: Prisma.InternshipAssignmentListRelationFilter
   announcements?: Prisma.AnnouncementListRelationFilter
+  calendarEvents?: Prisma.CalendarEventListRelationFilter
+  holidays?: Prisma.HolidayListRelationFilter
 }
 
 export type CompanyOrderByWithRelationInput = {
@@ -357,6 +359,8 @@ export type CompanyOrderByWithRelationInput = {
   representativeProfiles?: Prisma.RepresentativeProfileOrderByRelationAggregateInput
   assignments?: Prisma.InternshipAssignmentOrderByRelationAggregateInput
   announcements?: Prisma.AnnouncementOrderByRelationAggregateInput
+  calendarEvents?: Prisma.CalendarEventOrderByRelationAggregateInput
+  holidays?: Prisma.HolidayOrderByRelationAggregateInput
 }
 
 export type CompanyWhereUniqueInput = Prisma.AtLeast<{
@@ -385,6 +389,8 @@ export type CompanyWhereUniqueInput = Prisma.AtLeast<{
   representativeProfiles?: Prisma.RepresentativeProfileListRelationFilter
   assignments?: Prisma.InternshipAssignmentListRelationFilter
   announcements?: Prisma.AnnouncementListRelationFilter
+  calendarEvents?: Prisma.CalendarEventListRelationFilter
+  holidays?: Prisma.HolidayListRelationFilter
 }, "id" | "companyCode">
 
 export type CompanyOrderByWithAggregationInput = {
@@ -460,6 +466,8 @@ export type CompanyCreateInput = {
   representativeProfiles?: Prisma.RepresentativeProfileCreateNestedManyWithoutCompanyInput
   assignments?: Prisma.InternshipAssignmentCreateNestedManyWithoutCompanyInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutCompanyInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutCompanyInput
+  holidays?: Prisma.HolidayCreateNestedManyWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateInput = {
@@ -485,6 +493,8 @@ export type CompanyUncheckedCreateInput = {
   representativeProfiles?: Prisma.RepresentativeProfileUncheckedCreateNestedManyWithoutCompanyInput
   assignments?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCompanyInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCompanyInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCompanyInput
+  holidays?: Prisma.HolidayUncheckedCreateNestedManyWithoutCompanyInput
 }
 
 export type CompanyUpdateInput = {
@@ -510,6 +520,8 @@ export type CompanyUpdateInput = {
   representativeProfiles?: Prisma.RepresentativeProfileUpdateManyWithoutCompanyNestedInput
   assignments?: Prisma.InternshipAssignmentUpdateManyWithoutCompanyNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutCompanyNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutCompanyNestedInput
+  holidays?: Prisma.HolidayUpdateManyWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateInput = {
@@ -535,6 +547,8 @@ export type CompanyUncheckedUpdateInput = {
   representativeProfiles?: Prisma.RepresentativeProfileUncheckedUpdateManyWithoutCompanyNestedInput
   assignments?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCompanyNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCompanyNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutCompanyNestedInput
+  holidays?: Prisma.HolidayUncheckedUpdateManyWithoutCompanyNestedInput
 }
 
 export type CompanyCreateManyInput = {
@@ -759,6 +773,38 @@ export type CompanyUpdateOneWithoutAnnouncementsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CompanyUpdateToOneWithWhereWithoutAnnouncementsInput, Prisma.CompanyUpdateWithoutAnnouncementsInput>, Prisma.CompanyUncheckedUpdateWithoutAnnouncementsInput>
 }
 
+export type CompanyCreateNestedOneWithoutCalendarEventsInput = {
+  create?: Prisma.XOR<Prisma.CompanyCreateWithoutCalendarEventsInput, Prisma.CompanyUncheckedCreateWithoutCalendarEventsInput>
+  connectOrCreate?: Prisma.CompanyCreateOrConnectWithoutCalendarEventsInput
+  connect?: Prisma.CompanyWhereUniqueInput
+}
+
+export type CompanyUpdateOneWithoutCalendarEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.CompanyCreateWithoutCalendarEventsInput, Prisma.CompanyUncheckedCreateWithoutCalendarEventsInput>
+  connectOrCreate?: Prisma.CompanyCreateOrConnectWithoutCalendarEventsInput
+  upsert?: Prisma.CompanyUpsertWithoutCalendarEventsInput
+  disconnect?: Prisma.CompanyWhereInput | boolean
+  delete?: Prisma.CompanyWhereInput | boolean
+  connect?: Prisma.CompanyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CompanyUpdateToOneWithWhereWithoutCalendarEventsInput, Prisma.CompanyUpdateWithoutCalendarEventsInput>, Prisma.CompanyUncheckedUpdateWithoutCalendarEventsInput>
+}
+
+export type CompanyCreateNestedOneWithoutHolidaysInput = {
+  create?: Prisma.XOR<Prisma.CompanyCreateWithoutHolidaysInput, Prisma.CompanyUncheckedCreateWithoutHolidaysInput>
+  connectOrCreate?: Prisma.CompanyCreateOrConnectWithoutHolidaysInput
+  connect?: Prisma.CompanyWhereUniqueInput
+}
+
+export type CompanyUpdateOneWithoutHolidaysNestedInput = {
+  create?: Prisma.XOR<Prisma.CompanyCreateWithoutHolidaysInput, Prisma.CompanyUncheckedCreateWithoutHolidaysInput>
+  connectOrCreate?: Prisma.CompanyCreateOrConnectWithoutHolidaysInput
+  upsert?: Prisma.CompanyUpsertWithoutHolidaysInput
+  disconnect?: Prisma.CompanyWhereInput | boolean
+  delete?: Prisma.CompanyWhereInput | boolean
+  connect?: Prisma.CompanyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CompanyUpdateToOneWithWhereWithoutHolidaysInput, Prisma.CompanyUpdateWithoutHolidaysInput>, Prisma.CompanyUncheckedUpdateWithoutHolidaysInput>
+}
+
 export type CompanyCreateWithoutSupervisorProfilesInput = {
   id?: string
   companyCode?: string | null
@@ -781,6 +827,8 @@ export type CompanyCreateWithoutSupervisorProfilesInput = {
   representativeProfiles?: Prisma.RepresentativeProfileCreateNestedManyWithoutCompanyInput
   assignments?: Prisma.InternshipAssignmentCreateNestedManyWithoutCompanyInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutCompanyInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutCompanyInput
+  holidays?: Prisma.HolidayCreateNestedManyWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutSupervisorProfilesInput = {
@@ -805,6 +853,8 @@ export type CompanyUncheckedCreateWithoutSupervisorProfilesInput = {
   representativeProfiles?: Prisma.RepresentativeProfileUncheckedCreateNestedManyWithoutCompanyInput
   assignments?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCompanyInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCompanyInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCompanyInput
+  holidays?: Prisma.HolidayUncheckedCreateNestedManyWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutSupervisorProfilesInput = {
@@ -845,6 +895,8 @@ export type CompanyUpdateWithoutSupervisorProfilesInput = {
   representativeProfiles?: Prisma.RepresentativeProfileUpdateManyWithoutCompanyNestedInput
   assignments?: Prisma.InternshipAssignmentUpdateManyWithoutCompanyNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutCompanyNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutCompanyNestedInput
+  holidays?: Prisma.HolidayUpdateManyWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutSupervisorProfilesInput = {
@@ -869,6 +921,8 @@ export type CompanyUncheckedUpdateWithoutSupervisorProfilesInput = {
   representativeProfiles?: Prisma.RepresentativeProfileUncheckedUpdateManyWithoutCompanyNestedInput
   assignments?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCompanyNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCompanyNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutCompanyNestedInput
+  holidays?: Prisma.HolidayUncheckedUpdateManyWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutRepresentativeProfilesInput = {
@@ -893,6 +947,8 @@ export type CompanyCreateWithoutRepresentativeProfilesInput = {
   supervisorProfiles?: Prisma.SupervisorProfileCreateNestedManyWithoutCompanyInput
   assignments?: Prisma.InternshipAssignmentCreateNestedManyWithoutCompanyInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutCompanyInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutCompanyInput
+  holidays?: Prisma.HolidayCreateNestedManyWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutRepresentativeProfilesInput = {
@@ -917,6 +973,8 @@ export type CompanyUncheckedCreateWithoutRepresentativeProfilesInput = {
   supervisorProfiles?: Prisma.SupervisorProfileUncheckedCreateNestedManyWithoutCompanyInput
   assignments?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCompanyInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCompanyInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCompanyInput
+  holidays?: Prisma.HolidayUncheckedCreateNestedManyWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutRepresentativeProfilesInput = {
@@ -957,6 +1015,8 @@ export type CompanyUpdateWithoutRepresentativeProfilesInput = {
   supervisorProfiles?: Prisma.SupervisorProfileUpdateManyWithoutCompanyNestedInput
   assignments?: Prisma.InternshipAssignmentUpdateManyWithoutCompanyNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutCompanyNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutCompanyNestedInput
+  holidays?: Prisma.HolidayUpdateManyWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutRepresentativeProfilesInput = {
@@ -981,6 +1041,8 @@ export type CompanyUncheckedUpdateWithoutRepresentativeProfilesInput = {
   supervisorProfiles?: Prisma.SupervisorProfileUncheckedUpdateManyWithoutCompanyNestedInput
   assignments?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCompanyNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCompanyNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutCompanyNestedInput
+  holidays?: Prisma.HolidayUncheckedUpdateManyWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutAssignmentsInput = {
@@ -1005,6 +1067,8 @@ export type CompanyCreateWithoutAssignmentsInput = {
   supervisorProfiles?: Prisma.SupervisorProfileCreateNestedManyWithoutCompanyInput
   representativeProfiles?: Prisma.RepresentativeProfileCreateNestedManyWithoutCompanyInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutCompanyInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutCompanyInput
+  holidays?: Prisma.HolidayCreateNestedManyWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutAssignmentsInput = {
@@ -1029,6 +1093,8 @@ export type CompanyUncheckedCreateWithoutAssignmentsInput = {
   supervisorProfiles?: Prisma.SupervisorProfileUncheckedCreateNestedManyWithoutCompanyInput
   representativeProfiles?: Prisma.RepresentativeProfileUncheckedCreateNestedManyWithoutCompanyInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCompanyInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCompanyInput
+  holidays?: Prisma.HolidayUncheckedCreateNestedManyWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutAssignmentsInput = {
@@ -1069,6 +1135,8 @@ export type CompanyUpdateWithoutAssignmentsInput = {
   supervisorProfiles?: Prisma.SupervisorProfileUpdateManyWithoutCompanyNestedInput
   representativeProfiles?: Prisma.RepresentativeProfileUpdateManyWithoutCompanyNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutCompanyNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutCompanyNestedInput
+  holidays?: Prisma.HolidayUpdateManyWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutAssignmentsInput = {
@@ -1093,6 +1161,8 @@ export type CompanyUncheckedUpdateWithoutAssignmentsInput = {
   supervisorProfiles?: Prisma.SupervisorProfileUncheckedUpdateManyWithoutCompanyNestedInput
   representativeProfiles?: Prisma.RepresentativeProfileUncheckedUpdateManyWithoutCompanyNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCompanyNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutCompanyNestedInput
+  holidays?: Prisma.HolidayUncheckedUpdateManyWithoutCompanyNestedInput
 }
 
 export type CompanyCreateWithoutAnnouncementsInput = {
@@ -1117,6 +1187,8 @@ export type CompanyCreateWithoutAnnouncementsInput = {
   supervisorProfiles?: Prisma.SupervisorProfileCreateNestedManyWithoutCompanyInput
   representativeProfiles?: Prisma.RepresentativeProfileCreateNestedManyWithoutCompanyInput
   assignments?: Prisma.InternshipAssignmentCreateNestedManyWithoutCompanyInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutCompanyInput
+  holidays?: Prisma.HolidayCreateNestedManyWithoutCompanyInput
 }
 
 export type CompanyUncheckedCreateWithoutAnnouncementsInput = {
@@ -1141,6 +1213,8 @@ export type CompanyUncheckedCreateWithoutAnnouncementsInput = {
   supervisorProfiles?: Prisma.SupervisorProfileUncheckedCreateNestedManyWithoutCompanyInput
   representativeProfiles?: Prisma.RepresentativeProfileUncheckedCreateNestedManyWithoutCompanyInput
   assignments?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCompanyInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCompanyInput
+  holidays?: Prisma.HolidayUncheckedCreateNestedManyWithoutCompanyInput
 }
 
 export type CompanyCreateOrConnectWithoutAnnouncementsInput = {
@@ -1181,6 +1255,8 @@ export type CompanyUpdateWithoutAnnouncementsInput = {
   supervisorProfiles?: Prisma.SupervisorProfileUpdateManyWithoutCompanyNestedInput
   representativeProfiles?: Prisma.RepresentativeProfileUpdateManyWithoutCompanyNestedInput
   assignments?: Prisma.InternshipAssignmentUpdateManyWithoutCompanyNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutCompanyNestedInput
+  holidays?: Prisma.HolidayUpdateManyWithoutCompanyNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutAnnouncementsInput = {
@@ -1205,6 +1281,248 @@ export type CompanyUncheckedUpdateWithoutAnnouncementsInput = {
   supervisorProfiles?: Prisma.SupervisorProfileUncheckedUpdateManyWithoutCompanyNestedInput
   representativeProfiles?: Prisma.RepresentativeProfileUncheckedUpdateManyWithoutCompanyNestedInput
   assignments?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCompanyNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutCompanyNestedInput
+  holidays?: Prisma.HolidayUncheckedUpdateManyWithoutCompanyNestedInput
+}
+
+export type CompanyCreateWithoutCalendarEventsInput = {
+  id?: string
+  companyCode?: string | null
+  name: string
+  branchName?: string | null
+  addressLine: string
+  city?: string | null
+  province?: string | null
+  postalCode?: string | null
+  contactEmail?: string | null
+  contactNumber?: string | null
+  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  geofenceRadiusMeters?: number
+  timezone?: string
+  logoPath?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  supervisorProfiles?: Prisma.SupervisorProfileCreateNestedManyWithoutCompanyInput
+  representativeProfiles?: Prisma.RepresentativeProfileCreateNestedManyWithoutCompanyInput
+  assignments?: Prisma.InternshipAssignmentCreateNestedManyWithoutCompanyInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutCompanyInput
+  holidays?: Prisma.HolidayCreateNestedManyWithoutCompanyInput
+}
+
+export type CompanyUncheckedCreateWithoutCalendarEventsInput = {
+  id?: string
+  companyCode?: string | null
+  name: string
+  branchName?: string | null
+  addressLine: string
+  city?: string | null
+  province?: string | null
+  postalCode?: string | null
+  contactEmail?: string | null
+  contactNumber?: string | null
+  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  geofenceRadiusMeters?: number
+  timezone?: string
+  logoPath?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  supervisorProfiles?: Prisma.SupervisorProfileUncheckedCreateNestedManyWithoutCompanyInput
+  representativeProfiles?: Prisma.RepresentativeProfileUncheckedCreateNestedManyWithoutCompanyInput
+  assignments?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCompanyInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCompanyInput
+  holidays?: Prisma.HolidayUncheckedCreateNestedManyWithoutCompanyInput
+}
+
+export type CompanyCreateOrConnectWithoutCalendarEventsInput = {
+  where: Prisma.CompanyWhereUniqueInput
+  create: Prisma.XOR<Prisma.CompanyCreateWithoutCalendarEventsInput, Prisma.CompanyUncheckedCreateWithoutCalendarEventsInput>
+}
+
+export type CompanyUpsertWithoutCalendarEventsInput = {
+  update: Prisma.XOR<Prisma.CompanyUpdateWithoutCalendarEventsInput, Prisma.CompanyUncheckedUpdateWithoutCalendarEventsInput>
+  create: Prisma.XOR<Prisma.CompanyCreateWithoutCalendarEventsInput, Prisma.CompanyUncheckedCreateWithoutCalendarEventsInput>
+  where?: Prisma.CompanyWhereInput
+}
+
+export type CompanyUpdateToOneWithWhereWithoutCalendarEventsInput = {
+  where?: Prisma.CompanyWhereInput
+  data: Prisma.XOR<Prisma.CompanyUpdateWithoutCalendarEventsInput, Prisma.CompanyUncheckedUpdateWithoutCalendarEventsInput>
+}
+
+export type CompanyUpdateWithoutCalendarEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  branchName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  geofenceRadiusMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  supervisorProfiles?: Prisma.SupervisorProfileUpdateManyWithoutCompanyNestedInput
+  representativeProfiles?: Prisma.RepresentativeProfileUpdateManyWithoutCompanyNestedInput
+  assignments?: Prisma.InternshipAssignmentUpdateManyWithoutCompanyNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutCompanyNestedInput
+  holidays?: Prisma.HolidayUpdateManyWithoutCompanyNestedInput
+}
+
+export type CompanyUncheckedUpdateWithoutCalendarEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  branchName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  geofenceRadiusMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  supervisorProfiles?: Prisma.SupervisorProfileUncheckedUpdateManyWithoutCompanyNestedInput
+  representativeProfiles?: Prisma.RepresentativeProfileUncheckedUpdateManyWithoutCompanyNestedInput
+  assignments?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCompanyNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCompanyNestedInput
+  holidays?: Prisma.HolidayUncheckedUpdateManyWithoutCompanyNestedInput
+}
+
+export type CompanyCreateWithoutHolidaysInput = {
+  id?: string
+  companyCode?: string | null
+  name: string
+  branchName?: string | null
+  addressLine: string
+  city?: string | null
+  province?: string | null
+  postalCode?: string | null
+  contactEmail?: string | null
+  contactNumber?: string | null
+  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  geofenceRadiusMeters?: number
+  timezone?: string
+  logoPath?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  supervisorProfiles?: Prisma.SupervisorProfileCreateNestedManyWithoutCompanyInput
+  representativeProfiles?: Prisma.RepresentativeProfileCreateNestedManyWithoutCompanyInput
+  assignments?: Prisma.InternshipAssignmentCreateNestedManyWithoutCompanyInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutCompanyInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutCompanyInput
+}
+
+export type CompanyUncheckedCreateWithoutHolidaysInput = {
+  id?: string
+  companyCode?: string | null
+  name: string
+  branchName?: string | null
+  addressLine: string
+  city?: string | null
+  province?: string | null
+  postalCode?: string | null
+  contactEmail?: string | null
+  contactNumber?: string | null
+  latitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude: runtime.Decimal | runtime.DecimalJsLike | number | string
+  geofenceRadiusMeters?: number
+  timezone?: string
+  logoPath?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  supervisorProfiles?: Prisma.SupervisorProfileUncheckedCreateNestedManyWithoutCompanyInput
+  representativeProfiles?: Prisma.RepresentativeProfileUncheckedCreateNestedManyWithoutCompanyInput
+  assignments?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutCompanyInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCompanyInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutCompanyInput
+}
+
+export type CompanyCreateOrConnectWithoutHolidaysInput = {
+  where: Prisma.CompanyWhereUniqueInput
+  create: Prisma.XOR<Prisma.CompanyCreateWithoutHolidaysInput, Prisma.CompanyUncheckedCreateWithoutHolidaysInput>
+}
+
+export type CompanyUpsertWithoutHolidaysInput = {
+  update: Prisma.XOR<Prisma.CompanyUpdateWithoutHolidaysInput, Prisma.CompanyUncheckedUpdateWithoutHolidaysInput>
+  create: Prisma.XOR<Prisma.CompanyCreateWithoutHolidaysInput, Prisma.CompanyUncheckedCreateWithoutHolidaysInput>
+  where?: Prisma.CompanyWhereInput
+}
+
+export type CompanyUpdateToOneWithWhereWithoutHolidaysInput = {
+  where?: Prisma.CompanyWhereInput
+  data: Prisma.XOR<Prisma.CompanyUpdateWithoutHolidaysInput, Prisma.CompanyUncheckedUpdateWithoutHolidaysInput>
+}
+
+export type CompanyUpdateWithoutHolidaysInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  branchName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  geofenceRadiusMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  supervisorProfiles?: Prisma.SupervisorProfileUpdateManyWithoutCompanyNestedInput
+  representativeProfiles?: Prisma.RepresentativeProfileUpdateManyWithoutCompanyNestedInput
+  assignments?: Prisma.InternshipAssignmentUpdateManyWithoutCompanyNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutCompanyNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutCompanyNestedInput
+}
+
+export type CompanyUncheckedUpdateWithoutHolidaysInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  companyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  branchName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  longitude?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  geofenceRadiusMeters?: Prisma.IntFieldUpdateOperationsInput | number
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  supervisorProfiles?: Prisma.SupervisorProfileUncheckedUpdateManyWithoutCompanyNestedInput
+  representativeProfiles?: Prisma.RepresentativeProfileUncheckedUpdateManyWithoutCompanyNestedInput
+  assignments?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCompanyNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCompanyNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutCompanyNestedInput
 }
 
 
@@ -1217,6 +1535,8 @@ export type CompanyCountOutputType = {
   representativeProfiles: number
   assignments: number
   announcements: number
+  calendarEvents: number
+  holidays: number
 }
 
 export type CompanyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1224,6 +1544,8 @@ export type CompanyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   representativeProfiles?: boolean | CompanyCountOutputTypeCountRepresentativeProfilesArgs
   assignments?: boolean | CompanyCountOutputTypeCountAssignmentsArgs
   announcements?: boolean | CompanyCountOutputTypeCountAnnouncementsArgs
+  calendarEvents?: boolean | CompanyCountOutputTypeCountCalendarEventsArgs
+  holidays?: boolean | CompanyCountOutputTypeCountHolidaysArgs
 }
 
 /**
@@ -1264,6 +1586,20 @@ export type CompanyCountOutputTypeCountAnnouncementsArgs<ExtArgs extends runtime
   where?: Prisma.AnnouncementWhereInput
 }
 
+/**
+ * CompanyCountOutputType without action
+ */
+export type CompanyCountOutputTypeCountCalendarEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CalendarEventWhereInput
+}
+
+/**
+ * CompanyCountOutputType without action
+ */
+export type CompanyCountOutputTypeCountHolidaysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HolidayWhereInput
+}
+
 
 export type CompanySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1288,6 +1624,8 @@ export type CompanySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   representativeProfiles?: boolean | Prisma.Company$representativeProfilesArgs<ExtArgs>
   assignments?: boolean | Prisma.Company$assignmentsArgs<ExtArgs>
   announcements?: boolean | Prisma.Company$announcementsArgs<ExtArgs>
+  calendarEvents?: boolean | Prisma.Company$calendarEventsArgs<ExtArgs>
+  holidays?: boolean | Prisma.Company$holidaysArgs<ExtArgs>
   _count?: boolean | Prisma.CompanyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["company"]>
 
@@ -1360,6 +1698,8 @@ export type CompanyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   representativeProfiles?: boolean | Prisma.Company$representativeProfilesArgs<ExtArgs>
   assignments?: boolean | Prisma.Company$assignmentsArgs<ExtArgs>
   announcements?: boolean | Prisma.Company$announcementsArgs<ExtArgs>
+  calendarEvents?: boolean | Prisma.Company$calendarEventsArgs<ExtArgs>
+  holidays?: boolean | Prisma.Company$holidaysArgs<ExtArgs>
   _count?: boolean | Prisma.CompanyCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CompanyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1372,6 +1712,8 @@ export type $CompanyPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     representativeProfiles: Prisma.$RepresentativeProfilePayload<ExtArgs>[]
     assignments: Prisma.$InternshipAssignmentPayload<ExtArgs>[]
     announcements: Prisma.$AnnouncementPayload<ExtArgs>[]
+    calendarEvents: Prisma.$CalendarEventPayload<ExtArgs>[]
+    holidays: Prisma.$HolidayPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1790,6 +2132,8 @@ export interface Prisma__CompanyClient<T, Null = never, ExtArgs extends runtime.
   representativeProfiles<T extends Prisma.Company$representativeProfilesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$representativeProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RepresentativeProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignments<T extends Prisma.Company$assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$assignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InternshipAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   announcements<T extends Prisma.Company$announcementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$announcementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  calendarEvents<T extends Prisma.Company$calendarEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$calendarEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  holidays<T extends Prisma.Company$holidaysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$holidaysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HolidayPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2323,6 +2667,54 @@ export type Company$announcementsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.AnnouncementScalarFieldEnum | Prisma.AnnouncementScalarFieldEnum[]
+}
+
+/**
+ * Company.calendarEvents
+ */
+export type Company$calendarEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CalendarEvent
+   */
+  select?: Prisma.CalendarEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CalendarEvent
+   */
+  omit?: Prisma.CalendarEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CalendarEventInclude<ExtArgs> | null
+  where?: Prisma.CalendarEventWhereInput
+  orderBy?: Prisma.CalendarEventOrderByWithRelationInput | Prisma.CalendarEventOrderByWithRelationInput[]
+  cursor?: Prisma.CalendarEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CalendarEventScalarFieldEnum | Prisma.CalendarEventScalarFieldEnum[]
+}
+
+/**
+ * Company.holidays
+ */
+export type Company$holidaysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Holiday
+   */
+  select?: Prisma.HolidaySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Holiday
+   */
+  omit?: Prisma.HolidayOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HolidayInclude<ExtArgs> | null
+  where?: Prisma.HolidayWhereInput
+  orderBy?: Prisma.HolidayOrderByWithRelationInput | Prisma.HolidayOrderByWithRelationInput[]
+  cursor?: Prisma.HolidayWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HolidayScalarFieldEnum | Prisma.HolidayScalarFieldEnum[]
 }
 
 /**
