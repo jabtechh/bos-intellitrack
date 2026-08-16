@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useEffect,useState } from "react";
 import { updateOwnProfile } from "@/app/profile/actions";
 import { initials } from "@/lib/profile/domain";
+import type { ProfileEditDto } from "@/lib/profile/domain";
 
-type Props={profile:{firstName:string;middleName:string|null;lastName:string;suffix:string|null;phoneNumber:string|null;bio:string|null;avatarUrl:string|null;coverUrl:string|null};error?:string};
+type Props={profile:ProfileEditDto;error?:string};
 export function ProfileEditForm({profile,error}:Props){
   const[avatar,setAvatar]=useState<string|null>(profile.avatarUrl),[cover,setCover]=useState<string|null>(profile.coverUrl);
   useEffect(()=>()=>{if(avatar?.startsWith("blob:"))URL.revokeObjectURL(avatar);if(cover?.startsWith("blob:"))URL.revokeObjectURL(cover)},[avatar,cover]);

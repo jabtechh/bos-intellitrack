@@ -11,3 +11,5 @@ export const profileInputSchema=z.object({
 });
 export const emptyToNull=(value:string|undefined)=>value??null;
 export function initials(firstName:string,lastName:string){return `${firstName[0]??""}${lastName[0]??""}`.toUpperCase()||"IT"}
+export type ProfileEditDto={firstName:string;middleName:string|null;lastName:string;suffix:string|null;phoneNumber:string|null;bio:string|null;avatarUrl:string|null;coverUrl:string|null};
+export function profileEditDto(profile:ProfileEditDto):ProfileEditDto{return{firstName:profile.firstName,middleName:profile.middleName,lastName:profile.lastName,suffix:profile.suffix,phoneNumber:profile.phoneNumber,bio:profile.bio,avatarUrl:profile.avatarUrl,coverUrl:profile.coverUrl}}
