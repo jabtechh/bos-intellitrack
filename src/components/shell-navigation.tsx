@@ -5,7 +5,7 @@ import { Fragment } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Icon, type IconName } from "./icons";
 
-export type ShellNavItem = { href: string; label: string; icon: IconName; exact?: boolean; activePath?: string; activeQuery?: { key: string; value: string | null } };
+export type ShellNavItem = { href: string; label: string; icon: IconName; badge?: string | null; exact?: boolean; activePath?: string; activeQuery?: { key: string; value: string | null } };
 
 function navigationGroup(href:string){if(href==="/dashboard")return"Overview";if(href.startsWith("/admin"))return"Management";if(/^\/(attendance|work-logs|tasks)/.test(href))return"Internship work";if(/^\/(evaluations|feedback|insights)/.test(href))return"Development";return"Resources"}
 
@@ -19,7 +19,7 @@ export function ShellNavigation({ items, mobile = false, label }: { items: Shell
       const active = pathActive && (!item.activeQuery || searchParams.get(item.activeQuery.key) === item.activeQuery.value);
       const group=navigationGroup(item.href),showGroup=!mobile&&(index===0||navigationGroup(items[index-1].href)!==group);
       return <Fragment key={item.href}>{showGroup?<span className="nav-group-label">{group}</span>:null}<Link href={item.href} prefetch aria-current={active ? "page" : undefined} className={active ? "is-active" : undefined}>
-        <Icon name={item.icon} /><span>{item.label}</span>
+        <Icon name={item.icon} /><span>{item.label}</span>{item.badge?<span className="nav-badge" aria-label={`${item.badge} unread`}>{item.badge}</span>:null}
       </Link></Fragment>;
     })}
   </nav>;

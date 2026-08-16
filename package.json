@@ -48,6 +48,7 @@
     "intern-mobile:test": "tsx --test scripts/test-intern-mobile-ux.ts",
     "landing:test": "tsx --test scripts/test-landing-page.ts",
     "ai:test": "tsx --test scripts/test-ai-foundation.ts",
+    "notification:test": "tsx --test scripts/test-notification-foundation.ts",
     "storage:documents:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-document-storage.ts",
     "storage:profile:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-profile-storage.ts"
   },

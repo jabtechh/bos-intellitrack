@@ -117,3 +117,8 @@ export type Holiday = Prisma.HolidayModel
  * 
  */
 export type Portfolio = Prisma.PortfolioModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel

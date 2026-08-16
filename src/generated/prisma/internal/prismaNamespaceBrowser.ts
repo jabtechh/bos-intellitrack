@@ -70,7 +70,8 @@ export const ModelName = {
   Announcement: 'Announcement',
   CalendarEvent: 'CalendarEvent',
   Holiday: 'Holiday',
-  Portfolio: 'Portfolio'
+  Portfolio: 'Portfolio',
+  Notification: 'Notification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -532,6 +533,24 @@ export const PortfolioScalarFieldEnum = {
 } as const
 
 export type PortfolioScalarFieldEnum = (typeof PortfolioScalarFieldEnum)[keyof typeof PortfolioScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  recipientId: 'recipientId',
+  actorId: 'actorId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  href: 'href',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  dedupeKey: 'dedupeKey',
+  readAt: 'readAt',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
 export const SortOrder = {
