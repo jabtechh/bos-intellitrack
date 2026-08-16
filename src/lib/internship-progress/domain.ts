@@ -15,6 +15,7 @@ export function formatHours(value: number) {
   const rounded = Math.round(value * 10) / 10;
   return `${Number.isInteger(rounded) ? rounded : rounded.toFixed(1)} h`;
 }
+export function estimatedCompletionDate(projectedDate:Date|null,scheduledEndDate:Date){return new Date(projectedDate??scheduledEndDate)}
 
 export function scheduledPeriod(startDate: Date, endDate: Date) {
   const sameYear = startDate.getUTCFullYear() === endDate.getUTCFullYear();
