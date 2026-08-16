@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import { formatNotificationBadge, notificationInputSchema, safeNotificationHrefSchema } from "../src/lib/notifications/domain.ts";
+import { NotificationUnavailableError, missingNotificationTableFallback, throwNotificationUnavailable } from "../src/lib/notifications/errors.ts";
 
 const schema=readFileSync("prisma/schema.prisma","utf8"),service=readFileSync("src/lib/notifications/service.ts","utf8"),migration=readFileSync("prisma/migrations/20260817120000_add_notification_foundation/migration.sql","utf8"),page=readFileSync("src/app/(authenticated)/notifications/page.tsx","utf8"),item=readFileSync("src/components/notification-item.tsx","utf8"),shell=readFileSync("src/components/app-shell.tsx","utf8"),mobile=readFileSync("src/components/mobile-intern-navigation.tsx","utf8");
 const base={recipientId:"00000000-0000-4000-8000-000000000001",type:"task.assigned",title:"Assigned"} as const;
@@ -26,3 +27,11 @@ test("empty state exists",()=>assert.match(page,/No notifications/));
 test("restricted fields are absent from strict input contract",()=>{for(const key of ["password","authId","token","cookie","latitude","longitude","selfiePath","signedUrl","storagePath","medicalContents","identificationContents"])assert(!notificationInputSchema.safeParse({...base,[key]:"secret"}).success)});
 test("notification click marks read before safe navigation",()=>assert.match(item,/await markNotificationReadAction\(item\.id\);if\(item\.href\)router\.push/));
 test("navigation includes persisted badge without replacing intern primary items",()=>{assert.match(shell,/getUnreadNotificationCount/);assert.match(shell,/\/notifications/);assert.match(mobile,/Dashboard[\s\S]*Attendance[\s\S]*Work Logs[\s\S]*More/);assert.match(mobile,/Notifications/)});
+
+function prismaError(code:string,meta?:Record<string,unknown>){return Object.assign(new Error("Prisma request failed"),{code,meta})}
+const missingTable=prismaError("P2021",{modelName:"Notification",table:"public.notifications"});
+test("missing notification table unread count falls back to zero",()=>assert.equal(missingNotificationTableFallback(missingTable,0),0));
+test("missing notification table list returns uninitialized empty result",()=>assert.deepEqual(missingNotificationTableFallback(missingTable,{initialized:false,items:[]}),{initialized:false,items:[]}));
+test("missing notification table mutations fail with controlled error",()=>assert.throws(()=>throwNotificationUnavailable(missingTable),NotificationUnavailableError));
+test("unrelated Prisma errors are not swallowed",()=>{const unrelated=prismaError("P2022",{modelName:"Notification"});assert.throws(()=>missingNotificationTableFallback(unrelated,0),error=>error===unrelated);const otherTable=prismaError("P2021",{table:"public.users"});assert.throws(()=>missingNotificationTableFallback(otherTable,0),error=>error===otherTable)});
+test("normal notification service paths remain unchanged",()=>{assert.match(service,/initialized: true as const, items/);assert.match(service,/return await prisma\.notification\.count/);assert.match(service,/return await prisma\.notification\.updateMany/)});
