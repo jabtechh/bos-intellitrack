@@ -1,0 +1,7 @@
+.env
+.env.*
+!.env.example
+.pilot-credentials.local.json
+playwright-report/
+test-results/
+.playwright-artifacts/
