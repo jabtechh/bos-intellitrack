@@ -6,6 +6,7 @@ import { Icon } from "./icons";
 import { ShellNavigation, type ShellNavItem } from "./shell-navigation";
 import { roleLabel } from "@/lib/auth/roles";
 import { signedProfileMedia } from "@/lib/profile/storage";
+import { MobileInternNavigation } from "./mobile-intern-navigation";
 
 type ShellUser = { firstName: string; lastName: string; role: import("@/generated/prisma/enums").UserRole; profilePhotoPath?: string | null };
 const internNav: ShellNavItem[] = [
@@ -22,12 +23,6 @@ const internNav: ShellNavItem[] = [
   { href: "/portfolio", label: "Portfolio", icon: "journal" },
   { href: "/announcements", label: "Announcements", icon: "bell" },
   { href: "/reports", label: "Reports", icon: "review" },
-];
-const internBottomNav: ShellNavItem[] = [
-  { href: "/dashboard", label: "Dashboard", icon: "home", exact: true },
-  { href: "/attendance", label: "Attendance", icon: "clock" },
-  { href: "/work-logs", label: "Work Logs", icon: "journal" },
-  { href: "/more", label: "More", icon: "menu" },
 ];
 const reviewerNav: ShellNavItem[] = [
   { href: "/dashboard", label: "Overview", icon: "home", exact: true },
@@ -73,7 +68,6 @@ export async function AppShell({ user, children }: { user: ShellUser; children: 
       <ShellNavigation items={nav} label="Primary navigation" />
       <div className="sidebar-profile"><Link href="/profile" className="avatar" aria-label="Open your profile">{avatarUrl?<img src={avatarUrl} alt=""/>:initials}</Link><Link href="/profile"><strong>{user.firstName} {user.lastName}</strong><small>{roleLabel(user.role)}</small></Link><form action={logout}><button aria-label="Sign out" title="Sign out"><Icon name="logout" /></button></form></div>
     </aside>
-    <div className="app-stage"><header className="mobile-appbar"><Link href="/dashboard" prefetch className="brand-lockup"><span>IT</span><strong>IntelliTrack</strong></Link><details className="admin-menu mobile-role-menu"><summary aria-label="Open navigation"><span className="avatar">{avatarUrl?<img src={avatarUrl} alt=""/>:initials}</span></summary><div className="mobile-menu-panel"><p><strong>{user.firstName} {user.lastName}</strong><small>{roleLabel(user.role)}</small></p><Link href="/profile" className="mobile-profile-link">View profile</Link><ShellNavigation items={nav} label="Mobile application navigation" /><form action={logout}><button><Icon name="logout" />Sign out</button></form></div></details></header><main id="main-content" tabIndex={-1} className="app-content">{children}</main></div>
-    {user.role === "INTERN" ? <ShellNavigation items={internBottomNav} mobile label="Intern mobile navigation" /> : null}
+    <div className="app-stage"><header className="mobile-appbar"><Link href="/dashboard" prefetch className="brand-lockup"><span>IT</span><strong>IntelliTrack</strong></Link>{user.role==="INTERN"?<MobileInternNavigation name={`${user.firstName} ${user.lastName}`} role={roleLabel(user.role)} avatarUrl={avatarUrl} initials={initials}/>:<details className="admin-menu mobile-role-menu"><summary aria-label="Open navigation"><span className="avatar">{avatarUrl?<img src={avatarUrl} alt=""/>:initials}</span></summary><div className="mobile-menu-panel"><p><strong>{user.firstName} {user.lastName}</strong><small>{roleLabel(user.role)}</small></p><Link href="/profile" className="mobile-profile-link">View profile</Link><ShellNavigation items={nav} label="Mobile application navigation" /><form action={logout}><button><Icon name="logout" />Sign out</button></form></div></details>}</header><main id="main-content" tabIndex={-1} className="app-content">{children}</main></div>
   </div>;
 }

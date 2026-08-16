@@ -2,13 +2,13 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-const css=readFileSync("src/app/globals.css","utf8"),shell=readFileSync("src/components/app-shell.tsx","utf8"),navigation=readFileSync("src/components/shell-navigation.tsx","utf8"),ui=readFileSync("src/components/ui.tsx","utf8"),more=readFileSync("src/app/(authenticated)/more/page.tsx","utf8"),confirm=readFileSync("src/components/confirm-button.tsx","utf8"),profile=readFileSync("src/components/profile-view.tsx","utf8");
+const css=readFileSync("src/app/globals.css","utf8"),shell=readFileSync("src/components/app-shell.tsx","utf8"),navigation=readFileSync("src/components/shell-navigation.tsx","utf8"),mobile=readFileSync("src/components/mobile-intern-navigation.tsx","utf8"),ui=readFileSync("src/components/ui.tsx","utf8"),more=readFileSync("src/app/(authenticated)/more/page.tsx","utf8"),confirm=readFileSync("src/components/confirm-button.tsx","utf8"),profile=readFileSync("src/components/profile-view.tsx","utf8");
 
 test("warm Bo's Coffee visual tokens remain canonical",()=>{for(const token of["--brand-900","--brand-700","--canvas","--surface","--text-primary"])assert.match(css,new RegExp(token))});
 test("desktop navigation has semantic groups",()=>{for(const label of["Internship work","Development","Resources","Management"])assert.match(navigation,new RegExp(label))});
 test("desktop sidebar is persistent and scroll safe",()=>{assert.match(css,/\.app-sidebar > nav[\s\S]*overflow-y:auto/);assert.match(css,/@media \(min-width:1024px\)[\s\S]*\.app-shell/)});
 test("desktop sidebar and mobile navigation are mutually exclusive",()=>assert.match(css,/\.mobile-appbar,\.bottom-nav \{ display: none/));
-test("Intern bottom navigation remains four destinations",()=>{for(const label of["Dashboard","Attendance","Work Logs","More"])assert.match(shell,new RegExp(`label: "${label}"`))});
+test("Intern bottom navigation remains four destinations",()=>{for(const label of["Dashboard","Attendance","Work Logs","More"])assert.match(mobile,new RegExp(label))});
 test("More hub contains all requested modules",()=>{for(const label of["Tasks","Evaluations","Feedback","Documents","Announcements","Portfolio","Reports","Insights","Profile"])assert.match(more,new RegExp(`label:\"${label}\"`))});
 test("account and logout are separated from module navigation",()=>{assert.match(more,/title:\"Account\"/);assert.match(more,/form action=\{logout\}/)});
 test("shared UI includes summary and form patterns",()=>{for(const name of["SectionHeader","SummaryStrip","MetricItem","ProgressBar","InlineNotice","FilterBar","FormActions","PriorityBadge"])assert.match(ui,new RegExp(`function ${name}`))});
