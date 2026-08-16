@@ -2,6 +2,7 @@
 .env.*
 !.env.example
 .pilot-credentials.local.json
+.demo-credentials.local.json
 playwright-report/
 test-results/
 .playwright-artifacts/
