@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "IntelliTrack",
-  description: "AI-Powered Internship Management System",
+  title: { default: "IntelliTrack | Internship Management", template: "%s | IntelliTrack" },
+  description: "Internship management for Bo’s Coffee, bringing attendance, work records, progress, evaluations, documents, and reports into one organized workspace.",
 };
 
 export default function RootLayout({
