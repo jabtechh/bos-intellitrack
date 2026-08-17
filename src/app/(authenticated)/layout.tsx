@@ -10,6 +10,6 @@ export default async function AuthenticatedLayout({ children }: { children: Reac
   const user = await requireCurrentUser();
   const accountSetup = await getAccountSetupState();
   if (accountSetup.passwordChangeRequired) redirect("/account/set-password");
-  const onboarding = user.role === "INTERN" ? await getInternOnboarding(user.id, accountSetup.orientationRead) : null;
+  const onboarding = user.role === "INTERN" ? await getInternOnboarding(user.id) : null;
   return <AppShell user={user} onboarding={onboarding?.counts ?? null}>{children}</AppShell>;
 }
