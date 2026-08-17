@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { Icon, type IconName } from "./icons";
 
@@ -8,6 +9,27 @@ export function PageHeader({ eyebrow, title, description, actions }: { eyebrow?:
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <section className={`ui-card ${className}`}>{children}</section>;
+}
+
+export function DataToolbar({ children, label = "Table controls" }: { children: ReactNode; label?: string }) {
+  return <div className="data-toolbar" role="group" aria-label={label}>{children}</div>;
+}
+
+export function DataTable({ children, caption, className = "" }: { children: ReactNode; caption: string; className?: string }) {
+  return <div className={`data-table-wrap ${className}`}><table className="data-table"><caption className="sr-only">{caption}</caption>{children}</table></div>;
+}
+
+export function MobileRecordCard({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return <article className={`mobile-record-card ${className}`}>{children}</article>;
+}
+
+export function Avatar({ name, src, size = "medium" }: { name: string; src?: string | null; size?: "small" | "medium" | "large" }) {
+  const initials = name.split(/\s+/).map(part => part[0]).join("").slice(0, 2).toUpperCase();
+  return <span className={`ui-avatar avatar-${size}`} aria-label={name}>{src ? <Image src={src} alt="" width={48} height={48} unoptimized /> : <span aria-hidden="true">{initials}</span>}</span>;
+}
+
+export function FormSection({ title, description, children }: { title: string; description?: string; children: ReactNode }) {
+  return <section className="form-section"><SectionHeader title={title} description={description} /><div className="form-section-content">{children}</div></section>;
 }
 
 export function MetricCard({ label, value, detail, icon = "review" }: { label: string; value: ReactNode; detail?: string; icon?: IconName }) {
@@ -30,6 +52,9 @@ export function FormActions({ children }: { children:ReactNode }) { return <div 
 export function EmptyState({ title, description, action }: { title: string; description: string; action?: { href: string; label: string } }) {
   return <div className="empty-state"><span><Icon name="journal" /></span><h2>{title}</h2><p>{description}</p>{action ? <Link className="button button-primary" href={action.href}><Icon name="plus" />{action.label}</Link> : null}</div>;
 }
+
+export function LoadingState({ label = "Loading content" }: { label?: string }) { return <div className="state-panel" role="status" aria-live="polite"><span className="state-spinner" aria-hidden="true" /><p>{label}</p></div>; }
+export function ErrorState({ title = "Something went wrong", description }: { title?: string; description: string }) { return <div className="state-panel state-error" role="alert"><strong>{title}</strong><p>{description}</p></div>; }
 
 export function ResponsiveRecordList({ children, label }: { children: ReactNode; label: string }) {
   return <section className="responsive-record-list" aria-label={label}>{children}</section>;
