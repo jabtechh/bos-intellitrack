@@ -105,7 +105,7 @@ async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requi
       <DashboardAttendanceCard attendance={attendancePresentation}/>
       <article className="ui-card progress-panel"><InternProgressPanel requiredHours={assignment.requiredHours} creditedMinutes={creditedMinutes} daysAttended={daysAttended} reportHref={`/reports/intern/${user.id}/pdf`}/></article>
     </section>
-    {onboarding && !onboarding.counts.done ? <section className="ui-card onboarding-reminder"><div><p className="eyebrow">Complete your onboarding</p><h2>{onboarding.counts.percentage}% complete</h2><p>{onboarding.counts.yourAction} item{onboarding.counts.yourAction===1?"":"s"} need your attention · {onboarding.counts.waiting} waiting for school/company</p></div><Link href="/onboarding" className="text-link">Continue onboarding <Icon name="arrow"/></Link></section> : null}
+    {onboarding && !onboarding.counts.done ? <section className="ui-card onboarding-reminder"><div><p className="eyebrow">Complete your onboarding</p><h2>{onboarding.counts.percentage}% complete</h2><p>{onboarding.counts.yourAction} required item{onboarding.counts.yourAction===1?"":"s"} need your attention</p></div><Link href="/onboarding" className="text-link">Continue onboarding <Icon name="arrow"/></Link></section> : null}
     <DashboardCalendar items={calendarItems} today={todayDate} timezone={assignment.company.timezone} attendance={assignment.attendance}/>
     <WeeklyHours attendance={assignment.attendance} today={todayDate}/>
     <section className="dashboard-grid-secondary">
