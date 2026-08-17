@@ -9,6 +9,7 @@ const dashboard = read("src/app/(authenticated)/dashboard/page.tsx");
 const attendance = read("src/app/(authenticated)/attendance/page.tsx");
 const workLogs = read("src/app/(authenticated)/work-logs/page.tsx");
 const mobile = read("src/components/mobile-navigation.tsx");
+const dashboardAttendance = read("src/components/dashboard-attendance-card.tsx");
 
 test("authenticated routes share one persistent shell layout", () => {
   const layout = read("src/app/(authenticated)/layout.tsx");
@@ -31,7 +32,7 @@ test("shell-preserving destination skeletons exist", () => {
   assert.equal(existsSync("src/app/onboarding/internship-hours/loading.tsx"),true);
 });
 test("dashboard uses real operational data and primary actions", () => {
-  assert.match(dashboard, /requiredHours/); assert.match(dashboard, /creditedMinutesFromAttendance/); assert.match(dashboard, /Today’s attendance/); assert.match(dashboard, /Create work log/); assert.match(attendance, /Submit clock-in/); assert.match(workLogs, /Create work log/);
+  assert.match(dashboard, /requiredHours/); assert.match(dashboard, /creditedMinutesFromAttendance/); assert.match(dashboardAttendance, /Today&apos;s attendance/); assert.match(dashboard, /Create work log/); assert.match(attendance, /Submit clock-in/); assert.match(workLogs, /Create work log/);
   assert.doesNotMatch(dashboard, /AI productivity score|evaluation score|fake analytics|branch selector/i);
 });
 test("loading and error UI preserve page-shaped content inside the shell",()=>{const ui=read("src/components/ui.tsx");assert.match(ui,/skeleton-header/);assert.match(ui,/skeleton-summary/);assert.match(ui,/skeleton-row/);assert.equal(existsSync("src/app/(authenticated)/error.tsx"),true)});

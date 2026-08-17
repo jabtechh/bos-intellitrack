@@ -46,6 +46,7 @@
     "insights:test": "tsx --test scripts/test-insights-foundation.ts",
     "profile:test": "tsx --test scripts/test-profile-foundation.ts",
     "ui-polish:test": "tsx --test scripts/test-ui-polish.ts",
+    "ui-v11:test": "tsx --test scripts/test-ui-system-v11.ts",
     "progress-ux:test": "tsx --test scripts/test-internship-progress.ts",
     "calendar:test": "tsx --test scripts/test-calendar-foundation.ts",
     "intern-mobile:test": "tsx --test scripts/test-intern-mobile-ux.ts",

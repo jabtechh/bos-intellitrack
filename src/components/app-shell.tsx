@@ -70,6 +70,6 @@ export async function AppShell({ user, children }: { user: ShellUser; children: 
       <Link href="/dashboard" className="brand-lockup"><span>IT</span><div><strong>IntelliTrack</strong><small>Bo&apos;s Coffee</small></div></Link>
       <ShellNavigation items={nav} label="Primary navigation" />
     </aside>
-    <div className="app-stage"><header className="app-utility-bar"><Link href="/dashboard" prefetch className="brand-lockup mobile-brand"><span>IT</span><strong>IntelliTrack</strong></Link><span className="desktop-context">IntelliTrack workspace</span><ApplicationUtilities name={`${user.firstName} ${user.lastName}`} role={roleLabel(user.role)} avatarUrl={avatarUrl} initials={initials} badge={badge} preview={{initialized:notificationResult.initialized,items:notificationResult.items.slice(0,5)}}/></header><main id="main-content" tabIndex={-1} className="app-content">{children}</main><MobileNavigation items={nav} intern={user.role==="INTERN"}/></div>
+    <div className="app-stage"><header className="app-utility-bar"><Link href="/dashboard" prefetch className="brand-lockup mobile-brand"><span>IT</span><strong>IntelliTrack</strong></Link><ApplicationUtilities name={`${user.firstName} ${user.lastName}`} role={roleLabel(user.role)} avatarUrl={avatarUrl} initials={initials} badge={badge} preview={{initialized:notificationResult.initialized,items:notificationResult.items.slice(0,5)}}/></header><main id="main-content" tabIndex={-1} className="app-content">{children}</main><MobileNavigation items={nav} intern={user.role==="INTERN"}/></div>
   </div>;
 }

@@ -15,6 +15,7 @@ import { workLogLabel } from "@/lib/work-logs/domain";
 import { creditedMinutesFromAttendance, formatHours, internshipProgress } from "@/lib/internship-progress/domain";
 import {getCalendarItems} from "@/lib/calendar/data";
 import { DashboardCalendar, InternProgressPanel, WeeklyHours } from "@/components/intern-mobile-dashboard";
+import { DashboardAttendanceCard, type DashboardAttendance } from "@/components/dashboard-attendance-card";
 
 export const dynamic = "force-dynamic";
 
@@ -65,7 +66,7 @@ async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requi
       company: { select: { timezone: true } },
       internProfile: { select: { course: true, yearLevel: true, school: { select: { name: true } } } },
       supervisorProfile: { select: { user: { select: { firstName: true, lastName: true } } } },
-      attendance: { orderBy: { attendanceDate: "desc" }, select: { id: true, attendanceDate: true, clockIn: true, clockOut: true, creditedMinutes: true, status: true, classification:true, createdAt: true, corrections:{where:{status:"PENDING"},select:{id:true}} } },
+      attendance: { orderBy: { attendanceDate: "desc" }, select: { id: true, attendanceDate: true, clockIn: true, clockOut: true, workedMinutes:true, creditedMinutes: true, status: true, classification:true, createdAt: true, clockInInsideGeofence:true, clockOutInsideGeofence:true, corrections:{where:{status:"PENDING"},select:{id:true}} } },
       workLogs: { orderBy: { workDate: "desc" }, take: 5, select: { id: true, workDate: true, title: true, status: true, updatedAt: true } },
       tasks: { where: { status: { notIn: ["COMPLETED", "CANCELLED"] } }, orderBy: { dueAt: "asc" }, take: 3, select: { id: true, title: true, status: true, dueAt: true } },
       evaluations: { where: { status: { in: ["SUBMITTED", "ACKNOWLEDGED"] } }, orderBy: { submittedAt: "desc" }, take: 1, select: { id: true, evaluationType: true, overallScore: true, submittedAt: true } },
@@ -84,7 +85,6 @@ async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requi
   if (assignment.requiredHours === null) redirect("/onboarding/internship-hours");
   const calendarMonth=new Date(Date.UTC(todayDate.getUTCFullYear(),todayDate.getUTCMonth(),1)),calendarItems=await getCalendarItems(announcementViewer,calendarMonth,new Date(Date.UTC(todayDate.getUTCFullYear(),todayDate.getUTCMonth()+1,0,23,59,59)));
   const daysAttended=new Set(assignment.attendance.filter(row=>row.status==="APPROVED"&&row.creditedMinutes>0).map(row=>row.attendanceDate.toISOString().slice(0,10))).size;
-  const attendanceAction = !today ? "Clock in" : today.clockIn && !today.clockOut ? "Clock out" : "View attendance";
   const logAction = !todayLog ? { label: "Create work log", href: "/work-logs/new" } : todayLog.status === "DRAFT" ? { label: "Continue draft", href: `/work-logs/${todayLog.id}/edit` } : { label: "View today’s log", href: `/work-logs/${todayLog.id}` };
   const activities = [
     ...assignment.attendance.map(row => ({ key: `a-${row.id}`, at: row.createdAt, title: `Attendance ${attendanceLabel(row.status).toLowerCase()}`, detail: formatDate(row.attendanceDate) })),
@@ -92,11 +92,15 @@ async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requi
     ...assignment.evaluations.map(row => ({ key: `e-${row.id}`, at: row.submittedAt??new Date(0), title: "Finalized evaluation", detail: `${row.evaluationType.charAt(0)+row.evaluationType.slice(1).toLowerCase()} · ${row.overallScore?.toString()??"Score not provided"}` })),
     ...assignment.documents.map(row => ({ key: `d-${row.id}`, at: row.createdAt, title: "Document update", detail: row.fileName })),
   ].sort((a, b) => b.at.getTime() - a.at.getTime()).slice(0, 5);
+  const attendanceState:DashboardAttendance["state"]=!today?"not-started":today.clockIn&&!today.clockOut?"clocked-in":today.status==="PENDING_REVIEW"?"needs-review":"completed";
+  const locationState:DashboardAttendance["evidence"]["location"]=!today?"required":today.clockInInsideGeofence===false||today.clockOutInsideGeofence===false?"issue":today.clockInInsideGeofence===true&&(today.clockOut?today.clockOutInsideGeofence===true:true)?"verified":"captured";
+  const selfieState:DashboardAttendance["evidence"]["selfie"]=!today?.clockIn?"required":"captured";
+  const attendancePresentation:DashboardAttendance={id:today?.id,state:attendanceState,dateLabel:todayDate.toLocaleDateString("en-PH",{weekday:"short",month:"short",day:"numeric",timeZone:"UTC"}),scheduleLabel:schedule(assignment.scheduleStartTime,assignment.scheduleEndTime),clockIn:time(today?.clockIn,assignment.company.timezone),clockInIso:today?.clockIn?.toISOString(),clockOut:time(today?.clockOut,assignment.company.timezone),workedMinutes:today?.workedMinutes,creditedMinutes:today?.creditedMinutes,evidence:{location:locationState,selfie:selfieState},issue:locationState==="issue"?"Location evidence needs attention.":attendanceState==="needs-review"?"Attendance evidence needs attention.":undefined};
 
   return <div className="dashboard-page">
-    <section className="welcome-panel"><div><p className="eyebrow text-[#d7b99f]">Intern workspace</p><h1>Good day, {user.firstName}</h1><p>{assignment.positionTitle ?? "Intern"} · Active · {assignment.internProfile.course}</p><p className="welcome-context">{assignment.internProfile.school.name} · Bo’s Coffee Main Office</p></div><Link href="/attendance" className="button welcome-action"><Icon name="clock" />{attendanceAction}</Link></section>
+    <section className="welcome-panel"><div><p className="eyebrow text-[#d7b99f]">Intern workspace</p><h1>Good day, {user.firstName}</h1><p>{assignment.positionTitle ?? "Intern"} · Active · {assignment.internProfile.course}</p><p className="welcome-context">{assignment.internProfile.school.name} · Bo’s Coffee Main Office</p></div></section>
     <section className="dashboard-grid-primary">
-      <article className="ui-card attendance-focus"><div className="section-heading"><div><p className="eyebrow">Your day at Bo’s Coffee</p><h2>Today’s attendance</h2></div><StatusBadge tone={today?.status === "APPROVED" ? "success" : today?.status === "PENDING_REVIEW" ? "warning" : today ? "info" : "neutral"}>{today ? attendanceLabel(today.status) : "Not started"}</StatusBadge></div><div className="attendance-times"><TimeStat label="Scheduled" value={schedule(assignment.scheduleStartTime, assignment.scheduleEndTime)} /><TimeStat label="Clock in" value={time(today?.clockIn, assignment.company.timezone)} /><TimeStat label="Clock out" value={time(today?.clockOut, assignment.company.timezone)} /></div><Link href="/attendance" className="button button-primary attendance-primary"><Icon name="clock" />{attendanceAction}</Link><p className="approval-note"><Icon name="check" />Complete GPS and selfie evidence is approved automatically unless an exception is detected.</p></article>
+      <DashboardAttendanceCard attendance={attendancePresentation}/>
       <article className="ui-card progress-panel"><InternProgressPanel requiredHours={assignment.requiredHours} creditedMinutes={creditedMinutes} daysAttended={daysAttended} reportHref={`/reports/intern/${user.id}/pdf`}/></article>
     </section>
     <DashboardCalendar items={calendarItems} today={todayDate} timezone={assignment.company.timezone} attendance={assignment.attendance}/>
@@ -113,7 +117,6 @@ async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requi
   </div>;
 }
 
-function TimeStat({ label, value }: { label: string; value: string }) { return <div><span>{label}</span><strong>{value}</strong></div>; }
 function Detail({ label, value }: { label: string; value: string }) { return <div><dt>{label}</dt><dd>{value}</dd></div>; }
 function formatDate(value: Date) { return value.toLocaleDateString("en-PH", { dateStyle: "medium", timeZone: "UTC" }); }
 function time(value: Date | null | undefined, timezone: string) { return value ? value.toLocaleTimeString("en-PH", { hour: "numeric", minute: "2-digit", timeZone: timezone }) : "—"; }

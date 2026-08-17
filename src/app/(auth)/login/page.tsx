@@ -16,8 +16,8 @@ export default async function LoginPage({
       : "/dashboard";
 
   return (
-    <main className="grid min-h-screen bg-canvas lg:grid-cols-[minmax(0,1fr)_30rem]">
-      <section className="flex items-center bg-brand-900 px-6 py-12 text-white sm:px-12 lg:px-16">
+    <main className="login-shell">
+      <section className="login-brand-panel">
         <div className="max-w-xl">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-orange-200">
             IntelliTrack
@@ -32,7 +32,7 @@ export default async function LoginPage({
         </div>
       </section>
 
-      <section className="flex items-center px-6 py-12 sm:px-10" aria-labelledby="login-title">
+      <section className="login-form-panel" aria-labelledby="login-title">
         <div className="mx-auto w-full max-w-sm">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent-700">
             Account access
