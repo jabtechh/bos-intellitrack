@@ -57,11 +57,11 @@ const operationsNav: ShellNavItem[] = [
   { href: "/admin", label: "Company Operations", icon: "settings" },
 ];
 
-export async function AppShell({ user, children }: { user: ShellUser; children: ReactNode }) {
+export async function AppShell({ user, children, onboarding }: { user: ShellUser; children: ReactNode; onboarding?: { done: boolean; percentage: number } | null }) {
   const baseNav = user.role === "INTERN" ? internNav : user.role === "COORDINATOR" ? coordinatorNav : user.role === "REPRESENTATIVE" || user.role === "ADMIN" ? operationsNav : reviewerNav;
   const [unreadCount,notificationResult]=await Promise.all([getUnreadNotificationCount(),getNotificationsForCurrentUser({limit:5})]);
   const badge = formatNotificationBadge(unreadCount);
-  const nav = baseNav;
+  const nav = user.role === "INTERN" && onboarding && !onboarding.done ? [{ href: "/onboarding", label: "Complete onboarding", icon: "review" as const, badge: `${onboarding.percentage}%`, exact: true }, ...baseNav] : baseNav;
   const initials = `${user.firstName[0] ?? ""}${user.lastName[0] ?? ""}`;
   const avatarUrl = await signedProfileMedia(user.profilePhotoPath ?? null);
   return <div className="app-shell" data-persistent-app-shell>

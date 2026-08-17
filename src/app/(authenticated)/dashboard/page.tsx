@@ -16,6 +16,8 @@ import { creditedMinutesFromAttendance, formatHours, internshipProgress } from "
 import {getCalendarItems} from "@/lib/calendar/data";
 import { DashboardCalendar, InternProgressPanel, WeeklyHours } from "@/components/intern-mobile-dashboard";
 import { DashboardAttendanceCard, type DashboardAttendance } from "@/components/dashboard-attendance-card";
+import { getAccountSetupState } from "@/lib/auth/account-setup";
+import { getInternOnboarding } from "@/lib/onboarding/data";
 
 export const dynamic = "force-dynamic";
 
@@ -83,6 +85,7 @@ async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requi
   const todayLog = assignment.workLogs.find(row => row.workDate.getTime() === todayDate.getTime());
   const creditedMinutes = creditedMinutesFromAttendance(assignment.attendance);
   if (assignment.requiredHours === null) redirect("/onboarding/internship-hours");
+  const setup = await getAccountSetupState(), onboarding = await getInternOnboarding(user.id, setup.orientationRead);
   const calendarMonth=new Date(Date.UTC(todayDate.getUTCFullYear(),todayDate.getUTCMonth(),1)),calendarItems=await getCalendarItems(announcementViewer,calendarMonth,new Date(Date.UTC(todayDate.getUTCFullYear(),todayDate.getUTCMonth()+1,0,23,59,59)));
   const daysAttended=new Set(assignment.attendance.filter(row=>row.status==="APPROVED"&&row.creditedMinutes>0).map(row=>row.attendanceDate.toISOString().slice(0,10))).size;
   const logAction = !todayLog ? { label: "Create work log", href: "/work-logs/new" } : todayLog.status === "DRAFT" ? { label: "Continue draft", href: `/work-logs/${todayLog.id}/edit` } : { label: "View today’s log", href: `/work-logs/${todayLog.id}` };
@@ -99,6 +102,7 @@ async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requi
 
   return <div className="dashboard-page">
     <section className="welcome-panel"><div><p className="eyebrow text-[#d7b99f]">Intern workspace</p><h1>Good day, {user.firstName}</h1><p>{assignment.positionTitle ?? "Intern"} · Active · {assignment.internProfile.course}</p><p className="welcome-context">{assignment.internProfile.school.name} · Bo’s Coffee Main Office</p></div></section>
+    {onboarding && !onboarding.counts.done ? <section className="ui-card onboarding-reminder"><div><p className="eyebrow">Complete your onboarding</p><h2>{onboarding.counts.percentage}% complete</h2><p>{onboarding.counts.yourAction} item{onboarding.counts.yourAction===1?"":"s"} need your attention · {onboarding.counts.waiting} waiting for school/company</p></div><Link href="/onboarding" className="text-link">Continue onboarding <Icon name="arrow"/></Link></section> : null}
     <section className="dashboard-grid-primary">
       <DashboardAttendanceCard attendance={attendancePresentation}/>
       <article className="ui-card progress-panel"><InternProgressPanel requiredHours={assignment.requiredHours} creditedMinutes={creditedMinutes} daysAttended={daysAttended} reportHref={`/reports/intern/${user.id}/pdf`}/></article>

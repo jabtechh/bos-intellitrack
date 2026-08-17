@@ -60,8 +60,13 @@ export async function provisionUser(
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3000";
   const { data, error } = await supabase.auth.admin.inviteUserByEmail(input.email, {
     redirectTo: `${siteUrl.replace(/\/$/, "")}/account/set-password`,
+    data: input.role === "INTERN" ? { onboarding_orientation_read: [] } : undefined,
   });
   if (error || !data.user) return { success: false, message: "The invitation could not be sent. Try again later." };
+  if (input.role === "INTERN") {
+    const { error: metadataError } = await supabase.auth.admin.updateUserById(data.user.id, { app_metadata: { password_change_required: true, welcome_pending: false } });
+    if (metadataError) { await compensateAuthUser(data.user.id, (id) => supabase.auth.admin.deleteUser(id)); return { success: false, message: "The secure account setup requirement could not be configured." }; }
+  }
 
   try {
     await prisma.$transaction(async (tx) => {
@@ -81,7 +86,7 @@ export async function provisionUser(
 
       if (input.role === "INTERN") {
         const profile = await tx.internProfile.create({ data: { userId: user.id, schoolId: input.schoolId, studentNumber: input.studentNumber, course: input.course, yearLevel: input.yearLevel, section: emptyToNull(input.section) } });
-        await tx.internshipAssignment.create({ data: { internProfileId: profile.id, companyId: office.id, supervisorProfileId: input.supervisorProfileId, coordinatorProfileId: input.coordinatorProfileId, assignmentCode: internalInternshipCode(user.id), positionTitle: emptyToNull(input.positionTitle), department: emptyToNull(input.department), startDate: input.startDate, endDate: input.endDate, requiredHours: null, scheduleStartTime: timeOnReferenceDate(input.scheduleStartTime), scheduleEndTime: timeOnReferenceDate(input.scheduleEndTime), gracePeriodMinutes: input.gracePeriodMinutes, notes: emptyToNull(input.internshipNotes), status: "ACTIVE", activatedAt: new Date(), createdById: administrator.id } });
+        await tx.internshipAssignment.create({ data: { internProfileId: profile.id, companyId: office.id, supervisorProfileId: input.supervisorProfileId, coordinatorProfileId: input.coordinatorProfileId, assignmentCode: internalInternshipCode(user.id), positionTitle: emptyToNull(input.positionTitle), department: emptyToNull(input.department), startDate: input.startDate, endDate: input.endDate, requiredHours: input.requiredHours, requiredHoursConfirmedAt: new Date(), requiredHoursUpdatedById: administrator.id, scheduleStartTime: timeOnReferenceDate(input.scheduleStartTime), scheduleEndTime: timeOnReferenceDate(input.scheduleEndTime), gracePeriodMinutes: input.gracePeriodMinutes, notes: emptyToNull(input.internshipNotes), status: "ACTIVE", activatedAt: new Date(), createdById: administrator.id } });
       }
       if (input.role === "SUPERVISOR") await tx.supervisorProfile.create({ data: { userId: user.id, companyId: office.id, employeeNumber: emptyToNull(input.employeeNumber), position: input.position, department: emptyToNull(input.department), officeLocation: emptyToNull(input.officeLocation) } });
       if (input.role === "COORDINATOR") await tx.coordinatorProfile.create({ data: { userId: user.id, schoolId: input.schoolId, employeeNumber: emptyToNull(input.employeeNumber), position: input.position, department: emptyToNull(input.department), office: emptyToNull(input.office) } });

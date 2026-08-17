@@ -13,7 +13,7 @@ const dashboardAttendance = read("src/components/dashboard-attendance-card.tsx")
 
 test("authenticated routes share one persistent shell layout", () => {
   const layout = read("src/app/(authenticated)/layout.tsx");
-  assert.match(layout, /<AppShell user=\{user\}>\{children\}<\/AppShell>/);
+  assert.match(layout, /<AppShell user=\{user\}[\s\S]*>\{children\}<\/AppShell>/);
   assert.match(shell, /data-persistent-app-shell/);
   for (const oldLayout of ["src/app/dashboard/layout.tsx", "src/app/attendance/layout.tsx", "src/app/work-logs/layout.tsx"]) assert.equal(existsSync(oldLayout), false);
 });

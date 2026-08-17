@@ -30,6 +30,7 @@ export const provisionUserSchema = z.discriminatedUnion("role", [
     coordinatorProfileId: z.string().uuid("Select a coordinator."),
     positionTitle: optionalText(150), department: optionalText(150),
     startDate: z.coerce.date(), endDate: z.coerce.date(),
+    requiredHours: z.coerce.number().int().min(1).max(10000),
     scheduleStartTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
     scheduleEndTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
     gracePeriodMinutes: z.coerce.number().int().min(0).max(240),

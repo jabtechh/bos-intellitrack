@@ -6,7 +6,7 @@ import { profileTargetWhere } from "../src/lib/profile/scope.ts";
 import { MAX_PROFILE_IMAGE_BYTES,profileMediaPath,validateProfileImage } from "../src/lib/profile/storage.ts";
 
 const schema=readFileSync("prisma/schema.prisma","utf8"),migration=readFileSync("prisma/migrations/20260816120000_add_user_profile_fields/migration.sql","utf8");
-const actions=readFileSync("src/app/profile/actions.ts","utf8"),data=readFileSync("src/lib/profile/data.ts","utf8"),view=readFileSync("src/components/profile-view.tsx","utf8"),edit=readFileSync("src/components/profile-edit-form.tsx","utf8"),shell=readFileSync("src/components/app-shell.tsx","utf8");
+const actions=readFileSync("src/app/profile/actions.ts","utf8"),data=readFileSync("src/lib/profile/data.ts","utf8"),view=readFileSync("src/components/profile-view.tsx","utf8"),edit=readFileSync("src/components/profile-edit-form.tsx","utf8"),shell=readFileSync("src/components/app-shell.tsx","utf8")+readFileSync("src/components/application-utilities.tsx","utf8");
 const viewer=(role:"INTERN"|"SUPERVISOR"|"COORDINATOR"|"REPRESENTATIVE"|"ADMIN",id="11111111-1111-4111-8111-111111111111")=>({id,authId:"auth",email:"private@example.test",role,firstName:"Test",lastName:"User",profilePhotoPath:null,isActive:true});
 
 test("existing avatar path is reused",()=>assert.match(schema,/profilePhotoPath\s+String\?/));
@@ -43,6 +43,6 @@ test("signed URLs are used",()=>assert.match(data,/signedProfileMedia/));
 test("private data is not selected",()=>assert.doesNotMatch(data,/email:true|authId:true|latitude:true|longitude:true|SelfiePath|storagePath|medical|identification/i));
 test("safe initials fallback exists",()=>assert.match(view,/initials\(profile\.firstName,profile\.lastName\)/));
 test("edit page has requested controls",()=>{for(const label of["Change Photo","Remove Photo","About","Save Changes","Cancel"])assert.match(edit,new RegExp(label))});
-test("desktop avatar opens profile",()=>assert.match(shell,/href="\/profile" className="avatar"/));
-test("mobile account menu opens profile",()=>assert.match(shell,/mobile-profile-link/));
+test("account menu opens profile",()=>assert.match(shell,/href="\/profile"[\s\S]*View profile/));
+test("account menu exposes profile editing",()=>assert.match(shell,/href="\/profile\/edit"[\s\S]*Edit profile/));
 test("no social network features",()=>assert.doesNotMatch(`${view}\n${edit}`,/friend request|follow|like button|news feed|followers/i));

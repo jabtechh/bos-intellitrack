@@ -1,0 +1,3 @@
+import { createClient } from "@/lib/supabase/server";
+export type AccountSetupState={passwordChangeRequired:boolean;welcomePending:boolean;orientationRead:string[]};
+export async function getAccountSetupState():Promise<AccountSetupState>{const supabase=await createClient(),{data}=await supabase.auth.getUser(),metadata=data.user?.user_metadata??{},secure=data.user?.app_metadata??{};return{passwordChangeRequired:secure.password_change_required===true,welcomePending:secure.welcome_pending===true,orientationRead:Array.isArray(metadata.onboarding_orientation_read)?metadata.onboarding_orientation_read.filter((value):value is string=>typeof value==="string"):[]}}

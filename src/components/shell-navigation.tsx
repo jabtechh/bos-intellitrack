@@ -7,7 +7,7 @@ import { Icon, type IconName } from "./icons";
 
 export type ShellNavItem = { href: string; label: string; icon: IconName; badge?: string | null; exact?: boolean; activePath?: string; activeQuery?: { key: string; value: string | null } };
 
-function navigationGroup(href:string){if(href==="/dashboard")return"Overview";if(href.startsWith("/admin"))return"Management";if(/^\/(attendance|work-logs|tasks|calendar)/.test(href))return"Internship";if(/^\/(evaluations|feedback|insights)/.test(href))return"Development";return"Resources"}
+function navigationGroup(href:string){if(href==="/onboarding")return"Getting Started";if(href==="/dashboard")return"Overview";if(href.startsWith("/admin"))return"Management";if(/^\/(attendance|work-logs|tasks|calendar)/.test(href))return"Internship";if(/^\/(evaluations|feedback|insights)/.test(href))return"Development";return"Resources"}
 
 export function ShellNavigation({ items, mobile = false, label }: { items: ShellNavItem[]; mobile?: boolean; label: string }) {
   const pathname = usePathname();
