@@ -21,6 +21,7 @@
     "storage:corrections:setup": "tsx scripts/setup-attendance-correction-storage.ts",
     "provisioning:test": "tsx --test scripts/test-admin-provisioning.ts",
     "onboarding:test": "tsx --test scripts/test-onboarding-foundation.ts",
+    "dashboard:test": "tsx --test scripts/test-role-dashboard-ui.ts",
     "organization:setup": "tsx scripts/setup-bo-coffee-office.ts",
     "organization:test": "tsx --test scripts/test-single-organization.ts",
     "pilot:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-pilot-data.ts",

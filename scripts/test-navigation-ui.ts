@@ -25,7 +25,7 @@ test("internal shell navigation uses Next Link without hard navigation", () => {
 test("active navigation and mobile persistence are exposed accessibly", () => {
   assert.match(navigation, /usePathname/); assert.match(navigation, /aria-current/);
   assert.match(mobile, /aria-label="Mobile application navigation"/); assert.match(shell, /id="main-content"/); assert.match(shell, /Skip to main content/);
-  assert.match(mobile,/"\/dashboard","\/attendance","\/work-logs"[\s\S]*More/);
+  assert.match(mobile,/INTERN:\s*\["\/dashboard",\s*"\/attendance",\s*"\/work-logs"\][\s\S]*More/);
 });
 test("shell-preserving destination skeletons exist", () => {
   for (const path of ["dashboard/loading.tsx", "attendance/loading.tsx", "attendance/history/loading.tsx", "attendance/review/loading.tsx", "attendance/corrections/loading.tsx", "work-logs/loading.tsx", "work-logs/review/loading.tsx"]) assert.equal(existsSync(`src/app/(authenticated)/${path}`), true);

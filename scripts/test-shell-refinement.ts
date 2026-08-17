@@ -18,7 +18,7 @@ test("missing table state is safe", () => { assert.match(utilities, /!preview\.i
 test("sidebar is sticky and viewport persistent", () => assert.match(css, /\.app-sidebar\s*\{[^}]*position:\s*sticky[^}]*height:\s*100dvh/));
 test("top utility bar is sticky", () => assert.match(css, /\.app-utility-bar\{position:sticky;top:0/));
 test("mobile top utility bar exists", () => { assert.match(shell, /app-utility-bar/); assert.match(shell, /ApplicationUtilities/); });
-test("mobile primary navigation remains expected", () => assert.match(mobile, /"\/dashboard","\/attendance","\/work-logs"/));
+test("mobile primary navigation remains expected", () => assert.match(mobile, /INTERN:\s*\["\/dashboard",\s*"\/attendance",\s*"\/work-logs"\]/));
 test("bottom navigation is fixed and safe-area aware", () => { assert.match(css, /\.bottom-nav \{ position: fixed/); assert.match(css, /safe-area-inset-bottom/); });
 test("More sheet is role-aware", () => { assert.match(shell, /MobileNavigation items=\{nav\}/); assert.match(mobile, /groups\.map/); assert.match(mobile, /data-more-sheet/); });
 test("account menu contains account actions only", () => { assert.match(utilities, /View profile/); assert.match(utilities, /Edit profile/); assert.match(utilities, /Sign out/); assert.doesNotMatch(utilities, /ShellNavigation|MobileNavigation/); });
@@ -26,7 +26,7 @@ test("authenticated hamburger drawer is retired", () => assert.doesNotMatch(shel
 test("notification mobile surface is viewport contained", () => assert.match(css, /\.notification-preview\{position:fixed[\s\S]*max-height:min\(78dvh/));
 test("long content clears fixed bottom navigation", () => assert.match(css, /\.app-content \{ padding-bottom: calc\(6\.75rem \+ env\(safe-area-inset-bottom\)\); \}/));
 test("desktop authorization remains role aware", () => { for (const name of ["internNav", "reviewerNav", "coordinatorNav", "operationsNav"]) assert.match(shell, new RegExp(`const ${name}`)); });
-test("sheets support focus trap Escape and focus restoration", () => { assert.match(mobile, /event\.key==="Escape"/); assert.match(mobile, /event\.key==="Tab"/); assert.match(mobile, /previous\?\?trigger/); });
+test("sheets support focus trap Escape and focus restoration", () => { assert.match(mobile, /event\.key\s*===\s*"Escape"/); assert.match(mobile, /event\.key\s*===\s*"Tab"/); assert.match(mobile, /previous\s*\?\?\s*trigger/); });
 test("reduced motion is respected", () => assert.match(css, /prefers-reduced-motion:reduce/));
 test("shell uses explicit viewport-only lg visibility", () => { assert.match(css, /@media \(max-width: 1023px\) \{[\s\S]*?\.app-sidebar \{ display: none; \}[\s\S]*?\.bottom-nav \{ display: grid; \}/); assert.match(css, /@media \(min-width: 1024px\) \{[\s\S]*?\.app-sidebar \{ display: flex; \}[\s\S]*?\.bottom-nav,[\s\S]*?display: none;/); });
 test("shell has no physical-device layout detection", () => { const sources = [shell, mobile, nav, utilities].join("\n"); assert.doesNotMatch(sources, /navigator\.userAgent|matchMedia|innerWidth|pointer:\s*coarse|ontouchstart/i); });
