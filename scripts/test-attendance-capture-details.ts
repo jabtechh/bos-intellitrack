@@ -11,21 +11,23 @@ const history = read("src/app/(authenticated)/attendance/history/page.tsx");
 const detail = read("src/app/(authenticated)/attendance/[attendanceId]/page.tsx");
 const reviewer = read("src/app/(authenticated)/attendance/review/[attendanceId]/page.tsx");
 const map = read("src/components/location-evidence-map.tsx");
+const detector = read("src/lib/attendance/browser-face-detector.ts");
 
 test("face classification requires one large centered face", () => {
   assert.equal(classifyFaces([], 1000, 1000), "no-face");
-  assert.equal(classifyFaces([{ boundingBox: { x: 300, y: 250, width: 400, height: 450 } }, { boundingBox: { x: 10, y: 10, width: 250, height: 250 } }], 1000, 1000), "multiple");
-  assert.equal(classifyFaces([{ boundingBox: { x: 460, y: 460, width: 100, height: 100 } }], 1000, 1000), "too-small");
-  assert.equal(classifyFaces([{ boundingBox: { x: 0, y: 300, width: 300, height: 350 } }], 1000, 1000), "off-center");
-  assert.equal(classifyFaces([{ boundingBox: { x: 300, y: 250, width: 400, height: 450 } }], 1000, 1000), "valid");
+  assert.equal(classifyFaces([{ boundingBox: { x: 300, y: 250, width: 400, height: 450 }, confidence: .9 }, { boundingBox: { x: 10, y: 10, width: 250, height: 250 }, confidence: .8 }], 1000, 1000), "multiple");
+  assert.equal(classifyFaces([{ boundingBox: { x: 460, y: 460, width: 100, height: 100 }, confidence: .9 }], 1000, 1000), "too-small");
+  assert.equal(classifyFaces([{ boundingBox: { x: 0, y: 300, width: 300, height: 350 }, confidence: .9 }], 1000, 1000), "off-center");
+  assert.equal(classifyFaces([{ boundingBox: { x: 300, y: 250, width: 400, height: 450 }, confidence: .9 }], 1000, 1000), "valid");
+  assert.equal(classifyFaces([{ boundingBox: { x: 300, y: 250, width: 400, height: 450 }, confidence: .4 }], 1000, 1000), "no-face");
 });
 
 test("location and live camera capture are automatic and recoverable", () => {
   assert.match(capture, /getCurrentPosition/);
-  assert.match(capture, /setTimeout\(checkLocation, 0\)/);
+  assert.match(capture, /setTimeout\(checkLocation,\s*0\)/);
   assert.match(capture, /Retry location/);
   assert.match(capture, /getUserMedia/);
-  assert.match(capture, /facingMode: "user"/);
+  assert.match(capture, /facingMode:\s*"user"/);
   assert.match(capture, /NotAllowedError/);
   assert.match(capture, /NotFoundError/);
   assert.match(capture, /NotReadableError/);
@@ -38,7 +40,7 @@ test("selfie capture supports preview retake confirmation and cleanup", () => {
   assert.match(capture, /Captured selfie preview/);
   assert.match(capture, /Retake/);
   assert.match(capture, /Use this photo/);
-  assert.match(capture, /getTracks\(\)\.forEach\(track => track\.stop\(\)\)/);
+  assert.match(capture, /getTracks\(\)\.forEach\(track\s*=>\s*track\.stop\(\)\)/);
   assert.match(capture, /URL\.revokeObjectURL/);
 });
 
@@ -74,6 +76,14 @@ test("authorized detail views provide compact human evidence presentation", () =
 });
 
 test("face detection makes no identity or liveness claim", () => {
-  assert.match(capture, /FaceDetector/);
-  assert.doesNotMatch(capture, /identity|recognition|embedding|liveness|anti-spoof/i);
+  assert.match(detector, /@mediapipe\/tasks-vision/);
+  assert.match(detector, /detectForVideo/);
+  assert.doesNotMatch(capture, /window[^\n]*FaceDetector|Shape Detection|Face detection is not supported/);
+  assert.match(capture, /Preparing selfie verification/);
+  assert.match(capture, /Selfie verification couldn't start/);
+  assert.match(capture, />Retry</);
+  assert.match(capture, /setTimeout\(check,200\)/);
+  assert.match(capture, /detectionActive/);
+  assert.match(capture, /detectorRef\.current\?\.close/);
+  assert.doesNotMatch(capture + detector, /identity|recognition|embedding|liveness|anti-spoof/i);
 });

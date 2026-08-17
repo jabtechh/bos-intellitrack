@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Prisma generated client
     "src/generated/**",
+    // Vendored MediaPipe runtime assets served directly to the browser.
+    "public/mediapipe/**",
   ]),
 ]);
 
