@@ -35,8 +35,8 @@ test("live elapsed time derives locally from the authoritative timestamp without
 });
 
 test("clock actions reuse secure attendance and correction routes", () => {
-  assert.match(attendance, /href="\/attendance"[\s\S]*Clock in/);
-  assert.match(attendance, /href="\/attendance"[\s\S]*Clock out/);
+  assert.match(attendance, /href="\/attendance"[\s\S]*Time in/);
+  assert.match(attendance, /href="\/attendance"[\s\S]*Time out/);
   assert.match(attendance, /attendance\/corrections\/new/);
   assert.match(attendance, /\?attendance=/);
 });
@@ -52,7 +52,7 @@ test("canonical attendance history uses semantic desktop table and mobile cards"
   assert.match(history, /<DataTable caption="Attendance history">/);
   assert.match(history, /<thead>/);
   assert.match(history, /<MobileRecordCard/);
-  assert.match(history, /Showing all \{records\.length\} records/);
+  assert.match(history, /Showing \{first\} to \{last\} of \{total\}/);
 });
 
 test("Work Log remains a journal with attendance context and no hours input", () => {

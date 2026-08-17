@@ -21,7 +21,7 @@ export async function clockIn(_state: AttendanceActionState, formData: FormData)
   const distance = distanceFor(context.assignment.company, evidence.coordinates);
   const inside = distance <= context.assignment.company.geofenceRadiusMeters;
   const reviewRequired = attendanceNeedsReview({ clockInInside: inside, clockInAccuracy: evidence.coordinates.accuracy, hasClockInSelfie: true });
-  try { await uploadEvidence(path, evidence.file); } catch { return failure("The clock-in selfie could not be stored. Try again."); }
+  try { await uploadEvidence(path, evidence.file); } catch { return failure("The Time In selfie could not be stored. Try again."); }
   try {
     await prisma.attendance.create({ data: {
       id: attendanceId, assignmentId: context.assignment.id, attendanceDate: localDate(now, context.assignment.company.timezone), clockIn: now,
@@ -30,8 +30,8 @@ export async function clockIn(_state: AttendanceActionState, formData: FormData)
       classification: classifyAttendance({ clockIn: now, scheduleStart: context.assignment.scheduleStartTime, scheduleEnd: context.assignment.scheduleEndTime, graceMinutes: context.assignment.gracePeriodMinutes, timezone: context.assignment.company.timezone }),
       status: "CLOCKED_IN", reviewRequired, internRemarks: evidence.remarks,
     } });
-  } catch { await removeEvidence(path); return failure("Clock-in could not be recorded. Attendance may already exist for today."); }
-  revalidateAttendance(); return { success: true, message: reviewRequired ? "Clock-in recorded. The evidence will require review after clock-out." : "Clock-in recorded successfully." };
+  } catch { await removeEvidence(path); return failure("Time In could not be recorded. Attendance may already exist for today."); }
+  revalidateAttendance(); return { success: true, message: reviewRequired ? "Time In recorded. The evidence will require review after Time Out." : "Time In recorded successfully." };
 }
 
 export async function clockOut(_state: AttendanceActionState, formData: FormData): Promise<AttendanceActionState> {
@@ -39,12 +39,12 @@ export async function clockOut(_state: AttendanceActionState, formData: FormData
   const evidence = parseEvidence(formData); if (!evidence.ok) return evidence.error;
   const now = new Date(); const today = localDate(now, context.assignment.company.timezone);
   const attendance = await prisma.attendance.findUnique({ where: { assignmentId_attendanceDate: { assignmentId: context.assignment.id, attendanceDate: today } } });
-  if (!canClockOut(attendance)) return failure(attendance?.clockOut ? "Clock-out has already been recorded." : "No open clock-in exists for today.");
+  if (!canClockOut(attendance)) return failure(attendance?.clockOut ? "Time Out has already been recorded." : "No open Time In exists for today.");
   const path = evidencePath(context.assignment.id, attendance!.id, "clock-out", evidence.file.type);
   const distance = distanceFor(context.assignment.company, evidence.coordinates); const inside = distance <= context.assignment.company.geofenceRadiusMeters;
   const workedMinutes = calculateWorkedMinutes(attendance!.clockIn!, now);
   const decision = finalAttendanceDecision({ clockInInside: attendance!.clockInInsideGeofence, clockOutInside: inside, clockInAccuracy: attendance!.clockInAccuracyMeters===null?null:Number(attendance!.clockInAccuracyMeters), clockOutAccuracy: evidence.coordinates.accuracy, hasClockInLocation:attendance!.clockInLatitude!==null&&attendance!.clockInLongitude!==null,hasClockOutLocation:true,hasClockInSelfie: Boolean(attendance!.clockInSelfiePath), hasClockOutSelfie: true,clockOutPresent:true, workedMinutes });
-  try { await uploadEvidence(path, evidence.file); } catch { return failure("The clock-out selfie could not be stored. Try again."); }
+  try { await uploadEvidence(path, evidence.file); } catch { return failure("The Time Out selfie could not be stored. Try again."); }
   try {
     const updated = await prisma.attendance.updateMany({ where: { id: attendance!.id, clockOut: null, status: "CLOCKED_IN" }, data: {
       clockOut: now, clockOutLatitude: evidence.coordinates.latitude, clockOutLongitude: evidence.coordinates.longitude, clockOutAccuracyMeters: evidence.coordinates.accuracy,
@@ -53,8 +53,8 @@ export async function clockOut(_state: AttendanceActionState, formData: FormData
       status: decision.status, reviewRequired: decision.reviewRequired, ...(evidence.remarks ? { internRemarks: evidence.remarks } : {}),
     } });
     if (updated.count !== 1) throw new Error("concurrent update");
-  } catch { await removeEvidence(path); return failure("Clock-out could not be recorded. Refresh and review today's attendance."); }
-  revalidateAttendance(); return { success: true, message: decision.reviewRequired ? "Attendance recorded. A supervisor will review the flagged evidence before your rendered time is credited." : "Attendance recorded successfully. Your rendered time has been credited." };
+  } catch { await removeEvidence(path); return failure("Time Out could not be recorded. Refresh and review today's attendance."); }
+  revalidateAttendance(); return { success: true, message: decision.reviewRequired ? "Attendance recorded. A supervisor will review the flagged evidence before the rendered hours are approved." : "Attendance recorded successfully. Your hours rendered have been approved." };
 }
 
 async function activeInternContext() {
