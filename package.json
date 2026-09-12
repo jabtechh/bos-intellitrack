@@ -2,7 +2,7 @@
   "name": "intellitrack",
   "version": "1.0.0",
   "private": true,
-  "description": "IntelliTrack – AI-Powered Internship Management System",
+  "description": "IntelliTrack \u00e2\u20ac\u201c AI-Powered Internship Management System",
   "type": "module",
   "scripts": {
     "dev": "next dev",
@@ -56,7 +56,9 @@
     "ai:test": "tsx --test scripts/test-ai-foundation.ts",
     "notification:test": "tsx --test scripts/test-notification-foundation.ts",
     "storage:documents:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-document-storage.ts",
-    "storage:profile:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-profile-storage.ts"
+    "storage:profile:setup": "tsx --env-file=.env --env-file=.env.local scripts/setup-profile-storage.ts",
+    "branch:test": "tsx --test scripts/test-branches.ts",
+    "branch:backfill": "tsx --env-file=.env --env-file=.env.local scripts/backfill-main-office-branch.ts"
   },
   "dependencies": {
     "@google/genai": "^2.15.0",

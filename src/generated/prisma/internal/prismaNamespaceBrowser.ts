@@ -59,6 +59,7 @@ export const ModelName = {
   AdminProfile: 'AdminProfile',
   School: 'School',
   Company: 'Company',
+  Branch: 'Branch',
   InternshipAssignment: 'InternshipAssignment',
   Attendance: 'Attendance',
   AttendanceCorrection: 'AttendanceCorrection',
@@ -233,7 +234,25 @@ export const CompanyScalarFieldEnum = {
 export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
 
 
+export const BranchScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  name: 'name',
+  address: 'address',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  geofenceRadiusMeters: 'geofenceRadiusMeters',
+  timezone: 'timezone',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BranchScalarFieldEnum = (typeof BranchScalarFieldEnum)[keyof typeof BranchScalarFieldEnum]
+
+
 export const InternshipAssignmentScalarFieldEnum = {
+  branchId: 'branchId',
   id: 'id',
   internProfileId: 'internProfileId',
   companyId: 'companyId',

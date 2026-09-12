@@ -1,5 +1,6 @@
 "use server";
 
+import { resolveAttendanceLocation } from "@/lib/branches/domain";
 import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 
@@ -18,8 +19,8 @@ export async function clockIn(_state: AttendanceActionState, formData: FormData)
   const duplicate = await prisma.attendance.findUnique({ where: { assignmentId_attendanceDate: { assignmentId: context.assignment.id, attendanceDate: localDate(now, context.assignment.company.timezone) } }, select: { id: true } });
   if (!canClockIn(Boolean(duplicate))) return failure("Attendance has already been recorded for today.");
   const attendanceId = randomUUID(); const path = evidencePath(context.assignment.id, attendanceId, "clock-in", evidence.file.type);
-  const distance = distanceFor(context.assignment.company, evidence.coordinates);
-  const inside = distance <= context.assignment.company.geofenceRadiusMeters;
+  const distance = distanceFor(context.location, evidence.coordinates);
+  const inside = distance <= context.location.geofenceRadiusMeters;
   const reviewRequired = attendanceNeedsReview({ clockInInside: inside, clockInAccuracy: evidence.coordinates.accuracy, hasClockInSelfie: true });
   try { await uploadEvidence(path, evidence.file); } catch { return failure("The Time In selfie could not be stored. Try again."); }
   try {
@@ -41,7 +42,7 @@ export async function clockOut(_state: AttendanceActionState, formData: FormData
   const attendance = await prisma.attendance.findUnique({ where: { assignmentId_attendanceDate: { assignmentId: context.assignment.id, attendanceDate: today } } });
   if (!canClockOut(attendance)) return failure(attendance?.clockOut ? "Time Out has already been recorded." : "No open Time In exists for today.");
   const path = evidencePath(context.assignment.id, attendance!.id, "clock-out", evidence.file.type);
-  const distance = distanceFor(context.assignment.company, evidence.coordinates); const inside = distance <= context.assignment.company.geofenceRadiusMeters;
+  const distance = distanceFor(context.location, evidence.coordinates); const inside = distance <= context.location.geofenceRadiusMeters;
   const workedMinutes = calculateWorkedMinutes(attendance!.clockIn!, now);
   const decision = finalAttendanceDecision({ clockInInside: attendance!.clockInInsideGeofence, clockOutInside: inside, clockInAccuracy: attendance!.clockInAccuracyMeters===null?null:Number(attendance!.clockInAccuracyMeters), clockOutAccuracy: evidence.coordinates.accuracy, hasClockInLocation:attendance!.clockInLatitude!==null&&attendance!.clockInLongitude!==null,hasClockOutLocation:true,hasClockInSelfie: Boolean(attendance!.clockInSelfiePath), hasClockOutSelfie: true,clockOutPresent:true, workedMinutes });
   try { await uploadEvidence(path, evidence.file); } catch { return failure("The Time Out selfie could not be stored. Try again."); }
@@ -61,11 +62,11 @@ async function activeInternContext() {
   const user = await requireCurrentUser(); if (user.role !== "INTERN") return { ok: false as const, error: failure("Only active interns can capture attendance.") };
   const profile = await prisma.internProfile.findUnique({ where: { userId: user.id }, select: { id: true } });
   if (!profile) return { ok: false as const, error: failure("Your intern profile is not available.") };
-  const assignment = await prisma.internshipAssignment.findFirst({ where: { internProfileId: profile.id, status: "ACTIVE" }, include: { company: true } });
+  const assignment = await prisma.internshipAssignment.findFirst({ where: { internProfileId: profile.id, status: "ACTIVE" }, include: { company: true, branch: true } });
   if (!assignment) return { ok: false as const, error: failure("No active internship is available.") };
   if (assignment.requiredHours === null) return { ok: false as const, error: failure("Complete required-hours onboarding before recording attendance.") };
   if (!assignment.company.isActive) return { ok: false as const, error: failure("Bo’s Coffee Main Office is not currently available for attendance.") };
-  return { ok: true as const, user, assignment };
+  return { ok: true as const, user, assignment, location: resolveAttendanceLocation(assignment) };
 }
 function parseEvidence(formData: FormData) {
   const coordinates = coordinatesSchema.safeParse({ latitude: formData.get("latitude"), longitude: formData.get("longitude"), accuracy: formData.get("accuracy") });

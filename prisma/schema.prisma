@@ -448,6 +448,7 @@ model Company {
   createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt            DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
+  branches               Branch[]
   supervisorProfiles     SupervisorProfile[]
   representativeProfiles RepresentativeProfile[]
   assignments            InternshipAssignment[]
@@ -462,7 +463,30 @@ model Company {
   @@map("companies")
 }
 
+model Branch {
+  id String @id @default(uuid()) @db.Uuid
+  companyId String @map("company_id") @db.Uuid
+  name String @db.VarChar(255)
+  address String @db.Text
+  latitude Decimal? @db.Decimal(10, 7)
+  longitude Decimal? @db.Decimal(10, 7)
+  geofenceRadiusMeters Int? @map("geofence_radius_meters")
+  timezone String @db.VarChar(100)
+  isActive Boolean @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  company Company @relation(fields: [companyId], references: [id], onDelete: Restrict)
+  assignments InternshipAssignment[]
+  @@unique([id, companyId], map: "branches_id_company_key")
+  @@unique([companyId, name], map: "branches_company_name_key")
+  @@index([companyId, isActive], map: "branches_company_active_idx")
+  @@map("branches")
+}
+
 model InternshipAssignment {
+  branchId String? @map("branch_id") @db.Uuid
+  branch Branch? @relation(fields: [branchId], references: [id], onDelete: Restrict)
+
   id                   String           @id @default(uuid()) @db.Uuid
   internProfileId      String           @map("intern_profile_id") @db.Uuid
   companyId            String           @map("company_id") @db.Uuid
@@ -504,6 +528,7 @@ model InternshipAssignment {
   documents   Document[]
   portfolio   Portfolio?
 
+  @@index([branchId], map: "internship_assignments_branch_idx")
   @@index([internProfileId], map: "internship_assignments_intern_idx")
   @@index([companyId], map: "internship_assignments_company_idx")
   @@index([supervisorProfileId], map: "internship_assignments_supervisor_idx")

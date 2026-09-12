@@ -1,3 +1,4 @@
+import { branchIdSchema } from "@/lib/branches/domain";
 import { z } from "zod";
 
 const optionalText = (maximum: number) =>
@@ -15,6 +16,7 @@ const time = z.preprocess(
 export const assignmentInputSchema = z.object({
   assignmentCode: z.string().trim().min(1, "Assignment code is required.").max(100).transform((value) => value.toUpperCase()),
   internProfileId: z.string().uuid("Select an intern."),
+  branchId: branchIdSchema,
   companyId: z.string().uuid("Select a company."),
   supervisorProfileId: z.string().uuid("Select a supervisor."),
   coordinatorProfileId: z.string().uuid("Select a coordinator."),

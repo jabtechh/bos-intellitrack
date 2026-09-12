@@ -1,5 +1,6 @@
 "use server";
 
+import { validateAssignmentBranch, requireBranchCompany } from "@/lib/branches/service";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -13,6 +14,9 @@ export async function createAssignment(formData: FormData) {
   const administrator = await requireCompanyOperationsManager();
   const parsed = assignmentInputSchema.safeParse(Object.fromEntries(formData.entries()));
   if (!parsed.success) redirectWithError("/admin/assignments/new", parsed.error.issues[0]?.message ?? "Review the submitted assignment.");
+  const company = await requireBranchCompany();
+  if (parsed.data.companyId !== company.id) redirectWithError("/admin/assignments/new", "Select the authorized company.");
+  try { await validateAssignmentBranch(company.id, parsed.data.branchId); } catch { redirectWithError("/admin/assignments/new", "Select an active Branch for this internship."); }
   const errors = await verifyAssignmentEligibility(parsed.data);
   if (errors.length) redirectWithError("/admin/assignments/new", errors[0]);
 
@@ -20,7 +24,7 @@ export async function createAssignment(formData: FormData) {
   try {
     const assignment = await prisma.internshipAssignment.create({
       data: {
-        internProfileId: parsed.data.internProfileId, companyId: parsed.data.companyId,
+        internProfileId: parsed.data.internProfileId, companyId: parsed.data.companyId, branchId: parsed.data.branchId ?? null,
         supervisorProfileId: parsed.data.supervisorProfileId, coordinatorProfileId: parsed.data.coordinatorProfileId,
         assignmentCode: parsed.data.assignmentCode, positionTitle: parsed.data.positionTitle ?? null,
         department: parsed.data.department ?? null, startDate: toDateOnly(parsed.data.startDate), endDate: toDateOnly(parsed.data.endDate),

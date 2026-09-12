@@ -39,6 +39,7 @@ export type InternshipAssignmentSumAggregateOutputType = {
 }
 
 export type InternshipAssignmentMinAggregateOutputType = {
+  branchId: string | null
   id: string | null
   internProfileId: string | null
   companyId: string | null
@@ -67,6 +68,7 @@ export type InternshipAssignmentMinAggregateOutputType = {
 }
 
 export type InternshipAssignmentMaxAggregateOutputType = {
+  branchId: string | null
   id: string | null
   internProfileId: string | null
   companyId: string | null
@@ -95,6 +97,7 @@ export type InternshipAssignmentMaxAggregateOutputType = {
 }
 
 export type InternshipAssignmentCountAggregateOutputType = {
+  branchId: number
   id: number
   internProfileId: number
   companyId: number
@@ -137,6 +140,7 @@ export type InternshipAssignmentSumAggregateInputType = {
 }
 
 export type InternshipAssignmentMinAggregateInputType = {
+  branchId?: true
   id?: true
   internProfileId?: true
   companyId?: true
@@ -165,6 +169,7 @@ export type InternshipAssignmentMinAggregateInputType = {
 }
 
 export type InternshipAssignmentMaxAggregateInputType = {
+  branchId?: true
   id?: true
   internProfileId?: true
   companyId?: true
@@ -193,6 +198,7 @@ export type InternshipAssignmentMaxAggregateInputType = {
 }
 
 export type InternshipAssignmentCountAggregateInputType = {
+  branchId?: true
   id?: true
   internProfileId?: true
   companyId?: true
@@ -308,6 +314,7 @@ export type InternshipAssignmentGroupByArgs<ExtArgs extends runtime.Types.Extens
 }
 
 export type InternshipAssignmentGroupByOutputType = {
+  branchId: string | null
   id: string
   internProfileId: string
   companyId: string
@@ -359,6 +366,7 @@ export type InternshipAssignmentWhereInput = {
   AND?: Prisma.InternshipAssignmentWhereInput | Prisma.InternshipAssignmentWhereInput[]
   OR?: Prisma.InternshipAssignmentWhereInput[]
   NOT?: Prisma.InternshipAssignmentWhereInput | Prisma.InternshipAssignmentWhereInput[]
+  branchId?: Prisma.UuidNullableFilter<"InternshipAssignment"> | string | null
   id?: Prisma.UuidFilter<"InternshipAssignment"> | string
   internProfileId?: Prisma.UuidFilter<"InternshipAssignment"> | string
   companyId?: Prisma.UuidFilter<"InternshipAssignment"> | string
@@ -384,6 +392,7 @@ export type InternshipAssignmentWhereInput = {
   createdById?: Prisma.UuidNullableFilter<"InternshipAssignment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"InternshipAssignment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"InternshipAssignment"> | Date | string
+  branch?: Prisma.XOR<Prisma.BranchNullableScalarRelationFilter, Prisma.BranchWhereInput> | null
   internProfile?: Prisma.XOR<Prisma.InternProfileScalarRelationFilter, Prisma.InternProfileWhereInput>
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   supervisorProfile?: Prisma.XOR<Prisma.SupervisorProfileScalarRelationFilter, Prisma.SupervisorProfileWhereInput>
@@ -400,6 +409,7 @@ export type InternshipAssignmentWhereInput = {
 }
 
 export type InternshipAssignmentOrderByWithRelationInput = {
+  branchId?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   internProfileId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
@@ -425,6 +435,7 @@ export type InternshipAssignmentOrderByWithRelationInput = {
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  branch?: Prisma.BranchOrderByWithRelationInput
   internProfile?: Prisma.InternProfileOrderByWithRelationInput
   company?: Prisma.CompanyOrderByWithRelationInput
   supervisorProfile?: Prisma.SupervisorProfileOrderByWithRelationInput
@@ -446,6 +457,7 @@ export type InternshipAssignmentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.InternshipAssignmentWhereInput | Prisma.InternshipAssignmentWhereInput[]
   OR?: Prisma.InternshipAssignmentWhereInput[]
   NOT?: Prisma.InternshipAssignmentWhereInput | Prisma.InternshipAssignmentWhereInput[]
+  branchId?: Prisma.UuidNullableFilter<"InternshipAssignment"> | string | null
   internProfileId?: Prisma.UuidFilter<"InternshipAssignment"> | string
   companyId?: Prisma.UuidFilter<"InternshipAssignment"> | string
   supervisorProfileId?: Prisma.UuidFilter<"InternshipAssignment"> | string
@@ -469,6 +481,7 @@ export type InternshipAssignmentWhereUniqueInput = Prisma.AtLeast<{
   createdById?: Prisma.UuidNullableFilter<"InternshipAssignment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"InternshipAssignment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"InternshipAssignment"> | Date | string
+  branch?: Prisma.XOR<Prisma.BranchNullableScalarRelationFilter, Prisma.BranchWhereInput> | null
   internProfile?: Prisma.XOR<Prisma.InternProfileScalarRelationFilter, Prisma.InternProfileWhereInput>
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   supervisorProfile?: Prisma.XOR<Prisma.SupervisorProfileScalarRelationFilter, Prisma.SupervisorProfileWhereInput>
@@ -485,6 +498,7 @@ export type InternshipAssignmentWhereUniqueInput = Prisma.AtLeast<{
 }, "id" | "assignmentCode">
 
 export type InternshipAssignmentOrderByWithAggregationInput = {
+  branchId?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   internProfileId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
@@ -521,6 +535,7 @@ export type InternshipAssignmentScalarWhereWithAggregatesInput = {
   AND?: Prisma.InternshipAssignmentScalarWhereWithAggregatesInput | Prisma.InternshipAssignmentScalarWhereWithAggregatesInput[]
   OR?: Prisma.InternshipAssignmentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.InternshipAssignmentScalarWhereWithAggregatesInput | Prisma.InternshipAssignmentScalarWhereWithAggregatesInput[]
+  branchId?: Prisma.UuidNullableWithAggregatesFilter<"InternshipAssignment"> | string | null
   id?: Prisma.UuidWithAggregatesFilter<"InternshipAssignment"> | string
   internProfileId?: Prisma.UuidWithAggregatesFilter<"InternshipAssignment"> | string
   companyId?: Prisma.UuidWithAggregatesFilter<"InternshipAssignment"> | string
@@ -568,6 +583,7 @@ export type InternshipAssignmentCreateInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
   internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
@@ -584,6 +600,7 @@ export type InternshipAssignmentCreateInput = {
 }
 
 export type InternshipAssignmentUncheckedCreateInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -638,6 +655,7 @@ export type InternshipAssignmentUpdateInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
   internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
@@ -654,6 +672,7 @@ export type InternshipAssignmentUpdateInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -689,6 +708,7 @@ export type InternshipAssignmentUncheckedUpdateInput = {
 }
 
 export type InternshipAssignmentCreateManyInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -739,6 +759,7 @@ export type InternshipAssignmentUpdateManyMutationInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateManyInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -777,6 +798,7 @@ export type InternshipAssignmentOrderByRelationAggregateInput = {
 }
 
 export type InternshipAssignmentCountOrderByAggregateInput = {
+  branchId?: Prisma.SortOrder
   id?: Prisma.SortOrder
   internProfileId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
@@ -811,6 +833,7 @@ export type InternshipAssignmentAvgOrderByAggregateInput = {
 }
 
 export type InternshipAssignmentMaxOrderByAggregateInput = {
+  branchId?: Prisma.SortOrder
   id?: Prisma.SortOrder
   internProfileId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
@@ -839,6 +862,7 @@ export type InternshipAssignmentMaxOrderByAggregateInput = {
 }
 
 export type InternshipAssignmentMinOrderByAggregateInput = {
+  branchId?: Prisma.SortOrder
   id?: Prisma.SortOrder
   internProfileId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
@@ -1129,12 +1153,46 @@ export type InternshipAssignmentUncheckedUpdateManyWithoutCompanyNestedInput = {
   deleteMany?: Prisma.InternshipAssignmentScalarWhereInput | Prisma.InternshipAssignmentScalarWhereInput[]
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type InternshipAssignmentCreateNestedManyWithoutBranchInput = {
+  create?: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutBranchInput, Prisma.InternshipAssignmentUncheckedCreateWithoutBranchInput> | Prisma.InternshipAssignmentCreateWithoutBranchInput[] | Prisma.InternshipAssignmentUncheckedCreateWithoutBranchInput[]
+  connectOrCreate?: Prisma.InternshipAssignmentCreateOrConnectWithoutBranchInput | Prisma.InternshipAssignmentCreateOrConnectWithoutBranchInput[]
+  createMany?: Prisma.InternshipAssignmentCreateManyBranchInputEnvelope
+  connect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+}
+
+export type InternshipAssignmentUncheckedCreateNestedManyWithoutBranchInput = {
+  create?: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutBranchInput, Prisma.InternshipAssignmentUncheckedCreateWithoutBranchInput> | Prisma.InternshipAssignmentCreateWithoutBranchInput[] | Prisma.InternshipAssignmentUncheckedCreateWithoutBranchInput[]
+  connectOrCreate?: Prisma.InternshipAssignmentCreateOrConnectWithoutBranchInput | Prisma.InternshipAssignmentCreateOrConnectWithoutBranchInput[]
+  createMany?: Prisma.InternshipAssignmentCreateManyBranchInputEnvelope
+  connect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+}
+
+export type InternshipAssignmentUpdateManyWithoutBranchNestedInput = {
+  create?: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutBranchInput, Prisma.InternshipAssignmentUncheckedCreateWithoutBranchInput> | Prisma.InternshipAssignmentCreateWithoutBranchInput[] | Prisma.InternshipAssignmentUncheckedCreateWithoutBranchInput[]
+  connectOrCreate?: Prisma.InternshipAssignmentCreateOrConnectWithoutBranchInput | Prisma.InternshipAssignmentCreateOrConnectWithoutBranchInput[]
+  upsert?: Prisma.InternshipAssignmentUpsertWithWhereUniqueWithoutBranchInput | Prisma.InternshipAssignmentUpsertWithWhereUniqueWithoutBranchInput[]
+  createMany?: Prisma.InternshipAssignmentCreateManyBranchInputEnvelope
+  set?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  disconnect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  delete?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  connect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  update?: Prisma.InternshipAssignmentUpdateWithWhereUniqueWithoutBranchInput | Prisma.InternshipAssignmentUpdateWithWhereUniqueWithoutBranchInput[]
+  updateMany?: Prisma.InternshipAssignmentUpdateManyWithWhereWithoutBranchInput | Prisma.InternshipAssignmentUpdateManyWithWhereWithoutBranchInput[]
+  deleteMany?: Prisma.InternshipAssignmentScalarWhereInput | Prisma.InternshipAssignmentScalarWhereInput[]
+}
+
+export type InternshipAssignmentUncheckedUpdateManyWithoutBranchNestedInput = {
+  create?: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutBranchInput, Prisma.InternshipAssignmentUncheckedCreateWithoutBranchInput> | Prisma.InternshipAssignmentCreateWithoutBranchInput[] | Prisma.InternshipAssignmentUncheckedCreateWithoutBranchInput[]
+  connectOrCreate?: Prisma.InternshipAssignmentCreateOrConnectWithoutBranchInput | Prisma.InternshipAssignmentCreateOrConnectWithoutBranchInput[]
+  upsert?: Prisma.InternshipAssignmentUpsertWithWhereUniqueWithoutBranchInput | Prisma.InternshipAssignmentUpsertWithWhereUniqueWithoutBranchInput[]
+  createMany?: Prisma.InternshipAssignmentCreateManyBranchInputEnvelope
+  set?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  disconnect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  delete?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  connect?: Prisma.InternshipAssignmentWhereUniqueInput | Prisma.InternshipAssignmentWhereUniqueInput[]
+  update?: Prisma.InternshipAssignmentUpdateWithWhereUniqueWithoutBranchInput | Prisma.InternshipAssignmentUpdateWithWhereUniqueWithoutBranchInput[]
+  updateMany?: Prisma.InternshipAssignmentUpdateManyWithWhereWithoutBranchInput | Prisma.InternshipAssignmentUpdateManyWithWhereWithoutBranchInput[]
+  deleteMany?: Prisma.InternshipAssignmentScalarWhereInput | Prisma.InternshipAssignmentScalarWhereInput[]
 }
 
 export type EnumInternshipStatusFieldUpdateOperationsInput = {
@@ -1259,6 +1317,7 @@ export type InternshipAssignmentCreateWithoutCreatedByInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
   internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
@@ -1274,6 +1333,7 @@ export type InternshipAssignmentCreateWithoutCreatedByInput = {
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutCreatedByInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -1337,6 +1397,7 @@ export type InternshipAssignmentCreateWithoutRequiredHoursUpdatedByInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
   internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
@@ -1352,6 +1413,7 @@ export type InternshipAssignmentCreateWithoutRequiredHoursUpdatedByInput = {
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutRequiredHoursUpdatedByInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -1415,6 +1477,7 @@ export type InternshipAssignmentScalarWhereInput = {
   AND?: Prisma.InternshipAssignmentScalarWhereInput | Prisma.InternshipAssignmentScalarWhereInput[]
   OR?: Prisma.InternshipAssignmentScalarWhereInput[]
   NOT?: Prisma.InternshipAssignmentScalarWhereInput | Prisma.InternshipAssignmentScalarWhereInput[]
+  branchId?: Prisma.UuidNullableFilter<"InternshipAssignment"> | string | null
   id?: Prisma.UuidFilter<"InternshipAssignment"> | string
   internProfileId?: Prisma.UuidFilter<"InternshipAssignment"> | string
   companyId?: Prisma.UuidFilter<"InternshipAssignment"> | string
@@ -1478,6 +1541,7 @@ export type InternshipAssignmentCreateWithoutInternProfileInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
@@ -1493,6 +1557,7 @@ export type InternshipAssignmentCreateWithoutInternProfileInput = {
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutInternProfileInput = {
+  branchId?: string | null
   id?: string
   companyId: string
   supervisorProfileId: string
@@ -1572,6 +1637,7 @@ export type InternshipAssignmentCreateWithoutSupervisorProfileInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
   internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
@@ -1587,6 +1653,7 @@ export type InternshipAssignmentCreateWithoutSupervisorProfileInput = {
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutSupervisorProfileInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -1666,6 +1733,7 @@ export type InternshipAssignmentCreateWithoutCoordinatorProfileInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
   internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
@@ -1681,6 +1749,7 @@ export type InternshipAssignmentCreateWithoutCoordinatorProfileInput = {
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutCoordinatorProfileInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -1760,6 +1829,7 @@ export type InternshipAssignmentCreateWithoutCompanyInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
   internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
@@ -1775,6 +1845,7 @@ export type InternshipAssignmentCreateWithoutCompanyInput = {
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutCompanyInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   supervisorProfileId: string
@@ -1834,7 +1905,7 @@ export type InternshipAssignmentUpdateManyWithWhereWithoutCompanyInput = {
   data: Prisma.XOR<Prisma.InternshipAssignmentUpdateManyMutationInput, Prisma.InternshipAssignmentUncheckedUpdateManyWithoutCompanyInput>
 }
 
-export type InternshipAssignmentCreateWithoutAttendanceInput = {
+export type InternshipAssignmentCreateWithoutBranchInput = {
   id?: string
   assignmentCode: string
   positionTitle?: string | null
@@ -1860,6 +1931,103 @@ export type InternshipAssignmentCreateWithoutAttendanceInput = {
   coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
   requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
+  attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
+  workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutAssignmentInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
+  portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+}
+
+export type InternshipAssignmentUncheckedCreateWithoutBranchInput = {
+  id?: string
+  internProfileId: string
+  companyId: string
+  supervisorProfileId: string
+  coordinatorProfileId: string
+  assignmentCode: string
+  positionTitle?: string | null
+  department?: string | null
+  startDate: Date | string
+  endDate: Date | string
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
+  renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Date | string | null
+  scheduleEndTime?: Date | string | null
+  gracePeriodMinutes?: number
+  status?: $Enums.InternshipStatus
+  notes?: string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  attendance?: Prisma.AttendanceUncheckedCreateNestedManyWithoutAssignmentInput
+  workLogs?: Prisma.WorkLogUncheckedCreateNestedManyWithoutAssignmentInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignmentInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAssignmentInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
+  portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+}
+
+export type InternshipAssignmentCreateOrConnectWithoutBranchInput = {
+  where: Prisma.InternshipAssignmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutBranchInput, Prisma.InternshipAssignmentUncheckedCreateWithoutBranchInput>
+}
+
+export type InternshipAssignmentCreateManyBranchInputEnvelope = {
+  data: Prisma.InternshipAssignmentCreateManyBranchInput | Prisma.InternshipAssignmentCreateManyBranchInput[]
+  skipDuplicates?: boolean
+}
+
+export type InternshipAssignmentUpsertWithWhereUniqueWithoutBranchInput = {
+  where: Prisma.InternshipAssignmentWhereUniqueInput
+  update: Prisma.XOR<Prisma.InternshipAssignmentUpdateWithoutBranchInput, Prisma.InternshipAssignmentUncheckedUpdateWithoutBranchInput>
+  create: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutBranchInput, Prisma.InternshipAssignmentUncheckedCreateWithoutBranchInput>
+}
+
+export type InternshipAssignmentUpdateWithWhereUniqueWithoutBranchInput = {
+  where: Prisma.InternshipAssignmentWhereUniqueInput
+  data: Prisma.XOR<Prisma.InternshipAssignmentUpdateWithoutBranchInput, Prisma.InternshipAssignmentUncheckedUpdateWithoutBranchInput>
+}
+
+export type InternshipAssignmentUpdateManyWithWhereWithoutBranchInput = {
+  where: Prisma.InternshipAssignmentScalarWhereInput
+  data: Prisma.XOR<Prisma.InternshipAssignmentUpdateManyMutationInput, Prisma.InternshipAssignmentUncheckedUpdateManyWithoutBranchInput>
+}
+
+export type InternshipAssignmentCreateWithoutAttendanceInput = {
+  id?: string
+  assignmentCode: string
+  positionTitle?: string | null
+  department?: string | null
+  startDate: Date | string
+  endDate: Date | string
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
+  renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Date | string | null
+  scheduleEndTime?: Date | string | null
+  gracePeriodMinutes?: number
+  status?: $Enums.InternshipStatus
+  notes?: string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
+  internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
+  company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
+  supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
+  coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
   workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
   tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutAssignmentInput
@@ -1869,6 +2037,7 @@ export type InternshipAssignmentCreateWithoutAttendanceInput = {
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutAttendanceInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -1938,6 +2107,7 @@ export type InternshipAssignmentUpdateWithoutAttendanceInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
   internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
@@ -1953,6 +2123,7 @@ export type InternshipAssignmentUpdateWithoutAttendanceInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutAttendanceInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2006,6 +2177,7 @@ export type InternshipAssignmentCreateWithoutWorkLogsInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
   internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
@@ -2021,6 +2193,7 @@ export type InternshipAssignmentCreateWithoutWorkLogsInput = {
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutWorkLogsInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -2090,6 +2263,7 @@ export type InternshipAssignmentUpdateWithoutWorkLogsInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
   internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
@@ -2105,6 +2279,7 @@ export type InternshipAssignmentUpdateWithoutWorkLogsInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutWorkLogsInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2158,6 +2333,7 @@ export type InternshipAssignmentCreateWithoutTasksInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
   internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
@@ -2173,6 +2349,7 @@ export type InternshipAssignmentCreateWithoutTasksInput = {
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutTasksInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -2242,6 +2419,7 @@ export type InternshipAssignmentUpdateWithoutTasksInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
   internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
@@ -2257,6 +2435,7 @@ export type InternshipAssignmentUpdateWithoutTasksInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutTasksInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2310,6 +2489,7 @@ export type InternshipAssignmentCreateWithoutEvaluationsInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
   internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
@@ -2325,6 +2505,7 @@ export type InternshipAssignmentCreateWithoutEvaluationsInput = {
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutEvaluationsInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -2394,6 +2575,7 @@ export type InternshipAssignmentUpdateWithoutEvaluationsInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
   internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
@@ -2409,6 +2591,7 @@ export type InternshipAssignmentUpdateWithoutEvaluationsInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutEvaluationsInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2462,6 +2645,7 @@ export type InternshipAssignmentCreateWithoutFeedbackInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
   internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
@@ -2477,6 +2661,7 @@ export type InternshipAssignmentCreateWithoutFeedbackInput = {
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutFeedbackInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -2546,6 +2731,7 @@ export type InternshipAssignmentUpdateWithoutFeedbackInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
   internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
@@ -2561,6 +2747,7 @@ export type InternshipAssignmentUpdateWithoutFeedbackInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutFeedbackInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2614,6 +2801,7 @@ export type InternshipAssignmentCreateWithoutDocumentsInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
   internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
@@ -2629,6 +2817,7 @@ export type InternshipAssignmentCreateWithoutDocumentsInput = {
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutDocumentsInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -2698,6 +2887,7 @@ export type InternshipAssignmentUpdateWithoutDocumentsInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
   internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
@@ -2713,6 +2903,7 @@ export type InternshipAssignmentUpdateWithoutDocumentsInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutDocumentsInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2766,6 +2957,7 @@ export type InternshipAssignmentCreateWithoutPortfolioInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
   internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
   company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
   supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
@@ -2781,6 +2973,7 @@ export type InternshipAssignmentCreateWithoutPortfolioInput = {
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutPortfolioInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -2850,6 +3043,7 @@ export type InternshipAssignmentUpdateWithoutPortfolioInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
   internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
@@ -2865,6 +3059,7 @@ export type InternshipAssignmentUpdateWithoutPortfolioInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutPortfolioInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2899,6 +3094,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutPortfolioInput = {
 }
 
 export type InternshipAssignmentCreateManyCreatedByInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -2926,6 +3122,7 @@ export type InternshipAssignmentCreateManyCreatedByInput = {
 }
 
 export type InternshipAssignmentCreateManyRequiredHoursUpdatedByInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -2972,6 +3169,7 @@ export type InternshipAssignmentUpdateWithoutCreatedByInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
   internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
@@ -2987,6 +3185,7 @@ export type InternshipAssignmentUpdateWithoutCreatedByInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutCreatedByInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3021,6 +3220,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutCreatedByInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateManyWithoutCreatedByInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3067,6 +3267,7 @@ export type InternshipAssignmentUpdateWithoutRequiredHoursUpdatedByInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
   internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
@@ -3082,6 +3283,7 @@ export type InternshipAssignmentUpdateWithoutRequiredHoursUpdatedByInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutRequiredHoursUpdatedByInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3116,6 +3318,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutRequiredHoursUpdatedByInpu
 }
 
 export type InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3143,6 +3346,7 @@ export type InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedBy
 }
 
 export type InternshipAssignmentCreateManyInternProfileInput = {
+  branchId?: string | null
   id?: string
   companyId: string
   supervisorProfileId: string
@@ -3189,6 +3393,7 @@ export type InternshipAssignmentUpdateWithoutInternProfileInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
@@ -3204,6 +3409,7 @@ export type InternshipAssignmentUpdateWithoutInternProfileInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutInternProfileInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
   supervisorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3238,6 +3444,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutInternProfileInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateManyWithoutInternProfileInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
   supervisorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3265,6 +3472,7 @@ export type InternshipAssignmentUncheckedUpdateManyWithoutInternProfileInput = {
 }
 
 export type InternshipAssignmentCreateManySupervisorProfileInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -3311,6 +3519,7 @@ export type InternshipAssignmentUpdateWithoutSupervisorProfileInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
   internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
@@ -3326,6 +3535,7 @@ export type InternshipAssignmentUpdateWithoutSupervisorProfileInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutSupervisorProfileInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3360,6 +3570,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutSupervisorProfileInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateManyWithoutSupervisorProfileInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3387,6 +3598,7 @@ export type InternshipAssignmentUncheckedUpdateManyWithoutSupervisorProfileInput
 }
 
 export type InternshipAssignmentCreateManyCoordinatorProfileInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   companyId: string
@@ -3433,6 +3645,7 @@ export type InternshipAssignmentUpdateWithoutCoordinatorProfileInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
   internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
@@ -3448,6 +3661,7 @@ export type InternshipAssignmentUpdateWithoutCoordinatorProfileInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutCoordinatorProfileInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3482,6 +3696,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutCoordinatorProfileInput = 
 }
 
 export type InternshipAssignmentUncheckedUpdateManyWithoutCoordinatorProfileInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3509,6 +3724,7 @@ export type InternshipAssignmentUncheckedUpdateManyWithoutCoordinatorProfileInpu
 }
 
 export type InternshipAssignmentCreateManyCompanyInput = {
+  branchId?: string | null
   id?: string
   internProfileId: string
   supervisorProfileId: string
@@ -3555,6 +3771,7 @@ export type InternshipAssignmentUpdateWithoutCompanyInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
   internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
   coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
@@ -3570,6 +3787,7 @@ export type InternshipAssignmentUpdateWithoutCompanyInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutCompanyInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   supervisorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3604,8 +3822,135 @@ export type InternshipAssignmentUncheckedUpdateWithoutCompanyInput = {
 }
 
 export type InternshipAssignmentUncheckedUpdateManyWithoutCompanyInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  supervisorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  coordinatorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentCode?: Prisma.StringFieldUpdateOperationsInput | string
+  positionTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gracePeriodMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumInternshipStatusFieldUpdateOperationsInput | $Enums.InternshipStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type InternshipAssignmentCreateManyBranchInput = {
+  id?: string
+  internProfileId: string
+  companyId: string
+  supervisorProfileId: string
+  coordinatorProfileId: string
+  assignmentCode: string
+  positionTitle?: string | null
+  department?: string | null
+  startDate: Date | string
+  endDate: Date | string
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
+  renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Date | string | null
+  scheduleEndTime?: Date | string | null
+  gracePeriodMinutes?: number
+  status?: $Enums.InternshipStatus
+  notes?: string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type InternshipAssignmentUpdateWithoutBranchInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentCode?: Prisma.StringFieldUpdateOperationsInput | string
+  positionTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gracePeriodMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumInternshipStatusFieldUpdateOperationsInput | $Enums.InternshipStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
+  supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
+  attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
+  workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutAssignmentNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
+  portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+}
+
+export type InternshipAssignmentUncheckedUpdateWithoutBranchInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  companyId?: Prisma.StringFieldUpdateOperationsInput | string
+  supervisorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  coordinatorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentCode?: Prisma.StringFieldUpdateOperationsInput | string
+  positionTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gracePeriodMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumInternshipStatusFieldUpdateOperationsInput | $Enums.InternshipStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attendance?: Prisma.AttendanceUncheckedUpdateManyWithoutAssignmentNestedInput
+  workLogs?: Prisma.WorkLogUncheckedUpdateManyWithoutAssignmentNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignmentNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutAssignmentNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
+  portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+}
+
+export type InternshipAssignmentUncheckedUpdateManyWithoutBranchInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  companyId?: Prisma.StringFieldUpdateOperationsInput | string
   supervisorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   coordinatorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   assignmentCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3707,6 +4052,7 @@ export type InternshipAssignmentCountOutputTypeCountDocumentsArgs<ExtArgs extend
 
 
 export type InternshipAssignmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  branchId?: boolean
   id?: boolean
   internProfileId?: boolean
   companyId?: boolean
@@ -3732,6 +4078,7 @@ export type InternshipAssignmentSelect<ExtArgs extends runtime.Types.Extensions.
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  branch?: boolean | Prisma.InternshipAssignment$branchArgs<ExtArgs>
   internProfile?: boolean | Prisma.InternProfileDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   supervisorProfile?: boolean | Prisma.SupervisorProfileDefaultArgs<ExtArgs>
@@ -3749,6 +4096,7 @@ export type InternshipAssignmentSelect<ExtArgs extends runtime.Types.Extensions.
 }, ExtArgs["result"]["internshipAssignment"]>
 
 export type InternshipAssignmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  branchId?: boolean
   id?: boolean
   internProfileId?: boolean
   companyId?: boolean
@@ -3774,6 +4122,7 @@ export type InternshipAssignmentSelectCreateManyAndReturn<ExtArgs extends runtim
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  branch?: boolean | Prisma.InternshipAssignment$branchArgs<ExtArgs>
   internProfile?: boolean | Prisma.InternProfileDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   supervisorProfile?: boolean | Prisma.SupervisorProfileDefaultArgs<ExtArgs>
@@ -3783,6 +4132,7 @@ export type InternshipAssignmentSelectCreateManyAndReturn<ExtArgs extends runtim
 }, ExtArgs["result"]["internshipAssignment"]>
 
 export type InternshipAssignmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  branchId?: boolean
   id?: boolean
   internProfileId?: boolean
   companyId?: boolean
@@ -3808,6 +4158,7 @@ export type InternshipAssignmentSelectUpdateManyAndReturn<ExtArgs extends runtim
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  branch?: boolean | Prisma.InternshipAssignment$branchArgs<ExtArgs>
   internProfile?: boolean | Prisma.InternProfileDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   supervisorProfile?: boolean | Prisma.SupervisorProfileDefaultArgs<ExtArgs>
@@ -3817,6 +4168,7 @@ export type InternshipAssignmentSelectUpdateManyAndReturn<ExtArgs extends runtim
 }, ExtArgs["result"]["internshipAssignment"]>
 
 export type InternshipAssignmentSelectScalar = {
+  branchId?: boolean
   id?: boolean
   internProfileId?: boolean
   companyId?: boolean
@@ -3844,8 +4196,9 @@ export type InternshipAssignmentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type InternshipAssignmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "internProfileId" | "companyId" | "supervisorProfileId" | "coordinatorProfileId" | "assignmentCode" | "positionTitle" | "department" | "startDate" | "endDate" | "requiredHours" | "requiredHoursConfirmedAt" | "requiredHoursUpdatedById" | "requiredHoursUpdateReason" | "renderedHours" | "scheduleStartTime" | "scheduleEndTime" | "gracePeriodMinutes" | "status" | "notes" | "activatedAt" | "completedAt" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["internshipAssignment"]>
+export type InternshipAssignmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"branchId" | "id" | "internProfileId" | "companyId" | "supervisorProfileId" | "coordinatorProfileId" | "assignmentCode" | "positionTitle" | "department" | "startDate" | "endDate" | "requiredHours" | "requiredHoursConfirmedAt" | "requiredHoursUpdatedById" | "requiredHoursUpdateReason" | "renderedHours" | "scheduleStartTime" | "scheduleEndTime" | "gracePeriodMinutes" | "status" | "notes" | "activatedAt" | "completedAt" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["internshipAssignment"]>
 export type InternshipAssignmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  branch?: boolean | Prisma.InternshipAssignment$branchArgs<ExtArgs>
   internProfile?: boolean | Prisma.InternProfileDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   supervisorProfile?: boolean | Prisma.SupervisorProfileDefaultArgs<ExtArgs>
@@ -3862,6 +4215,7 @@ export type InternshipAssignmentInclude<ExtArgs extends runtime.Types.Extensions
   _count?: boolean | Prisma.InternshipAssignmentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type InternshipAssignmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  branch?: boolean | Prisma.InternshipAssignment$branchArgs<ExtArgs>
   internProfile?: boolean | Prisma.InternProfileDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   supervisorProfile?: boolean | Prisma.SupervisorProfileDefaultArgs<ExtArgs>
@@ -3870,6 +4224,7 @@ export type InternshipAssignmentIncludeCreateManyAndReturn<ExtArgs extends runti
   requiredHoursUpdatedBy?: boolean | Prisma.InternshipAssignment$requiredHoursUpdatedByArgs<ExtArgs>
 }
 export type InternshipAssignmentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  branch?: boolean | Prisma.InternshipAssignment$branchArgs<ExtArgs>
   internProfile?: boolean | Prisma.InternProfileDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   supervisorProfile?: boolean | Prisma.SupervisorProfileDefaultArgs<ExtArgs>
@@ -3881,6 +4236,7 @@ export type InternshipAssignmentIncludeUpdateManyAndReturn<ExtArgs extends runti
 export type $InternshipAssignmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "InternshipAssignment"
   objects: {
+    branch: Prisma.$BranchPayload<ExtArgs> | null
     internProfile: Prisma.$InternProfilePayload<ExtArgs>
     company: Prisma.$CompanyPayload<ExtArgs>
     supervisorProfile: Prisma.$SupervisorProfilePayload<ExtArgs>
@@ -3896,6 +4252,7 @@ export type $InternshipAssignmentPayload<ExtArgs extends runtime.Types.Extension
     portfolio: Prisma.$PortfolioPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    branchId: string | null
     id: string
     internProfileId: string
     companyId: string
@@ -4004,8 +4361,8 @@ export interface InternshipAssignmentDelegate<ExtArgs extends runtime.Types.Exte
    * // Get first 10 InternshipAssignments
    * const internshipAssignments = await prisma.internshipAssignment.findMany({ take: 10 })
    * 
-   * // Only select the `id`
-   * const internshipAssignmentWithIdOnly = await prisma.internshipAssignment.findMany({ select: { id: true } })
+   * // Only select the `branchId`
+   * const internshipAssignmentWithBranchIdOnly = await prisma.internshipAssignment.findMany({ select: { branchId: true } })
    * 
    */
   findMany<T extends InternshipAssignmentFindManyArgs>(args?: Prisma.SelectSubset<T, InternshipAssignmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InternshipAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -4049,9 +4406,9 @@ export interface InternshipAssignmentDelegate<ExtArgs extends runtime.Types.Exte
    *   ]
    * })
    * 
-   * // Create many InternshipAssignments and only return the `id`
-   * const internshipAssignmentWithIdOnly = await prisma.internshipAssignment.createManyAndReturn({
-   *   select: { id: true },
+   * // Create many InternshipAssignments and only return the `branchId`
+   * const internshipAssignmentWithBranchIdOnly = await prisma.internshipAssignment.createManyAndReturn({
+   *   select: { branchId: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -4140,9 +4497,9 @@ export interface InternshipAssignmentDelegate<ExtArgs extends runtime.Types.Exte
    *   ]
    * })
    * 
-   * // Update zero or more InternshipAssignments and only return the `id`
-   * const internshipAssignmentWithIdOnly = await prisma.internshipAssignment.updateManyAndReturn({
-   *   select: { id: true },
+   * // Update zero or more InternshipAssignments and only return the `branchId`
+   * const internshipAssignmentWithBranchIdOnly = await prisma.internshipAssignment.updateManyAndReturn({
+   *   select: { branchId: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -4315,6 +4672,7 @@ readonly fields: InternshipAssignmentFieldRefs;
  */
 export interface Prisma__InternshipAssignmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  branch<T extends Prisma.InternshipAssignment$branchArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternshipAssignment$branchArgs<ExtArgs>>): Prisma.Prisma__BranchClient<runtime.Types.Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   internProfile<T extends Prisma.InternProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__InternProfileClient<runtime.Types.Result.GetResult<Prisma.$InternProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   supervisorProfile<T extends Prisma.SupervisorProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SupervisorProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__SupervisorProfileClient<runtime.Types.Result.GetResult<Prisma.$SupervisorProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
@@ -4357,6 +4715,7 @@ export interface Prisma__InternshipAssignmentClient<T, Null = never, ExtArgs ext
  * Fields of the InternshipAssignment model
  */
 export interface InternshipAssignmentFieldRefs {
+  readonly branchId: Prisma.FieldRef<"InternshipAssignment", 'String'>
   readonly id: Prisma.FieldRef<"InternshipAssignment", 'String'>
   readonly internProfileId: Prisma.FieldRef<"InternshipAssignment", 'String'>
   readonly companyId: Prisma.FieldRef<"InternshipAssignment", 'String'>
@@ -4780,6 +5139,25 @@ export type InternshipAssignmentDeleteManyArgs<ExtArgs extends runtime.Types.Ext
    * Limit how many InternshipAssignments to delete.
    */
   limit?: number
+}
+
+/**
+ * InternshipAssignment.branch
+ */
+export type InternshipAssignment$branchArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Branch
+   */
+  select?: Prisma.BranchSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Branch
+   */
+  omit?: Prisma.BranchOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BranchInclude<ExtArgs> | null
+  where?: Prisma.BranchWhereInput
 }
 
 /**

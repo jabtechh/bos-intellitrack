@@ -1,3 +1,4 @@
+import { branchIdSchema } from "@/lib/branches/domain";
 import { z } from "zod";
 
 import { optionalText } from "@/lib/admin/shared";
@@ -21,6 +22,7 @@ export const provisionUserSchema = z.discriminatedUnion("role", [
   z.object({
     ...common,
     role: z.literal("INTERN"),
+    branchId: branchIdSchema,
     schoolId: z.string().uuid("Select a school."),
     studentNumber: z.string().trim().min(1, "Student number is required.").max(100),
     course: z.string().trim().min(1, "Course is required.").max(150),

@@ -71,7 +71,8 @@ test("authorized detail views provide compact human evidence presentation", () =
   }
   assert.match(detail, /Technical location details/);
   assert.match(detail, /correction-history/);
-  assert.match(map, /Location evidence relative to Main Office/);
+  assert.match(map, /Location evidence relative to \{label\}/);
+  assert.match(map, /label = "Main Office"/);
   assert.doesNotMatch(map, /latitude\}|longitude\}/);
 });
 

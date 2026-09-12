@@ -8,6 +8,7 @@ const navigation: ShellNavItem[] = [
   { href: "/admin/users?role=INTERN", label: "Interns", icon: "users", activePath: "/admin/users", exact: true, activeQuery: { key: "role", value: "INTERN" } },
   { href: "/admin/users?role=SUPERVISOR", label: "Company Supervisors", icon: "users", activePath: "/admin/users", exact: true, activeQuery: { key: "role", value: "SUPERVISOR" } },
   { href: "/admin/users?role=COORDINATOR", label: "School Coordinators", icon: "users", activePath: "/admin/users", exact: true, activeQuery: { key: "role", value: "COORDINATOR" } },
+  { href: "/admin/branches", label: "Branches", icon: "school" },
   { href: "/admin/schools", label: "Partner Schools", icon: "school" },
   { href: "/attendance/review", label: "Attendance Review", icon: "clock" },
   { href: "/attendance/corrections/review", label: "Correction Review", icon: "review" },
