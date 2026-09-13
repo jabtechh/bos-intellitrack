@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { assignmentBranch } from "@/lib/branches/compatibility";
 import localFont from "next/font/local";
 import { redirect } from "next/navigation";
@@ -15,7 +16,7 @@ import { InternDashboardView } from "./intern-dashboard";
 
 const jakarta = localFont({ src: "./landing/fonts/PlusJakartaSans.ttf", display: "swap", variable: "--font-intern-dashboard", weight: "200 800" });
 
-export async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requireCurrentUser>> }) {
+export async function InternDashboard({ user, children }: { user: Awaited<ReturnType<typeof requireCurrentUser>>; children?: ReactNode }) {
   const assignment = await prisma.internshipAssignment.findFirst({
     where: { status: "ACTIVE", internProfile: { userId: user.id } },
     select: {
@@ -56,6 +57,6 @@ export async function InternDashboard({ user }: { user: Awaited<ReturnType<typeo
     startDate={assignment.startDate} endDate={assignment.endDate} requiredHours={assignment.requiredHours}
     scheduleStart={assignment.scheduleStartTime} scheduleEnd={assignment.scheduleEndTime}
     attendance={attendance} selfieUrl={selfieUrl} log={log} tasks={assignment.tasks} calendar={calendar}
-    onboarding={onboarding?.counts ?? null} pendingCorrections={pendingCorrections}
+    onboarding={onboarding?.counts ?? null} pendingCorrections={pendingCorrections} insights={children}
   ><AnnouncementReaderSummary viewer={viewer} /></InternDashboardView></div>;
 }

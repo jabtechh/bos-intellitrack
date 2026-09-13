@@ -1,3 +1,5 @@
+import localFont from "next/font/local";
+import internStyles from "./intern-shell.module.css";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ShellNavigation, type ShellNavItem } from "./shell-navigation";
@@ -7,6 +9,8 @@ import { getNotificationsForCurrentUser, getUnreadNotificationCount } from "@/li
 import { formatNotificationBadge } from "@/lib/notifications/domain";
 import { ApplicationUtilities } from "./application-utilities";
 import { MobileNavigation } from "./mobile-navigation";
+
+const internFont = localFont({ src: "./landing/fonts/PlusJakartaSans.ttf", display: "swap", variable: "--font-intern-dashboard", weight: "200 800" });
 
 type UserRole = import("@/generated/prisma/enums").UserRole;
 type ShellUser = { firstName: string; lastName: string; role: UserRole; profilePhotoPath?: string | null };
@@ -30,9 +34,9 @@ export async function AppShell({ user, children, onboarding, navItems }: { user:
   const initials = `${user.firstName[0] ?? ""}${user.lastName[0] ?? ""}`;
   const avatarUrl = await signedProfileMedia(user.profilePhotoPath ?? null);
   const home = navItems ? "/admin" : "/dashboard";
-  return <div className="app-shell" data-persistent-app-shell>
+  return <div className={`app-shell ${user.role === "INTERN" ? `${internStyles.shell} ${internFont.variable}` : ""}`} data-persistent-app-shell>
     <a href="#main-content" className="skip-link">Skip to main content</a>
     <aside className="app-sidebar"><Link href={home} className="brand-lockup"><span>IT</span><div><strong>IntelliTrack</strong><small>Bo&apos;s Coffee</small></div></Link><ShellNavigation items={nav} label="Primary navigation" /></aside>
-    <div className="app-stage"><header className="app-utility-bar"><Link href={home} prefetch className="brand-lockup mobile-brand"><span>IT</span><strong>IntelliTrack</strong></Link><ApplicationUtilities name={`${user.firstName} ${user.lastName}`} role={roleLabel(user.role)} avatarUrl={avatarUrl} initials={initials} badge={formatNotificationBadge(unreadCount)} preview={{ initialized: notificationResult.initialized, items: notificationResult.items.slice(0, 5) }} /></header><main id="main-content" tabIndex={-1} className="app-content">{children}</main><MobileNavigation items={nav} role={user.role} /></div>
+    <div className="app-stage"><header className="app-utility-bar"><Link href={home} prefetch className="brand-lockup mobile-brand"><span>IT</span><strong>IntelliTrack</strong></Link>{user.role === "INTERN" ? <p className={internStyles.context}><strong>Intern workspace</strong><span>{user.firstName} {user.lastName}</span></p> : null}<ApplicationUtilities name={`${user.firstName} ${user.lastName}`} role={roleLabel(user.role)} avatarUrl={avatarUrl} initials={initials} badge={formatNotificationBadge(unreadCount)} preview={{ initialized: notificationResult.initialized, items: notificationResult.items.slice(0, 5) }} /></header><main id="main-content" tabIndex={-1} className="app-content">{children}</main><MobileNavigation items={nav} role={user.role} /></div>
   </div>;
 }

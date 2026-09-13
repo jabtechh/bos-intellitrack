@@ -10,7 +10,7 @@ import styles from "./intern-dashboard.module.css";
 type EvidenceState = "required" | "captured" | "verified" | "issue";
 type AttendanceState = "not-started" | "clocked-in" | "completed" | "needs-review" | "incomplete";
 export type DashboardAttendance = {
-  id?: string; state: AttendanceState; dateLabel: string; scheduleLabel: string;
+  id?: string; state: AttendanceState; dateLabel: string; scheduleLabel: string; scheduledEnd?: string;
   clockIn?: string; clockInIso?: string; clockOut?: string; nowIso?: string;
   creditedMinutes?: number; workedMinutes?: number; workplace?: string; selfieUrl?: string | null;
   evidence: { location: EvidenceState; selfie: EvidenceState }; issue?: string; pendingCorrection?: boolean;
@@ -30,7 +30,7 @@ export function DashboardAttendanceCard({ attendance }: { attendance: DashboardA
         <div><strong>{attendance.workplace ?? "Assigned workplace"}</strong><EvidenceStrip location={attendance.evidence.location} selfie={attendance.evidence.selfie} />{attendance.clockInIso ? <small>Time In captured {attendance.clockIn}</small> : <small>Evidence is requested during Time In.</small>}</div>
       </div>
       <div className={styles.timePanel}>
-        {active ? <><p className={styles.eyebrow}>Time rendered today</p>{attendance.clockInIso ? <ElapsedTime clockInIso={attendance.clockInIso} nowIso={attendance.nowIso} /> : <strong>—</strong>}<span className={styles.timeNote}>Live elapsed time · credited hours come from Attendance</span><dl><AttendanceValue label="Time In" value={attendance.clockIn ?? "—"} /><AttendanceValue label="Time Out" value="Not yet recorded" /></dl></> : completed ? <dl className={styles.completedFacts}><AttendanceValue label="Time In" value={attendance.clockIn ?? "—"} /><AttendanceValue label="Time Out" value={attendance.clockOut ?? "—"} /><AttendanceValue label="Hours rendered" value={formatMinutes(attendance.creditedMinutes ?? 0)} /></dl> : needsAttention ? <><p className={styles.eyebrow}>Record needs attention</p><dl><AttendanceValue label="Time In" value={attendance.clockIn ?? "—"} /><AttendanceValue label="Time Out" value={attendance.clockOut ?? "Missing"} /></dl><p className={styles.timeNote}>{attendance.issue ?? "Open the record to review the missing or flagged evidence."}</p></> : <><h3>Not timed in yet.</h3><p>Capture your location and a fresh selfie to start today&apos;s attendance.</p></>}
+        {active ? <><p className={styles.eyebrow}>Time rendered today</p>{attendance.clockInIso ? <ElapsedTime clockInIso={attendance.clockInIso} nowIso={attendance.nowIso} /> : <strong>—</strong>}<span className={styles.timeNote}>Live elapsed time. Attendance determines credited hours.</span><dl><AttendanceValue label="Time In" value={attendance.clockIn ?? "—"} />{attendance.scheduledEnd ? <AttendanceValue label="Scheduled end" value={attendance.scheduledEnd} /> : <AttendanceValue label="Time Out" value="Not yet recorded" />}</dl></> : completed ? <dl className={styles.completedFacts}><AttendanceValue label="Time In" value={attendance.clockIn ?? "—"} /><AttendanceValue label="Time Out" value={attendance.clockOut ?? "—"} /><AttendanceValue label="Hours rendered" value={formatMinutes(attendance.creditedMinutes ?? 0)} /></dl> : needsAttention ? <><p className={styles.eyebrow}>Record needs attention</p><dl><AttendanceValue label="Time In" value={attendance.clockIn ?? "—"} /><AttendanceValue label="Time Out" value={attendance.clockOut ?? "Missing"} /></dl><p className={styles.timeNote}>{attendance.issue ?? "Open the record to review the missing or flagged evidence."}</p></> : <><h3>Not timed in yet.</h3><p>Capture your location and a fresh selfie to start today&apos;s attendance.</p></>}
       </div>
       <div className={styles.attendanceActions}>
         {attendance.state === "not-started" ? <Link href="/attendance" className="button button-primary"><Icon name="clock" />Time In</Link> : active ? <Link href="/attendance" className="button button-primary"><Icon name="clock" />Time Out</Link> : attendance.id ? <Link href={`/attendance/${attendance.id}`} className="button button-secondary">View Attendance Details <Icon name="arrow" /></Link> : null}
@@ -53,6 +53,6 @@ function EvidenceStrip({ location, selfie }: { location: EvidenceState; selfie: 
 }
 function EvidenceItem({ kind, state }: { kind: string; state: EvidenceState }) {
   const label = state === "required" ? `${kind} required` : state === "issue" ? `${kind} needs attention` : kind === "Selfie" ? "Selfie captured" : state === "verified" ? "Within recorded geofence" : "Location recorded";
-  return <span className={state === "issue" ? styles.evidenceWarning : state === "required" ? styles.evidenceMuted : styles.evidenceSuccess}><Icon name={state === "issue" ? "alert" : "check"} />{label}</span>;
+  return <span className={state === "issue" ? styles.evidenceWarning : state === "required" ? styles.evidenceMuted : styles.evidenceSuccess}><Icon name={state === "issue" ? "alert" : state === "required" ? "clock" : "check"} />{label}</span>;
 }
 function formatMinutes(value: number) { return `${Math.floor(value / 60)}h ${String(value % 60).padStart(2, "0")}m`; }

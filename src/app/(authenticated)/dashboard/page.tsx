@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
   const user = await requireCurrentUser();
-  if (user.role === "INTERN") return <><InternDashboard user={user} /><InsightsDashboardSummary role={user.role}/></>;
+  if (user.role === "INTERN") return <InternDashboard user={user}><InsightsDashboardSummary role={user.role}/></InternDashboard>;
   if (user.role === "COORDINATOR") {
     const viewer = await requireAnnouncementViewer();
     return <><CoordinatorRoleDashboard user={user} /><InsightsDashboardSummary role={user.role}/><TaskDashboardSummary userId={user.id} role={user.role} /><EvaluationDashboardSummary userId={user.id} role={user.role}/><DocumentDashboardSummary userId={user.id} role={user.role}/><AnnouncementReaderSummary viewer={viewer} /></>;
