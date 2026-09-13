@@ -20,7 +20,7 @@ export function HeroSection() {
     <div className={styles.heroCopy}>
       <p className={styles.pill}>One workspace. Every internship day.</p>
       <h1>Internship management,<br /><span>made effortless &amp; intelligent.</span></h1>
-      <p className={styles.lead}>Bring attendance, daily Work Logs, Tasks, Evaluations, and internship progress together. IntelliTrack connects the people and records behind internships at Bo’s Coffee.</p>
+      <p className={styles.lead}>Bring attendance, daily Work Logs, Tasks, and internship progress into one workspace. Stay connected to the people guiding your internship at Bo’s Coffee.</p>
       <div className={styles.actions}><Link href="/login" className={styles.primaryButton}>Sign In to IntelliTrack <Icon name="arrow" /></Link><a href="#how-it-works" className={styles.secondaryButton}>See How It Works</a></div>
       <p className={styles.accessNote}><Icon name="users" />For provisioned Interns, Company Supervisors, School Coordinators, and Company Representatives.</p>
     </div>
@@ -28,11 +28,18 @@ export function HeroSection() {
   </div></section>;
 }
 
+export function WorkspaceRoles() {
+  return <section className={styles.workspaceBand} aria-label="IntelliTrack workspaces"><div className={styles.container}>
+    <p>Connected workspaces. Clear responsibilities.</p>
+    <ul className={styles.workspaceRoles}>{([ ["journal", "Interns"], ["review", "Company Supervisors"], ["school", "School Coordinators"], ["users", "Company Representatives"] ] as const).map(([icon, role]) => <li key={role}><Icon name={icon} />{role}</li>)}</ul>
+  </div></section>;
+}
+
 const features: { icon: IconName; title: string; copy: string; points: string[] }[] = [
-  { icon: "clock", title: "Attendance & Location Evidence", copy: "Location-aware attendance with selfie evidence and server-recorded timestamps. Attendance is the source of credited time.", points: ["Time In / Time Out", "Attendance exceptions and corrections"] },
-  { icon: "review", title: "Supervisor Workspace", copy: "Company Supervisors follow assigned Interns, manage Tasks, and provide Feedback and Evaluations with the work in view.", points: ["Task completion and revision", "Daily Work Log visibility"] },
+  { icon: "clock", title: "Attendance & Evidence", copy: "Location-aware attendance with selfie evidence and server-recorded timestamps. Attendance is the source of credited time.", points: ["Time In / Time Out", "Attendance exceptions and corrections"] },
+  { icon: "review", title: "Tasks & Daily Work", copy: "Keep assigned Tasks, daily Work Logs, and revisions together. Company Supervisors provide Feedback and Evaluations with the work in view.", points: ["Task completion and revision", "Daily Work Log visibility"] },
   { icon: "school", title: "School Coordination", copy: "School Coordinators monitor students within their school scope. Company Representatives keep internship operations in view.", points: ["Internship progress monitoring", "Documents and authorized Reports"] },
-  { icon: "journal", title: "Internship Progress & AI Assistance", copy: "Follow hours rendered against required hours. Where enabled, AI helps draft progress summaries, Portfolio reflections, and Evaluation remarks.", points: ["Progress from recorded attendance", "People review AI drafts before use"] },
+  { icon: "journal", title: "Internship Progress", copy: "Follow hours rendered against required hours. Bring your work together in a Portfolio, with AI drafting assistance where enabled.", points: ["Progress from recorded attendance", "People review AI drafts before use"] },
 ];
 
 export function FeatureGrid() {
@@ -58,7 +65,7 @@ export function LifecycleSection() {
 
 export function LandingCTA() {
   return <section className={styles.ctaSection} aria-labelledby="access-title"><div className={styles.container}><div className={styles.cta}>
-    <p className={styles.ctaEyebrow}>IntelliTrack · Bo’s Coffee</p><h2 id="access-title">Your internship day,<br />all in one place.</h2><p>Access your attendance, daily work, and progress. Pick up where you left off in your IntelliTrack workspace.</p><Link href="/login" className={styles.lightButton}>Sign In to IntelliTrack <Icon name="arrow" /></Link>
+    <p className={styles.ctaEyebrow}>IntelliTrack · Bo’s Coffee</p><h2 id="access-title">Your internship day,<br />all in one place.</h2><p>Access your attendance, daily work, Tasks, and internship progress from one IntelliTrack workspace.</p><Link href="/login" className={styles.lightButton}>Sign In to IntelliTrack <Icon name="arrow" /></Link>
   </div></div></section>;
 }
 

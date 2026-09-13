@@ -1,5 +1,5 @@
 ﻿import type { Metadata } from "next";
-import { LandingHeader, HeroSection, FeatureGrid, LifecycleSection, LandingCTA, LandingFooter } from "@/components/landing/sections";
+import { LandingHeader, HeroSection, WorkspaceRoles, FeatureGrid, LifecycleSection, LandingCTA, LandingFooter } from "@/components/landing/sections";
 import styles from "@/components/landing/landing.module.css";
 
 export const metadata: Metadata = {
@@ -14,6 +14,7 @@ export default function Home() {
       <LandingHeader />
       <main id="landing-main" tabIndex={-1}>
         <HeroSection />
+        <WorkspaceRoles />
         <FeatureGrid />
         <LifecycleSection />
         <LandingCTA />
