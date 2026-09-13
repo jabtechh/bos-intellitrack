@@ -89,7 +89,7 @@ test("attendance prefers assigned Branch, including retired historical Branch, a
 
 test("Branch read context retains existing profile scope and management guards", () => {
   assert.match(read("src/lib/profile/data.ts"), /where:profileTargetWhere\(viewer,targetId\)/);
-  assert.match(read("src/lib/profile/data.ts"), /branch:\{select:\{name:true,address:true\}\}/);
+  assert.match(read("src/lib/profile/data.ts"), /branch: await branchSchemaAvailable\(\)/);
   assert.match(read("src/lib/branches/service.ts"), /await requireCompanyOperationsManager\(\)/);
   assert.match(read("src/lib/auth/require-company-operations-manager.ts"), /userId: user.id, company: \{ companyCode: BO_COFFEE_OFFICE_CODE/);
 });

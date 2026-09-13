@@ -1,0 +1,30 @@
+import type { Prisma } from "@/generated/prisma/client";
+
+// Scalars available before the optional Branch migration. Never spread generated model fields here.
+export const internshipAssignmentBaseSelect = {
+  id: true,
+  internProfileId: true,
+  companyId: true,
+  supervisorProfileId: true,
+  coordinatorProfileId: true,
+  assignmentCode: true,
+  positionTitle: true,
+  department: true,
+  startDate: true,
+  endDate: true,
+  requiredHours: true,
+  requiredHoursConfirmedAt: true,
+  requiredHoursUpdatedById: true,
+  requiredHoursUpdateReason: true,
+  renderedHours: true,
+  scheduleStartTime: true,
+  scheduleEndTime: true,
+  gracePeriodMinutes: true,
+  status: true,
+  notes: true,
+  activatedAt: true,
+  completedAt: true,
+  createdById: true,
+  createdAt: true,
+  updatedAt: true,
+} satisfies Prisma.InternshipAssignmentSelect;

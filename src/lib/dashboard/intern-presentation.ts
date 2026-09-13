@@ -53,11 +53,3 @@ export function formatDashboardMinutes(value: number) {
   const minutes = Math.max(0, Math.floor(value));
   return `${Math.floor(minutes / 60)}h ${String(minutes % 60).padStart(2, "0")}m`;
 }
-
-export async function optionalBranchName(read: () => Promise<{ branch: { name: string } | null } | null>) {
-  try { return (await read())?.branch?.name ?? null; }
-  catch (error) {
-    if (typeof error === "object" && error !== null && "code" in error && ["P2021", "P2022"].includes(String(error.code))) return null;
-    throw error;
-  }
-}

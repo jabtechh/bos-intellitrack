@@ -1,9 +1,11 @@
+import { branchSchemaAvailable } from "@/lib/branches/compatibility";
 import { PageHeader, StatusBadge, EmptyState } from "@/components/ui";
 import { listBranches } from "@/lib/branches/service";
 import { BranchForm } from "./branch-form";
 
 export default async function BranchesPage() {
   const branches = await listBranches();
+  if (!await branchSchemaAvailable()) return <div className="operational-page"><PageHeader eyebrow="Company Operations" title="Branches" description="Branch setup is not initialized. Existing internships continue using their configured workplace and Attendance location." /></div>;
   return <div className="operational-page">
     <PageHeader eyebrow="Company Operations" title="Branches" description="Manage internship worksites and their attendance locations." />
     <details className="ui-card p-5"><summary className="min-h-11 cursor-pointer font-semibold">Add Branch</summary><div className="mt-4"><BranchForm /></div></details>

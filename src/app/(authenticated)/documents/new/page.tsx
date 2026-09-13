@@ -1,3 +1,4 @@
+import { internshipAssignmentBaseSelect } from "@/lib/assignments/projection";
 import Link from "next/link";
 import { uploadInternshipDocument } from "@/app/documents/actions";
 import { PageHeader } from "@/components/ui";
@@ -12,7 +13,7 @@ export default async function NewDocument({ searchParams }: { searchParams: Prom
   if (context.kind !== "INTERN" && !canManageDocuments(context)) return null;
   const assignments = canManageDocuments(context) ? await prisma.internshipAssignment.findMany({
     where: { status: "ACTIVE", ...(context.kind === "REPRESENTATIVE" ? { companyId: context.companyId } : { company: { companyCode: BO_COFFEE_OFFICE_CODE, isActive: true } }), internProfile: { user: { isActive: true } } },
-    include: { internProfile: { include: { user: { select: { id: true, firstName: true, lastName: true } } } } },
+    select: { ...internshipAssignmentBaseSelect,  internProfile: { include: { user: { select: { id: true, firstName: true, lastName: true } } } } },
   }) : [];
   const category = query.category && query.category in CATEGORY_LABELS ? query.category : "INTERNSHIP_REQUIREMENT";
   return <div className="px-5 py-8 sm:px-8 lg:px-12"><section className="mx-auto max-w-3xl">

@@ -1,4 +1,7 @@
 "use server";
+import { branchSchemaAvailable } from "@/lib/branches/compatibility";
+import { internshipAssignmentBaseSelect } from "@/lib/assignments/projection";
+
 
 import { validateAssignmentBranch, requireBranchCompany } from "@/lib/branches/service";
 import { revalidatePath } from "next/cache";
@@ -24,7 +27,7 @@ export async function createAssignment(formData: FormData) {
   try {
     const assignment = await prisma.internshipAssignment.create({
       data: {
-        internProfileId: parsed.data.internProfileId, companyId: parsed.data.companyId, branchId: parsed.data.branchId ?? null,
+        internProfileId: parsed.data.internProfileId, companyId: parsed.data.companyId, ...(await branchSchemaAvailable() ? { branchId: parsed.data.branchId ?? null } : {}),
         supervisorProfileId: parsed.data.supervisorProfileId, coordinatorProfileId: parsed.data.coordinatorProfileId,
         assignmentCode: parsed.data.assignmentCode, positionTitle: parsed.data.positionTitle ?? null,
         department: parsed.data.department ?? null, startDate: toDateOnly(parsed.data.startDate), endDate: toDateOnly(parsed.data.endDate),
@@ -54,7 +57,7 @@ async function transitionAssignment(formData: FormData, target: AssignmentStatus
 
   try {
     await prisma.$transaction(async (tx) => {
-      const assignment = await tx.internshipAssignment.findUnique({ where: { id: assignmentId.data } });
+      const assignment = await tx.internshipAssignment.findUnique({ select: internshipAssignmentBaseSelect,  where: { id: assignmentId.data } });
       if (!assignment) throw new LifecycleError("Assignment not found.");
       if (!canTransition(assignment.status, target)) throw new LifecycleError(`A ${assignment.status.toLowerCase()} assignment cannot be changed to ${target.toLowerCase()}.`);
       if (target === "ACTIVE") {

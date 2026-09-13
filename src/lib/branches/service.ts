@@ -1,3 +1,4 @@
+import { branchSchemaAvailable } from "./compatibility";
 import { branchOperations } from "./operations";
 import { prisma } from "@/lib/prisma";
 import { requireCompanyOperationsManager } from "@/lib/auth/require-company-operations-manager";
@@ -12,13 +13,17 @@ export async function requireBranchCompany() {
 }
 
 const operations = branchOperations(prisma, requireBranchCompany);
-export async function listBranches(activeOnly = false) { return operations.list(activeOnly); }
-export async function getBranch(id: string) { return operations.get(id); }
-export async function saveBranch(input: unknown, id?: string) { return operations.save(input, id); }
-export async function deactivateBranch(id: string) { return operations.deactivate(id); }
+export async function listBranches(activeOnly = false) { await requireBranchCompany(); if (!await branchSchemaAvailable()) return []; return operations.list(activeOnly); }
+export async function getBranch(id: string) { await requireBranchCompany(); if (!await branchSchemaAvailable()) return null; return operations.get(id); }
+export async function saveBranch(input: unknown, id?: string) { await requireBranchCompany(); if (!await branchSchemaAvailable()) throw new Error("Branch setup is not initialized."); return operations.save(input, id); }
+export async function deactivateBranch(id: string) { await requireBranchCompany(); if (!await branchSchemaAvailable()) throw new Error("Branch setup is not initialized."); return operations.deactivate(id); }
 
 // Internal assignment validation; callers must first authorize the operation.
 export async function validateAssignmentBranch(companyId: string, branchId?: string, reader: Pick<typeof prisma, "branch"> = prisma) {
+  if (!await branchSchemaAvailable()) {
+    if (branchId) throw new Error("Branch setup is not initialized.");
+    return;
+  }
   const active = await reader.branch.findMany({ where: { companyId, isActive: true }, select: { id: true } });
   const error = branchSelectionError(branchId, active);
   if (error) throw new Error(error);

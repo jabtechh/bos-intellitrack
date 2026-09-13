@@ -1,3 +1,4 @@
+import { assignmentBranch } from "@/lib/branches/compatibility";
 import localFont from "next/font/local";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
@@ -7,7 +8,7 @@ import { localDate } from "@/lib/attendance/domain";
 import { signedEvidenceUrl } from "@/lib/attendance/storage";
 import { getCalendarItems } from "@/lib/calendar/data";
 import { getInternOnboarding } from "@/lib/onboarding/data";
-import { optionalBranchName, workplaceLabel } from "@/lib/dashboard/intern-presentation";
+import { workplaceLabel } from "@/lib/dashboard/intern-presentation";
 import { AnnouncementReaderSummary } from "./announcement-dashboard-summary";
 import { EmptyState, PageHeader } from "./ui";
 import { InternDashboardView } from "./intern-dashboard";
@@ -40,7 +41,7 @@ export async function InternDashboard({ user }: { user: Awaited<ReturnType<typeo
     prisma.workLog.findUnique({ where: { assignmentId_workDate: { assignmentId: assignment.id, workDate: today } }, select: { id: true, status: true, workDate: true, description: true, skillsApplied: true, learnings: true } }),
     getInternOnboarding(user.id),
     getCalendarItems(viewer, today, calendarEnd),
-    optionalBranchName(() => prisma.internshipAssignment.findFirst({ where: { id: assignment.id, internProfile: { userId: user.id } }, select: { branch: { select: { name: true } } } })),
+    assignmentBranch(assignment.id).then(branch => branch?.name ?? null),
     prisma.attendanceCorrection.count({ where: { requestedById: user.id, status: "PENDING" } }),
   ]);
   const current = assignment.attendance.find(row => row.attendanceDate.getTime() === today.getTime());

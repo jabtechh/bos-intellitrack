@@ -1,4 +1,7 @@
 "use server";
+import { assignmentBranch } from "@/lib/branches/compatibility";
+import { internshipAssignmentBaseSelect } from "@/lib/assignments/projection";
+
 
 import { resolveAttendanceLocation } from "@/lib/branches/domain";
 import { randomUUID } from "node:crypto";
@@ -62,11 +65,11 @@ async function activeInternContext() {
   const user = await requireCurrentUser(); if (user.role !== "INTERN") return { ok: false as const, error: failure("Only active interns can capture attendance.") };
   const profile = await prisma.internProfile.findUnique({ where: { userId: user.id }, select: { id: true } });
   if (!profile) return { ok: false as const, error: failure("Your intern profile is not available.") };
-  const assignment = await prisma.internshipAssignment.findFirst({ where: { internProfileId: profile.id, status: "ACTIVE" }, include: { company: true, branch: true } });
+  const assignment = await prisma.internshipAssignment.findFirst({ where: { internProfileId: profile.id, status: "ACTIVE" }, select: { ...internshipAssignmentBaseSelect,  company: true } });
   if (!assignment) return { ok: false as const, error: failure("No active internship is available.") };
   if (assignment.requiredHours === null) return { ok: false as const, error: failure("Complete required-hours onboarding before recording attendance.") };
   if (!assignment.company.isActive) return { ok: false as const, error: failure("Bo’s Coffee Main Office is not currently available for attendance.") };
-  return { ok: true as const, user, assignment, location: resolveAttendanceLocation(assignment) };
+  return { ok: true as const, user, assignment, location: resolveAttendanceLocation({ ...assignment, branch: await assignmentBranch(assignment.id) }) };
 }
 function parseEvidence(formData: FormData) {
   const coordinates = coordinatesSchema.safeParse({ latitude: formData.get("latitude"), longitude: formData.get("longitude"), accuracy: formData.get("accuracy") });

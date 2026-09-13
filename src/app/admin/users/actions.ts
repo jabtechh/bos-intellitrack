@@ -1,4 +1,7 @@
 "use server";
+import { branchSchemaAvailable } from "@/lib/branches/compatibility";
+import { internshipAssignmentBaseSelect } from "@/lib/assignments/projection";
+
 
 import { validateAssignmentBranch } from "@/lib/branches/service";
 import { revalidatePath } from "next/cache";
@@ -89,7 +92,7 @@ export async function provisionUser(
       if (input.role === "INTERN") {
         await validateAssignmentBranch(office.id, input.branchId, tx);
         const profile = await tx.internProfile.create({ data: { userId: user.id, schoolId: input.schoolId, studentNumber: input.studentNumber, course: input.course, yearLevel: input.yearLevel, section: emptyToNull(input.section) } });
-        await tx.internshipAssignment.create({ data: { internProfileId: profile.id, companyId: office.id, branchId: input.branchId ?? null, supervisorProfileId: input.supervisorProfileId, coordinatorProfileId: input.coordinatorProfileId, assignmentCode: internalInternshipCode(user.id), positionTitle: emptyToNull(input.positionTitle), department: emptyToNull(input.department), startDate: input.startDate, endDate: input.endDate, requiredHours: input.requiredHours, requiredHoursConfirmedAt: new Date(), requiredHoursUpdatedById: administrator.id, scheduleStartTime: timeOnReferenceDate(input.scheduleStartTime), scheduleEndTime: timeOnReferenceDate(input.scheduleEndTime), gracePeriodMinutes: input.gracePeriodMinutes, notes: emptyToNull(input.internshipNotes), status: "ACTIVE", activatedAt: new Date(), createdById: administrator.id } });
+        await tx.internshipAssignment.create({ select: internshipAssignmentBaseSelect,  data: { internProfileId: profile.id, companyId: office.id, ...(await branchSchemaAvailable() ? { branchId: input.branchId ?? null } : {}), supervisorProfileId: input.supervisorProfileId, coordinatorProfileId: input.coordinatorProfileId, assignmentCode: internalInternshipCode(user.id), positionTitle: emptyToNull(input.positionTitle), department: emptyToNull(input.department), startDate: input.startDate, endDate: input.endDate, requiredHours: input.requiredHours, requiredHoursConfirmedAt: new Date(), requiredHoursUpdatedById: administrator.id, scheduleStartTime: timeOnReferenceDate(input.scheduleStartTime), scheduleEndTime: timeOnReferenceDate(input.scheduleEndTime), gracePeriodMinutes: input.gracePeriodMinutes, notes: emptyToNull(input.internshipNotes), status: "ACTIVE", activatedAt: new Date(), createdById: administrator.id } });
       }
       if (input.role === "SUPERVISOR") await tx.supervisorProfile.create({ data: { userId: user.id, companyId: office.id, employeeNumber: emptyToNull(input.employeeNumber), position: input.position, department: emptyToNull(input.department), officeLocation: emptyToNull(input.officeLocation) } });
       if (input.role === "COORDINATOR") await tx.coordinatorProfile.create({ data: { userId: user.id, schoolId: input.schoolId, employeeNumber: emptyToNull(input.employeeNumber), position: input.position, department: emptyToNull(input.department), office: emptyToNull(input.office) } });

@@ -1,3 +1,4 @@
+import { internshipAssignmentBaseSelect } from "@/lib/assignments/projection";
 import Link from "next/link";
 import { DataTable, DataToolbar, EmptyState, MobileRecordCard, PageHeader, StatusBadge } from "@/components/ui";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
@@ -13,7 +14,7 @@ export default async function AttendanceHistoryPage({ searchParams }: { searchPa
   const where = { assignment: { internProfile: { userId: user.id } }, ...(status ? { status } : {}), ...(date ? { attendanceDate: date } : {}) };
   const total = user.role === "INTERN" ? await prisma.attendance.count({ where }) : 0;
   const pages = Math.max(1, Math.ceil(total / perPage)), page = Math.min(requestedPage, pages);
-  const records = user.role === "INTERN" ? await prisma.attendance.findMany({ where, orderBy: { attendanceDate: "desc" }, skip: (page - 1) * perPage, take: perPage, include: { assignment: { include: { company: true } } } }) : [];
+  const records = user.role === "INTERN" ? await prisma.attendance.findMany({ where, orderBy: { attendanceDate: "desc" }, skip: (page - 1) * perPage, take: perPage, include: { assignment: { select: { ...internshipAssignmentBaseSelect,  company: true } } } }) : [];
   const href = (nextPage: number) => `/attendance/history?status=${status ?? ""}&date=${query.date ?? ""}&perPage=${perPage}&page=${nextPage}`;
   const first = total ? (page - 1) * perPage + 1 : 0, last = Math.min(page * perPage, total);
   return <div className="operational-page"><PageHeader eyebrow="Attendance" title="Attendance history" description="Review hours rendered, attendance state, and schedule classification for each internship day." actions={<Link href="/attendance" prefetch className="button button-secondary">Today&apos;s attendance</Link>} />

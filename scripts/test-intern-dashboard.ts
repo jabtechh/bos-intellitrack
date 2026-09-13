@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { dashboardAttendanceState, weeklyAttendance, relevantTasks, workLogAction, dashboardGreeting, workplaceLabel, optionalBranchName, type InternAttendanceRecord, type InternTask, type InternLog } from "../src/lib/dashboard/intern-presentation";
+import { dashboardAttendanceState, weeklyAttendance, relevantTasks, workLogAction, dashboardGreeting, workplaceLabel, type InternAttendanceRecord, type InternTask, type InternLog } from "../src/lib/dashboard/intern-presentation";
 import { creditedMinutesFromAttendance, internshipProgress } from "../src/lib/internship-progress/domain";
 
 const today = new Date("2026-09-16T00:00:00Z"), now = new Date("2026-09-16T05:00:00Z");
@@ -38,11 +38,7 @@ for(const [minutes,percent,remaining] of [[0,0,240],[7200,50,120],[14400,100,0],
 test("progress credits only eligible Attendance, never Work Logs or exception minutes",()=>assert.equal(creditedMinutesFromAttendance([row,{...row,status:"PENDING_REVIEW",creditedMinutes:100},{...row,status:"INCOMPLETE",creditedMinutes:120}]),480));
 test("greeting follows assignment timezone",()=>{assert.equal(dashboardGreeting(new Date("2026-09-16T01:00:00Z"),"Asia/Manila"),"Good morning");assert.equal(dashboardGreeting(now,"Asia/Manila"),"Good afternoon");assert.equal(dashboardGreeting(new Date("2026-09-16T12:00:00Z"),"Asia/Manila"),"Good evening");});
 test("Branch presence and absence use only supplied workplace data",()=>{assert.equal(workplaceLabel("Assigned location","Company","Office"),"Assigned location");assert.equal(workplaceLabel(null,"Company","Office"),"Company · Office");assert.equal(workplaceLabel(null,"Company",null),"Company");});
-test("Branch lookup tolerates only missing schema, never hides authorization or connection failures",async()=>{
-  assert.equal(await optionalBranchName(async()=>({branch:{name:"Assigned location"}})),"Assigned location");assert.equal(await optionalBranchName(async()=>null),null);
-  for(const code of ["P2021","P2022"])assert.equal(await optionalBranchName(async()=>{throw {code};}),null);
-  await assert.rejects(()=>optionalBranchName(async()=>{throw new Error("Connection failed");}),/Connection failed/);
-});
+
 test("Intern loader preserves ownership, exact-date Work Log reads, and private evidence boundaries",()=>{
   const loader=readFileSync("src/components/intern-dashboard-data.tsx","utf8");
   assert.match(loader,/status: "ACTIVE", internProfile: \{ userId: user.id \}/);assert.match(loader,/assignmentId_workDate: \{ assignmentId: assignment.id, workDate: today \}/);assert.match(loader,/signedEvidenceUrl\(current.clockInSelfiePath\)/);assert.match(loader,/hasTimeInSelfie: Boolean\(clockInSelfiePath\)/);assert.doesNotMatch(loader,/\.update\(|\.create\(|\$executeRaw|getPublicUrl/);
