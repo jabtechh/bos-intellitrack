@@ -53,7 +53,7 @@ test("capture reuses existing authoritative Time In and Time Out actions", () =>
 
 test("dashboard and history use Philippine attendance presentation", () => {
   for (const phrase of ["Time in", "Time out", "Time rendered today", "Hours rendered", "Timed in"]) assert.match(dashboard + history, new RegExp(phrase, "i"));
-  assert.match(dashboard, /attendance-details-link/);
+  assert.match(dashboard, /href=\{`\/attendance\/\$\{attendance.id\}`\}/);
   assert.match(history, /DataToolbar/);
   assert.match(history, /name="status"/);
   assert.match(history, /name="date"/);

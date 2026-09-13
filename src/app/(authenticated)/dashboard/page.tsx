@@ -1,22 +1,16 @@
+import { InternDashboard } from "@/components/intern-dashboard-data";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { Icon } from "@/components/icons";
 import { AnnouncementManagerSummary, AnnouncementReaderSummary } from "@/components/announcement-dashboard-summary";
-import { EmptyState, PageHeader, StatusBadge } from "@/components/ui";
+import { EmptyState } from "@/components/ui";
 import { TaskDashboardSummary } from "@/components/task-dashboard-summary";
 import { EvaluationDashboardSummary } from "@/components/evaluation-dashboard-summary";
 import { DocumentDashboardSummary } from "@/components/document-dashboard-summary";
 import { InsightsDashboardSummary } from "@/components/insights-dashboard-summary";
-import { localDate } from "@/lib/attendance/domain";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
 import { requireAnnouncementViewer } from "@/lib/announcements/authorization";
 import { prisma } from "@/lib/prisma";
-import { workLogLabel } from "@/lib/work-logs/domain";
 import { creditedMinutesFromAttendance } from "@/lib/internship-progress/domain";
-import {getCalendarItems} from "@/lib/calendar/data";
-import { DashboardCalendar, InternProgressPanel, WeeklyHours } from "@/components/intern-mobile-dashboard";
-import { DashboardAttendanceCard, type DashboardAttendance } from "@/components/dashboard-attendance-card";
-import { getInternOnboarding } from "@/lib/onboarding/data";
 import { AttentionQueue, DashboardMetricCard, DashboardMetricGrid, DashboardSection, ProgressRow, RoleDashboardHeader } from "@/components/role-dashboard";
 
 export const dynamic = "force-dynamic";
@@ -82,71 +76,4 @@ async function SystemDashboard({ user }: { user: Awaited<ReturnType<typeof requi
   return <div className="dashboard-page role-dashboard"><RoleDashboardHeader eyebrow="System Administrator" name={user.firstName} description="Manage IntelliTrack accounts and technical configuration." action={{ href: "/admin", label: "Open administration" }} /><DashboardMetricGrid><DashboardMetricCard label="User Accounts" value={users} icon="users" tone="info" /><DashboardMetricCard label="Inactive Accounts" value={inactive} icon="review" tone={inactive ? "warning" : "success"} /><DashboardMetricCard label="Partner Schools" value={schools} icon="school" /><DashboardMetricCard label="Active Supervisors" value={supervisors} icon="users" tone="success" /></DashboardMetricGrid><DashboardSection title="System management" description="Technical account and workspace controls."><div className="dashboard-section-links"><Link href="/admin/users">Manage users <Icon name="arrow" /></Link><Link href="/admin/settings/office">Office settings <Icon name="arrow" /></Link></div></DashboardSection></div>;
 }
 
-async function InternDashboard({ user }: { user: Awaited<ReturnType<typeof requireCurrentUser>> }) {
-  const [assignment, announcementViewer] = await Promise.all([
-    prisma.internshipAssignment.findFirst({
-    where: { status: "ACTIVE", internProfile: { userId: user.id } },
-    select: {
-      id: true, status: true, positionTitle: true, department: true, requiredHours: true,
-      scheduleStartTime: true, scheduleEndTime: true, startDate: true, endDate: true,
-      company: { select: { timezone: true } },
-      internProfile: { select: { course: true, yearLevel: true, school: { select: { name: true } } } },
-      supervisorProfile: { select: { user: { select: { firstName: true, lastName: true } } } },
-      attendance: { orderBy: { attendanceDate: "desc" }, select: { id: true, attendanceDate: true, clockIn: true, clockOut: true, workedMinutes:true, creditedMinutes: true, status: true, classification:true, createdAt: true, clockInInsideGeofence:true, clockOutInsideGeofence:true, corrections:{where:{status:"PENDING"},select:{id:true}} } },
-      workLogs: { orderBy: { workDate: "desc" }, take: 5, select: { id: true, workDate: true, title: true, status: true, updatedAt: true } },
-      tasks: { where: { status: { notIn: ["COMPLETED", "CANCELLED"] } }, orderBy: { dueAt: "asc" }, take: 3, select: { id: true, title: true, status: true, dueAt: true } },
-      evaluations: { where: { status: { in: ["SUBMITTED", "ACKNOWLEDGED"] } }, orderBy: { submittedAt: "desc" }, take: 1, select: { id: true, evaluationType: true, overallScore: true, submittedAt: true } },
-      documents: { where: { status: { not: "ARCHIVED" } }, orderBy: { createdAt: "desc" }, take: 3, select: { id: true, fileName: true, status: true, createdAt: true } },
-    },
-  }),
-    requireAnnouncementViewer(),
-  ]);
-  const pendingCorrections = await prisma.attendanceCorrection.count({ where: { requestedById: user.id, status: "PENDING" } });
-  if (!assignment) return <div className="dashboard-page"><PageHeader eyebrow="Intern workspace" title={`Welcome, ${user.firstName}`} description="Your dashboard will become available after an active internship is configured." /><section className="ui-card"><EmptyState title="No active internship" description="Contact your coordinator if you expected an active internship to appear here." /></section></div>;
-
-  const todayDate = localDate(new Date(), assignment.company.timezone);
-  const today = assignment.attendance.find(row => row.attendanceDate.getTime() === todayDate.getTime());
-  const todayLog = assignment.workLogs.find(row => row.workDate.getTime() === todayDate.getTime());
-  const creditedMinutes = creditedMinutesFromAttendance(assignment.attendance);
-  if (assignment.requiredHours === null) redirect("/onboarding/internship-hours");
-  const onboarding = await getInternOnboarding(user.id);
-  const calendarMonth=new Date(Date.UTC(todayDate.getUTCFullYear(),todayDate.getUTCMonth(),1)),calendarItems=await getCalendarItems(announcementViewer,calendarMonth,new Date(Date.UTC(todayDate.getUTCFullYear(),todayDate.getUTCMonth()+1,0,23,59,59)));
-  const daysAttended=new Set(assignment.attendance.filter(row=>row.status==="APPROVED"&&row.creditedMinutes>0).map(row=>row.attendanceDate.toISOString().slice(0,10))).size;
-  const logAction = !todayLog ? { label: "Create work log", href: "/work-logs/new" } : todayLog.status === "DRAFT" ? { label: "Continue draft", href: `/work-logs/${todayLog.id}/edit` } : { label: "View today’s log", href: `/work-logs/${todayLog.id}` };
-  const activities = [
-    ...assignment.attendance.map(row => ({ key: `a-${row.id}`, at: row.createdAt, title: `Attendance ${attendanceLabel(row.status).toLowerCase()}`, detail: formatDate(row.attendanceDate) })),
-    ...assignment.workLogs.map(row => ({ key: `w-${row.id}`, at: row.updatedAt, title: workLogLabel(row.status), detail: row.title })),
-    ...assignment.evaluations.map(row => ({ key: `e-${row.id}`, at: row.submittedAt??new Date(0), title: "Finalized evaluation", detail: `${row.evaluationType.charAt(0)+row.evaluationType.slice(1).toLowerCase()} · ${row.overallScore?.toString()??"Score not provided"}` })),
-    ...assignment.documents.map(row => ({ key: `d-${row.id}`, at: row.createdAt, title: "Document update", detail: row.fileName })),
-  ].sort((a, b) => b.at.getTime() - a.at.getTime()).slice(0, 5);
-  const attendanceState:DashboardAttendance["state"]=!today?"not-started":today.clockIn&&!today.clockOut?"clocked-in":today.status==="PENDING_REVIEW"?"needs-review":"completed";
-  const locationState:DashboardAttendance["evidence"]["location"]=!today?"required":today.clockInInsideGeofence===false||today.clockOutInsideGeofence===false?"issue":today.clockInInsideGeofence===true&&(today.clockOut?today.clockOutInsideGeofence===true:true)?"verified":"captured";
-  const selfieState:DashboardAttendance["evidence"]["selfie"]=!today?.clockIn?"required":"captured";
-  const attendancePresentation:DashboardAttendance={id:today?.id,state:attendanceState,dateLabel:todayDate.toLocaleDateString("en-PH",{weekday:"short",month:"short",day:"numeric",timeZone:"UTC"}),scheduleLabel:schedule(assignment.scheduleStartTime,assignment.scheduleEndTime),clockIn:time(today?.clockIn,assignment.company.timezone),clockInIso:today?.clockIn?.toISOString(),clockOut:time(today?.clockOut,assignment.company.timezone),workedMinutes:today?.workedMinutes,creditedMinutes:today?.creditedMinutes,evidence:{location:locationState,selfie:selfieState},issue:locationState==="issue"?"Location evidence needs attention.":attendanceState==="needs-review"?"Attendance evidence needs attention.":undefined};
-
-  return <div className="dashboard-page">
-    <section className="welcome-panel"><div><p className="eyebrow text-slate-300">Intern workspace</p><h1>Good day, {user.firstName}</h1><p>{assignment.positionTitle ?? "Intern"} · Active · {assignment.internProfile.course}</p><p className="welcome-context">{assignment.internProfile.school.name} · Bo’s Coffee Main Office</p></div></section>
-    <section className="dashboard-grid-primary">
-      <DashboardAttendanceCard attendance={attendancePresentation}/>
-      <article className="ui-card progress-panel"><InternProgressPanel requiredHours={assignment.requiredHours} creditedMinutes={creditedMinutes} daysAttended={daysAttended} reportHref={`/reports/intern/${user.id}/pdf`}/></article>
-    </section>
-    {onboarding && !onboarding.counts.done ? <section className="ui-card onboarding-reminder"><div><p className="eyebrow">Complete your onboarding</p><h2>{onboarding.counts.percentage}% complete</h2><p>{onboarding.counts.yourAction} required item{onboarding.counts.yourAction===1?"":"s"} need your attention</p></div><Link href="/onboarding" className="text-link">Continue onboarding <Icon name="arrow"/></Link></section> : null}
-    <DashboardCalendar items={calendarItems} today={todayDate} timezone={assignment.company.timezone} attendance={assignment.attendance}/>
-    <WeeklyHours attendance={assignment.attendance} today={todayDate}/>
-    <section className="dashboard-grid-secondary">
-      <article className="ui-card worklog-focus"><div className="section-heading"><div><p className="eyebrow">Today’s journal</p><h2>Daily work log</h2></div><StatusBadge tone={todayLog?.status === "SUBMITTED" || todayLog?.status === "APPROVED" ? "info" : "neutral"}>{todayLog ? workLogLabel(todayLog.status) : "Not started"}</StatusBadge></div><p className="mt-3 text-sm leading-6 text-secondary">{todayLog?.title ?? "Record what you worked on and learned today."}</p><Link href={logAction.href} className="button button-secondary mt-5">{logAction.label}<Icon name="arrow" /></Link></article>
-      <article className="ui-card pending-panel"><p className="eyebrow">Pending items</p><h2>Needs attention</h2><Link href="/tasks" className="pending-row"><span className="metric-icon"><Icon name="review" /></span><span><strong>Assigned tasks</strong><small>{assignment.tasks.length ? `${assignment.tasks.length} active or awaiting review` : "No active tasks"}</small></span><Icon name="arrow" /></Link><Link href="/attendance/corrections" className="pending-row"><span className="metric-icon"><Icon name="review" /></span><span><strong>Attendance corrections</strong><small>{pendingCorrections ? `${pendingCorrections} awaiting review` : "No pending requests"}</small></span><Icon name="arrow" /></Link></article>
-    </section>
-    <section className="dashboard-grid-bottom">
-      <article className="ui-card activity-panel"><div className="section-heading"><div><p className="eyebrow">Latest updates</p><h2>Recent activity</h2></div></div>{activities.length ? <ol className="activity-list">{activities.map(item => <li key={item.key}><span className="activity-dot" /><div><strong>{item.title}</strong><p>{item.detail}</p></div></li>)}</ol> : <p className="empty-copy">Your attendance and work-log activity will appear here.</p>}</article>
-      <article className="ui-card internship-panel"><p className="eyebrow">Internship details</p><h2>Your placement</h2><dl><Detail label="Office" value="Bo’s Coffee Main Office" /><Detail label="School" value={assignment.internProfile.school.name} /><Detail label="Program" value={[assignment.internProfile.course, assignment.internProfile.yearLevel].filter(Boolean).join(" · ")} /><Detail label="Supervisor" value={`${assignment.supervisorProfile.user.firstName} ${assignment.supervisorProfile.user.lastName}`} /><Detail label="Team" value={[assignment.positionTitle, assignment.department].filter(Boolean).join(" · ") || "Not specified"} /></dl></article>
-    </section>
-    <AnnouncementReaderSummary viewer={announcementViewer} />
-  </div>;
-}
-
-function Detail({ label, value }: { label: string; value: string }) { return <div><dt>{label}</dt><dd>{value}</dd></div>; }
 function formatDate(value: Date) { return value.toLocaleDateString("en-PH", { dateStyle: "medium", timeZone: "UTC" }); }
-function time(value: Date | null | undefined, timezone: string) { return value ? value.toLocaleTimeString("en-PH", { hour: "numeric", minute: "2-digit", timeZone: timezone }) : "—"; }
-function schedule(start: Date | null, end: Date | null) { const part = (value: Date) => value.toLocaleTimeString("en-PH", { hour: "numeric", minute: "2-digit", timeZone: "UTC" }); return start && end ? `${part(start)}–${part(end)}` : "Not specified"; }
-function attendanceLabel(status: string) { if (status === "PENDING_REVIEW") return "Needs review"; if (status === "APPROVED") return "Auto-approved"; if (status === "CLOCKED_IN") return "Clocked in"; return status.charAt(0) + status.slice(1).toLowerCase().replaceAll("_", " "); }

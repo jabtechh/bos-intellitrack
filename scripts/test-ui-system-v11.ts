@@ -16,11 +16,12 @@ test("authenticated utility bar contains utilities without redundant workspace t
   assert.match(shell, /<ApplicationUtilities/);
 });
 
-test("Intern hero keeps identity context and contains no attendance action", () => {
-  const hero = dashboard.match(/<section className="welcome-panel">[\s\S]*?<\/section>/)?.[0] ?? "";
-  assert.match(hero, /Intern workspace/);
-  assert.match(hero, /Good day/);
-  assert.doesNotMatch(hero, /href="\/attendance"|View attendance/);
+test("Intern summary keeps real identity and existing self-service actions", () => {
+  const view = read("src/components/intern-dashboard.tsx");
+  assert.match(view, /dashboardGreeting\(now, timezone\)/);
+  assert.match(view, /\{firstName\}/);
+  assert.match(view, /href="\/attendance"/);
+  assert.match(view, /logAction.href/);
 });
 
 test("attendance card defines each supported presentation state", () => {
@@ -35,8 +36,8 @@ test("live elapsed time derives locally from the authoritative timestamp without
 });
 
 test("clock actions reuse secure attendance and correction routes", () => {
-  assert.match(attendance, /href="\/attendance"[\s\S]*Time in/);
-  assert.match(attendance, /href="\/attendance"[\s\S]*Time out/);
+  assert.match(attendance, /href="\/attendance"[\s\S]*Time In/);
+  assert.match(attendance, /href="\/attendance"[\s\S]*Time Out/);
   assert.match(attendance, /attendance\/corrections\/new/);
   assert.match(attendance, /\?attendance=/);
 });
