@@ -14,7 +14,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="min-h-11 w-full rounded-md bg-brand-700 px-4 text-sm font-semibold text-white transition-colors hover:bg-brand-600 disabled:cursor-wait disabled:opacity-65"
+      className="min-h-11 w-full rounded-md bg-primary hover:bg-primary-hover px-4 text-sm font-semibold text-white transition-colors disabled:cursor-wait disabled:opacity-65"
     >
       {pending ? "Signing in…" : "Sign in"}
     </button>
@@ -29,7 +29,7 @@ export function LoginForm({ next }: { next?: string }) {
       {next ? <input type="hidden" name="next" value={next} /> : null}
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-primary">
+        <label htmlFor="email" className="block text-sm font-medium text-foreground">
           Email address
         </label>
         <input
@@ -38,12 +38,12 @@ export function LoginForm({ next }: { next?: string }) {
           type="email"
           autoComplete="email"
           required
-          className="mt-2 min-h-11 w-full rounded-md border border-border bg-surface px-3 text-primary shadow-surface"
+          className="mt-2 min-h-11 w-full rounded-md border border-border bg-surface px-3 text-foreground shadow-surface"
         />
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-primary">
+        <label htmlFor="password" className="block text-sm font-medium text-foreground">
           Password
         </label>
         <input
@@ -52,13 +52,13 @@ export function LoginForm({ next }: { next?: string }) {
           type="password"
           autoComplete="current-password"
           required
-          className="mt-2 min-h-11 w-full rounded-md border border-border bg-surface px-3 text-primary shadow-surface"
+          className="mt-2 min-h-11 w-full rounded-md border border-border bg-surface px-3 text-foreground shadow-surface"
         />
       </div>
 
       <div aria-live="polite" aria-atomic="true" className="min-h-6">
         {state.error ? (
-          <p role="alert" className="text-sm font-medium text-red-800">
+          <p role="alert" className="text-sm font-medium text-destructive">
             {state.error}
           </p>
         ) : null}

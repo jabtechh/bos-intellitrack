@@ -33,6 +33,6 @@ export function InsightDetail({ insight, period, values, canChooseIntern }: { in
   </section></div>;
 }
 
-function Panel({title,children}:{title:string;children:React.ReactNode}){return <section className="ui-card p-5 sm:p-6"><h2 className="mb-4 font-semibold text-brand-900">{title}</h2>{children}</section>}
-function Stat({label,value}:{label:string;value:string}){return <div><dt className="text-xs text-muted">{label}</dt><dd className="mt-1 text-lg font-semibold text-brand-900">{value}</dd></div>}
+function Panel({title,children}:{title:string;children:React.ReactNode}){return <section className="ui-card p-5 sm:p-6"><h2 className="mb-4 font-semibold text-foreground">{title}</h2>{children}</section>}
+function Stat({label,value}:{label:string;value:string}){return <div><dt className="text-xs text-muted">{label}</dt><dd className="mt-1 text-lg font-semibold text-foreground">{value}</dd></div>}
 function NotEnough(){return <p className="text-sm text-muted">Not enough data yet.</p>}

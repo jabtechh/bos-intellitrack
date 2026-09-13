@@ -47,6 +47,6 @@ function InternshipProfile({profile,skills,creditedMinutes,isOwn}:{profile:Profi
   </>}
 
 function RoleActivity({profile}:{profile:Profile}){if(profile.supervisorProfile)return <Card title="Internship activity"><Item label="Assigned Interns" value={String(profile.supervisorProfile.assignments.length)}/></Card>;if(profile.coordinatorProfile)return <Card title="Internship activity"><Item label="Monitored Interns" value={String(profile.coordinatorProfile.assignments.length)}/></Card>;return <Card title="IntelliTrack profile"><p className="profile-copy">This profile shows verified role and Main Office context. Operational records remain in their authorized workspaces.</p></Card>}
-function Card({title,children}:{title:string;children:React.ReactNode}){return <section className="ui-card p-5 sm:p-6"><h2 className="mb-4 font-semibold text-brand-900">{title}</h2>{children}</section>}
-function Item({label,value}:{label:string;value:string}){return <dl className="mb-3"><dt className="text-xs text-muted">{label}</dt><dd className="mt-1 text-sm font-semibold text-brand-900">{value}</dd></dl>}
+function Card({title,children}:{title:string;children:React.ReactNode}){return <section className="ui-card p-5 sm:p-6"><h2 className="mb-4 font-semibold text-foreground">{title}</h2>{children}</section>}
+function Item({label,value}:{label:string;value:string}){return <dl className="mb-3"><dt className="text-xs text-muted">{label}</dt><dd className="mt-1 text-sm font-semibold text-foreground">{value}</dd></dl>}
 function Empty(){return <p className="text-sm text-muted">Not enough activity yet.</p>}

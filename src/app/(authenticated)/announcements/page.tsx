@@ -59,10 +59,10 @@ export default async function AnnouncementsPage() {
                   <Link
                     key={row.id}
                     href={`/announcements/${row.id}`}
-                    className="group grid gap-2 p-5 transition-colors hover:bg-stone-50 sm:grid-cols-[minmax(0,1fr)_8rem_7rem_auto] sm:items-center sm:px-6"
+                    className="group grid gap-2 p-5 transition-colors hover:bg-canvas sm:grid-cols-[minmax(0,1fr)_8rem_7rem_auto] sm:items-center sm:px-6"
                   >
                     <div className="min-w-0">
-                      <strong className="block truncate text-sm text-brand-900">
+                      <strong className="block truncate text-sm text-foreground">
                         {row.isPinned ? <Icon name="bell" className="mr-1 inline h-3 w-3" /> : null}
                         {row.title}
                       </strong>

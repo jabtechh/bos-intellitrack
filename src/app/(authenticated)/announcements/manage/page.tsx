@@ -61,10 +61,10 @@ export default async function ManageAnnouncements() {
                   <Link
                     key={row.id}
                     href={`/announcements/${row.id}`}
-                    className="grid gap-3 p-5 transition-colors hover:bg-stone-50 sm:grid-cols-[minmax(0,1fr)_9rem_8rem_8rem_auto] sm:items-center sm:px-6"
+                    className="grid gap-3 p-5 transition-colors hover:bg-canvas sm:grid-cols-[minmax(0,1fr)_9rem_8rem_8rem_auto] sm:items-center sm:px-6"
                   >
                     <div className="min-w-0">
-                      <strong className="block truncate text-sm text-brand-900">{row.title}</strong>
+                      <strong className="block truncate text-sm text-foreground">{row.title}</strong>
                       <small className="text-muted">
                         {AUDIENCE_LABELS[row.audience]} · {PRIORITY_LABELS[row.priority]} priority
                       </small>

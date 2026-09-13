@@ -19,13 +19,13 @@ export default async function LoginPage({
     <main className="login-shell">
       <section className="login-brand-panel">
         <div className="max-w-xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-orange-200">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-200">
             IntelliTrack
           </p>
           <h1 className="mt-5 font-heading text-4xl font-semibold leading-tight sm:text-5xl">
             AI-Powered Internship Management System
           </h1>
-          <p className="mt-6 max-w-lg leading-7 text-stone-200">
+          <p className="mt-6 max-w-lg leading-7 text-slate-200">
             Secure access is limited to accounts provisioned for approved
             Interns, Company Supervisors, School Coordinators, Company Representatives, and System Administrators.
           </p>
@@ -34,10 +34,10 @@ export default async function LoginPage({
 
       <section className="login-form-panel" aria-labelledby="login-title">
         <div className="mx-auto w-full max-w-sm">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent-700">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">
             Account access
           </p>
-          <h2 id="login-title" className="mt-3 font-heading text-3xl font-semibold text-brand-900">
+          <h2 id="login-title" className="mt-3 font-heading text-3xl font-semibold text-foreground">
             Sign in
           </h2>
           <p className="mt-3 text-sm leading-6 text-secondary">

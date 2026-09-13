@@ -19,7 +19,7 @@ export async function AnnouncementReaderSummary({ viewer }: { viewer: Announceme
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border p-5">
         <div>
           <p className="eyebrow">Announcements</p>
-          <h2 className="font-semibold text-brand-900">Latest notices</h2>
+          <h2 className="font-semibold text-foreground">Latest notices</h2>
         </div>
         <Link href="/announcements" className="button button-secondary">
           View all <Icon name="arrow" />
@@ -71,7 +71,7 @@ export async function AnnouncementManagerSummary({ viewer }: { viewer: Announcem
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="eyebrow">Announcements</p>
-            <h2 className="font-semibold text-brand-900">Overview</h2>
+            <h2 className="font-semibold text-foreground">Overview</h2>
           </div>
           <Link href="/announcements/manage" className="button button-secondary">
             Manage <Icon name="arrow" />

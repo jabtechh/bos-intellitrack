@@ -9,7 +9,7 @@ export function BranchForm({ branch }: { branch?: BranchFormValue }) {
   const [state, action, pending] = useActionState(submitBranch, { message: "", success: false });
   return <form action={action} className="grid min-w-0 gap-5 sm:grid-cols-2">
     {branch ? <input type="hidden" name="id" value={branch.id} /> : null}
-    {state.message ? <p role="status" className={`sm:col-span-2 ${state.success ? "text-green-800" : "text-red-800"}`}>{state.message}</p> : null}
+    {state.message ? <p role="status" className={`sm:col-span-2 ${state.success ? "text-success" : "text-destructive"}`}>{state.message}</p> : null}
     <Field label="Branch name" name="name" value={branch?.name} required />
     <Field label="Address" name="address" value={branch?.address} required />
     <Field label="Latitude" name="latitude" value={branch?.latitude} type="number" min={-90} max={90} />
