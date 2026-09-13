@@ -1,6 +1,9 @@
-﻿import type { Metadata } from "next";
-import { LandingHeader, HeroSection, WorkspaceRoles, FeatureGrid, LifecycleSection, LandingCTA, LandingFooter } from "@/components/landing/sections";
+import localFont from "next/font/local";
+import type { Metadata } from "next";
+import { LandingHeader, HeroSection, FeatureGrid, LifecycleSection, LandingCTA, LandingFooter } from "@/components/landing/sections";
 import styles from "@/components/landing/landing.module.css";
+
+const jakarta = localFont({ src: "../components/landing/fonts/PlusJakartaSans.ttf", display: "swap", variable: "--font-landing", weight: "200 800" });
 
 export const metadata: Metadata = {
   title: { absolute: "IntelliTrack | Internship Management" },
@@ -9,12 +12,11 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className={styles.page}>
+    <div className={`${jakarta.variable} ${styles.page}`}>
       <a className={styles.skipLink} href="#landing-main">Skip to main content</a>
       <LandingHeader />
       <main id="landing-main" tabIndex={-1}>
         <HeroSection />
-        <WorkspaceRoles />
         <FeatureGrid />
         <LifecycleSection />
         <LandingCTA />

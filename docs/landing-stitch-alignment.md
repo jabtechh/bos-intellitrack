@@ -1,35 +1,35 @@
-# Public landing page: Stitch alignment
+# Public landing page rebuilt from Stitch
 
-## Reference and scope
+## Source and scope
 
-The supplied screenshot and HTML are available in this checkout at `stitch-design/landingpage/screen.png` and `stitch-design/landingpage/code.html`. The requested `design/stitch/landing-page/` directory is absent. `stitch-design/DESIGN.md` provides the canonical Crimson & Crisp Slate functional palette.
+Visual target: `stitch-design/landingpage/screen.png`. Layout reference: the adjacent `code.html`. Canonical functional palette and typography: the adjacent `DESIGN.md`. The requested `design/stitch/landing-page/` path is absent in this checkout.
 
-Only the public homepage and its CSS module/components were changed. Authenticated screens, global theme, authorization, and database behavior were not modified.
+The public section markup, product preview, and CSS module were replaced outright. The role strip was removed. The route retains static rendering and the existing login destination. Authenticated screens, global CSS, business logic, authorization, and database behavior were not changed.
 
-## Theme investigation
+## Color investigation before rebuilding
 
-The reported white primary buttons and white CTA background were **not reproducible in the current production build** before this revision. Computed styles showed both header/hero primary actions at `rgb(185, 28, 28)` with white text, and the CTA surface at the same crimson. The existing global tokens and Tailwind v4 mapping were already correct following the preceding theme migration. There is no evidence here to attribute the reported screenshots to a new global-token or button-variant defect.
+A real shared `.button.button-primary` element was rendered in the production browser before implementation. Computed colors were `#B91C1C` / `#FFFFFF`, with `#991B1B` on hover. The existing hero primary action also passed. The reported white/washed-out state could not be reproduced, so no speculative global defect is claimed.
 
-The landing page previously depended on global brand variables without fallbacks. Its shared, namespaced brand aliases now supply canonical defaults if those variables are absent. All primary actions and the CTA consume these aliases; individual buttons do not define their own palette. The CTA has both a solid crimson base and a crimson-to-dark-crimson gradient. Browser checks explicitly remove the inherited brand variables and confirm that primary surfaces remain crimson.
+The new public presentation resolves the global functional palette centrally through `--lp-*` aliases with canonical fallbacks. Its common primary-action class supplies crimson and white to all primary links; the CTA supplies a solid crimson base plus a 135-degree crimson-to-dark-crimson gradient. Missing inherited brand variables were tested explicitly: primary surfaces stayed crimson.
 
-## Composition
+## Visual comparison
 
-- Compact white header with centered desktop navigation and prominent Sign In.
-- Tighter two-column hero with a larger desktop frame and floating attendance evidence card.
-- Factual role strip using real IntelliTrack roles, replacing the reference's unverified partner claims.
-- Four balanced feature cards and compact connected lifecycle cards, with intentional mobile stacking.
-- White-on-crimson CTA with a white button, followed by a balanced dark slate footer.
-- Sans-serif heading scope for the public page; Plus Jakarta Sans is preferred when available, with local system fallbacks. No new external font request is required.
+The screenshot target guided the compact header, equal desktop hero columns, four-line desktop headline, substantial desktop frame, overlapping dark evidence card, four feature cards, slate lifecycle section, large crimson invitation panel, and dense dark footer. Unverified partner/metric strips and unsupported claims from the generated reference were omitted.
 
-Preview records remain explicitly illustrative. No biometric claims, invented metrics, support details, or new destinations were added.
+At 1440px the rebuilt header is 72px high, the hero is approximately 712px high, and the preview occupies a 586px column within the 1216px content container. At 1024px it remains two columns. At 768px the preview follows the copy; at 390px actions stack and the evidence panel stays within the viewport. Full screenshots at all four widths were visually inspected against the reference.
+
+Plus Jakarta Sans is now actually served through `next/font/local`, scoped to this page. The original variable font and SIL Open Font License are included under `src/components/landing/fonts/`, sourced from Google Fonts' `ofl/plusjakartasans` directory. Builds and visitors require no external font requests.
 
 ## Validation
 
-- Lint, typecheck, production build, and `git diff --check`: passed.
-- Five existing landing-page tests: passed using Node's native TypeScript support (`node --test scripts/test-landing-page.ts`). The initial tsx runner encountered a host `uv_os_get_passwd` memory error; the tests themselves passed.
-- Production browser screenshots reviewed against Stitch at 390, 768, 1024, and 1440px.
-- No horizontal overflow or broken section anchors at any checked width.
-- Asserted primary crimson/white colors, dark crimson hover, crimson CTA gradient, and white/crimson CTA button.
-- Missing-brand-variable fallback, keyboard skip link, and navigation to the existing login form passed; no browser JavaScript errors.
+- `npm.cmd run lint`: passed.
+- `npm.cmd run typecheck`: passed.
+- `npm.cmd run build`: passed, including production TypeScript and static route generation.
+- `node --test scripts/test-landing-page.ts`: all five existing tests passed.
+- `git diff --check`: passed.
+- Production browser checks at 390, 768, 1024, and 1440px: no horizontal overflow, no broken section anchors, and no browser JavaScript errors.
+- Explicit primary/default/hover, CTA gradient, inverse-button contrast, and missing-brand-token fallback assertions: passed.
+- Keyboard skip link and navigation to the existing login form: passed.
+- Local Jakarta font loaded and role strip absent at every checked width.
 
-Local screenshots and browser verification results are in `artifacts/landing-redesign/` (not committed).
+Uncommitted local evidence: `artifacts/landing-rebuild/theme-proof.png`, `landing-{width}.png`, and `verification.json`.
