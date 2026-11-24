@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { getCompanyReport, hoursLabel, rateLabel } from "@/lib/reports/company";
 import { reportAssignmentWhere, resolveReportViewer } from "@/lib/reports/authorization";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
+import { loadReportAnalytics } from "@/lib/reports/analytics";
+import { ReportAnalyticsPanel } from "@/components/report-analytics";
 
 export default async function Reports(){
   const c=await resolveReportViewer(await requireCurrentUser());
@@ -13,7 +15,7 @@ export default async function Reports(){
   </section></div>;
 
   if(c.kind==="REPRESENTATIVE"){
-    const report=await getCompanyReport(c.companyId);
+    const [report,analytics]=await Promise.all([getCompanyReport(c.companyId),loadReportAnalytics({companyId:c.companyId})]);
     const hoursDescription=report.missingRequiredHoursCount
       ? `${hoursLabel(report.knownRequiredMinutes)} known required hours · ${report.missingRequiredHoursCount} assignment${report.missingRequiredHoursCount===1?"":"s"} missing required hours`
       : `${hoursLabel(report.requiredMinutes)} required hours`;
@@ -27,6 +29,7 @@ export default async function Reports(){
         <Metric title="Final evaluations" value={rateLabel(report.finalEvaluationCompletionRate)} detail={`${report.finalEvaluationsCompleted} of ${report.completedInternships} completed internships`}/>
         <Metric title="Completed internships" value={String(report.internshipStatusCounts.COMPLETED)} detail="Persisted completion status"/>
       </div>
+      <div className="mt-6"><ReportAnalyticsPanel data={analytics} scopeLabel="All Main Office Interns"/></div>
       {report.missingRequiredHoursCount?<p className="inline-notice mt-5">An aggregate required-hours completion percentage is intentionally not shown because some included internships do not yet have required hours.</p>:null}
       <section className="ui-card mt-6 overflow-hidden">
         <div className="border-b border-border px-5 py-4"><h2 className="font-semibold">Internship status</h2><p className="mt-1 text-xs text-muted">Persisted assignment states only—no inferred “on track” status.</p></div>
@@ -43,6 +46,7 @@ export default async function Reports(){
     </section></div>;
   }
 
+  const analytics=await loadReportAnalytics(reportAssignmentWhere(c));
   const rows=await prisma.internshipAssignment.findMany({
     where:reportAssignmentWhere(c),
     select:{id:true,internProfile:{select:{userId:true,user:{select:{firstName:true,lastName:true}},school:{select:{name:true}}}},status:true},
@@ -50,6 +54,7 @@ export default async function Reports(){
   });
   return <div className="px-5 py-8 sm:px-8 lg:px-12"><section className="mx-auto max-w-6xl">
     <PageHeader eyebrow={c.kind==="SUPERVISOR"?"Company Supervisor":"School Coordinator"} title="Internship reports" description={c.kind==="SUPERVISOR"?"Reports for your directly assigned Interns.":"Read-only reports for students in your school scope."}/>
+    <ReportAnalyticsPanel data={analytics} scopeLabel={c.kind==="SUPERVISOR"?"Your assigned Interns":"Students in your school"}/>
     <section className="ui-card overflow-hidden">{rows.length?<div className="divide-y divide-border">{rows.map(x=><Link key={x.id} href={`/reports/intern/${x.internProfile.userId}`} className="grid gap-2 p-5 sm:grid-cols-[1fr_1fr_auto] sm:items-center"><strong>{x.internProfile.user.firstName} {x.internProfile.user.lastName}</strong><span className="text-secondary">{x.internProfile.school.name}</span><StatusBadge>{friendly(x.status)}</StatusBadge></Link>)}</div>:<EmptyState title="No Interns in scope" description="Authorized reports will appear here."/>}</section>
   </section></div>;
 }
