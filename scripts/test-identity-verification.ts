@@ -206,9 +206,9 @@ test("5/6. an approved reference with a passing match (and passing liveness when
   const live = await verify(withLiveness); assert.equal(live.outcome, "VERIFIED"); assert.equal(withLiveness.repo.attempts.at(-1)!.liveness, "PASSED");
 });
 
-test("7. a face mismatch fails verification and is flagged, not approved", async () => {
+test("7. a face mismatch fails verification and blocks the attendance (Amendment C)", async () => {
   const env = setup(); await approvedReference(env); env.provider!.set({ comparison: { kind: "scored", similarity: 0.42 } });
-  const result = await verify(env, "CLOCK_OUT"); assert.equal(result.outcome, "FACE_MISMATCH"); assert.equal(result.disposition, "ACCEPT_FLAGGED");
+  const result = await verify(env, "CLOCK_OUT"); assert.equal(result.outcome, "FACE_MISMATCH"); assert.equal(result.disposition, "BLOCK"); assert.match(result.message, /was not recorded/);
   assert.equal(env.repo.attempts.at(-1)!.faceMatch, "NO_MATCH");
 });
 
@@ -295,7 +295,7 @@ test("decision table and dispositions", () => {
   assert.equal(decideVerification({ liveness: { status: "FAILED" }, comparison: scored(0.99), threshold: 0.9 }).outcome, "LIVENESS_FAILED");
   assert.equal(decideVerification({ liveness: { status: "PASSED" }, comparison: scored(Number.NaN), threshold: 0.9 }).outcome, "FACE_MISMATCH");
   assert.deepEqual(["VERIFIED", "FACE_MISMATCH", "LIVENESS_FAILED", "INCONCLUSIVE", "PROVIDER_UNAVAILABLE", "NO_APPROVED_REFERENCE", "SESSION_REJECTED"].map((o) => attendanceDisposition(o as never)),
-    ["ACCEPT_VERIFIED", "ACCEPT_FLAGGED", "ACCEPT_FLAGGED", "ACCEPT_FLAGGED", "BLOCK", "BLOCK", "BLOCK"]);
+    ["ACCEPT_VERIFIED", "BLOCK", "ACCEPT_FLAGGED", "ACCEPT_FLAGGED", "BLOCK", "BLOCK", "BLOCK"]);
 });
 
 test("unverified identity forces review with zero credited minutes; legacy (null) records are unchanged", () => {

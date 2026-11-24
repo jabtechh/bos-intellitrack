@@ -41,17 +41,21 @@ export function decideVerification(input: { liveness: LivenessCheck; comparison:
 
 function clampSimilarity(value: number) { return Number.isFinite(value) ? Math.min(1, Math.max(0, value)) : 0; }
 
-/** Verified → normal attendance rules; doubtful → recorded but flagged for Supervisor review (0 credit); otherwise blocked. */
+/**
+ * Verified → normal attendance rules. A different person's face (FACE_MISMATCH) is BLOCKED: nothing is recorded
+ * (DEC-2026-019 Amendment C). Doubtful captures (unclear photo, failed liveness) are recorded but flagged for
+ * Supervisor review with 0 credit, so a genuine Intern is not locked out by lighting. Everything else is blocked.
+ */
 export function attendanceDisposition(outcome: VerificationOutcome): AttendanceDisposition {
   if (outcome === "VERIFIED") return "ACCEPT_VERIFIED";
-  if (outcome === "FACE_MISMATCH" || outcome === "LIVENESS_FAILED" || outcome === "INCONCLUSIVE") return "ACCEPT_FLAGGED";
+  if (outcome === "LIVENESS_FAILED" || outcome === "INCONCLUSIVE") return "ACCEPT_FLAGGED";
   return "BLOCK";
 }
 
 export function outcomeMessage(outcome: VerificationOutcome, reason: string | null): string {
   switch (outcome) {
     case "VERIFIED": return "Identity confirmed.";
-    case "FACE_MISMATCH": return "Your selfie did not match your face photo. Your Supervisor will review this attendance before any hours are credited.";
+    case "FACE_MISMATCH": return "This selfie does not match your saved face photo, so your attendance was not recorded. Retake the selfie with your own face. If your appearance has changed, ask your Supervisor to reset your face photo.";
     case "LIVENESS_FAILED": return "The live capture check did not pass. Your Supervisor will review this attendance before any hours are credited.";
     case "INCONCLUSIVE": return "We couldn't confirm your identity from this selfie. Your Supervisor will review this attendance before any hours are credited. Next time, face the camera in good light with only you in frame.";
     case "PROVIDER_UNAVAILABLE": return "Identity verification is temporarily unavailable, so attendance was not recorded. Try again in a few minutes or tell your Supervisor.";

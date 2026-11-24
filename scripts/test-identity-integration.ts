@@ -132,19 +132,23 @@ async function workflow(t: TestContext, tx: Prisma.TransactionClient) {
     assert.deepEqual(attempts.map((a) => [a.purpose, a.outcome, a.referenceId]), [["CLOCK_IN", "VERIFIED", referenceA], ["CLOCK_OUT", "VERIFIED", referenceA]], "both checks used the same approved reference");
   });
 
-  await t.test("6/5/11. failed liveness on Time In and a mismatched face on Time Out are recorded but never credited", async () => {
+  await t.test("6/5/11. failed liveness is recorded but never credited; a different person's face is blocked (Amendment C)", async () => {
     now = new Date("2026-11-25T00:30:00Z");
     provider.set({ liveness: { status: "FAILED" } });
     const timeIn = await clock("in", contextA); assert(timeIn.success); assert.match(timeIn.message, /Supervisor will review/);
     provider.set({ comparison: { kind: "scored", similarity: 0.2 } });
     now = new Date("2026-11-25T08:30:00Z");
-    const timeOut = await clock("out", contextA); assert(timeOut.success); assert.match(timeOut.message, /did not match/);
+    const blocked = await clock("out", contextA); assert.equal(blocked.success, false, "a different face cannot record Time Out"); assert.match(blocked.message, /does not match your saved face photo/);
+    const stillOpen = await tx.attendance.findUniqueOrThrow({ where: { id: timeIn.attendanceId! } });
+    assert.equal(stillOpen.clockOut, null, "nothing was recorded for the blocked Time Out");
+    assert.equal(await tx.identityVerificationAttempt.count({ where: { internProfileId: internA.id, purpose: "CLOCK_OUT", outcome: "FACE_MISMATCH", attendanceId: null } }) >= 1, true, "the blocked attempt is kept for audit");
+    provider.set({});
+    const timeOut = await clock("out", contextA); assert(timeOut.success, timeOut.message);
     const row = await tx.attendance.findUniqueOrThrow({ where: { id: timeIn.attendanceId! } });
     assert.equal(row.status, "PENDING_REVIEW"); assert.equal(row.reviewRequired, true); assert.equal(row.creditedMinutes, 0);
-    assert.equal(row.clockInIdentityVerified, false); assert.equal(row.clockOutIdentityVerified, false);
+    assert.equal(row.clockInIdentityVerified, false); assert.equal(row.clockOutIdentityVerified, true);
     const outcomes = (await tx.identityVerificationAttempt.findMany({ where: { attendanceId: row.id }, orderBy: { createdAt: "asc" } })).map((a) => a.outcome);
-    assert.deepEqual(outcomes, ["LIVENESS_FAILED", "FACE_MISMATCH"]);
-    provider.set({});
+    assert.deepEqual(outcomes, ["LIVENESS_FAILED", "VERIFIED"]);
   });
 
   await t.test("release switch off: attendance works as before with no face check and no identity flags", async () => {
