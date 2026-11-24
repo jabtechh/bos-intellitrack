@@ -261,3 +261,76 @@ export const PortfolioStatus = {
 } as const
 
 export type PortfolioStatus = (typeof PortfolioStatus)[keyof typeof PortfolioStatus]
+
+
+export const CertificateStatus = {
+  ISSUED: 'ISSUED',
+  REVOKED: 'REVOKED'
+} as const
+
+export type CertificateStatus = (typeof CertificateStatus)[keyof typeof CertificateStatus]
+
+
+export const IdentityReferenceStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  SUPERSEDED: 'SUPERSEDED'
+} as const
+
+export type IdentityReferenceStatus = (typeof IdentityReferenceStatus)[keyof typeof IdentityReferenceStatus]
+
+
+export const IdentityReferenceAction = {
+  ENROLLED: 'ENROLLED',
+  REPLACEMENT_REQUESTED: 'REPLACEMENT_REQUESTED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  SUPERSEDED: 'SUPERSEDED'
+} as const
+
+export type IdentityReferenceAction = (typeof IdentityReferenceAction)[keyof typeof IdentityReferenceAction]
+
+
+export const IdentityCapturePurpose = {
+  ENROLLMENT: 'ENROLLMENT',
+  CLOCK_IN: 'CLOCK_IN',
+  CLOCK_OUT: 'CLOCK_OUT'
+} as const
+
+export type IdentityCapturePurpose = (typeof IdentityCapturePurpose)[keyof typeof IdentityCapturePurpose]
+
+
+export const IdentityVerificationOutcome = {
+  VERIFIED: 'VERIFIED',
+  FACE_MISMATCH: 'FACE_MISMATCH',
+  LIVENESS_FAILED: 'LIVENESS_FAILED',
+  INCONCLUSIVE: 'INCONCLUSIVE',
+  PROVIDER_UNAVAILABLE: 'PROVIDER_UNAVAILABLE',
+  NO_APPROVED_REFERENCE: 'NO_APPROVED_REFERENCE',
+  SESSION_REJECTED: 'SESSION_REJECTED'
+} as const
+
+export type IdentityVerificationOutcome = (typeof IdentityVerificationOutcome)[keyof typeof IdentityVerificationOutcome]
+
+
+export const LivenessCheckResult = {
+  PASSED: 'PASSED',
+  FAILED: 'FAILED',
+  INCONCLUSIVE: 'INCONCLUSIVE',
+  NOT_CONFIGURED: 'NOT_CONFIGURED',
+  ERROR: 'ERROR'
+} as const
+
+export type LivenessCheckResult = (typeof LivenessCheckResult)[keyof typeof LivenessCheckResult]
+
+
+export const FaceMatchCheckResult = {
+  MATCH: 'MATCH',
+  NO_MATCH: 'NO_MATCH',
+  INCONCLUSIVE: 'INCONCLUSIVE',
+  ERROR: 'ERROR',
+  NOT_RUN: 'NOT_RUN'
+} as const
+
+export type FaceMatchCheckResult = (typeof FaceMatchCheckResult)[keyof typeof FaceMatchCheckResult]

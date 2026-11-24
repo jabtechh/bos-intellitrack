@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { DOCUMENT_REQUIREMENTS, onboardingCounts } from "./domain";
+import { identityVerificationEnabled } from "@/lib/identity/config";
 
 export async function getInternOnboarding(userId: string) {
   const profile = await prisma.internProfile.findUnique({
@@ -8,6 +9,7 @@ export async function getInternOnboarding(userId: string) {
       course: true, address: true, emergencyContactName: true, emergencyContactNumber: true,
       user: { select: { firstName: true, phoneNumber: true, profilePhotoPath: true } },
       school: { select: { name: true } },
+      identityReferences: { where: { status: "APPROVED" }, take: 1, select: { id: true } },
       assignments: { where: { status: "ACTIVE" }, take: 1, select: {
         id: true, positionTitle: true, requiredHours: true, company: { select: { name: true } },
         supervisorProfile: { select: { user: { select: { firstName: true, lastName: true } } } },
@@ -20,5 +22,6 @@ export async function getInternOnboarding(userId: string) {
   const documents = Object.fromEntries(DOCUMENT_REQUIREMENTS.map((requirement) => [requirement.key, assignment.documents.find((document) => document.fileName.trim().toLowerCase() === requirement.title.toLowerCase()) ?? null]));
   const presence = Object.fromEntries(Object.entries(documents).map(([key, value]) => [key, Boolean(value)]));
   const profileComplete = Boolean(profile.user.phoneNumber && profile.address && profile.emergencyContactName && profile.emergencyContactNumber);
-  return { profile, assignment, documents, profileComplete, counts: onboardingCounts({ passwordChanged: true, profileComplete, documents: presence }) };
+  const facePhotoComplete = profile.identityReferences.length > 0;
+  return { profile, assignment, documents, profileComplete, facePhotoComplete, counts: onboardingCounts({ passwordChanged: true, profileComplete, documents: presence, facePhoto: identityVerificationEnabled() ? facePhotoComplete : undefined }) };
 }

@@ -39,6 +39,7 @@ export type EvaluationMinAggregateOutputType = {
   assignmentId: string | null
   evaluatorId: string | null
   evaluationType: $Enums.EvaluationType | null
+  periodKey: string | null
   evaluationDate: Date | null
   periodStart: Date | null
   periodEnd: Date | null
@@ -60,6 +61,7 @@ export type EvaluationMaxAggregateOutputType = {
   assignmentId: string | null
   evaluatorId: string | null
   evaluationType: $Enums.EvaluationType | null
+  periodKey: string | null
   evaluationDate: Date | null
   periodStart: Date | null
   periodEnd: Date | null
@@ -81,6 +83,7 @@ export type EvaluationCountAggregateOutputType = {
   assignmentId: number
   evaluatorId: number
   evaluationType: number
+  periodKey: number
   evaluationDate: number
   periodStart: number
   periodEnd: number
@@ -113,6 +116,7 @@ export type EvaluationMinAggregateInputType = {
   assignmentId?: true
   evaluatorId?: true
   evaluationType?: true
+  periodKey?: true
   evaluationDate?: true
   periodStart?: true
   periodEnd?: true
@@ -134,6 +138,7 @@ export type EvaluationMaxAggregateInputType = {
   assignmentId?: true
   evaluatorId?: true
   evaluationType?: true
+  periodKey?: true
   evaluationDate?: true
   periodStart?: true
   periodEnd?: true
@@ -155,6 +160,7 @@ export type EvaluationCountAggregateInputType = {
   assignmentId?: true
   evaluatorId?: true
   evaluationType?: true
+  periodKey?: true
   evaluationDate?: true
   periodStart?: true
   periodEnd?: true
@@ -264,6 +270,7 @@ export type EvaluationGroupByOutputType = {
   assignmentId: string
   evaluatorId: string
   evaluationType: $Enums.EvaluationType
+  periodKey: string
   evaluationDate: Date
   periodStart: Date | null
   periodEnd: Date | null
@@ -309,6 +316,7 @@ export type EvaluationWhereInput = {
   assignmentId?: Prisma.UuidFilter<"Evaluation"> | string
   evaluatorId?: Prisma.UuidFilter<"Evaluation"> | string
   evaluationType?: Prisma.EnumEvaluationTypeFilter<"Evaluation"> | $Enums.EvaluationType
+  periodKey?: Prisma.StringFilter<"Evaluation"> | string
   evaluationDate?: Prisma.DateTimeFilter<"Evaluation"> | Date | string
   periodStart?: Prisma.DateTimeNullableFilter<"Evaluation"> | Date | string | null
   periodEnd?: Prisma.DateTimeNullableFilter<"Evaluation"> | Date | string | null
@@ -334,6 +342,7 @@ export type EvaluationOrderByWithRelationInput = {
   assignmentId?: Prisma.SortOrder
   evaluatorId?: Prisma.SortOrder
   evaluationType?: Prisma.SortOrder
+  periodKey?: Prisma.SortOrder
   evaluationDate?: Prisma.SortOrder
   periodStart?: Prisma.SortOrderInput | Prisma.SortOrder
   periodEnd?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -356,13 +365,14 @@ export type EvaluationOrderByWithRelationInput = {
 
 export type EvaluationWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  assignmentId_evaluationType?: Prisma.EvaluationAssignmentIdEvaluationTypeCompoundUniqueInput
+  assignmentId_evaluationType_periodKey?: Prisma.EvaluationAssignmentIdEvaluationTypePeriodKeyCompoundUniqueInput
   AND?: Prisma.EvaluationWhereInput | Prisma.EvaluationWhereInput[]
   OR?: Prisma.EvaluationWhereInput[]
   NOT?: Prisma.EvaluationWhereInput | Prisma.EvaluationWhereInput[]
   assignmentId?: Prisma.UuidFilter<"Evaluation"> | string
   evaluatorId?: Prisma.UuidFilter<"Evaluation"> | string
   evaluationType?: Prisma.EnumEvaluationTypeFilter<"Evaluation"> | $Enums.EvaluationType
+  periodKey?: Prisma.StringFilter<"Evaluation"> | string
   evaluationDate?: Prisma.DateTimeFilter<"Evaluation"> | Date | string
   periodStart?: Prisma.DateTimeNullableFilter<"Evaluation"> | Date | string | null
   periodEnd?: Prisma.DateTimeNullableFilter<"Evaluation"> | Date | string | null
@@ -381,13 +391,14 @@ export type EvaluationWhereUniqueInput = Prisma.AtLeast<{
   assignment?: Prisma.XOR<Prisma.InternshipAssignmentScalarRelationFilter, Prisma.InternshipAssignmentWhereInput>
   evaluator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   acknowledgedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-}, "id" | "assignmentId_evaluationType">
+}, "id" | "assignmentId_evaluationType_periodKey">
 
 export type EvaluationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   assignmentId?: Prisma.SortOrder
   evaluatorId?: Prisma.SortOrder
   evaluationType?: Prisma.SortOrder
+  periodKey?: Prisma.SortOrder
   evaluationDate?: Prisma.SortOrder
   periodStart?: Prisma.SortOrderInput | Prisma.SortOrder
   periodEnd?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -418,6 +429,7 @@ export type EvaluationScalarWhereWithAggregatesInput = {
   assignmentId?: Prisma.UuidWithAggregatesFilter<"Evaluation"> | string
   evaluatorId?: Prisma.UuidWithAggregatesFilter<"Evaluation"> | string
   evaluationType?: Prisma.EnumEvaluationTypeWithAggregatesFilter<"Evaluation"> | $Enums.EvaluationType
+  periodKey?: Prisma.StringWithAggregatesFilter<"Evaluation"> | string
   evaluationDate?: Prisma.DateTimeWithAggregatesFilter<"Evaluation"> | Date | string
   periodStart?: Prisma.DateTimeNullableWithAggregatesFilter<"Evaluation"> | Date | string | null
   periodEnd?: Prisma.DateTimeNullableWithAggregatesFilter<"Evaluation"> | Date | string | null
@@ -438,6 +450,7 @@ export type EvaluationScalarWhereWithAggregatesInput = {
 export type EvaluationCreateInput = {
   id?: string
   evaluationType: $Enums.EvaluationType
+  periodKey: string
   evaluationDate: Date | string
   periodStart?: Date | string | null
   periodEnd?: Date | string | null
@@ -462,6 +475,7 @@ export type EvaluationUncheckedCreateInput = {
   assignmentId: string
   evaluatorId: string
   evaluationType: $Enums.EvaluationType
+  periodKey: string
   evaluationDate: Date | string
   periodStart?: Date | string | null
   periodEnd?: Date | string | null
@@ -482,6 +496,7 @@ export type EvaluationUncheckedCreateInput = {
 export type EvaluationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationType?: Prisma.EnumEvaluationTypeFieldUpdateOperationsInput | $Enums.EvaluationType
+  periodKey?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -506,6 +521,7 @@ export type EvaluationUncheckedUpdateInput = {
   assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
   evaluatorId?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationType?: Prisma.EnumEvaluationTypeFieldUpdateOperationsInput | $Enums.EvaluationType
+  periodKey?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -528,6 +544,7 @@ export type EvaluationCreateManyInput = {
   assignmentId: string
   evaluatorId: string
   evaluationType: $Enums.EvaluationType
+  periodKey: string
   evaluationDate: Date | string
   periodStart?: Date | string | null
   periodEnd?: Date | string | null
@@ -548,6 +565,7 @@ export type EvaluationCreateManyInput = {
 export type EvaluationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationType?: Prisma.EnumEvaluationTypeFieldUpdateOperationsInput | $Enums.EvaluationType
+  periodKey?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -569,6 +587,7 @@ export type EvaluationUncheckedUpdateManyInput = {
   assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
   evaluatorId?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationType?: Prisma.EnumEvaluationTypeFieldUpdateOperationsInput | $Enums.EvaluationType
+  periodKey?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -596,9 +615,10 @@ export type EvaluationOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type EvaluationAssignmentIdEvaluationTypeCompoundUniqueInput = {
+export type EvaluationAssignmentIdEvaluationTypePeriodKeyCompoundUniqueInput = {
   assignmentId: string
   evaluationType: $Enums.EvaluationType
+  periodKey: string
 }
 
 export type EvaluationCountOrderByAggregateInput = {
@@ -606,6 +626,7 @@ export type EvaluationCountOrderByAggregateInput = {
   assignmentId?: Prisma.SortOrder
   evaluatorId?: Prisma.SortOrder
   evaluationType?: Prisma.SortOrder
+  periodKey?: Prisma.SortOrder
   evaluationDate?: Prisma.SortOrder
   periodStart?: Prisma.SortOrder
   periodEnd?: Prisma.SortOrder
@@ -632,6 +653,7 @@ export type EvaluationMaxOrderByAggregateInput = {
   assignmentId?: Prisma.SortOrder
   evaluatorId?: Prisma.SortOrder
   evaluationType?: Prisma.SortOrder
+  periodKey?: Prisma.SortOrder
   evaluationDate?: Prisma.SortOrder
   periodStart?: Prisma.SortOrder
   periodEnd?: Prisma.SortOrder
@@ -653,6 +675,7 @@ export type EvaluationMinOrderByAggregateInput = {
   assignmentId?: Prisma.SortOrder
   evaluatorId?: Prisma.SortOrder
   evaluationType?: Prisma.SortOrder
+  periodKey?: Prisma.SortOrder
   evaluationDate?: Prisma.SortOrder
   periodStart?: Prisma.SortOrder
   periodEnd?: Prisma.SortOrder
@@ -810,6 +833,7 @@ export type EnumEvaluationStatusFieldUpdateOperationsInput = {
 export type EvaluationCreateWithoutEvaluatorInput = {
   id?: string
   evaluationType: $Enums.EvaluationType
+  periodKey: string
   evaluationDate: Date | string
   periodStart?: Date | string | null
   periodEnd?: Date | string | null
@@ -832,6 +856,7 @@ export type EvaluationUncheckedCreateWithoutEvaluatorInput = {
   id?: string
   assignmentId: string
   evaluationType: $Enums.EvaluationType
+  periodKey: string
   evaluationDate: Date | string
   periodStart?: Date | string | null
   periodEnd?: Date | string | null
@@ -862,6 +887,7 @@ export type EvaluationCreateManyEvaluatorInputEnvelope = {
 export type EvaluationCreateWithoutAcknowledgedByInput = {
   id?: string
   evaluationType: $Enums.EvaluationType
+  periodKey: string
   evaluationDate: Date | string
   periodStart?: Date | string | null
   periodEnd?: Date | string | null
@@ -885,6 +911,7 @@ export type EvaluationUncheckedCreateWithoutAcknowledgedByInput = {
   assignmentId: string
   evaluatorId: string
   evaluationType: $Enums.EvaluationType
+  periodKey: string
   evaluationDate: Date | string
   periodStart?: Date | string | null
   periodEnd?: Date | string | null
@@ -935,6 +962,7 @@ export type EvaluationScalarWhereInput = {
   assignmentId?: Prisma.UuidFilter<"Evaluation"> | string
   evaluatorId?: Prisma.UuidFilter<"Evaluation"> | string
   evaluationType?: Prisma.EnumEvaluationTypeFilter<"Evaluation"> | $Enums.EvaluationType
+  periodKey?: Prisma.StringFilter<"Evaluation"> | string
   evaluationDate?: Prisma.DateTimeFilter<"Evaluation"> | Date | string
   periodStart?: Prisma.DateTimeNullableFilter<"Evaluation"> | Date | string | null
   periodEnd?: Prisma.DateTimeNullableFilter<"Evaluation"> | Date | string | null
@@ -971,6 +999,7 @@ export type EvaluationUpdateManyWithWhereWithoutAcknowledgedByInput = {
 export type EvaluationCreateWithoutAssignmentInput = {
   id?: string
   evaluationType: $Enums.EvaluationType
+  periodKey: string
   evaluationDate: Date | string
   periodStart?: Date | string | null
   periodEnd?: Date | string | null
@@ -993,6 +1022,7 @@ export type EvaluationUncheckedCreateWithoutAssignmentInput = {
   id?: string
   evaluatorId: string
   evaluationType: $Enums.EvaluationType
+  periodKey: string
   evaluationDate: Date | string
   periodStart?: Date | string | null
   periodEnd?: Date | string | null
@@ -1040,6 +1070,7 @@ export type EvaluationCreateManyEvaluatorInput = {
   id?: string
   assignmentId: string
   evaluationType: $Enums.EvaluationType
+  periodKey: string
   evaluationDate: Date | string
   periodStart?: Date | string | null
   periodEnd?: Date | string | null
@@ -1062,6 +1093,7 @@ export type EvaluationCreateManyAcknowledgedByInput = {
   assignmentId: string
   evaluatorId: string
   evaluationType: $Enums.EvaluationType
+  periodKey: string
   evaluationDate: Date | string
   periodStart?: Date | string | null
   periodEnd?: Date | string | null
@@ -1081,6 +1113,7 @@ export type EvaluationCreateManyAcknowledgedByInput = {
 export type EvaluationUpdateWithoutEvaluatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationType?: Prisma.EnumEvaluationTypeFieldUpdateOperationsInput | $Enums.EvaluationType
+  periodKey?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1103,6 +1136,7 @@ export type EvaluationUncheckedUpdateWithoutEvaluatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationType?: Prisma.EnumEvaluationTypeFieldUpdateOperationsInput | $Enums.EvaluationType
+  periodKey?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1124,6 +1158,7 @@ export type EvaluationUncheckedUpdateManyWithoutEvaluatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationType?: Prisma.EnumEvaluationTypeFieldUpdateOperationsInput | $Enums.EvaluationType
+  periodKey?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1144,6 +1179,7 @@ export type EvaluationUncheckedUpdateManyWithoutEvaluatorInput = {
 export type EvaluationUpdateWithoutAcknowledgedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationType?: Prisma.EnumEvaluationTypeFieldUpdateOperationsInput | $Enums.EvaluationType
+  periodKey?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1167,6 +1203,7 @@ export type EvaluationUncheckedUpdateWithoutAcknowledgedByInput = {
   assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
   evaluatorId?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationType?: Prisma.EnumEvaluationTypeFieldUpdateOperationsInput | $Enums.EvaluationType
+  periodKey?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1188,6 +1225,7 @@ export type EvaluationUncheckedUpdateManyWithoutAcknowledgedByInput = {
   assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
   evaluatorId?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationType?: Prisma.EnumEvaluationTypeFieldUpdateOperationsInput | $Enums.EvaluationType
+  periodKey?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1208,6 +1246,7 @@ export type EvaluationCreateManyAssignmentInput = {
   id?: string
   evaluatorId: string
   evaluationType: $Enums.EvaluationType
+  periodKey: string
   evaluationDate: Date | string
   periodStart?: Date | string | null
   periodEnd?: Date | string | null
@@ -1228,6 +1267,7 @@ export type EvaluationCreateManyAssignmentInput = {
 export type EvaluationUpdateWithoutAssignmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationType?: Prisma.EnumEvaluationTypeFieldUpdateOperationsInput | $Enums.EvaluationType
+  periodKey?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1250,6 +1290,7 @@ export type EvaluationUncheckedUpdateWithoutAssignmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   evaluatorId?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationType?: Prisma.EnumEvaluationTypeFieldUpdateOperationsInput | $Enums.EvaluationType
+  periodKey?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1271,6 +1312,7 @@ export type EvaluationUncheckedUpdateManyWithoutAssignmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   evaluatorId?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationType?: Prisma.EnumEvaluationTypeFieldUpdateOperationsInput | $Enums.EvaluationType
+  periodKey?: Prisma.StringFieldUpdateOperationsInput | string
   evaluationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodStart?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   periodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1295,6 +1337,7 @@ export type EvaluationSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   assignmentId?: boolean
   evaluatorId?: boolean
   evaluationType?: boolean
+  periodKey?: boolean
   evaluationDate?: boolean
   periodStart?: boolean
   periodEnd?: boolean
@@ -1320,6 +1363,7 @@ export type EvaluationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   assignmentId?: boolean
   evaluatorId?: boolean
   evaluationType?: boolean
+  periodKey?: boolean
   evaluationDate?: boolean
   periodStart?: boolean
   periodEnd?: boolean
@@ -1345,6 +1389,7 @@ export type EvaluationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   assignmentId?: boolean
   evaluatorId?: boolean
   evaluationType?: boolean
+  periodKey?: boolean
   evaluationDate?: boolean
   periodStart?: boolean
   periodEnd?: boolean
@@ -1370,6 +1415,7 @@ export type EvaluationSelectScalar = {
   assignmentId?: boolean
   evaluatorId?: boolean
   evaluationType?: boolean
+  periodKey?: boolean
   evaluationDate?: boolean
   periodStart?: boolean
   periodEnd?: boolean
@@ -1387,7 +1433,7 @@ export type EvaluationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type EvaluationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentId" | "evaluatorId" | "evaluationType" | "evaluationDate" | "periodStart" | "periodEnd" | "criteriaScores" | "overallScore" | "strengths" | "areasForImprovement" | "comments" | "aiSummary" | "status" | "submittedAt" | "acknowledgedById" | "acknowledgedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["evaluation"]>
+export type EvaluationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentId" | "evaluatorId" | "evaluationType" | "periodKey" | "evaluationDate" | "periodStart" | "periodEnd" | "criteriaScores" | "overallScore" | "strengths" | "areasForImprovement" | "comments" | "aiSummary" | "status" | "submittedAt" | "acknowledgedById" | "acknowledgedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["evaluation"]>
 export type EvaluationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignment?: boolean | Prisma.InternshipAssignmentDefaultArgs<ExtArgs>
   evaluator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1416,6 +1462,7 @@ export type $EvaluationPayload<ExtArgs extends runtime.Types.Extensions.Internal
     assignmentId: string
     evaluatorId: string
     evaluationType: $Enums.EvaluationType
+    periodKey: string
     evaluationDate: Date
     periodStart: Date | null
     periodEnd: Date | null
@@ -1861,6 +1908,7 @@ export interface EvaluationFieldRefs {
   readonly assignmentId: Prisma.FieldRef<"Evaluation", 'String'>
   readonly evaluatorId: Prisma.FieldRef<"Evaluation", 'String'>
   readonly evaluationType: Prisma.FieldRef<"Evaluation", 'EvaluationType'>
+  readonly periodKey: Prisma.FieldRef<"Evaluation", 'String'>
   readonly evaluationDate: Prisma.FieldRef<"Evaluation", 'DateTime'>
   readonly periodStart: Prisma.FieldRef<"Evaluation", 'DateTime'>
   readonly periodEnd: Prisma.FieldRef<"Evaluation", 'DateTime'>

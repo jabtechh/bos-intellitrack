@@ -80,3 +80,24 @@ export function sourcePeriodLabel(period: InsightPeriod, internship: { startDate
   const date = (value: Date) => value.toLocaleDateString("en-PH", { dateStyle: "medium", timeZone: "UTC" });
   return `${date(period.from ?? internship.startDate)} – ${date(period.to ?? internship.endDate)}`;
 }
+
+
+export type SkillEvidenceRecord = { workDate: Date; skillsApplied: unknown };
+
+export function skillEvidenceTimeline(records: SkillEvidenceRecord[]) {
+  const map = new Map<string,{label:string;dates:Set<string>}>();
+  for (const record of records) {
+    if (!Array.isArray(record.skillsApplied)) continue;
+    for (const value of record.skillsApplied) {
+      if (typeof value !== "string" || !value.trim()) continue;
+      const label=value.trim(),key=label.toLocaleLowerCase(),day=record.workDate.toISOString().slice(0,10);
+      const item=map.get(key)??{label,dates:new Set<string>()};
+      item.dates.add(day);
+      map.set(key,item);
+    }
+  }
+  return [...map.values()].map((item)=>{
+    const dates=[...item.dates].sort();
+    return{skill:item.label,firstSeen:dates[0],lastSeen:dates.at(-1)!,count:dates.length,dates};
+  }).sort((a,b)=>a.firstSeen.localeCompare(b.firstSeen)||a.skill.localeCompare(b.skill));
+}

@@ -1,7 +1,29 @@
 import Link from "next/link";
+import { Icon } from "@/components/icons";
+import { PageHeader } from "@/components/ui";
+import { SchoolsDataTable } from "@/components/schools-data-table";
+import { requireCompanyOperationsManager } from "@/lib/auth/require-company-operations-manager";
 import { prisma } from "@/lib/prisma";
 
 export default async function SchoolsPage() {
-  const schools = await prisma.school.findMany({ orderBy: { name: "asc" } });
-  return <><div className="flex items-end justify-between gap-4"><div><p className="text-xs font-semibold uppercase tracking-wider text-primary">Organizations</p><h1 className="mt-2 font-heading text-3xl font-semibold text-foreground">Schools</h1></div><Link className="rounded-md bg-primary hover:bg-primary-hover px-4 py-3 text-sm font-semibold text-white" href="/admin/schools/new">Add school</Link></div><div className="mt-7 overflow-x-auto rounded-lg border border-border bg-surface"><table className="w-full text-left text-sm"><thead className="bg-surface-muted text-secondary"><tr><th className="p-4">Code</th><th className="p-4">Name</th><th className="p-4">Location</th><th className="p-4">Status</th></tr></thead><tbody>{schools.map((school) => <tr key={school.id} className="border-t border-border"><td className="p-4">{school.schoolCode ?? "—"}</td><td className="p-4 font-medium">{school.name}</td><td className="p-4">{[school.city, school.province].filter(Boolean).join(", ") || "—"}</td><td className="p-4">{school.isActive ? "Active" : "Inactive"}</td></tr>)}</tbody></table>{schools.length === 0 ? <p className="p-6 text-secondary">No schools have been added.</p> : null}</div></>;
+  await requireCompanyOperationsManager();
+  const schools = await prisma.school.findMany({
+    orderBy: [{ name: "asc" }],
+    select: { id: true, schoolCode: true, name: true, city: true, province: true, isActive: true },
+  });
+  return <div className="mx-auto w-full max-w-7xl space-y-6 px-5 py-7 sm:px-7 lg:px-8">
+    <PageHeader
+      eyebrow="Organizations"
+      title="Partner Schools"
+      description="Manage schools participating in the internship program."
+      actions={<Link href="/admin/schools/new" className="button button-primary"><Icon name="plus"/>Add school</Link>}
+    />
+    <SchoolsDataTable schools={schools.map((school) => ({
+      id: school.id,
+      code: school.schoolCode ?? "",
+      name: school.name,
+      location: [school.city, school.province].filter(Boolean).join(", "),
+      isActive: school.isActive,
+    }))}/>
+  </div>;
 }

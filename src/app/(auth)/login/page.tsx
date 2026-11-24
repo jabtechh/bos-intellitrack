@@ -1,5 +1,7 @@
 import { getSafeRedirectPath } from "@/lib/auth/redirects";
 
+import Image from "next/image";
+
 import { LoginForm } from "./login-form";
 
 export const dynamic = "force-dynamic";
@@ -18,10 +20,13 @@ export default async function LoginPage({
   return (
     <main className="login-shell">
       <section className="login-brand-panel">
-        <div className="max-w-xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-200">
-            IntelliTrack
-          </p>
+        <div className="relative z-10 max-w-xl">
+          <div className="login-brand-mark">
+            <Image src="/brand/bos-cup-mark.png" alt="Bo's Coffee" width={72} height={72} priority />
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-200">
+              IntelliTrack · Bo&apos;s Coffee
+            </p>
+          </div>
           <h1 className="mt-5 font-heading text-4xl font-semibold leading-tight sm:text-5xl">
             AI-Powered Internship Management System
           </h1>

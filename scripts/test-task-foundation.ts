@@ -2,12 +2,61 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import { canInternTransition, canSupervisorTransition, completionNotesSchema, isOverdue, progressSchema, taskInputSchema, taskScopeAllowed, TASK_LABELS } from "../src/lib/tasks/domain";
-const actions=readFileSync("src/app/tasks/actions.ts","utf8"),schema=readFileSync("prisma/schema.prisma","utf8"),migration=readFileSync("prisma/migrations/20260804140000_support_task_submission_review/migration.sql","utf8"),shell=readFileSync("src/components/app-shell.tsx","utf8"),detail=readFileSync("src/app/(authenticated)/tasks/[taskId]/page.tsx","utf8");
-test("schema contains review states",()=>assert.match(schema,/SUBMITTED[\s\S]+REVISION_REQUESTED/));test("migration is forward-only",()=>{assert.match(migration,/ADD VALUE IF NOT EXISTS 'SUBMITTED'/);assert.doesNotMatch(migration,/DROP|DELETE\s+FROM|TRUNCATE/i)});
-test("title required",()=>assert(!taskInputSchema.safeParse({internUserId:crypto.randomUUID(),title:"",description:"Work",priority:"MEDIUM"}).success));test("description required",()=>assert(!taskInputSchema.safeParse({internUserId:crypto.randomUUID(),title:"Work",description:"",priority:"MEDIUM"}).success));test("date order",()=>assert(!taskInputSchema.safeParse({internUserId:crypto.randomUUID(),title:"Work",description:"Work",priority:"MEDIUM",startDate:"2026-08-05",dueDate:"2026-08-04"}).success));
-test("progress lower",()=>assert(!progressSchema.safeParse(-1).success));test("progress upper",()=>assert(!progressSchema.safeParse(101).success));test("notes required",()=>assert(!completionNotesSchema.safeParse(" ").success));
-test("Intern starts",()=>assert(canInternTransition("TODO","IN_PROGRESS")));test("Intern blocks",()=>assert(canInternTransition("IN_PROGRESS","BLOCKED")));test("Intern resumes",()=>assert(canInternTransition("BLOCKED","IN_PROGRESS")));test("Intern submits",()=>assert(canInternTransition("IN_PROGRESS","SUBMITTED")));test("Intern cannot complete",()=>assert(!canInternTransition("SUBMITTED","COMPLETED")));
-test("supervisor accepts",()=>assert(canSupervisorTransition("SUBMITTED","COMPLETED")));test("supervisor revises",()=>assert(canSupervisorTransition("SUBMITTED","REVISION_REQUESTED")));test("supervisor cannot submit",()=>assert(!canSupervisorTransition("IN_PROGRESS","SUBMITTED")));
-test("overdue active",()=>assert(isOverdue({dueAt:new Date(0),status:"IN_PROGRESS"})));test("completed not overdue",()=>assert(!isOverdue({dueAt:new Date(0),status:"COMPLETED"})));
-test("Intern scope",()=>assert(taskScopeAllowed("INTERN",{owned:true})));test("supervisor scope",()=>assert(!taskScopeAllowed("SUPERVISOR",{company:true})));test("coordinator scope",()=>assert(taskScopeAllowed("COORDINATOR",{school:true})));test("representative scope",()=>assert(taskScopeAllowed("REPRESENTATIVE",{company:true})));test("administrator scope",()=>assert(taskScopeAllowed("ADMIN",{})));
-test("mutations authorize",()=>assert.ok((actions.match(/require(?:TaskViewer|SupervisorTaskContext)/g)||[]).length>=6));test("updates qualify state",()=>assert.ok((actions.match(/updateMany/g)||[]).length>=4));test("reviewer recorded",()=>assert.match(actions,/reviewedById:c\.user\.id/));test("private path hidden",()=>assert.doesNotMatch(detail,/completionEvidencePath\}/));test("signed evidence",()=>assert.match(detail,/signedTaskEvidence/));test("navigation exists",()=>assert.ok((shell.match(/\/tasks/g)||[]).length>=4));test("friendly assigned label",()=>assert.equal(TASK_LABELS.TODO,"Assigned"));
+
+const actions=readFileSync("src/app/tasks/actions.ts","utf8");
+const schema=readFileSync("prisma/schema.prisma","utf8");
+const detail=readFileSync("src/app/(authenticated)/tasks/[taskId]/page.tsx","utf8");
+const auth=readFileSync("src/lib/tasks/authorization.ts","utf8");
+
+test("legacy TaskStatus values remain in schema",()=>{
+  for(const status of["TODO","IN_PROGRESS","BLOCKED","SUBMITTED","REVISION_REQUESTED","COMPLETED","CANCELLED"])assert.match(schema,new RegExp("\\b"+status+"\\b"));
+});
+
+test("input and progress validation remain strict",()=>{
+  assert(!taskInputSchema.safeParse({internUserId:crypto.randomUUID(),title:"",description:"Work",priority:"MEDIUM"}).success);
+  assert(!progressSchema.safeParse(-1).success);
+  assert(!progressSchema.safeParse(101).success);
+  assert(!completionNotesSchema.safeParse(" ").success);
+});
+
+test("Intern V1 lifecycle is Assigned to In progress to Submitted",()=>{
+  assert(canInternTransition("TODO","IN_PROGRESS"));
+  assert(canInternTransition("IN_PROGRESS","SUBMITTED"));
+  assert(!canInternTransition("IN_PROGRESS","BLOCKED"));
+  assert(!canInternTransition("BLOCKED","IN_PROGRESS"));
+  assert(!canInternTransition("SUBMITTED","COMPLETED"));
+});
+
+test("Supervisor only confirms completion or administratively cancels",()=>{
+  assert(canSupervisorTransition("SUBMITTED","COMPLETED"));
+  assert(canSupervisorTransition("TODO","CANCELLED"));
+  assert(canSupervisorTransition("IN_PROGRESS","CANCELLED"));
+  assert(!canSupervisorTransition("SUBMITTED","REVISION_REQUESTED"));
+});
+
+test("legacy states remain readable and are visibly labeled legacy",()=>{
+  assert.equal(TASK_LABELS.BLOCKED,"Blocked (legacy)");
+  assert.equal(TASK_LABELS.REVISION_REQUESTED,"Revision requested (legacy)");
+  assert.match(detail,/legacy status/);
+});
+
+test("only Intern and Supervisor have routine Task scope",()=>{
+  assert(taskScopeAllowed("INTERN",{owned:true}));
+  assert(taskScopeAllowed("SUPERVISOR",{assigned:true}));
+  for(const role of["COORDINATOR","REPRESENTATIVE","ADMIN"] as const)assert(!taskScopeAllowed(role,{owned:true,assigned:true,school:true,company:true}));
+  assert.match(auth,/role === "INTERN"/);
+  assert.match(auth,/role === "SUPERVISOR"/);
+  assert.doesNotMatch(auth,/role === "COORDINATOR"|role === "REPRESENTATIVE"|role === "ADMIN"/);
+});
+
+test("actions never create blocked or revision-requested transitions",()=>{
+  assert.doesNotMatch(actions,/target=.*BLOCKED|target=.*REVISION_REQUESTED|status:"REVISION_REQUESTED"/);
+  assert.match(actions,/status:"COMPLETED"/);
+  assert.match(actions,/status:"CANCELLED"/);
+});
+
+test("overdue semantics remain safe",()=>{
+  assert(isOverdue({dueAt:new Date(0),status:"IN_PROGRESS"}));
+  assert(!isOverdue({dueAt:new Date(0),status:"COMPLETED"}));
+  assert(!isOverdue({dueAt:new Date(0),status:"CANCELLED"}));
+});

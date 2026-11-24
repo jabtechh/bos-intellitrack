@@ -1,0 +1,3 @@
+# Prisma generator emits trailing spaces in generated JSDoc comments.
+# Keep strict whitespace validation for handwritten sources.
+src/generated/prisma/** whitespace=-blank-at-eol

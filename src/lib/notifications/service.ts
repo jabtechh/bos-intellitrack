@@ -1,4 +1,5 @@
 // SERVER-ONLY MODULE: import only from Server Components, Server Actions, or trusted server services.
+import { randomUUID } from "node:crypto";
 import { Prisma } from "@/generated/prisma/client";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
 import { prisma } from "@/lib/prisma";
@@ -17,6 +18,18 @@ export async function createNotification(input: NotificationInput) {
     }
     throw error;
   }
+}
+
+export async function createNotificationsInTransaction(
+  tx: Prisma.TransactionClient,
+  inputs: NotificationInput[],
+) {
+  if (!inputs.length) return { count: 0 };
+  const data = inputs.map((input) => {
+    const parsed = notificationInputSchema.parse(input);
+    return { id: randomUUID(), ...parsed };
+  });
+  return tx.notification.createMany({ data, skipDuplicates: true });
 }
 
 export async function getNotificationsForCurrentUser(options: { unreadOnly?: boolean; limit?: number } = {}) {

@@ -1,4 +1,4 @@
-.dashboard { max-width: 1600px; margin: 0 auto; padding: 24px; display: grid; gap: 24px; color: var(--text-primary); font-family: var(--font-intern-dashboard), Arial, sans-serif; font-size: 14px; line-height: 1.5; }
+.dashboard { max-width: 1600px; margin: 0 auto; padding: 24px; display: grid; gap: 24px; color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; line-height: 1.5; }
 .dashboard :is(h1,h2,h3,p,dl,dd) { margin: 0; }
 .dashboard :is(h1,h2,h3) { font-family: inherit; color: var(--text-primary); }
 .dashboard :global(.ui-card) { border: 1px solid var(--border); background: var(--surface); box-shadow: 0 1px 3px rgba(15,23,42,.03); border-radius: 16px; }

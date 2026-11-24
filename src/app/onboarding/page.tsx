@@ -1,9 +1,13 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { StatusBadge } from "@/components/ui";
+import { getAccountSetupState } from "@/lib/auth/account-setup";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
 import { getInternOnboarding } from "@/lib/onboarding/data";
 import { DOCUMENT_REQUIREMENTS, ORIENTATION_TOPICS } from "@/lib/onboarding/domain";
+import { identityReferenceState, type IdentityReferenceState } from "@/lib/identity/status";
+import { IdentityEnrollment } from "@/app/identity/enroll/identity-enrollment";
+import { identityVerificationEnabled } from "@/lib/identity/config";
 
 export const dynamic = "force-dynamic";
 type Data = NonNullable<Awaited<ReturnType<typeof getInternOnboarding>>>;
@@ -11,9 +15,14 @@ type Requirement = (typeof DOCUMENT_REQUIREMENTS)[number];
 
 export default async function OnboardingPage() {
   const user = await requireCurrentUser();
+  // Invited users always set their own password before anything else, including the face photo.
+  if ((await getAccountSetupState()).passwordChangeRequired) redirect("/account/set-password");
   if (user.role !== "INTERN") notFound();
   const data = await getInternOnboarding(user.id);
-  if (!data) return <main className="operational-page"><section className="ui-card p-6"><h1>Getting started</h1><p>Your onboarding details will be available after your internship is configured.</p><Link href="/dashboard" className="button button-primary mt-5">Go to Dashboard</Link></section></main>;
+  // DEC-2026-019 release switch: the face photo step exists only when identity verification is enabled.
+  const identityEnabled = identityVerificationEnabled();
+  const identity = await identityReferenceState(user.id);
+  if (!data) return <main className="operational-page"><section className="ui-card p-6"><h1>Getting started</h1><p>Your onboarding details will be available after your internship is configured.</p><Link href="/dashboard" className="button button-primary mt-5">Go to Dashboard</Link></section>{identityEnabled ? <FacePhoto identity={identity} /> : null}</main>;
 
   const { counts } = data;
   const required = DOCUMENT_REQUIREMENTS.filter((item) => item.required);
@@ -21,6 +30,7 @@ export default async function OnboardingPage() {
   const missing = required.filter((item) => !data.documents[item.key]);
   const documentComplete = required.length - missing.length;
   const nextActions: Array<{ title: string; body: string; href: string; label: string }> = [];
+  if (identityEnabled && !identity.approved) nextActions.push({ title: "Set up your face photo", body: "Take a live selfie. It is checked for one clear face, saved right away and used for every Time In and Time Out.", href: "#face-photo", label: "Set up face photo" });
   if (!data.profileComplete) nextActions.push({ title: "Complete your profile", body: "Add your contact and emergency information.", href: "/profile/edit", label: "Complete profile" });
   for (const item of missing) nextActions.push({ title: `Upload ${item.title}`, body: item.description, href: uploadHref(item), label: "Upload" });
 
@@ -32,24 +42,42 @@ export default async function OnboardingPage() {
 
     {counts.done ? <section className="onboarding-complete"><span aria-hidden="true">✓</span><div><p className="eyebrow">Onboarding complete</p><h2>You&apos;re all set, {data.profile.user.firstName}.</h2><p>Your required internship setup is complete. Keep using IntelliTrack to manage your internship.</p><Link href="/dashboard" className="button button-primary">Go to Dashboard</Link></div></section> : null}
 
-    <Journey accountComplete={data.profileComplete} documentsComplete={documentComplete} done={counts.done} />
+    <Journey accountComplete={data.profileComplete && (!identityEnabled || data.facePhotoComplete)} accountNext={identityEnabled && !data.facePhotoComplete ? "Set up your face photo" : "Complete your profile"} documentsComplete={documentComplete} done={counts.done} />
 
     <div className="onboarding-layout"><div className="onboarding-main">
       {!counts.done ? <UpNext actions={nextActions.slice(0, 3)} /> : null}
 
+      {identityEnabled ? <FacePhoto identity={identity} /> : null}
+
       <section className="onboarding-section onboarding-requirements"><header><div><p className="eyebrow">Requirements</p><h2>Your document checklist</h2><p>You submit each requirement here. Issuer information helps you identify which document to request or prepare.</p></div><span>{documentComplete} of {required.length} ready</span></header><div className="onboarding-list">{required.map((item) => <DocumentRow key={item.key} requirement={item} data={data} userId={user.id} />)}</div><div className="onboarding-optional"><h3>Optional documents</h3>{optional.map((item) => <DocumentRow key={item.key} requirement={item} data={data} userId={user.id} />)}</div></section>
 
-      <section className="onboarding-section onboarding-account"><header><p className="eyebrow">Account</p><h2>Account setup</h2></header><div className="onboarding-list"><SimpleRow title="Password changed" status="Complete" /><SimpleRow title="Complete profile" status={data.profileComplete ? "Complete" : "Needs your action"} action={!data.profileComplete ? <Link href="/profile/edit">Complete profile</Link> : undefined} /><SimpleRow title="Profile photo" status={data.profile.user.profilePhotoPath ? "Complete" : "Optional"} action={!data.profile.user.profilePhotoPath ? <Link href="/profile/edit">Add photo</Link> : undefined} /></div></section>
+      <section className="onboarding-section onboarding-account"><header><p className="eyebrow">Account</p><h2>Account setup</h2></header><div className="onboarding-list"><SimpleRow title="Password changed" status="Complete" />{identityEnabled ? <SimpleRow title="Face photo" status={identity.approved ? "Complete" : "Needs your action"} action={<a href="#face-photo">{identity.approved ? "Update" : "Set up"}</a>} /> : null}<SimpleRow title="Complete profile" status={data.profileComplete ? "Complete" : "Needs your action"} action={!data.profileComplete ? <Link href="/profile/edit">Complete profile</Link> : undefined} /><SimpleRow title="Profile photo" status={data.profile.user.profilePhotoPath ? "Complete" : "Optional"} action={!data.profile.user.profilePhotoPath ? <Link href="/profile/edit">Add photo</Link> : undefined} /></div></section>
 
       <section className="onboarding-guides"><header><p className="eyebrow">Quick guides</p><h2>Learn the essentials</h2><p>Explore these anytime. Guides are optional and never affect your progress.</p></header><div>{ORIENTATION_TOPICS.map((guide, index) => <article key={guide.id}><span aria-hidden="true">{index + 1}</span><div><h3>{guide.title}</h3><p>{guide.body}</p><Link href={guide.href}>Open guide</Link></div></article>)}</div></section>
     </div><Context data={data} /></div>
   </main>;
 }
 
+// DEC-2026-019 — the face photo is set up here, inside Getting started; there is no separate page.
+function FacePhoto({ identity }: { identity: IdentityReferenceState }) {
+  const date = identity.approvedAt?.toLocaleDateString("en-PH", { dateStyle: "medium", timeZone: "Asia/Manila" });
+  return <section className="onboarding-section" id="face-photo" aria-labelledby="face-photo-title"><header><div><p className="eyebrow">Account</p><h2 id="face-photo-title">Face photo</h2><p>Your face photo confirms that you are the one recording your Time In and Time Out. Use your phone&apos;s front camera; gallery uploads are not accepted.</p></div><StatusBadge tone={identity.approved ? "success" : "neutral"}>{identity.approved ? "Complete" : "Needs your action"}</StatusBadge></header>
+    {identity.approved && identity.approvedReferenceId ? <>
+      <div className="attendance-result"><h3>Saved {date}</h3><p>Each Time In and Time Out selfie is matched to this photo. You can update it below; the new photo is saved only if it matches you.</p>
+        {/* eslint-disable-next-line @next/next/no-img-element -- private, no-store image route */}
+        <img src={`/identity/references/${identity.approvedReferenceId}/image`} alt="Your face photo" className="mt-4 w-40 rounded-lg" /></div>
+      <details className="mt-4"><summary className="button button-secondary">Update face photo</summary><div className="mt-4"><IdentityEnrollment replacement /></div></details>
+    </> : <>
+      {identity.resetRemarks ? <p role="status" className="inline-notice notice-danger">Your Company Supervisor reset your face photo: {identity.resetRemarks} Take a new one below.</p> : null}
+      <IdentityEnrollment replacement={false} />
+    </>}
+  </section>;
+}
+
 function uploadHref(item: Requirement) { return `/documents/new?title=${encodeURIComponent(item.title)}&category=${item.category}`; }
 
-function Journey({ accountComplete, documentsComplete, done }: { accountComplete: boolean; documentsComplete: number; done: boolean }) {
-  return <section className="onboarding-journey" aria-labelledby="journey-title"><div><p className="eyebrow" id="journey-title">Your journey</p><h2>Three steps to get ready</h2></div><ol><li className={accountComplete ? "is-complete" : "is-current"}><span>{accountComplete ? "✓" : "1"}</span><div><strong>Account</strong><small>{accountComplete ? "Complete" : "Complete your profile"}</small></div></li><li className={!accountComplete ? "" : done ? "is-complete" : "is-current"}><span>{done ? "✓" : "2"}</span><div><strong>Requirements</strong><small>{documentsComplete} of 5 documents ready</small></div></li><li className={done ? "is-complete" : ""}><span>{done ? "✓" : "3"}</span><div><strong>Ready</strong><small>{done ? "Complete" : "Finish required setup"}</small></div></li></ol></section>;
+function Journey({ accountComplete, accountNext, documentsComplete, done }: { accountComplete: boolean; accountNext: string; documentsComplete: number; done: boolean }) {
+  return <section className="onboarding-journey" aria-labelledby="journey-title"><div><p className="eyebrow" id="journey-title">Your journey</p><h2>Three steps to get ready</h2></div><ol><li className={accountComplete ? "is-complete" : "is-current"}><span>{accountComplete ? "✓" : "1"}</span><div><strong>Account</strong><small>{accountComplete ? "Complete" : accountNext}</small></div></li><li className={!accountComplete ? "" : done ? "is-complete" : "is-current"}><span>{done ? "✓" : "2"}</span><div><strong>Requirements</strong><small>{documentsComplete} of 5 documents ready</small></div></li><li className={done ? "is-complete" : ""}><span>{done ? "✓" : "3"}</span><div><strong>Ready</strong><small>{done ? "Complete" : "Finish required setup"}</small></div></li></ol></section>;
 }
 
 function UpNext({ actions }: { actions: Array<{ title: string; body: string; href: string; label: string }> }) {

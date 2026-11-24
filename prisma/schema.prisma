@@ -248,6 +248,14 @@ enum PortfolioStatus {
   @@map("portfolio_status")
 }
 
+// DEC-2026-021 — completion certificate lifecycle.
+enum CertificateStatus {
+  ISSUED
+  REVOKED
+
+  @@map("certificate_status")
+}
+
 model User {
   id               String    @id @default(uuid()) @db.Uuid
   authId           String    @unique(map: "users_auth_id_key") @map("auth_id") @db.Uuid
@@ -293,6 +301,11 @@ model User {
   portfoliosApproved             Portfolio[]            @relation("PortfolioApprovedBy")
   notificationsReceived         Notification[]          @relation("NotificationRecipient")
   notificationsActed            Notification[]          @relation("NotificationActor")
+  identityReferencesDecided     IdentityReference[]     @relation("IdentityReferenceDecidedBy")
+  identityReferenceEvents       IdentityReferenceEvent[] @relation("IdentityReferenceEventActor")
+  identityCaptureSessions       IdentityCaptureSession[] @relation("IdentityCaptureSessionUser")
+  certificatesIssued            InternshipCertificate[]  @relation("CertificateIssuedBy")
+  certificatesRevoked           InternshipCertificate[]  @relation("CertificateRevokedBy")
 
   @@index([role], map: "users_role_idx")
   @@index([isActive, role], map: "users_active_role_idx")
@@ -319,6 +332,8 @@ model InternProfile {
   user        User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
   school      School                 @relation(fields: [schoolId], references: [id], onDelete: Restrict)
   assignments InternshipAssignment[]
+  identityReferences IdentityReference[]
+  identityAttempts   IdentityVerificationAttempt[]
 
   @@unique([schoolId, studentNumber], map: "intern_profiles_school_student_key")
   @@index([schoolId], map: "intern_profiles_school_id_idx")
@@ -527,6 +542,7 @@ model InternshipAssignment {
   feedback    Feedback[]
   documents   Document[]
   portfolio   Portfolio?
+  certificate InternshipCertificate?
 
   @@index([branchId], map: "internship_assignments_branch_idx")
   @@index([internProfileId], map: "internship_assignments_intern_idx")
@@ -564,6 +580,9 @@ model Attendance {
   classification         AttendanceClassification @default(UNDETERMINED)
   status                 AttendanceStatus         @default(CLOCKED_IN)
   reviewRequired         Boolean                  @default(false) @map("review_required")
+  // DEC-2026-019: null = recorded before identity verification existed (legacy, unchanged).
+  clockInIdentityVerified  Boolean? @map("clock_in_identity_verified")
+  clockOutIdentityVerified Boolean? @map("clock_out_identity_verified")
   reviewedById           String?                  @map("reviewed_by_id") @db.Uuid
   reviewedAt             DateTime?                @map("reviewed_at") @db.Timestamptz(6)
   reviewRemarks          String?                  @map("review_remarks") @db.Text
@@ -574,6 +593,7 @@ model Attendance {
   assignment  InternshipAssignment   @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
   reviewedBy  User?                  @relation("AttendanceReviewedBy", fields: [reviewedById], references: [id], onDelete: SetNull)
   corrections AttendanceCorrection[]
+  identityAttempts IdentityVerificationAttempt[]
 
   @@unique([assignmentId, attendanceDate], map: "attendance_assignment_date_key")
   @@index([assignmentId], map: "attendance_assignment_idx")
@@ -696,6 +716,7 @@ model Evaluation {
   assignmentId        String           @map("assignment_id") @db.Uuid
   evaluatorId         String           @map("evaluator_id") @db.Uuid
   evaluationType      EvaluationType   @map("evaluation_type")
+  periodKey           String           @map("period_key") @db.VarChar(20)
   evaluationDate      DateTime         @map("evaluation_date") @db.Date
   periodStart         DateTime?        @map("period_start") @db.Date
   periodEnd           DateTime?        @map("period_end") @db.Date
@@ -716,7 +737,7 @@ model Evaluation {
   evaluator      User                 @relation("EvaluationEvaluator", fields: [evaluatorId], references: [id], onDelete: Restrict)
   acknowledgedBy User?                @relation("EvaluationAcknowledgedBy", fields: [acknowledgedById], references: [id], onDelete: SetNull)
 
-  @@unique([assignmentId, evaluationType], map: "evaluations_assignment_type_key")
+  @@unique([assignmentId, evaluationType, periodKey], map: "evaluations_assignment_type_period_key_key")
   @@index([assignmentId], map: "evaluations_assignment_idx")
   @@index([evaluatorId], map: "evaluations_evaluator_idx")
   @@index([evaluationType], map: "evaluations_type_idx")
@@ -914,6 +935,40 @@ model Portfolio {
   @@map("portfolios")
 }
 
+/// DEC-2026-021 — one Certificate of Completion per COMPLETED internship assignment.
+/// Issued in the completion transaction; the printed values are saved at issuance so the
+/// certificate stays stable. PDFs are generated on demand (no stored file).
+model InternshipCertificate {
+  id                 String            @id @default(uuid()) @db.Uuid
+  assignmentId       String            @unique(map: "internship_certificates_assignment_key") @map("assignment_id") @db.Uuid
+  certificateNumber  String            @unique(map: "internship_certificates_number_key") @map("certificate_number") @db.VarChar(40)
+  status             CertificateStatus @default(ISSUED)
+  issuedAt           DateTime          @map("issued_at") @db.Timestamptz(6)
+  issuedById         String?           @map("issued_by_id") @db.Uuid
+  signatoryName      String            @map("signatory_name") @db.VarChar(255)
+  signatoryPosition  String            @map("signatory_position") @db.VarChar(150)
+  internName         String            @map("intern_name") @db.VarChar(255)
+  positionTitle      String?           @map("position_title") @db.VarChar(150)
+  companyName        String            @map("company_name") @db.VarChar(255)
+  startDate          DateTime          @map("start_date") @db.Date
+  endDate            DateTime          @map("end_date") @db.Date
+  completedAt        DateTime          @map("completed_at") @db.Timestamptz(6)
+  creditedMinutes    Int               @map("credited_minutes")
+  requiredHours      Int?              @map("required_hours")
+  revokedAt          DateTime?         @map("revoked_at") @db.Timestamptz(6)
+  revokedById        String?           @map("revoked_by_id") @db.Uuid
+  revokeReason       String?           @map("revoke_reason") @db.Text
+  createdAt          DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  assignment InternshipAssignment @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
+  issuedBy   User?                @relation("CertificateIssuedBy", fields: [issuedById], references: [id], onDelete: SetNull)
+  revokedBy  User?                @relation("CertificateRevokedBy", fields: [revokedById], references: [id], onDelete: SetNull)
+
+  @@index([status], map: "internship_certificates_status_idx")
+  @@index([issuedById], map: "internship_certificates_issued_by_idx")
+  @@map("internship_certificates")
+}
+
 model Notification {
   id          String    @id @default(uuid()) @db.Uuid
   recipientId String    @map("recipient_id") @db.Uuid
@@ -934,4 +989,154 @@ model Notification {
   @@unique([recipientId, dedupeKey], map: "notifications_recipient_dedupe_key")
   @@index([recipientId, readAt, createdAt], map: "notifications_recipient_read_created_idx")
   @@map("notifications")
+}
+
+// DEC-2026-019 / REQ-FR-ATT-5: attendance identity verification against a
+// Supervisor-approved onboarding reference. Partial unique indexes (one
+// APPROVED and one PENDING reference per intern) live in the SQL migration.
+enum IdentityReferenceStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUPERSEDED
+
+  @@map("identity_reference_status")
+}
+
+enum IdentityReferenceAction {
+  ENROLLED
+  REPLACEMENT_REQUESTED
+  APPROVED
+  REJECTED
+  SUPERSEDED
+
+  @@map("identity_reference_action")
+}
+
+enum IdentityCapturePurpose {
+  ENROLLMENT
+  CLOCK_IN
+  CLOCK_OUT
+
+  @@map("identity_capture_purpose")
+}
+
+enum IdentityVerificationOutcome {
+  VERIFIED
+  FACE_MISMATCH
+  LIVENESS_FAILED
+  INCONCLUSIVE
+  PROVIDER_UNAVAILABLE
+  NO_APPROVED_REFERENCE
+  SESSION_REJECTED
+
+  @@map("identity_verification_outcome")
+}
+
+enum LivenessCheckResult {
+  PASSED
+  FAILED
+  INCONCLUSIVE
+  NOT_CONFIGURED
+  ERROR
+
+  @@map("liveness_check_result")
+}
+
+enum FaceMatchCheckResult {
+  MATCH
+  NO_MATCH
+  INCONCLUSIVE
+  ERROR
+  NOT_RUN
+
+  @@map("face_match_check_result")
+}
+
+model IdentityReference {
+  id              String                  @id @default(uuid()) @db.Uuid
+  internProfileId String                  @map("intern_profile_id") @db.Uuid
+  status          IdentityReferenceStatus @default(PENDING)
+  storagePath     String                  @map("storage_path") @db.Text
+  consentVersion  String                  @map("consent_version") @db.VarChar(40)
+  consentedAt     DateTime                @map("consented_at") @db.Timestamptz(6)
+  replacesId      String?                 @map("replaces_id") @db.Uuid
+  decidedById     String?                 @map("decided_by_id") @db.Uuid
+  decidedAt       DateTime?               @map("decided_at") @db.Timestamptz(6)
+  decisionRemarks String?                 @map("decision_remarks") @db.Text
+  createdAt       DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime                @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  internProfile InternProfile                 @relation(fields: [internProfileId], references: [id], onDelete: Restrict)
+  decidedBy     User?                         @relation("IdentityReferenceDecidedBy", fields: [decidedById], references: [id], onDelete: SetNull)
+  replaces      IdentityReference?            @relation("IdentityReferenceReplacement", fields: [replacesId], references: [id], onDelete: SetNull)
+  replacedBy    IdentityReference[]           @relation("IdentityReferenceReplacement")
+  events        IdentityReferenceEvent[]
+  attempts      IdentityVerificationAttempt[]
+
+  @@index([internProfileId, status], map: "identity_references_intern_status_idx")
+  @@index([status], map: "identity_references_status_idx")
+  @@map("identity_references")
+}
+
+model IdentityReferenceEvent {
+  id              String                  @id @default(uuid()) @db.Uuid
+  referenceId     String                  @map("reference_id") @db.Uuid
+  internProfileId String                  @map("intern_profile_id") @db.Uuid
+  actorUserId     String?                 @map("actor_user_id") @db.Uuid
+  action          IdentityReferenceAction
+  remarks         String?                 @db.Text
+  createdAt       DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  reference IdentityReference @relation(fields: [referenceId], references: [id], onDelete: Restrict)
+  actor     User?             @relation("IdentityReferenceEventActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([referenceId, createdAt], map: "identity_reference_events_reference_idx")
+  @@index([internProfileId, createdAt], map: "identity_reference_events_intern_idx")
+  @@map("identity_reference_events")
+}
+
+model IdentityCaptureSession {
+  id         String                 @id @default(uuid()) @db.Uuid
+  userId     String                 @map("user_id") @db.Uuid
+  purpose    IdentityCapturePurpose
+  secretHash String                 @map("secret_hash") @db.VarChar(64)
+  expiresAt  DateTime               @map("expires_at") @db.Timestamptz(6)
+  consumedAt DateTime?              @map("consumed_at") @db.Timestamptz(6)
+  createdAt  DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user     User                          @relation("IdentityCaptureSessionUser", fields: [userId], references: [id], onDelete: Cascade)
+  attempts IdentityVerificationAttempt[]
+
+  @@index([userId, createdAt], map: "identity_capture_sessions_user_idx")
+  @@index([expiresAt], map: "identity_capture_sessions_expires_idx")
+  @@map("identity_capture_sessions")
+}
+
+model IdentityVerificationAttempt {
+  id                String                      @id @default(uuid()) @db.Uuid
+  internProfileId   String                      @map("intern_profile_id") @db.Uuid
+  sessionId         String?                     @map("session_id") @db.Uuid
+  referenceId       String?                     @map("reference_id") @db.Uuid
+  attendanceId      String?                     @map("attendance_id") @db.Uuid
+  purpose           IdentityCapturePurpose
+  outcome           IdentityVerificationOutcome
+  liveness          LivenessCheckResult
+  faceMatch         FaceMatchCheckResult        @map("face_match")
+  similarity        Decimal?                    @db.Decimal(6, 5)
+  threshold         Decimal?                    @db.Decimal(6, 5)
+  provider          String                      @db.VarChar(40)
+  providerReference String?                     @map("provider_reference") @db.VarChar(200)
+  failureReason     String?                     @map("failure_reason") @db.VarChar(200)
+  createdAt         DateTime                    @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  internProfile InternProfile           @relation(fields: [internProfileId], references: [id], onDelete: Restrict)
+  session       IdentityCaptureSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  reference     IdentityReference?      @relation(fields: [referenceId], references: [id], onDelete: SetNull)
+  attendance    Attendance?             @relation(fields: [attendanceId], references: [id], onDelete: SetNull)
+
+  @@index([internProfileId, createdAt], map: "identity_attempts_intern_idx")
+  @@index([attendanceId], map: "identity_attempts_attendance_idx")
+  @@index([outcome], map: "identity_attempts_outcome_idx")
+  @@map("identity_verification_attempts")
 }

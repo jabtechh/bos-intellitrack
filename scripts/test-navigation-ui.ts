@@ -2,41 +2,100 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 
-const read = (path: string) => readFileSync(path, "utf8");
-const shell = read("src/components/app-shell.tsx");
-const navigation = read("src/components/shell-navigation.tsx");
-const dashboard = read("src/app/(authenticated)/dashboard/page.tsx") + read("src/components/intern-dashboard.tsx") + read("src/components/intern-dashboard-data.tsx");
-const attendance = read("src/app/(authenticated)/attendance/page.tsx");
-const workLogs = read("src/app/(authenticated)/work-logs/page.tsx");
-const mobile = read("src/components/mobile-navigation.tsx");
-const dashboardAttendance = read("src/components/dashboard-attendance-card.tsx");
+const read=(path:string)=>readFileSync(path,"utf8");
+const shell=read("src/components/app-shell.tsx");
+const navigation=read("src/components/shell-navigation.tsx");
+const mobile=read("src/components/mobile-navigation.tsx");
+const dashboard=read("src/app/(authenticated)/dashboard/page.tsx")+read("src/components/intern-dashboard.tsx")+read("src/components/intern-dashboard-data.tsx");
+const attendance=read("src/app/(authenticated)/attendance/page.tsx");
+const workLogs=read("src/app/(authenticated)/work-logs/page.tsx");
 
-test("authenticated routes share one persistent shell layout", () => {
-  const layout = read("src/app/(authenticated)/layout.tsx");
-  assert.match(layout, /<AppShell user=\{user\}[\s\S]*>\{children\}<\/AppShell>/);
-  assert.match(shell, /data-persistent-app-shell/);
-  for (const oldLayout of ["src/app/dashboard/layout.tsx", "src/app/attendance/layout.tsx", "src/app/work-logs/layout.tsx"]) assert.equal(existsSync(oldLayout), false);
+test("authenticated routes share one persistent shell",()=>{
+  const layout=read("src/app/(authenticated)/layout.tsx");
+  assert(layout.includes("<AppShell user={user}"));
+  assert(shell.includes("data-persistent-app-shell"));
 });
-test("internal shell navigation uses Next Link without hard navigation", () => {
-  assert.match(navigation, /import Link from "next\/link"/);
-  assert.match(navigation, /prefetch/);
-  assert.doesNotMatch(shell + navigation, /window\.location|location\.assign|document\.location/);
+
+test("internal navigation uses Next Link and accessible active state",()=>{
+  assert(navigation.includes('import Link from "next/link"'));
+  assert(navigation.includes("aria-current"));
+  assert(mobile.includes('aria-label="Mobile application navigation"'));
+  assert(shell.includes("Skip to main content"));
+  assert(!shell.includes("window.location"));
 });
-test("active navigation and mobile persistence are exposed accessibly", () => {
-  assert.match(navigation, /usePathname/); assert.match(navigation, /aria-current/);
-  assert.match(mobile, /aria-label="Mobile application navigation"/); assert.match(shell, /id="main-content"/); assert.match(shell, /Skip to main content/);
-  assert.match(mobile,/INTERN:\s*\["\/dashboard",\s*"\/attendance",\s*"\/work-logs"\][\s\S]*More/);
+
+test("approved role navigation is explicit",()=>{
+  for(const name of["internNav","supervisorNav","coordinatorNav","representativeNav","adminNav"])assert(shell.includes("const "+name));
+  assert(shell.includes('href: "/insights", label: "Insights"'));
+  assert(shell.includes('href: "/calendar", label: "Internship Calendar"'));
+  assert(shell.includes('href: "/portfolio", label: "Portfolio"'));
+  assert(shell.includes('href: "/reviews", label: "Reviews"'));
+  assert(shell.includes('href: "/students", label: "Students"'));
+  assert(shell.includes('href: "/admin/system", label: "System"'));
+  assert(shell.includes('href: "/calendar"'));
 });
-test("shell-preserving destination skeletons exist", () => {
-  for (const path of ["dashboard/loading.tsx", "attendance/loading.tsx", "attendance/history/loading.tsx", "attendance/review/loading.tsx", "attendance/corrections/loading.tsx", "work-logs/loading.tsx", "work-logs/review/loading.tsx"]) assert.equal(existsSync(`src/app/(authenticated)/${path}`), true);
-  assert.equal(existsSync("src/app/onboarding/internship-hours/loading.tsx"),true);
+
+test("mobile primary paths match approved IA",()=>{
+  for(const value of[
+    'INTERN: ["/dashboard", "/attendance", "/work-logs", "/tasks", "/portfolio"]', // DEC-2026-020: Portfolio is the fifth Intern primary destination
+    'SUPERVISOR: ["/dashboard", "/interns", "/reviews"]',
+    'COORDINATOR: ["/dashboard", "/students", "/reports"]',
+    'REPRESENTATIVE: ["/admin", "/admin/users", "/announcements"]',
+    'ADMIN: ["/admin/system", "/admin/users"]',
+  ])assert(mobile.includes(value));
+  assert(mobile.includes("More"));
 });
-test("dashboard uses real operational data and primary actions", () => {
-  assert.match(dashboard, /requiredHours/); assert.match(dashboard, /creditedMinutesFromAttendance/); assert.match(dashboardAttendance, /Today&apos;s Attendance/); assert.match(dashboard, /logAction.href/); assert.match(attendance, /label="Time in"/); assert.match(workLogs, /Create work log/);
-  assert.doesNotMatch(dashboard, /AI productivity score|evaluation score|fake analytics|branch selector/i);
+
+test("representative navigation includes all authorized operations and resources across layouts",()=>{
+  const adminLayout=read("src/app/admin/layout.tsx");
+  const representative=shell.split("export const representativeNav: ShellNavItem[] = [")[1].split("\n];")[0];
+  const technicalAdmin=shell.split("export const adminNav: ShellNavItem[] = [")[1].split("\n];")[0];
+  for(const href of ["/admin", "/admin/users", "/admin/schools", "/announcements", "/documents", "/reports"]){
+    assert(representative.includes('href: "'+href+'"'),"Missing Representative link: "+href);
+  }
+  for(const duplicate of ["/admin/users?role=INTERN", "/admin/users?role=SUPERVISOR", "/admin/users?role=COORDINATOR"]) {
+    assert(!representative.includes('href: "'+duplicate+'"'),"Duplicate Representative navigation link: "+duplicate);
+  }
+  for(const label of ['label: "Dashboard"','label: "Users"','label: "Company Reports"'])assert(representative.includes(label));
+  for(const href of ["/admin/system","/admin/users"])assert(technicalAdmin.includes('href: "'+href+'"'));
+  for(const denied of ["/attendance/review","/attendance/corrections/review","/tasks","/evaluations","/documents","/announcements","/reports"])assert(!technicalAdmin.includes('href: "'+denied+'"'));
+  for(const denied of ["/attendance/review","/attendance/corrections/review","/admin/assignments"])assert(!representative.includes('href: "'+denied+'"'));
+  assert(adminLayout.includes('representativeNav : adminNav'));
+  // DEC-2026-020: query-aware active matching lives in the shared helper used by sidebar, bottom bar and More.
+  const helper=read("src/lib/navigation/active.ts");
+  assert(helper.includes("query?.get(item.activeQuery.key) ?? null) !== item.activeQuery.value"));
+  assert(mobile.includes("activeNavHref(items, pathname, searchParams)"));
 });
-test("loading and error UI preserve page-shaped content inside the shell",()=>{const ui=read("src/components/ui.tsx");assert.match(ui,/skeleton-header/);assert.match(ui,/skeleton-summary/);assert.match(ui,/skeleton-row/);assert.equal(existsSync("src/app/(authenticated)/error.tsx"),true)});
-test("required-hours and workflow controls remain real and reachable",()=>{assert.match(dashboard,/<ProgressBar value=\{progress.visualPercentage/);assert.doesNotMatch(dashboard,/requiredHours===null[\s\S]{0,500}progress-percent/);const form=read("src/app/work-logs/work-log-form.tsx");assert.match(form,/Save Draft/);assert.match(form,/Submit Work Log/);assert.match(attendance,/action=\{clockIn\} label="Time in"/);assert.match(attendance,/action=\{clockOut\} label="Time out"/)});
-test("navigation does not expose multi-organization terminology", () => {
-  assert.doesNotMatch(shell + navigation, />\s*(Companies|Branches|Assignments|Placements)\s*</);
+
+test("five role menu definitions preserve approved primary and secondary boundaries",()=>{
+  const block=(name:string) => shell.split("const "+name+": ShellNavItem[] = [")[1]?.split("\n];")[0] ??
+    shell.split("export const "+name+": ShellNavItem[] = [")[1]?.split("\n];")[0] ?? "";
+  const intern=block("internNav"), supervisor=block("supervisorNav"), coordinator=block("coordinatorNav");
+  for(const href of ["/dashboard","/calendar","/attendance","/work-logs","/tasks","/insights","/evaluations","/documents","/portfolio","/announcements"]) assert(intern.includes('href: "'+href+'"'));
+  for(const href of ["/attendance/corrections","/reports","/feedback"]) assert(!intern.includes('href: "'+href+'"'));
+  assert(intern.includes('href: "/evaluations", label: "Evaluations & Feedback"'));
+  for(const href of ["/dashboard","/interns","/reviews","/tasks","/evaluations","/reports","/documents","/announcements"]) assert(supervisor.includes('href: "'+href+'"'));
+  for(const href of ["/dashboard","/students","/reports","/documents"]) assert(coordinator.includes('href: "'+href+'"'));
+  for(const href of ["/tasks","/feedback","/portfolio","/insights","/announcements"]) assert(!coordinator.includes('href: "'+href+'"'));
+  assert(mobile.includes("const rest = items.filter"));
+  assert(mobile.includes('aria-label="Mobile application navigation"'));
+});
+
+test("role landing routes exist",()=>{
+  for(const path of["interns/page.tsx","students/page.tsx","reviews/page.tsx"])assert.equal(existsSync("src/app/(authenticated)/"+path),true);
+  assert.equal(existsSync("src/app/admin/system/page.tsx"),true);
+});
+
+test("dashboard uses real Attendance-derived progress and primary actions",()=>{
+  assert(dashboard.includes("creditedMinutesFromAttendance"));
+  assert(dashboard.includes("logAction.href"));
+  assert(attendance.includes('label="Time in"'));
+  assert(workLogs.includes("Create work log"));
+  assert(!/AI productivity score|fake analytics|branch selector/i.test(dashboard));
+});
+
+test("Representative and Admin leave shared dashboard for dedicated workspaces",()=>{
+  assert(dashboard.includes('user.role === "REPRESENTATIVE"'));
+  assert(dashboard.includes('redirect("/admin")'));
+  assert(dashboard.includes('redirect("/admin/system")'));
 });

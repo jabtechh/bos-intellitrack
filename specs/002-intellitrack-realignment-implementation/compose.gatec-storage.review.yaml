@@ -1,0 +1,63 @@
+# Gate C isolated Supabase Storage service — REVIEW ONLY.
+# NEVER run 'up' until the independent runtime/secret review is approved.
+# This is an independent Compose project; it must NOT manage existing Auth/Kong/DB.
+name: gatec-local-storage
+services:
+  storage:
+    image: public.ecr.aws/supabase/storage-api@sha256:dd4a100612635a8eb0d64387ddc38769fb30eb3ddd9b411d0fe3121e1cb223b3
+    pull_policy: never
+    container_name: supabase_storage_local-supabase
+    restart: "no"
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    networks:
+      isolated:
+        aliases:
+          - supabase_storage_local-supabase
+    volumes:
+      - storage_files:/var/lib/storage
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=64m
+    secrets:
+      - storage_db_url
+      - storage_jwt_secret
+    environment:
+      SERVER_PORT: "5000"
+      STORAGE_BACKEND: file
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+      DB_ALLOW_MIGRATION_REFRESH: "false"
+      DB_MIGRATIONS_FREEZE_AT: lifecycle-writer-coordination
+      PG_QUEUE_ENABLE: "false"
+      VECTOR_ENABLED: "false"
+      VECTOR_STORE_MIGRATIONS_ENABLED: "false"
+      S3_PROTOCOL_ENABLED: "false"
+      FILE_SIZE_LIMIT: "52428800"
+    entrypoint:
+      - /bin/sh
+      - -ec
+      - |
+        # Secret values never appear in Compose config, docker inspect or command arguments.
+        export DATABASE_URL="$$(cat /run/secrets/storage_db_url)"
+        export PGRST_JWT_SECRET="$$(cat /run/secrets/storage_jwt_secret)"
+        test -n "$$DATABASE_URL" && test -n "$$PGRST_JWT_SECRET"
+        # Refuse all external/default DB targets even if the mounted secret is wrong.
+        case "$$DATABASE_URL" in
+          postgresql://supabase_storage_admin:*@supabase_db_local-supabase:5432/postgres|postgres://supabase_storage_admin:*@supabase_db_local-supabase:5432/postgres) ;;
+          *) echo "Gate C refused a non-isolated Storage DB URL." >&2; exit 2 ;;
+        esac
+        exec node dist/start/server.js
+networks:
+  isolated:
+    name: supabase_network_local-supabase
+    external: true
+volumes:
+  storage_files:
+    name: gatec_storage_files_local-supabase
+secrets:
+  storage_db_url:
+    file: ../../.gatea/local-supabase/storage-secrets/db-url
+  storage_jwt_secret:
+    file: ../../.gatea/local-supabase/storage-secrets/jwt-secret

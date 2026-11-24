@@ -9,11 +9,14 @@ import {
   canManageAnnouncements,
   requireAnnouncementViewer,
 } from "@/lib/announcements/authorization";
+import { resolveAnnouncementRecipientIds } from "@/lib/announcements/recipients";
 import {
   announcementInputSchema,
   safeAnnouncementError,
   toTimestamp,
 } from "@/lib/announcements/domain";
+import { createNotificationsInTransaction } from "@/lib/notifications/service";
+import { NotificationUnavailableError, throwNotificationUnavailable } from "@/lib/notifications/errors";
 
 function fail(path: string, message: string): never {
   redirect(`${path}?error=${encodeURIComponent(message)}`);
@@ -22,19 +25,17 @@ function fail(path: string, message: string): never {
 function refresh(id?: string) {
   revalidatePath("/announcements");
   revalidatePath("/announcements/manage");
+  revalidatePath("/notifications");
   revalidatePath("/dashboard");
   if (id) revalidatePath(`/announcements/${id}`);
 }
 
 export async function createAnnouncement(formData: FormData) {
   const c = await requireAnnouncementViewer();
-  if (!canManageAnnouncements(c)) redirect("/announcements");
+  if (!canManageAnnouncements(c) || c.kind !== "REPRESENTATIVE") redirect("/announcements");
 
   const parsed = announcementInputSchema.safeParse(Object.fromEntries(formData.entries()));
   if (!parsed.success) fail("/announcements/new", parsed.error.issues[0]?.message ?? "Review the announcement.");
-
-  const companyId = c.kind === "REPRESENTATIVE" ? c.companyId : c.kind === "ADMIN" ? await resolveBoCoffeeCompanyId() : null;
-  if (!companyId) fail("/announcements/new", "Your office could not be resolved.");
 
   const scheduledFor = toTimestamp(parsed.data.scheduledFor);
   const status = scheduledFor ? "SCHEDULED" : "DRAFT";
@@ -43,7 +44,7 @@ export async function createAnnouncement(formData: FormData) {
     data: {
       id: randomUUID(),
       createdById: c.user.id,
-      companyId,
+      companyId: c.companyId,
       title: parsed.data.title,
       content: parsed.data.content,
       priority: parsed.data.priority,
@@ -60,14 +61,11 @@ export async function createAnnouncement(formData: FormData) {
 
 export async function updateAnnouncement(formData: FormData) {
   const c = await requireAnnouncementViewer();
-  if (!canManageAnnouncements(c)) redirect("/announcements");
+  if (!canManageAnnouncements(c) || c.kind !== "REPRESENTATIVE") redirect("/announcements");
 
   const id = String(formData.get("announcementId"));
   const parsed = announcementInputSchema.safeParse(Object.fromEntries(formData.entries()));
   if (!parsed.success) fail(`/announcements/${id}/edit`, parsed.error.issues[0]?.message ?? "Review the announcement.");
-
-  const companyId = c.kind === "REPRESENTATIVE" ? c.companyId : c.kind === "ADMIN" ? await resolveBoCoffeeCompanyId() : null;
-  if (!companyId) fail(`/announcements/${id}/edit`, "Your office could not be resolved.");
 
   const scheduledFor = toTimestamp(parsed.data.scheduledFor);
   const status = scheduledFor ? "SCHEDULED" : "DRAFT";
@@ -96,47 +94,76 @@ export async function updateAnnouncement(formData: FormData) {
 
 export async function publishAnnouncement(formData: FormData) {
   const c = await requireAnnouncementViewer();
-  if (!canManageAnnouncements(c)) redirect("/announcements");
+  if (!canManageAnnouncements(c) || c.kind !== "REPRESENTATIVE") redirect("/announcements");
 
   const id = String(formData.get("announcementId"));
   const now = new Date();
 
-  const result = await prisma.announcement.updateMany({
-    where: {
-      id,
-      status: { in: ["DRAFT", "SCHEDULED"] },
-      ...announcementManageWhere(c),
-    },
-    data: {
-      status: "PUBLISHED",
-      publishedAt: now,
-    },
-  });
+  try {
+    await prisma.$transaction(async (tx) => {
+      const announcement = await tx.announcement.findFirst({
+        where: {
+          id,
+          status: { in: ["DRAFT", "SCHEDULED"] },
+          ...announcementManageWhere(c),
+        },
+        select: { id: true, title: true, content: true, audience: true, companyId: true },
+      });
+      if (!announcement?.companyId) throw new AnnouncementPublishError("This announcement is unavailable or already published.");
 
-  if (result.count !== 1) fail(`/announcements/${id}`, safeAnnouncementError());
+      const recipientIds = await resolveAnnouncementRecipientIds(tx, announcement.companyId, announcement.audience);
+      const claimed = await tx.announcement.updateMany({
+        where: {
+          id: announcement.id,
+          status: { in: ["DRAFT", "SCHEDULED"] },
+          ...announcementManageWhere(c),
+        },
+        data: { status: "PUBLISHED", publishedAt: now, scheduledFor: null },
+      });
+      if (claimed.count !== 1) throw new AnnouncementPublishError("This announcement changed before it could be published.");
+
+      if (recipientIds.length) {
+        await createNotificationsInTransaction(
+          tx,
+          recipientIds.map((recipientId) => ({
+            recipientId,
+            actorId: c.user.id,
+            type: "announcement.published" as const,
+            title: announcement.title,
+            body: announcement.content.slice(0, 500),
+            href: `/announcements/${announcement.id}`,
+            entityType: "announcement",
+            entityId: announcement.id,
+            dedupeKey: `announcement:${announcement.id}:published`,
+          })),
+        );
+      }
+    });
+  } catch (error) {
+    try {
+      throwNotificationUnavailable(error);
+    } catch (notificationError) {
+      if (notificationError instanceof NotificationUnavailableError) {
+        fail(`/announcements/${id}`, "Publishing is unavailable because in-app notifications are not initialized for this environment.");
+      }
+      if (error instanceof AnnouncementPublishError) fail(`/announcements/${id}`, error.message);
+      fail(`/announcements/${id}`, safeAnnouncementError());
+    }
+  }
+
   refresh(id);
-  redirect(`/announcements/${id}`);
+  redirect(`/announcements/${id}?published=1`);
 }
 
 export async function archiveAnnouncement(formData: FormData) {
   const c = await requireAnnouncementViewer();
-  if (!canManageAnnouncements(c)) redirect("/announcements");
+  if (!canManageAnnouncements(c) || c.kind !== "REPRESENTATIVE") redirect("/announcements");
 
   const id = String(formData.get("announcementId"));
-  const now = new Date();
-
   const result = await prisma.announcement.updateMany({
-    where: {
-      id,
-      status: { not: "ARCHIVED" },
-      ...announcementManageWhere(c),
-    },
-    data: {
-      status: "ARCHIVED",
-      archivedAt: now,
-    },
+    where: { id, status: { not: "ARCHIVED" }, ...announcementManageWhere(c) },
+    data: { status: "ARCHIVED", archivedAt: new Date() },
   });
-
   if (result.count !== 1) fail(`/announcements/${id}`, safeAnnouncementError());
   refresh(id);
   redirect(`/announcements/${id}`);
@@ -144,30 +171,16 @@ export async function archiveAnnouncement(formData: FormData) {
 
 export async function cancelAnnouncement(formData: FormData) {
   const c = await requireAnnouncementViewer();
-  if (!canManageAnnouncements(c)) redirect("/announcements");
+  if (!canManageAnnouncements(c) || c.kind !== "REPRESENTATIVE") redirect("/announcements");
 
   const id = String(formData.get("announcementId"));
-
   const result = await prisma.announcement.updateMany({
-    where: {
-      id,
-      status: { in: ["DRAFT", "SCHEDULED"] },
-      ...announcementManageWhere(c),
-    },
-    data: {
-      status: "CANCELLED",
-    },
+    where: { id, status: { in: ["DRAFT", "SCHEDULED"] }, ...announcementManageWhere(c) },
+    data: { status: "CANCELLED" },
   });
-
   if (result.count !== 1) fail(`/announcements/${id}`, safeAnnouncementError());
   refresh(id);
   redirect(`/announcements/${id}`);
 }
 
-async function resolveBoCoffeeCompanyId(): Promise<string | null> {
-  const company = await prisma.company.findFirst({
-    where: { companyCode: "BO_MAIN_OFFICE", isActive: true },
-    select: { id: true },
-  });
-  return company?.id ?? null;
-}
+class AnnouncementPublishError extends Error {}

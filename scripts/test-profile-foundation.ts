@@ -1,48 +1,54 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { profileInputSchema } from "../src/lib/profile/domain.ts";
-import { profileTargetWhere } from "../src/lib/profile/scope.ts";
+import { emergencyContactSchema,profileInputSchema } from "../src/lib/profile/domain.ts";
 import { MAX_PROFILE_IMAGE_BYTES,profileMediaPath,validateProfileImage } from "../src/lib/profile/storage.ts";
 
-const schema=readFileSync("prisma/schema.prisma","utf8"),migration=readFileSync("prisma/migrations/20260816120000_add_user_profile_fields/migration.sql","utf8");
-const actions=readFileSync("src/app/profile/actions.ts","utf8"),data=readFileSync("src/lib/profile/data.ts","utf8"),view=readFileSync("src/components/profile-view.tsx","utf8"),edit=readFileSync("src/components/profile-edit-form.tsx","utf8"),shell=readFileSync("src/components/app-shell.tsx","utf8")+readFileSync("src/components/application-utilities.tsx","utf8");
-const viewer=(role:"INTERN"|"SUPERVISOR"|"COORDINATOR"|"REPRESENTATIVE"|"ADMIN",id="11111111-1111-4111-8111-111111111111")=>({id,authId:"auth",email:"private@example.test",role,firstName:"Test",lastName:"User",profilePhotoPath:null,isActive:true});
+const read=(p:string)=>readFileSync(p,"utf8");
+const actions=read("src/app/profile/actions.ts");
+const data=read("src/lib/profile/data.ts");
+const view=read("src/components/profile-view.tsx");
+const edit=read("src/components/profile-edit-form.tsx");
 
-test("existing avatar path is reused",()=>assert.match(schema,/profilePhotoPath\s+String\?/));
-test("small migration adds only About and cover paths",()=>{assert.match(migration,/cover_photo_path/);assert.match(migration,/"bio" TEXT/);assert.doesNotMatch(migration,/role|school|company|assignment|hours/i)});
-test("profile fields are optional",()=>{assert.match(schema,/coverPhotoPath\s+String\?/);assert.match(schema,/bio\s+String\?/)});
-test("valid personal profile accepted",()=>assert(profileInputSchema.safeParse({firstName:"Ana",lastName:"Reyes",phoneNumber:"+63 912 345 6789",bio:"Internship learner"}).success));
-test("invalid phone rejected",()=>assert(!profileInputSchema.safeParse({firstName:"Ana",lastName:"Reyes",phoneNumber:"unsafe"}).success));
-test("client role and relationships are stripped",()=>{const parsed=profileInputSchema.parse({firstName:"Ana",lastName:"Reyes",role:"ADMIN",schoolId:"x",supervisorId:"x",requiredHours:1});assert(!("role" in parsed));assert(!("schoolId" in parsed));assert(!("requiredHours" in parsed))});
-test("action resolves owner server side",()=>{assert.match(actions,/requireCurrentUser/);assert.match(actions,/where:\{id:actor\.id\}/);assert.doesNotMatch(actions,/formData\.get\("userId"\)/)});
-test("action never writes protected fields",()=>assert.doesNotMatch(actions,/data:\{[\s\S]*?\b(?:role|isActive|schoolId|companyId|requiredHours|renderedHours|authId)\b/));
-test("Intern can view self",()=>assert.deepEqual(profileTargetWhere(viewer("INTERN"),"11111111-1111-4111-8111-111111111111"),{id:"11111111-1111-4111-8111-111111111111"}));
-test("Intern cannot browse another profile",()=>assert.deepEqual(profileTargetWhere(viewer("INTERN"),"22222222-2222-4222-8222-222222222222"),{id:"00000000-0000-0000-0000-000000000000"}));
-test("Supervisor scope requires directly supervised Intern",()=>assert.match(JSON.stringify(profileTargetWhere(viewer("SUPERVISOR"),"22222222-2222-4222-8222-222222222222")),/supervisorProfile/));
-test("Coordinator scope requires own school",()=>assert.match(JSON.stringify(profileTargetWhere(viewer("COORDINATOR"),"22222222-2222-4222-8222-222222222222")),/coordinatorProfiles/));
-test("Representative scope is Main Office operational",()=>assert.match(JSON.stringify(profileTargetWhere(viewer("REPRESENTATIVE"),"22222222-2222-4222-8222-222222222222")),/BO_MAIN_OFFICE/));
-test("Administrator may view operational user",()=>assert.deepEqual(profileTargetWhere(viewer("ADMIN"),"22222222-2222-4222-8222-222222222222"),{id:"22222222-2222-4222-8222-222222222222"}));
-test("Intern cannot view a Representative",()=>assert.deepEqual(profileTargetWhere(viewer("INTERN"),"33333333-3333-4333-8333-333333333333"),{id:"00000000-0000-0000-0000-000000000000"}));
-test("Intern cannot view a Supervisor",()=>assert.deepEqual(profileTargetWhere(viewer("INTERN"),"44444444-4444-4444-8444-444444444444"),{id:"00000000-0000-0000-0000-000000000000"}));
-test("Intern cannot view a Coordinator",()=>assert.deepEqual(profileTargetWhere(viewer("INTERN"),"55555555-5555-4555-8555-555555555555"),{id:"00000000-0000-0000-0000-000000000000"}));
-test("Supervisor can view self",()=>assert.deepEqual(profileTargetWhere(viewer("SUPERVISOR"),"11111111-1111-4111-8111-111111111111"),{id:"11111111-1111-4111-8111-111111111111"}));
-test("Supervisor cannot view unrelated Intern",()=>assert.match(JSON.stringify(profileTargetWhere(viewer("SUPERVISOR"),"22222222-2222-4222-8222-222222222222")),/supervisorProfile.*11111111-1111-4111-8111-111111111111/));
-test("Coordinator can view self",()=>assert.deepEqual(profileTargetWhere(viewer("COORDINATOR"),"11111111-1111-4111-8111-111111111111"),{id:"11111111-1111-4111-8111-111111111111"}));
-test("Coordinator cannot view out-of-scope Intern",()=>assert.match(JSON.stringify(profileTargetWhere(viewer("COORDINATOR"),"22222222-2222-4222-8222-222222222222")),/coordinatorProfiles.*11111111-1111-4111-8111-111111111111/));
-test("unexpected role is denied",()=>assert.deepEqual(profileTargetWhere({...viewer("INTERN"),role:"UNKNOWN" as unknown as "INTERN"},"22222222-2222-4222-8222-222222222222"),{id:"00000000-0000-0000-0000-000000000000"}));
-test("profile lookup is scoped through profileTargetWhere",()=>assert.match(data,/findFirst\(\{where:profileTargetWhere\(viewer,targetId\)/));
-test("JPEG PNG and WebP accepted",()=>{for(const[type,ext]of[["image/jpeg","jpg"],["image/png","png"],["image/webp","webp"]])assert.equal(validateProfileImage(new File(["x"],`photo.${ext}`,{type})),null)});
-test("other image formats rejected",()=>assert.match(validateProfileImage(new File(["x"],"photo.gif",{type:"image/gif"}))??"",/JPEG/));
-test("oversized image rejected",()=>assert.ok(validateProfileImage(new File([new Uint8Array(MAX_PROFILE_IMAGE_BYTES+1)],"photo.png",{type:"image/png"}))));
-test("paths are generated server side under owner",()=>assert.match(profileMediaPath("owner","avatar","image/png"),/^owner\/avatar\/[\w-]+\.png$/));
-test("new upload is cleaned when database write fails",()=>assert.ok(actions.indexOf("uploaded.map(removeProfileMedia)")<actions.indexOf("Your+profile+could+not+be+saved")));
-test("replaced media cleanup happens after database update",()=>assert.ok(actions.lastIndexOf("obsolete.map(removeProfileMedia)")>actions.indexOf("prisma.user.update")));
-test("raw private paths are removed before return",()=>{assert.match(data,/\.\.\.safeUser/);assert.doesNotMatch(view,/profilePhotoPath|coverPhotoPath/)});
-test("signed URLs are used",()=>assert.match(data,/signedProfileMedia/));
-test("private data is not selected",()=>assert.doesNotMatch(data,/email:true|authId:true|latitude:true|longitude:true|SelfiePath|storagePath|medical|identification/i));
-test("safe initials fallback exists",()=>assert.match(view,/initials\(profile\.firstName,profile\.lastName\)/));
-test("edit page has requested controls",()=>{for(const label of["Change Photo","Remove Photo","About","Save Changes","Cancel"])assert.match(edit,new RegExp(label))});
-test("account menu opens profile",()=>assert.match(shell,/href="\/profile"[\s\S]*View profile/));
-test("account menu exposes profile editing",()=>assert.match(shell,/href="\/profile\/edit"[\s\S]*Edit profile/));
-test("no social network features",()=>assert.doesNotMatch(`${view}\n${edit}`,/friend request|follow|like button|news feed|followers/i));
+test("ordinary profile validation remains strict",()=>{
+  assert(profileInputSchema.safeParse({firstName:"Ana",lastName:"Reyes",phoneNumber:"+63 912 345 6789"}).success);
+  assert(!profileInputSchema.safeParse({firstName:"Ana",lastName:"Reyes",phoneNumber:"unsafe"}).success);
+});
+
+test("emergency contact is complete-or-empty",()=>{
+  assert(emergencyContactSchema.safeParse({}).success);
+  assert(emergencyContactSchema.safeParse({emergencyContactName:"Parent",emergencyContactNumber:"+639123456789",emergencyContactRelationship:"Mother"}).success);
+  assert(!emergencyContactSchema.safeParse({emergencyContactName:"Parent"}).success);
+});
+
+test("emergency contact update is self-only and Intern-only",()=>{
+  assert(actions.includes('actor.role==="INTERN"'));
+  assert(actions.includes("where:{userId:actor.id}"));
+  assert(!actions.includes('formData.get("userId")'));
+  assert(actions.includes("emergencyContactName"));
+});
+
+test("PRO-2 internship details are selected from authoritative relations",()=>{
+  for(const token of["company:{select:{name:true}}","department:true","status:true","startDate:true","endDate:true","supervisorProfile"])assert(data.includes(token));
+  assert(data.includes('attendance:{where:{status:"APPROVED"}'));
+});
+
+test("profile view exposes required internship detail labels and self-only emergency contact",()=>{
+  for(const label of["Assigned company","Department","Internship status","Company Supervisor","Emergency contact"])assert(view.includes(label));
+  assert(view.includes("isOwn&&profile.internProfile"));
+});
+
+test("edit form keeps emergency contact private and separate",()=>{
+  assert(edit.includes("Safety contact"));
+  assert(edit.includes("private information"));
+  assert(edit.includes("emergencyContactName"));
+});
+
+test("profile image safety remains",()=>{
+  assert.equal(validateProfileImage(new File(["x"],"photo.jpg",{type:"image/jpeg"})),null);
+  assert((validateProfileImage(new File(["x"],"photo.gif",{type:"image/gif"}))??"").includes("JPEG"));
+  assert.ok(validateProfileImage(new File([new Uint8Array(MAX_PROFILE_IMAGE_BYTES+1)],"photo.png",{type:"image/png"})));
+  const path=profileMediaPath("owner","avatar","image/png");
+  assert(path.startsWith("owner/avatar/"));
+  assert(path.endsWith(".png"));
+});

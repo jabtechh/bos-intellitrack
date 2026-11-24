@@ -3,8 +3,8 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { Icon, type IconName } from "./icons";
 
-export function PageHeader({ eyebrow, title, description, actions }: { eyebrow?: string; title: string; description?: string; actions?: ReactNode }) {
-  return <header className="page-header"><div>{eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}<h1>{title}</h1>{description ? <p className="page-description">{description}</p> : null}</div>{actions ? <div className="action-bar">{actions}</div> : null}</header>;
+export function PageHeader({ eyebrow, title, description, actions, className = "" }: { eyebrow?: string; title: string; description?: string; actions?: ReactNode; className?: string }) {
+  return <header className={`page-header ${className}`.trim()}><div>{eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}<h1>{title}</h1>{description ? <p className="page-description">{description}</p> : null}</div>{actions ? <div className="action-bar">{actions}</div> : null}</header>;
 }
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
@@ -34,6 +34,13 @@ export function FormSection({ title, description, children }: { title: string; d
 
 export function MetricCard({ label, value, detail, icon = "review" }: { label: string; value: ReactNode; detail?: string; icon?: IconName }) {
   return <div className="metric-card"><span className="metric-icon"><Icon name={icon} /></span><div><p>{label}</p><strong>{value}</strong>{detail ? <small>{detail}</small> : null}</div></div>;
+}
+
+export function DashboardKpiCard({ label, value, detail, icon = "review", tone = "neutral" }: { label: string; value: ReactNode; detail?: string; icon?: IconName; tone?: "neutral" | "info" | "warning" | "success" }) {
+  return <article className={`dashboard-kpi-card dashboard-kpi-${tone}`}>
+    <span className="dashboard-kpi-icon"><Icon name={icon} /></span>
+    <div className="dashboard-kpi-copy"><p>{label}</p><strong>{value}</strong>{detail ? <small>{detail}</small> : null}</div>
+  </article>;
 }
 
 export function StatusBadge({ children, tone = "neutral" }: { children: ReactNode; tone?: "success" | "warning" | "danger" | "info" | "neutral" }) {

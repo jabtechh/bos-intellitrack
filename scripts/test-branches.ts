@@ -29,7 +29,7 @@ test("Branch service authorizes create, update and retirement; no historical del
   } } as unknown as Parameters<typeof branchOperations>[0];
   for (const role of ["ADMIN", "REPRESENTATIVE", "SUPERVISOR", "COORDINATOR", "INTERN"] as const) {
     const api = branchOperations(store, async () => { if (!canManageCompanyOperations(role)) throw new Error("Forbidden"); return company; });
-    if (role === "ADMIN" || role === "REPRESENTATIVE") {
+    if (role === "REPRESENTATIVE") {
       await api.save(input); await api.save({ ...input, name: "Renamed" }, "branch-a"); await api.deactivate("branch-a"); await api.list(true); await api.get("branch-a");
     } else {
       const before = calls.length;
@@ -84,14 +84,19 @@ test("attendance prefers assigned Branch, including retired historical Branch, a
   assert.match(action, /where: \{ userId: user.id \}/);
   assert.match(action, /internProfileId: profile.id, status: "ACTIVE"/);
   assert.doesNotMatch(action, /formData.get\("branchId"\)/);
-  assert.equal((action.match(/distanceFor\(context.location,/g) ?? []).length, 2);
+  // Time In/Out transaction rules moved unchanged to src/lib/attendance/transactions.ts (DEC-2026-019).
+  const transactions = read("src/lib/attendance/transactions.ts");
+  assert.equal((transactions.match(/distanceFor\(context.location,/g) ?? []).length, 2);
 });
 
 test("Branch read context retains existing profile scope and management guards", () => {
   assert.match(read("src/lib/profile/data.ts"), /where:profileTargetWhere\(viewer,targetId\)/);
   assert.match(read("src/lib/profile/data.ts"), /branch: await branchSchemaAvailable\(\)/);
   assert.match(read("src/lib/branches/service.ts"), /await requireCompanyOperationsManager\(\)/);
-  assert.match(read("src/lib/auth/require-company-operations-manager.ts"), /userId: user.id, company: \{ companyCode: BO_COFFEE_OFFICE_CODE/);
+  const guard = read("src/lib/auth/require-company-operations-manager.ts");
+  assert.match(guard, /userId:\s*user\.id,[\s\S]*company:\s*\{\s*isActive:\s*true/);
+  assert.match(guard, /companyId/);
+  assert.doesNotMatch(guard, /BO_COFFEE_OFFICE_CODE|BO_MAIN_OFFICE/);
 });
 
 test("backfill is explicit opt-in, preserves existing relationships and logs no credentials", () => {

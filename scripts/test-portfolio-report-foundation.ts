@@ -1,24 +1,81 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { portfolioInputSchema, portfolioCompleteness } from "../src/lib/portfolio/domain.ts";
-import { reportPeriod, safePdfFilename } from "../src/lib/reports/domain.ts";
-import { createReportPdf } from "../src/lib/reports/pdf.ts";
-const read=(x:string)=>readFileSync(x,"utf8"),auth=read("src/lib/portfolio/authorization.ts"),data=read("src/lib/reports/data.ts"),route=read("src/app/(authenticated)/reports/intern/[internId]/pdf/route.ts"),actions=read("src/app/portfolio/actions.ts"),shell=read("src/components/app-shell.tsx"),schema=read("prisma/schema.prisma");
-test("existing Portfolio model is reused",()=>{assert.match(schema,/assignmentId\s+String\s+@unique/);assert.doesNotMatch(actions,/sourceSnapshot: \{/)});
-test("Intern ownership isolation",()=>assert.match(auth,/internProfileId: c\.profileId/));
-test("unrelated Supervisor denied by scope",()=>assert.match(auth,/supervisorProfileId: c\.profileId/));
-test("Coordinator school scope",()=>assert.match(auth,/schoolId: c\.schoolId/));
-test("Company Representative company scope",()=>assert.match(auth,/companyId: c\.companyId/));
-test("System Administrator access stays at Main Office",()=>assert.match(auth,/kind === "ADMIN"[\s\S]+companyCode: BO_COFFEE_OFFICE_CODE/));
-test("direct mutation authorizes Intern",()=>assert.match(actions,/requirePortfolioViewer[\s\S]+kind !== "INTERN"/));
-test("date range validation",()=>{assert("error" in reportPeriod({from:"2026-02-02",to:"2026-01-01"}));assert.equal(reportPeriod({from:"2026-01-01",to:"2026-02-02"}).from?.toISOString().slice(0,10),"2026-01-01")});
-test("only completed Work Logs and unrestricted records included",()=>{assert.match(data,/workLogs:[\s\S]+status: \{ in: \["SUBMITTED", "APPROVED"\] \}/);assert.match(data,/tasks:[\s\S]+status: "COMPLETED"/);assert.match(data,/evaluations:[\s\S]+SUBMITTED[\s\S]+ACKNOWLEDGED/);assert.match(data,/documents:[\s\S]+status: "APPROVED"[\s\S]+IDENTIFICATION[\s\S]+MEDICAL_DOCUMENT/)});
-test("private paths and signed URLs absent",()=>assert.doesNotMatch(data,/storagePath|attachmentPath|EvidencePath|signed/i));
-test("visibility is role scoped",()=>assert.match(data,/INTERN_AND_STAFF[\s\S]+INTERN_ONLY[\s\S]+STAFF_ONLY/));
-test("unavailable values are not fabricated",()=>assert.deepEqual(portfolioCompleteness(null),{completed:0,total:6}));
-test("portfolio lists are bounded",()=>assert(portfolioInputSchema.safeParse({title:"Real work",professionalSummary:"",skills:"A",achievements:"",selectedWork:"",reflection:""}).success));
-test("safe PDF filename and headers",()=>{assert.equal(safePdfFilename("A / B",new Date("2026-08-04T00:00:00Z")),"intellitrack-a-b-2026-08-04.pdf");assert.match(route,/Content-Disposition/);assert.match(route,/private, no-store/)});
-test("PDF is generated in memory",()=>{const p=createReportPdf(["Bo's Coffee","Safe report"]);assert.equal(p.subarray(0,8).toString(),"%PDF-1.4");assert.doesNotMatch(route,/exportedPdfPath|storagePath/)});
-test("navigation is role aware",()=>{assert.ok((shell.match(/href: "\/portfolio"/g)||[]).length>=4);assert.ok((shell.match(/href: "\/reports"/g)||[]).length>=4)});
-test("no internal organization terminology in new UI",()=>{for(const f of["src/app/(authenticated)/portfolio/page.tsx","src/app/(authenticated)/reports/page.tsx","src/components/intern-report.tsx"])assert.doesNotMatch(read(f),/\b(?:Branch|Assignment|Placement)\b/) });
+import { portfolioCompleteness,portfolioInputSchema } from "../src/lib/portfolio/domain.ts";
+import { safePdfFilename } from "../src/lib/reports/domain.ts";
+import { calculateCompanyReport } from "../src/lib/reports/company.ts";
+
+const read=(p:string)=>readFileSync(p,"utf8");
+const auth=read("src/lib/portfolio/authorization.ts");
+const aiActions=read("src/app/ai/actions.ts");
+const generator=read("src/components/portfolio-draft-generator.tsx");
+const portfolio=read("src/app/(authenticated)/portfolio/page.tsx");
+const edit=read("src/app/(authenticated)/portfolio/edit/page.tsx");
+const pdf=read("src/app/(authenticated)/portfolio/pdf/route.ts");
+
+test("Portfolio is Intern-owned only",()=>{
+  assert(auth.includes('user.role !== "INTERN"'));
+  assert(auth.includes("return portfolioScopeWhere(c.profileId);"));
+  assert(read("src/lib/portfolio/scope.ts").includes("return { internProfileId, company: { companyCode: BO_COFFEE_OFFICE_CODE, isActive: true } };"));
+  for(const role of["SUPERVISOR","COORDINATOR","REPRESENTATIVE","ADMIN"])assert(!auth.includes('role === "'+role+'"'));
+});
+
+test("manual Portfolio validation and completeness remain",()=>{
+  assert(portfolioInputSchema.safeParse({title:"My Portfolio",professionalSummary:"",skills:"A",achievements:"",selectedWork:"",reflection:""}).success);
+  assert.deepEqual(portfolioCompleteness(null),{completed:0,total:6});
+});
+
+test("generated Portfolio is structured and review-only",()=>{
+  assert(aiActions.includes("generatePortfolioDraft"));
+  assert(aiActions.includes("generateGroundedPortfolioDraft"));
+  const section=aiActions.split("export async function generatePortfolioDraft")[1].split("export async function generateEvaluationDraft")[0];
+  for(const write of[".create(",".update(",".upsert("])assert(!section.includes(write));
+  assert(generator.includes("AI-generated draft — review before use"));
+  assert(generator.includes("Apply reviewed draft to editor"));
+  assert(generator.includes("reviewed the generated draft"));
+});
+
+test("Portfolio editor requires explicit save",()=>{
+  assert(edit.includes("Save Portfolio"));
+  assert(edit.includes("Nothing is saved until you explicitly submit this form"));
+  assert(edit.includes("PortfolioDraftGenerator"));
+});
+
+test("Portfolio has a genuine Portfolio-specific export",()=>{
+  // DEC-2026-020: one Portfolio PDF per internship, built from that assignment's evidence and narrative.
+  const pdfLines = readFileSync("src/lib/portfolio/pdf.ts", "utf8");
+  assert(portfolio.includes('portfolioHref(assignment.id, "/pdf")'));
+  assert(portfolio.includes('portfolioHref(entry.assignmentId, "/pdf")'));
+  assert(pdf.includes("portfolioPdfLines("));
+  assert(pdfLines.includes('"INTERNSHIP PORTFOLIO"'));
+  assert(pdfLines.includes("INTERN-AUTHORED PERSONAL SECTIONS"));
+  assert(pdfLines.includes("Verified evidence is system-compiled and presented separately from the Intern-authored narrative"));
+  assert(!pdf.includes("exportedPdfPath"));
+  assert(!pdf.includes("storagePath"));
+  const filename = safePdfFilename("Ana Reyes Portfolio");
+  assert(filename.startsWith("intellitrack-ana-reyes-portfolio-"));
+  assert(filename.endsWith(".pdf"));
+});
+
+test("Company aggregate formulas are canonical and truthful",()=>{
+  const rows=[
+    {internProfileId:"i1",status:"ACTIVE",requiredHours:500,internProfile:{user:{isActive:true}},attendance:[{status:"APPROVED",reviewRequired:false,creditedMinutes:480},{status:"APPROVED",reviewRequired:false,creditedMinutes:420},{status:"PENDING_REVIEW",reviewRequired:true,creditedMinutes:0}],evaluations:[]},
+    {internProfileId:"i2",status:"COMPLETED",requiredHours:400,internProfile:{user:{isActive:true}},attendance:[{status:"APPROVED",reviewRequired:false,creditedMinutes:600},{status:"VOIDED",reviewRequired:true,creditedMinutes:600}],evaluations:[{evaluationType:"FINAL",status:"SUBMITTED"}]},
+  ];
+  const report=calculateCompanyReport(rows);
+  assert.equal(report.activeInternCount,1);
+  assert.equal(report.renderedMinutes,1500);
+  assert.equal(report.requiredMinutes,54000);
+  assert.equal(report.eligibleAttendanceCount,4);
+  assert.equal(report.exceptionCount,1);
+  assert.equal(report.attendanceExceptionRate,25);
+  assert.equal(report.finalEvaluationCompletionRate,100);
+});
+
+test("Company aggregate suppresses unknown required-hour denominator",()=>{
+  const report=calculateCompanyReport([{internProfileId:"i1",status:"ACTIVE",requiredHours:null,internProfile:{user:{isActive:true}},attendance:[],evaluations:[]}]);
+  assert.equal(report.requiredMinutes,null);
+  assert.equal(report.missingRequiredHoursCount,1);
+  assert.equal(report.attendanceExceptionRate,null);
+  assert.equal(report.finalEvaluationCompletionRate,null);
+});

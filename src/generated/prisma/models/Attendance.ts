@@ -75,6 +75,8 @@ export type AttendanceMinAggregateOutputType = {
   classification: $Enums.AttendanceClassification | null
   status: $Enums.AttendanceStatus | null
   reviewRequired: boolean | null
+  clockInIdentityVerified: boolean | null
+  clockOutIdentityVerified: boolean | null
   reviewedById: string | null
   reviewedAt: Date | null
   reviewRemarks: string | null
@@ -106,6 +108,8 @@ export type AttendanceMaxAggregateOutputType = {
   classification: $Enums.AttendanceClassification | null
   status: $Enums.AttendanceStatus | null
   reviewRequired: boolean | null
+  clockInIdentityVerified: boolean | null
+  clockOutIdentityVerified: boolean | null
   reviewedById: string | null
   reviewedAt: Date | null
   reviewRemarks: string | null
@@ -137,6 +141,8 @@ export type AttendanceCountAggregateOutputType = {
   classification: number
   status: number
   reviewRequired: number
+  clockInIdentityVerified: number
+  clockOutIdentityVerified: number
   reviewedById: number
   reviewedAt: number
   reviewRemarks: number
@@ -196,6 +202,8 @@ export type AttendanceMinAggregateInputType = {
   classification?: true
   status?: true
   reviewRequired?: true
+  clockInIdentityVerified?: true
+  clockOutIdentityVerified?: true
   reviewedById?: true
   reviewedAt?: true
   reviewRemarks?: true
@@ -227,6 +235,8 @@ export type AttendanceMaxAggregateInputType = {
   classification?: true
   status?: true
   reviewRequired?: true
+  clockInIdentityVerified?: true
+  clockOutIdentityVerified?: true
   reviewedById?: true
   reviewedAt?: true
   reviewRemarks?: true
@@ -258,6 +268,8 @@ export type AttendanceCountAggregateInputType = {
   classification?: true
   status?: true
   reviewRequired?: true
+  clockInIdentityVerified?: true
+  clockOutIdentityVerified?: true
   reviewedById?: true
   reviewedAt?: true
   reviewRemarks?: true
@@ -376,6 +388,8 @@ export type AttendanceGroupByOutputType = {
   classification: $Enums.AttendanceClassification
   status: $Enums.AttendanceStatus
   reviewRequired: boolean
+  clockInIdentityVerified: boolean | null
+  clockOutIdentityVerified: boolean | null
   reviewedById: string | null
   reviewedAt: Date | null
   reviewRemarks: string | null
@@ -430,6 +444,8 @@ export type AttendanceWhereInput = {
   classification?: Prisma.EnumAttendanceClassificationFilter<"Attendance"> | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFilter<"Attendance"> | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFilter<"Attendance"> | boolean
+  clockInIdentityVerified?: Prisma.BoolNullableFilter<"Attendance"> | boolean | null
+  clockOutIdentityVerified?: Prisma.BoolNullableFilter<"Attendance"> | boolean | null
   reviewedById?: Prisma.UuidNullableFilter<"Attendance"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"Attendance"> | Date | string | null
   reviewRemarks?: Prisma.StringNullableFilter<"Attendance"> | string | null
@@ -439,6 +455,7 @@ export type AttendanceWhereInput = {
   assignment?: Prisma.XOR<Prisma.InternshipAssignmentScalarRelationFilter, Prisma.InternshipAssignmentWhereInput>
   reviewedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   corrections?: Prisma.AttendanceCorrectionListRelationFilter
+  identityAttempts?: Prisma.IdentityVerificationAttemptListRelationFilter
 }
 
 export type AttendanceOrderByWithRelationInput = {
@@ -464,6 +481,8 @@ export type AttendanceOrderByWithRelationInput = {
   classification?: Prisma.SortOrder
   status?: Prisma.SortOrder
   reviewRequired?: Prisma.SortOrder
+  clockInIdentityVerified?: Prisma.SortOrderInput | Prisma.SortOrder
+  clockOutIdentityVerified?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedById?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewRemarks?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -473,6 +492,7 @@ export type AttendanceOrderByWithRelationInput = {
   assignment?: Prisma.InternshipAssignmentOrderByWithRelationInput
   reviewedBy?: Prisma.UserOrderByWithRelationInput
   corrections?: Prisma.AttendanceCorrectionOrderByRelationAggregateInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptOrderByRelationAggregateInput
 }
 
 export type AttendanceWhereUniqueInput = Prisma.AtLeast<{
@@ -502,6 +522,8 @@ export type AttendanceWhereUniqueInput = Prisma.AtLeast<{
   classification?: Prisma.EnumAttendanceClassificationFilter<"Attendance"> | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFilter<"Attendance"> | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFilter<"Attendance"> | boolean
+  clockInIdentityVerified?: Prisma.BoolNullableFilter<"Attendance"> | boolean | null
+  clockOutIdentityVerified?: Prisma.BoolNullableFilter<"Attendance"> | boolean | null
   reviewedById?: Prisma.UuidNullableFilter<"Attendance"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"Attendance"> | Date | string | null
   reviewRemarks?: Prisma.StringNullableFilter<"Attendance"> | string | null
@@ -511,6 +533,7 @@ export type AttendanceWhereUniqueInput = Prisma.AtLeast<{
   assignment?: Prisma.XOR<Prisma.InternshipAssignmentScalarRelationFilter, Prisma.InternshipAssignmentWhereInput>
   reviewedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   corrections?: Prisma.AttendanceCorrectionListRelationFilter
+  identityAttempts?: Prisma.IdentityVerificationAttemptListRelationFilter
 }, "id" | "assignmentId_attendanceDate">
 
 export type AttendanceOrderByWithAggregationInput = {
@@ -536,6 +559,8 @@ export type AttendanceOrderByWithAggregationInput = {
   classification?: Prisma.SortOrder
   status?: Prisma.SortOrder
   reviewRequired?: Prisma.SortOrder
+  clockInIdentityVerified?: Prisma.SortOrderInput | Prisma.SortOrder
+  clockOutIdentityVerified?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedById?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewRemarks?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -575,6 +600,8 @@ export type AttendanceScalarWhereWithAggregatesInput = {
   classification?: Prisma.EnumAttendanceClassificationWithAggregatesFilter<"Attendance"> | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusWithAggregatesFilter<"Attendance"> | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolWithAggregatesFilter<"Attendance"> | boolean
+  clockInIdentityVerified?: Prisma.BoolNullableWithAggregatesFilter<"Attendance"> | boolean | null
+  clockOutIdentityVerified?: Prisma.BoolNullableWithAggregatesFilter<"Attendance"> | boolean | null
   reviewedById?: Prisma.UuidNullableWithAggregatesFilter<"Attendance"> | string | null
   reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Attendance"> | Date | string | null
   reviewRemarks?: Prisma.StringNullableWithAggregatesFilter<"Attendance"> | string | null
@@ -605,6 +632,8 @@ export type AttendanceCreateInput = {
   classification?: $Enums.AttendanceClassification
   status?: $Enums.AttendanceStatus
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean | null
+  clockOutIdentityVerified?: boolean | null
   reviewedAt?: Date | string | null
   reviewRemarks?: string | null
   internRemarks?: string | null
@@ -613,6 +642,7 @@ export type AttendanceCreateInput = {
   assignment: Prisma.InternshipAssignmentCreateNestedOneWithoutAttendanceInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutAttendanceReviewedInput
   corrections?: Prisma.AttendanceCorrectionCreateNestedManyWithoutAttendanceInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptCreateNestedManyWithoutAttendanceInput
 }
 
 export type AttendanceUncheckedCreateInput = {
@@ -638,6 +668,8 @@ export type AttendanceUncheckedCreateInput = {
   classification?: $Enums.AttendanceClassification
   status?: $Enums.AttendanceStatus
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean | null
+  clockOutIdentityVerified?: boolean | null
   reviewedById?: string | null
   reviewedAt?: Date | string | null
   reviewRemarks?: string | null
@@ -645,6 +677,7 @@ export type AttendanceUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   corrections?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutAttendanceInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedCreateNestedManyWithoutAttendanceInput
 }
 
 export type AttendanceUpdateInput = {
@@ -669,6 +702,8 @@ export type AttendanceUpdateInput = {
   classification?: Prisma.EnumAttendanceClassificationFieldUpdateOperationsInput | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clockInIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -677,6 +712,7 @@ export type AttendanceUpdateInput = {
   assignment?: Prisma.InternshipAssignmentUpdateOneRequiredWithoutAttendanceNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutAttendanceReviewedNestedInput
   corrections?: Prisma.AttendanceCorrectionUpdateManyWithoutAttendanceNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUpdateManyWithoutAttendanceNestedInput
 }
 
 export type AttendanceUncheckedUpdateInput = {
@@ -702,6 +738,8 @@ export type AttendanceUncheckedUpdateInput = {
   classification?: Prisma.EnumAttendanceClassificationFieldUpdateOperationsInput | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clockInIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -709,6 +747,7 @@ export type AttendanceUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   corrections?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutAttendanceNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedUpdateManyWithoutAttendanceNestedInput
 }
 
 export type AttendanceCreateManyInput = {
@@ -734,6 +773,8 @@ export type AttendanceCreateManyInput = {
   classification?: $Enums.AttendanceClassification
   status?: $Enums.AttendanceStatus
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean | null
+  clockOutIdentityVerified?: boolean | null
   reviewedById?: string | null
   reviewedAt?: Date | string | null
   reviewRemarks?: string | null
@@ -764,6 +805,8 @@ export type AttendanceUpdateManyMutationInput = {
   classification?: Prisma.EnumAttendanceClassificationFieldUpdateOperationsInput | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clockInIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -794,6 +837,8 @@ export type AttendanceUncheckedUpdateManyInput = {
   classification?: Prisma.EnumAttendanceClassificationFieldUpdateOperationsInput | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clockInIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -840,6 +885,8 @@ export type AttendanceCountOrderByAggregateInput = {
   classification?: Prisma.SortOrder
   status?: Prisma.SortOrder
   reviewRequired?: Prisma.SortOrder
+  clockInIdentityVerified?: Prisma.SortOrder
+  clockOutIdentityVerified?: Prisma.SortOrder
   reviewedById?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
   reviewRemarks?: Prisma.SortOrder
@@ -884,6 +931,8 @@ export type AttendanceMaxOrderByAggregateInput = {
   classification?: Prisma.SortOrder
   status?: Prisma.SortOrder
   reviewRequired?: Prisma.SortOrder
+  clockInIdentityVerified?: Prisma.SortOrder
+  clockOutIdentityVerified?: Prisma.SortOrder
   reviewedById?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
   reviewRemarks?: Prisma.SortOrder
@@ -915,6 +964,8 @@ export type AttendanceMinOrderByAggregateInput = {
   classification?: Prisma.SortOrder
   status?: Prisma.SortOrder
   reviewRequired?: Prisma.SortOrder
+  clockInIdentityVerified?: Prisma.SortOrder
+  clockOutIdentityVerified?: Prisma.SortOrder
   reviewedById?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
   reviewRemarks?: Prisma.SortOrder
@@ -939,6 +990,11 @@ export type AttendanceSumOrderByAggregateInput = {
 export type AttendanceScalarRelationFilter = {
   is?: Prisma.AttendanceWhereInput
   isNot?: Prisma.AttendanceWhereInput
+}
+
+export type AttendanceNullableScalarRelationFilter = {
+  is?: Prisma.AttendanceWhereInput | null
+  isNot?: Prisma.AttendanceWhereInput | null
 }
 
 export type AttendanceCreateNestedManyWithoutReviewedByInput = {
@@ -1051,6 +1107,22 @@ export type AttendanceUpdateOneRequiredWithoutCorrectionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AttendanceUpdateToOneWithWhereWithoutCorrectionsInput, Prisma.AttendanceUpdateWithoutCorrectionsInput>, Prisma.AttendanceUncheckedUpdateWithoutCorrectionsInput>
 }
 
+export type AttendanceCreateNestedOneWithoutIdentityAttemptsInput = {
+  create?: Prisma.XOR<Prisma.AttendanceCreateWithoutIdentityAttemptsInput, Prisma.AttendanceUncheckedCreateWithoutIdentityAttemptsInput>
+  connectOrCreate?: Prisma.AttendanceCreateOrConnectWithoutIdentityAttemptsInput
+  connect?: Prisma.AttendanceWhereUniqueInput
+}
+
+export type AttendanceUpdateOneWithoutIdentityAttemptsNestedInput = {
+  create?: Prisma.XOR<Prisma.AttendanceCreateWithoutIdentityAttemptsInput, Prisma.AttendanceUncheckedCreateWithoutIdentityAttemptsInput>
+  connectOrCreate?: Prisma.AttendanceCreateOrConnectWithoutIdentityAttemptsInput
+  upsert?: Prisma.AttendanceUpsertWithoutIdentityAttemptsInput
+  disconnect?: Prisma.AttendanceWhereInput | boolean
+  delete?: Prisma.AttendanceWhereInput | boolean
+  connect?: Prisma.AttendanceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AttendanceUpdateToOneWithWhereWithoutIdentityAttemptsInput, Prisma.AttendanceUpdateWithoutIdentityAttemptsInput>, Prisma.AttendanceUncheckedUpdateWithoutIdentityAttemptsInput>
+}
+
 export type AttendanceCreateWithoutReviewedByInput = {
   id?: string
   attendanceDate: Date | string
@@ -1073,6 +1145,8 @@ export type AttendanceCreateWithoutReviewedByInput = {
   classification?: $Enums.AttendanceClassification
   status?: $Enums.AttendanceStatus
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean | null
+  clockOutIdentityVerified?: boolean | null
   reviewedAt?: Date | string | null
   reviewRemarks?: string | null
   internRemarks?: string | null
@@ -1080,6 +1154,7 @@ export type AttendanceCreateWithoutReviewedByInput = {
   updatedAt?: Date | string
   assignment: Prisma.InternshipAssignmentCreateNestedOneWithoutAttendanceInput
   corrections?: Prisma.AttendanceCorrectionCreateNestedManyWithoutAttendanceInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptCreateNestedManyWithoutAttendanceInput
 }
 
 export type AttendanceUncheckedCreateWithoutReviewedByInput = {
@@ -1105,12 +1180,15 @@ export type AttendanceUncheckedCreateWithoutReviewedByInput = {
   classification?: $Enums.AttendanceClassification
   status?: $Enums.AttendanceStatus
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean | null
+  clockOutIdentityVerified?: boolean | null
   reviewedAt?: Date | string | null
   reviewRemarks?: string | null
   internRemarks?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   corrections?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutAttendanceInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedCreateNestedManyWithoutAttendanceInput
 }
 
 export type AttendanceCreateOrConnectWithoutReviewedByInput = {
@@ -1165,6 +1243,8 @@ export type AttendanceScalarWhereInput = {
   classification?: Prisma.EnumAttendanceClassificationFilter<"Attendance"> | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFilter<"Attendance"> | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFilter<"Attendance"> | boolean
+  clockInIdentityVerified?: Prisma.BoolNullableFilter<"Attendance"> | boolean | null
+  clockOutIdentityVerified?: Prisma.BoolNullableFilter<"Attendance"> | boolean | null
   reviewedById?: Prisma.UuidNullableFilter<"Attendance"> | string | null
   reviewedAt?: Prisma.DateTimeNullableFilter<"Attendance"> | Date | string | null
   reviewRemarks?: Prisma.StringNullableFilter<"Attendance"> | string | null
@@ -1195,6 +1275,8 @@ export type AttendanceCreateWithoutAssignmentInput = {
   classification?: $Enums.AttendanceClassification
   status?: $Enums.AttendanceStatus
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean | null
+  clockOutIdentityVerified?: boolean | null
   reviewedAt?: Date | string | null
   reviewRemarks?: string | null
   internRemarks?: string | null
@@ -1202,6 +1284,7 @@ export type AttendanceCreateWithoutAssignmentInput = {
   updatedAt?: Date | string
   reviewedBy?: Prisma.UserCreateNestedOneWithoutAttendanceReviewedInput
   corrections?: Prisma.AttendanceCorrectionCreateNestedManyWithoutAttendanceInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptCreateNestedManyWithoutAttendanceInput
 }
 
 export type AttendanceUncheckedCreateWithoutAssignmentInput = {
@@ -1226,6 +1309,8 @@ export type AttendanceUncheckedCreateWithoutAssignmentInput = {
   classification?: $Enums.AttendanceClassification
   status?: $Enums.AttendanceStatus
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean | null
+  clockOutIdentityVerified?: boolean | null
   reviewedById?: string | null
   reviewedAt?: Date | string | null
   reviewRemarks?: string | null
@@ -1233,6 +1318,7 @@ export type AttendanceUncheckedCreateWithoutAssignmentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   corrections?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutAttendanceInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedCreateNestedManyWithoutAttendanceInput
 }
 
 export type AttendanceCreateOrConnectWithoutAssignmentInput = {
@@ -1283,6 +1369,8 @@ export type AttendanceCreateWithoutCorrectionsInput = {
   classification?: $Enums.AttendanceClassification
   status?: $Enums.AttendanceStatus
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean | null
+  clockOutIdentityVerified?: boolean | null
   reviewedAt?: Date | string | null
   reviewRemarks?: string | null
   internRemarks?: string | null
@@ -1290,6 +1378,7 @@ export type AttendanceCreateWithoutCorrectionsInput = {
   updatedAt?: Date | string
   assignment: Prisma.InternshipAssignmentCreateNestedOneWithoutAttendanceInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutAttendanceReviewedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptCreateNestedManyWithoutAttendanceInput
 }
 
 export type AttendanceUncheckedCreateWithoutCorrectionsInput = {
@@ -1315,12 +1404,15 @@ export type AttendanceUncheckedCreateWithoutCorrectionsInput = {
   classification?: $Enums.AttendanceClassification
   status?: $Enums.AttendanceStatus
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean | null
+  clockOutIdentityVerified?: boolean | null
   reviewedById?: string | null
   reviewedAt?: Date | string | null
   reviewRemarks?: string | null
   internRemarks?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedCreateNestedManyWithoutAttendanceInput
 }
 
 export type AttendanceCreateOrConnectWithoutCorrectionsInput = {
@@ -1361,6 +1453,8 @@ export type AttendanceUpdateWithoutCorrectionsInput = {
   classification?: Prisma.EnumAttendanceClassificationFieldUpdateOperationsInput | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clockInIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1368,6 +1462,7 @@ export type AttendanceUpdateWithoutCorrectionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignment?: Prisma.InternshipAssignmentUpdateOneRequiredWithoutAttendanceNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutAttendanceReviewedNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUpdateManyWithoutAttendanceNestedInput
 }
 
 export type AttendanceUncheckedUpdateWithoutCorrectionsInput = {
@@ -1393,12 +1488,167 @@ export type AttendanceUncheckedUpdateWithoutCorrectionsInput = {
   classification?: Prisma.EnumAttendanceClassificationFieldUpdateOperationsInput | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clockInIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedUpdateManyWithoutAttendanceNestedInput
+}
+
+export type AttendanceCreateWithoutIdentityAttemptsInput = {
+  id?: string
+  attendanceDate: Date | string
+  clockIn?: Date | string | null
+  clockOut?: Date | string | null
+  clockInLatitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInLongitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInAccuracyMeters?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInDistanceMeters?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInInsideGeofence?: boolean | null
+  clockInSelfiePath?: string | null
+  clockOutLatitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutLongitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutAccuracyMeters?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutDistanceMeters?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutInsideGeofence?: boolean | null
+  clockOutSelfiePath?: string | null
+  workedMinutes?: number
+  creditedMinutes?: number
+  classification?: $Enums.AttendanceClassification
+  status?: $Enums.AttendanceStatus
+  reviewRequired?: boolean
+  clockInIdentityVerified?: boolean | null
+  clockOutIdentityVerified?: boolean | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
+  internRemarks?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  assignment: Prisma.InternshipAssignmentCreateNestedOneWithoutAttendanceInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutAttendanceReviewedInput
+  corrections?: Prisma.AttendanceCorrectionCreateNestedManyWithoutAttendanceInput
+}
+
+export type AttendanceUncheckedCreateWithoutIdentityAttemptsInput = {
+  id?: string
+  assignmentId: string
+  attendanceDate: Date | string
+  clockIn?: Date | string | null
+  clockOut?: Date | string | null
+  clockInLatitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInLongitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInAccuracyMeters?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInDistanceMeters?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInInsideGeofence?: boolean | null
+  clockInSelfiePath?: string | null
+  clockOutLatitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutLongitude?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutAccuracyMeters?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutDistanceMeters?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutInsideGeofence?: boolean | null
+  clockOutSelfiePath?: string | null
+  workedMinutes?: number
+  creditedMinutes?: number
+  classification?: $Enums.AttendanceClassification
+  status?: $Enums.AttendanceStatus
+  reviewRequired?: boolean
+  clockInIdentityVerified?: boolean | null
+  clockOutIdentityVerified?: boolean | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  reviewRemarks?: string | null
+  internRemarks?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  corrections?: Prisma.AttendanceCorrectionUncheckedCreateNestedManyWithoutAttendanceInput
+}
+
+export type AttendanceCreateOrConnectWithoutIdentityAttemptsInput = {
+  where: Prisma.AttendanceWhereUniqueInput
+  create: Prisma.XOR<Prisma.AttendanceCreateWithoutIdentityAttemptsInput, Prisma.AttendanceUncheckedCreateWithoutIdentityAttemptsInput>
+}
+
+export type AttendanceUpsertWithoutIdentityAttemptsInput = {
+  update: Prisma.XOR<Prisma.AttendanceUpdateWithoutIdentityAttemptsInput, Prisma.AttendanceUncheckedUpdateWithoutIdentityAttemptsInput>
+  create: Prisma.XOR<Prisma.AttendanceCreateWithoutIdentityAttemptsInput, Prisma.AttendanceUncheckedCreateWithoutIdentityAttemptsInput>
+  where?: Prisma.AttendanceWhereInput
+}
+
+export type AttendanceUpdateToOneWithWhereWithoutIdentityAttemptsInput = {
+  where?: Prisma.AttendanceWhereInput
+  data: Prisma.XOR<Prisma.AttendanceUpdateWithoutIdentityAttemptsInput, Prisma.AttendanceUncheckedUpdateWithoutIdentityAttemptsInput>
+}
+
+export type AttendanceUpdateWithoutIdentityAttemptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  attendanceDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clockIn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clockOut?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clockInLatitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInLongitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInAccuracyMeters?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInDistanceMeters?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInInsideGeofence?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockInSelfiePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clockOutLatitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutLongitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutAccuracyMeters?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutDistanceMeters?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutInsideGeofence?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutSelfiePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  creditedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  classification?: Prisma.EnumAttendanceClassificationFieldUpdateOperationsInput | $Enums.AttendanceClassification
+  status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+  reviewRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clockInIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignment?: Prisma.InternshipAssignmentUpdateOneRequiredWithoutAttendanceNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutAttendanceReviewedNestedInput
+  corrections?: Prisma.AttendanceCorrectionUpdateManyWithoutAttendanceNestedInput
+}
+
+export type AttendanceUncheckedUpdateWithoutIdentityAttemptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attendanceDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clockIn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clockOut?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clockInLatitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInLongitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInAccuracyMeters?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInDistanceMeters?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockInInsideGeofence?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockInSelfiePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clockOutLatitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutLongitude?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutAccuracyMeters?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutDistanceMeters?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  clockOutInsideGeofence?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutSelfiePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  creditedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  classification?: Prisma.EnumAttendanceClassificationFieldUpdateOperationsInput | $Enums.AttendanceClassification
+  status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+  reviewRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clockInIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  corrections?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutAttendanceNestedInput
 }
 
 export type AttendanceCreateManyReviewedByInput = {
@@ -1424,6 +1674,8 @@ export type AttendanceCreateManyReviewedByInput = {
   classification?: $Enums.AttendanceClassification
   status?: $Enums.AttendanceStatus
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean | null
+  clockOutIdentityVerified?: boolean | null
   reviewedAt?: Date | string | null
   reviewRemarks?: string | null
   internRemarks?: string | null
@@ -1453,6 +1705,8 @@ export type AttendanceUpdateWithoutReviewedByInput = {
   classification?: Prisma.EnumAttendanceClassificationFieldUpdateOperationsInput | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clockInIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1460,6 +1714,7 @@ export type AttendanceUpdateWithoutReviewedByInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignment?: Prisma.InternshipAssignmentUpdateOneRequiredWithoutAttendanceNestedInput
   corrections?: Prisma.AttendanceCorrectionUpdateManyWithoutAttendanceNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUpdateManyWithoutAttendanceNestedInput
 }
 
 export type AttendanceUncheckedUpdateWithoutReviewedByInput = {
@@ -1485,12 +1740,15 @@ export type AttendanceUncheckedUpdateWithoutReviewedByInput = {
   classification?: Prisma.EnumAttendanceClassificationFieldUpdateOperationsInput | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clockInIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   corrections?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutAttendanceNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedUpdateManyWithoutAttendanceNestedInput
 }
 
 export type AttendanceUncheckedUpdateManyWithoutReviewedByInput = {
@@ -1516,6 +1774,8 @@ export type AttendanceUncheckedUpdateManyWithoutReviewedByInput = {
   classification?: Prisma.EnumAttendanceClassificationFieldUpdateOperationsInput | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clockInIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1545,6 +1805,8 @@ export type AttendanceCreateManyAssignmentInput = {
   classification?: $Enums.AttendanceClassification
   status?: $Enums.AttendanceStatus
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean | null
+  clockOutIdentityVerified?: boolean | null
   reviewedById?: string | null
   reviewedAt?: Date | string | null
   reviewRemarks?: string | null
@@ -1575,6 +1837,8 @@ export type AttendanceUpdateWithoutAssignmentInput = {
   classification?: Prisma.EnumAttendanceClassificationFieldUpdateOperationsInput | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clockInIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1582,6 +1846,7 @@ export type AttendanceUpdateWithoutAssignmentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedBy?: Prisma.UserUpdateOneWithoutAttendanceReviewedNestedInput
   corrections?: Prisma.AttendanceCorrectionUpdateManyWithoutAttendanceNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUpdateManyWithoutAttendanceNestedInput
 }
 
 export type AttendanceUncheckedUpdateWithoutAssignmentInput = {
@@ -1606,6 +1871,8 @@ export type AttendanceUncheckedUpdateWithoutAssignmentInput = {
   classification?: Prisma.EnumAttendanceClassificationFieldUpdateOperationsInput | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clockInIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1613,6 +1880,7 @@ export type AttendanceUncheckedUpdateWithoutAssignmentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   corrections?: Prisma.AttendanceCorrectionUncheckedUpdateManyWithoutAttendanceNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedUpdateManyWithoutAttendanceNestedInput
 }
 
 export type AttendanceUncheckedUpdateManyWithoutAssignmentInput = {
@@ -1637,6 +1905,8 @@ export type AttendanceUncheckedUpdateManyWithoutAssignmentInput = {
   classification?: Prisma.EnumAttendanceClassificationFieldUpdateOperationsInput | $Enums.AttendanceClassification
   status?: Prisma.EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
   reviewRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clockInIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  clockOutIdentityVerified?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewRemarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1652,10 +1922,12 @@ export type AttendanceUncheckedUpdateManyWithoutAssignmentInput = {
 
 export type AttendanceCountOutputType = {
   corrections: number
+  identityAttempts: number
 }
 
 export type AttendanceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   corrections?: boolean | AttendanceCountOutputTypeCountCorrectionsArgs
+  identityAttempts?: boolean | AttendanceCountOutputTypeCountIdentityAttemptsArgs
 }
 
 /**
@@ -1673,6 +1945,13 @@ export type AttendanceCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.E
  */
 export type AttendanceCountOutputTypeCountCorrectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AttendanceCorrectionWhereInput
+}
+
+/**
+ * AttendanceCountOutputType without action
+ */
+export type AttendanceCountOutputTypeCountIdentityAttemptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.IdentityVerificationAttemptWhereInput
 }
 
 
@@ -1699,6 +1978,8 @@ export type AttendanceSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   classification?: boolean
   status?: boolean
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean
+  clockOutIdentityVerified?: boolean
   reviewedById?: boolean
   reviewedAt?: boolean
   reviewRemarks?: boolean
@@ -1708,6 +1989,7 @@ export type AttendanceSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   assignment?: boolean | Prisma.InternshipAssignmentDefaultArgs<ExtArgs>
   reviewedBy?: boolean | Prisma.Attendance$reviewedByArgs<ExtArgs>
   corrections?: boolean | Prisma.Attendance$correctionsArgs<ExtArgs>
+  identityAttempts?: boolean | Prisma.Attendance$identityAttemptsArgs<ExtArgs>
   _count?: boolean | Prisma.AttendanceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attendance"]>
 
@@ -1734,6 +2016,8 @@ export type AttendanceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   classification?: boolean
   status?: boolean
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean
+  clockOutIdentityVerified?: boolean
   reviewedById?: boolean
   reviewedAt?: boolean
   reviewRemarks?: boolean
@@ -1767,6 +2051,8 @@ export type AttendanceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   classification?: boolean
   status?: boolean
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean
+  clockOutIdentityVerified?: boolean
   reviewedById?: boolean
   reviewedAt?: boolean
   reviewRemarks?: boolean
@@ -1800,6 +2086,8 @@ export type AttendanceSelectScalar = {
   classification?: boolean
   status?: boolean
   reviewRequired?: boolean
+  clockInIdentityVerified?: boolean
+  clockOutIdentityVerified?: boolean
   reviewedById?: boolean
   reviewedAt?: boolean
   reviewRemarks?: boolean
@@ -1808,11 +2096,12 @@ export type AttendanceSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AttendanceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentId" | "attendanceDate" | "clockIn" | "clockOut" | "clockInLatitude" | "clockInLongitude" | "clockInAccuracyMeters" | "clockInDistanceMeters" | "clockInInsideGeofence" | "clockInSelfiePath" | "clockOutLatitude" | "clockOutLongitude" | "clockOutAccuracyMeters" | "clockOutDistanceMeters" | "clockOutInsideGeofence" | "clockOutSelfiePath" | "workedMinutes" | "creditedMinutes" | "classification" | "status" | "reviewRequired" | "reviewedById" | "reviewedAt" | "reviewRemarks" | "internRemarks" | "createdAt" | "updatedAt", ExtArgs["result"]["attendance"]>
+export type AttendanceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentId" | "attendanceDate" | "clockIn" | "clockOut" | "clockInLatitude" | "clockInLongitude" | "clockInAccuracyMeters" | "clockInDistanceMeters" | "clockInInsideGeofence" | "clockInSelfiePath" | "clockOutLatitude" | "clockOutLongitude" | "clockOutAccuracyMeters" | "clockOutDistanceMeters" | "clockOutInsideGeofence" | "clockOutSelfiePath" | "workedMinutes" | "creditedMinutes" | "classification" | "status" | "reviewRequired" | "clockInIdentityVerified" | "clockOutIdentityVerified" | "reviewedById" | "reviewedAt" | "reviewRemarks" | "internRemarks" | "createdAt" | "updatedAt", ExtArgs["result"]["attendance"]>
 export type AttendanceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignment?: boolean | Prisma.InternshipAssignmentDefaultArgs<ExtArgs>
   reviewedBy?: boolean | Prisma.Attendance$reviewedByArgs<ExtArgs>
   corrections?: boolean | Prisma.Attendance$correctionsArgs<ExtArgs>
+  identityAttempts?: boolean | Prisma.Attendance$identityAttemptsArgs<ExtArgs>
   _count?: boolean | Prisma.AttendanceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AttendanceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1830,6 +2119,7 @@ export type $AttendancePayload<ExtArgs extends runtime.Types.Extensions.Internal
     assignment: Prisma.$InternshipAssignmentPayload<ExtArgs>
     reviewedBy: Prisma.$UserPayload<ExtArgs> | null
     corrections: Prisma.$AttendanceCorrectionPayload<ExtArgs>[]
+    identityAttempts: Prisma.$IdentityVerificationAttemptPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1854,6 +2144,8 @@ export type $AttendancePayload<ExtArgs extends runtime.Types.Extensions.Internal
     classification: $Enums.AttendanceClassification
     status: $Enums.AttendanceStatus
     reviewRequired: boolean
+    clockInIdentityVerified: boolean | null
+    clockOutIdentityVerified: boolean | null
     reviewedById: string | null
     reviewedAt: Date | null
     reviewRemarks: string | null
@@ -2257,6 +2549,7 @@ export interface Prisma__AttendanceClient<T, Null = never, ExtArgs extends runti
   assignment<T extends Prisma.InternshipAssignmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternshipAssignmentDefaultArgs<ExtArgs>>): Prisma.Prisma__InternshipAssignmentClient<runtime.Types.Result.GetResult<Prisma.$InternshipAssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   reviewedBy<T extends Prisma.Attendance$reviewedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attendance$reviewedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   corrections<T extends Prisma.Attendance$correctionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attendance$correctionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttendanceCorrectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  identityAttempts<T extends Prisma.Attendance$identityAttemptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attendance$identityAttemptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IdentityVerificationAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2308,6 +2601,8 @@ export interface AttendanceFieldRefs {
   readonly classification: Prisma.FieldRef<"Attendance", 'AttendanceClassification'>
   readonly status: Prisma.FieldRef<"Attendance", 'AttendanceStatus'>
   readonly reviewRequired: Prisma.FieldRef<"Attendance", 'Boolean'>
+  readonly clockInIdentityVerified: Prisma.FieldRef<"Attendance", 'Boolean'>
+  readonly clockOutIdentityVerified: Prisma.FieldRef<"Attendance", 'Boolean'>
   readonly reviewedById: Prisma.FieldRef<"Attendance", 'String'>
   readonly reviewedAt: Prisma.FieldRef<"Attendance", 'DateTime'>
   readonly reviewRemarks: Prisma.FieldRef<"Attendance", 'String'>
@@ -2755,6 +3050,30 @@ export type Attendance$correctionsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.AttendanceCorrectionScalarFieldEnum | Prisma.AttendanceCorrectionScalarFieldEnum[]
+}
+
+/**
+ * Attendance.identityAttempts
+ */
+export type Attendance$identityAttemptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the IdentityVerificationAttempt
+   */
+  select?: Prisma.IdentityVerificationAttemptSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the IdentityVerificationAttempt
+   */
+  omit?: Prisma.IdentityVerificationAttemptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.IdentityVerificationAttemptInclude<ExtArgs> | null
+  where?: Prisma.IdentityVerificationAttemptWhereInput
+  orderBy?: Prisma.IdentityVerificationAttemptOrderByWithRelationInput | Prisma.IdentityVerificationAttemptOrderByWithRelationInput[]
+  cursor?: Prisma.IdentityVerificationAttemptWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.IdentityVerificationAttemptScalarFieldEnum | Prisma.IdentityVerificationAttemptScalarFieldEnum[]
 }
 
 /**

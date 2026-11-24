@@ -4,6 +4,22 @@ import { createAdminClient } from "../src/lib/supabase/admin.ts";
 import { prisma } from "../src/lib/prisma.ts";
 
 async function main() {
+  // Diagnostic-only: avoid unintentionally opening the default configured Auth
+  // target during a wildcard regression test. Even read-only Production access
+  // requires an explicit, separately authorized workflow.
+  if (
+    process.env.GATEA_TARGET_ENV !== "test" ||
+    process.env.GATEA_ENVIRONMENT_VERIFIED !== "1" ||
+    process.env.GATEA_RUN_ID !== "gatea-20261103-2318" ||
+    new URL(process.env.GATEA_BASE_URL ?? "").hostname !== "127.0.0.1" ||
+    new URL(process.env.GATEA_BASE_URL ?? "").port !== "3100" ||
+    new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").hostname !== "127.0.0.1" ||
+    new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").port !== "54321" ||
+    new URL(process.env.DATABASE_URL ?? "").hostname !== "127.0.0.1" ||
+    new URL(process.env.DATABASE_URL ?? "").port !== "54322" ||
+    new URL(process.env.DIRECT_URL ?? "").hostname !== "127.0.0.1" ||
+    new URL(process.env.DIRECT_URL ?? "").port !== "54322"
+  ) throw new Error("Auth diagnostic refused outside the verified isolated Gate A environment.");
   const supabase = createAdminClient();
   const { data, error } = await supabase.auth.admin.listUsers({ page: 1, perPage: 100 });
 

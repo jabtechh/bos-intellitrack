@@ -12,6 +12,10 @@ import { verifyAssignmentEligibility } from "@/lib/assignments/eligibility";
 import { assignmentInputSchema, canTransition, toDateOnly, toTime, type AssignmentInput, type AssignmentStatus } from "@/lib/assignments/validation";
 import { requireCompanyOperationsManager } from "@/lib/auth/require-company-operations-manager";
 import { prisma } from "@/lib/prisma";
+import { AssignmentChangedError, completeAssignmentInTransaction } from "@/lib/assignments/completion";
+import { PortfolioSnapshotError } from "@/lib/portfolio/snapshot";
+import { CertificateIssueError } from "@/lib/certificates/issue";
+import { completionShortfallMinutes, hoursText } from "@/lib/certificates/domain";
 
 export async function createAssignment(formData: FormData) {
   const administrator = await requireCompanyOperationsManager();
@@ -50,14 +54,14 @@ export async function completeAssignment(formData: FormData) { await transitionA
 export async function terminateAssignment(formData: FormData) { await transitionAssignment(formData, "TERMINATED", true); }
 
 async function transitionAssignment(formData: FormData, target: AssignmentStatus, needsConfirmation = false) {
-  await requireCompanyOperationsManager();
+  const actor = await requireCompanyOperationsManager();
   const assignmentId = z.string().uuid().safeParse(formData.get("assignmentId"));
   if (!assignmentId.success) redirect("/admin/assignments");
   if (needsConfirmation && formData.get("confirmed") !== "on") redirectWithError(`/admin/assignments/${assignmentId.data}`, "Confirm this lifecycle action before continuing.");
 
   try {
     await prisma.$transaction(async (tx) => {
-      const assignment = await tx.internshipAssignment.findUnique({ select: internshipAssignmentBaseSelect,  where: { id: assignmentId.data } });
+      const assignment = await tx.internshipAssignment.findFirst({ select: internshipAssignmentBaseSelect, where: { id: assignmentId.data, companyId: actor.companyId } });
       if (!assignment) throw new LifecycleError("Assignment not found.");
       if (!canTransition(assignment.status, target)) throw new LifecycleError(`A ${assignment.status.toLowerCase()} assignment cannot be changed to ${target.toLowerCase()}.`);
       if (target === "ACTIVE") {
@@ -74,14 +78,27 @@ async function transitionAssignment(formData: FormData, target: AssignmentStatus
         const errors = await verifyAssignmentEligibility(parsed.data, tx as unknown as typeof prisma, assignment.id);
         if (errors.length) throw new LifecycleError(errors[0]);
       }
+      if (target === "COMPLETED") {
+        // DEC-2026-020: completion and the assignment's Portfolio snapshot commit together or not at all.
+        // DEC-2026-021: completing below the confirmed required hours needs an explicit confirmation.
+        const credited = await tx.attendance.aggregate({ where: { assignmentId: assignment.id, status: "APPROVED" }, _sum: { creditedMinutes: true } });
+        const shortfall = completionShortfallMinutes({ creditedMinutes: credited._sum.creditedMinutes ?? 0, requiredHours: assignment.requiredHours });
+        if (shortfall > 0 && formData.get("confirmShortfall") !== "on") throw new LifecycleError(`This intern is ${hoursText(shortfall)} hours short of the required hours. Confirm completing with fewer hours before continuing.`);
+        await completeAssignmentInTransaction(tx, { assignmentId: assignment.id, companyId: actor.companyId, fromStatus: assignment.status, now: new Date() });
+        return;
+      }
       const updated = await tx.internshipAssignment.updateMany({
-        where: { id: assignment.id, status: assignment.status },
-        data: { status: target, ...(target === "ACTIVE" ? { activatedAt: new Date() } : {}), ...(target === "COMPLETED" ? { completedAt: new Date() } : {}) },
+        where: { id: assignment.id, companyId: actor.companyId, status: assignment.status },
+        data: { status: target, ...(target === "ACTIVE" ? { activatedAt: new Date() } : {}) },
       });
       if (updated.count !== 1) throw new LifecycleError("The assignment changed while this action was being processed. Review its current status and try again.");
-    });
+    }, { timeout: 20_000 });
   } catch (error) {
-    const message = error instanceof LifecycleError ? error.message : isUniqueError(error) ? "The intern already has another active assignment." : "The assignment status could not be changed.";
+    const message = error instanceof LifecycleError ? error.message
+      : error instanceof AssignmentChangedError ? "The assignment changed while this action was being processed. Review its current status and try again."
+      : error instanceof PortfolioSnapshotError ? "The internship Portfolio could not be saved, so the assignment was not completed. Nothing was changed; try again."
+      : error instanceof CertificateIssueError ? "The Certificate of Completion could not be issued, so the assignment was not completed. Nothing was changed; try again."
+      : isUniqueError(error) ? "The intern already has another active assignment." : "The assignment status could not be changed.";
     redirectWithError(`/admin/assignments/${assignmentId.data}`, message);
   }
   revalidatePath("/admin"); revalidatePath("/admin/assignments"); revalidatePath(`/admin/assignments/${assignmentId.data}`);

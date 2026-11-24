@@ -52,7 +52,7 @@ export async function AnnouncementReaderSummary({ viewer }: { viewer: Announceme
 
 export async function AnnouncementManagerSummary({ viewer }: { viewer: AnnouncementViewer }) {
   const now = new Date();
-  const where = viewer.kind === "ADMIN" ? {} : viewer.kind === "REPRESENTATIVE" ? { companyId: viewer.companyId } : {};
+  const where = viewer.kind === "REPRESENTATIVE" ? { companyId: viewer.companyId } : { id: "__not_manageable__" };
 
   const [active, scheduled, expired, drafts] = await Promise.all([
     prisma.announcement.count({

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Icon } from "@/components/icons";
 import styles from "./landing.module.css";
 
@@ -8,7 +9,7 @@ export function ProductPreview() {
     <div className={styles.desktopDevice}>
       <div className={styles.browserChrome}><span className={styles.trafficLights} aria-hidden="true"><i /><i /><i /></span><span className={styles.windowTitle}>IntelliTrack / workspace</span><span className={styles.sampleTag}>Sample workspace</span></div>
       <div className={styles.workspaceCanvas}>
-        <header className={styles.workspaceHeader}><span className={styles.workspaceAvatar} aria-hidden="true">IT</span><div><p>Intern workspace</p><h2>Your day, at a glance.</h2></div><span className={styles.workspaceContext}>Internship program<br /><b>Daily overview</b></span></header>
+        <header className={styles.workspaceHeader}><span className={`${styles.workspaceAvatar} ${styles.monogram}`} aria-hidden="true"><Image src="/brand/bos-cup-mark.png" alt="" width={64} height={64} /></span><div><p>Intern workspace</p><h2>Your day, at a glance.</h2></div><span className={styles.workspaceContext}>Internship program<br /><b>Daily overview</b></span></header>
         <div className={styles.metricRow}>
           <section className={styles.sampleMetric}><h3>Internship Progress</h3><p className={styles.sampleValue}>120 <span>/ 240 h</span></p><div className={styles.sampleProgress} role="meter" aria-label="Illustrative internship progress" aria-valuemin={0} aria-valuemax={240} aria-valuenow={120}><span /></div><p className={styles.metricFootnote}>Hours rendered <b>50%</b></p></section>
           <section className={styles.sampleMetric}><h3>Attendance</h3><p className={styles.attendanceState}><span />Timed in</p><p className={styles.timeStamp}>Time In · 8:00 AM</p><span className={styles.verifiedChip}>Location recorded</span></section>

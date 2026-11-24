@@ -26,7 +26,7 @@ test("badge formatting handles zero normal and 99+",()=>{assert.equal(formatNoti
 test("empty state exists",()=>assert.match(page,/No notifications/));
 test("restricted fields are absent from strict input contract",()=>{for(const key of ["password","authId","token","cookie","latitude","longitude","selfiePath","signedUrl","storagePath","medicalContents","identificationContents"])assert(!notificationInputSchema.safeParse({...base,[key]:"secret"}).success)});
 test("notification click marks read before safe navigation",()=>assert.match(item,/await markNotificationReadAction\(item\.id\);if\(item\.href\)router\.push/));
-test("utility bell includes persisted badge without replacing Intern primary items",()=>{assert.match(shell,/getUnreadNotificationCount/);assert.match(shell,/ApplicationUtilities/);assert.match(mobile,/"\/dashboard","\/attendance","\/work-logs"[\s\S]*More/)});
+test("utility bell includes persisted badge without replacing approved Intern primary items",()=>{assert.match(shell,/getUnreadNotificationCount/);assert.match(shell,/ApplicationUtilities/);assert.match(mobile,/INTERN:\s*\["\/dashboard",\s*"\/attendance",\s*"\/work-logs",\s*"\/tasks",\s*"\/portfolio"\]/);assert.match(mobile,/More/)});
 
 function prismaError(code:string,meta?:Record<string,unknown>){return Object.assign(new Error("Prisma request failed"),{code,meta})}
 const missingTable=prismaError("P2021",{modelName:"Notification",table:"public.notifications"});

@@ -72,7 +72,12 @@ export const ModelName = {
   CalendarEvent: 'CalendarEvent',
   Holiday: 'Holiday',
   Portfolio: 'Portfolio',
-  Notification: 'Notification'
+  InternshipCertificate: 'InternshipCertificate',
+  Notification: 'Notification',
+  IdentityReference: 'IdentityReference',
+  IdentityReferenceEvent: 'IdentityReferenceEvent',
+  IdentityCaptureSession: 'IdentityCaptureSession',
+  IdentityVerificationAttempt: 'IdentityVerificationAttempt'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -306,6 +311,8 @@ export const AttendanceScalarFieldEnum = {
   classification: 'classification',
   status: 'status',
   reviewRequired: 'reviewRequired',
+  clockInIdentityVerified: 'clockInIdentityVerified',
+  clockOutIdentityVerified: 'clockOutIdentityVerified',
   reviewedById: 'reviewedById',
   reviewedAt: 'reviewedAt',
   reviewRemarks: 'reviewRemarks',
@@ -396,6 +403,7 @@ export const EvaluationScalarFieldEnum = {
   assignmentId: 'assignmentId',
   evaluatorId: 'evaluatorId',
   evaluationType: 'evaluationType',
+  periodKey: 'periodKey',
   evaluationDate: 'evaluationDate',
   periodStart: 'periodStart',
   periodEnd: 'periodEnd',
@@ -554,6 +562,32 @@ export const PortfolioScalarFieldEnum = {
 export type PortfolioScalarFieldEnum = (typeof PortfolioScalarFieldEnum)[keyof typeof PortfolioScalarFieldEnum]
 
 
+export const InternshipCertificateScalarFieldEnum = {
+  id: 'id',
+  assignmentId: 'assignmentId',
+  certificateNumber: 'certificateNumber',
+  status: 'status',
+  issuedAt: 'issuedAt',
+  issuedById: 'issuedById',
+  signatoryName: 'signatoryName',
+  signatoryPosition: 'signatoryPosition',
+  internName: 'internName',
+  positionTitle: 'positionTitle',
+  companyName: 'companyName',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  completedAt: 'completedAt',
+  creditedMinutes: 'creditedMinutes',
+  requiredHours: 'requiredHours',
+  revokedAt: 'revokedAt',
+  revokedById: 'revokedById',
+  revokeReason: 'revokeReason',
+  createdAt: 'createdAt'
+} as const
+
+export type InternshipCertificateScalarFieldEnum = (typeof InternshipCertificateScalarFieldEnum)[keyof typeof InternshipCertificateScalarFieldEnum]
+
+
 export const NotificationScalarFieldEnum = {
   id: 'id',
   recipientId: 'recipientId',
@@ -570,6 +604,71 @@ export const NotificationScalarFieldEnum = {
 } as const
 
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const IdentityReferenceScalarFieldEnum = {
+  id: 'id',
+  internProfileId: 'internProfileId',
+  status: 'status',
+  storagePath: 'storagePath',
+  consentVersion: 'consentVersion',
+  consentedAt: 'consentedAt',
+  replacesId: 'replacesId',
+  decidedById: 'decidedById',
+  decidedAt: 'decidedAt',
+  decisionRemarks: 'decisionRemarks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IdentityReferenceScalarFieldEnum = (typeof IdentityReferenceScalarFieldEnum)[keyof typeof IdentityReferenceScalarFieldEnum]
+
+
+export const IdentityReferenceEventScalarFieldEnum = {
+  id: 'id',
+  referenceId: 'referenceId',
+  internProfileId: 'internProfileId',
+  actorUserId: 'actorUserId',
+  action: 'action',
+  remarks: 'remarks',
+  createdAt: 'createdAt'
+} as const
+
+export type IdentityReferenceEventScalarFieldEnum = (typeof IdentityReferenceEventScalarFieldEnum)[keyof typeof IdentityReferenceEventScalarFieldEnum]
+
+
+export const IdentityCaptureSessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  purpose: 'purpose',
+  secretHash: 'secretHash',
+  expiresAt: 'expiresAt',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type IdentityCaptureSessionScalarFieldEnum = (typeof IdentityCaptureSessionScalarFieldEnum)[keyof typeof IdentityCaptureSessionScalarFieldEnum]
+
+
+export const IdentityVerificationAttemptScalarFieldEnum = {
+  id: 'id',
+  internProfileId: 'internProfileId',
+  sessionId: 'sessionId',
+  referenceId: 'referenceId',
+  attendanceId: 'attendanceId',
+  purpose: 'purpose',
+  outcome: 'outcome',
+  liveness: 'liveness',
+  faceMatch: 'faceMatch',
+  similarity: 'similarity',
+  threshold: 'threshold',
+  provider: 'provider',
+  providerReference: 'providerReference',
+  failureReason: 'failureReason',
+  createdAt: 'createdAt'
+} as const
+
+export type IdentityVerificationAttemptScalarFieldEnum = (typeof IdentityVerificationAttemptScalarFieldEnum)[keyof typeof IdentityVerificationAttemptScalarFieldEnum]
 
 
 export const SortOrder = {

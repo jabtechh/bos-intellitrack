@@ -12,9 +12,14 @@
 
 # testing
 /coverage
+/playwright-report/
+/test-results/
+/artifacts/gatea/
+/.gatea/
 
 # next.js
 /.next/
+/.next-gatea/
 /out/
 
 # production
@@ -43,6 +48,8 @@ next-env.d.ts
 .pilot-credentials.local.json
 .demo-credentials.local.json
 .demo-data-credentials.local.json
+.evaluation-credentials.local.json
+.demo-user-credentials
 
 # prisma generated client
 /src/generated/

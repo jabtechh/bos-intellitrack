@@ -418,7 +418,12 @@ export const ModelName = {
   CalendarEvent: 'CalendarEvent',
   Holiday: 'Holiday',
   Portfolio: 'Portfolio',
-  Notification: 'Notification'
+  InternshipCertificate: 'InternshipCertificate',
+  Notification: 'Notification',
+  IdentityReference: 'IdentityReference',
+  IdentityReferenceEvent: 'IdentityReferenceEvent',
+  IdentityCaptureSession: 'IdentityCaptureSession',
+  IdentityVerificationAttempt: 'IdentityVerificationAttempt'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -434,7 +439,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "internProfile" | "supervisorProfile" | "coordinatorProfile" | "representativeProfile" | "adminProfile" | "school" | "company" | "branch" | "internshipAssignment" | "attendance" | "attendanceCorrection" | "workLog" | "task" | "evaluation" | "feedback" | "document" | "announcement" | "calendarEvent" | "holiday" | "portfolio" | "notification"
+    modelProps: "user" | "internProfile" | "supervisorProfile" | "coordinatorProfile" | "representativeProfile" | "adminProfile" | "school" | "company" | "branch" | "internshipAssignment" | "attendance" | "attendanceCorrection" | "workLog" | "task" | "evaluation" | "feedback" | "document" | "announcement" | "calendarEvent" | "holiday" | "portfolio" | "internshipCertificate" | "notification" | "identityReference" | "identityReferenceEvent" | "identityCaptureSession" | "identityVerificationAttempt"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1992,6 +1997,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    InternshipCertificate: {
+      payload: Prisma.$InternshipCertificatePayload<ExtArgs>
+      fields: Prisma.InternshipCertificateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InternshipCertificateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InternshipCertificatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InternshipCertificateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InternshipCertificatePayload>
+        }
+        findFirst: {
+          args: Prisma.InternshipCertificateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InternshipCertificatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InternshipCertificateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InternshipCertificatePayload>
+        }
+        findMany: {
+          args: Prisma.InternshipCertificateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InternshipCertificatePayload>[]
+        }
+        create: {
+          args: Prisma.InternshipCertificateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InternshipCertificatePayload>
+        }
+        createMany: {
+          args: Prisma.InternshipCertificateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InternshipCertificateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InternshipCertificatePayload>[]
+        }
+        delete: {
+          args: Prisma.InternshipCertificateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InternshipCertificatePayload>
+        }
+        update: {
+          args: Prisma.InternshipCertificateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InternshipCertificatePayload>
+        }
+        deleteMany: {
+          args: Prisma.InternshipCertificateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InternshipCertificateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InternshipCertificateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InternshipCertificatePayload>[]
+        }
+        upsert: {
+          args: Prisma.InternshipCertificateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InternshipCertificatePayload>
+        }
+        aggregate: {
+          args: Prisma.InternshipCertificateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInternshipCertificate>
+        }
+        groupBy: {
+          args: Prisma.InternshipCertificateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InternshipCertificateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InternshipCertificateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InternshipCertificateCountAggregateOutputType> | number
+        }
+      }
+    }
     Notification: {
       payload: Prisma.$NotificationPayload<ExtArgs>
       fields: Prisma.NotificationFieldRefs
@@ -2063,6 +2142,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.NotificationCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.NotificationCountAggregateOutputType> | number
+        }
+      }
+    }
+    IdentityReference: {
+      payload: Prisma.$IdentityReferencePayload<ExtArgs>
+      fields: Prisma.IdentityReferenceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.IdentityReferenceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferencePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.IdentityReferenceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferencePayload>
+        }
+        findFirst: {
+          args: Prisma.IdentityReferenceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferencePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.IdentityReferenceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferencePayload>
+        }
+        findMany: {
+          args: Prisma.IdentityReferenceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferencePayload>[]
+        }
+        create: {
+          args: Prisma.IdentityReferenceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferencePayload>
+        }
+        createMany: {
+          args: Prisma.IdentityReferenceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.IdentityReferenceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferencePayload>[]
+        }
+        delete: {
+          args: Prisma.IdentityReferenceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferencePayload>
+        }
+        update: {
+          args: Prisma.IdentityReferenceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferencePayload>
+        }
+        deleteMany: {
+          args: Prisma.IdentityReferenceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.IdentityReferenceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.IdentityReferenceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferencePayload>[]
+        }
+        upsert: {
+          args: Prisma.IdentityReferenceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferencePayload>
+        }
+        aggregate: {
+          args: Prisma.IdentityReferenceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateIdentityReference>
+        }
+        groupBy: {
+          args: Prisma.IdentityReferenceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IdentityReferenceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.IdentityReferenceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IdentityReferenceCountAggregateOutputType> | number
+        }
+      }
+    }
+    IdentityReferenceEvent: {
+      payload: Prisma.$IdentityReferenceEventPayload<ExtArgs>
+      fields: Prisma.IdentityReferenceEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.IdentityReferenceEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferenceEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.IdentityReferenceEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferenceEventPayload>
+        }
+        findFirst: {
+          args: Prisma.IdentityReferenceEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferenceEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.IdentityReferenceEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferenceEventPayload>
+        }
+        findMany: {
+          args: Prisma.IdentityReferenceEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferenceEventPayload>[]
+        }
+        create: {
+          args: Prisma.IdentityReferenceEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferenceEventPayload>
+        }
+        createMany: {
+          args: Prisma.IdentityReferenceEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.IdentityReferenceEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferenceEventPayload>[]
+        }
+        delete: {
+          args: Prisma.IdentityReferenceEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferenceEventPayload>
+        }
+        update: {
+          args: Prisma.IdentityReferenceEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferenceEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.IdentityReferenceEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.IdentityReferenceEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.IdentityReferenceEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferenceEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.IdentityReferenceEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityReferenceEventPayload>
+        }
+        aggregate: {
+          args: Prisma.IdentityReferenceEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateIdentityReferenceEvent>
+        }
+        groupBy: {
+          args: Prisma.IdentityReferenceEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IdentityReferenceEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.IdentityReferenceEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IdentityReferenceEventCountAggregateOutputType> | number
+        }
+      }
+    }
+    IdentityCaptureSession: {
+      payload: Prisma.$IdentityCaptureSessionPayload<ExtArgs>
+      fields: Prisma.IdentityCaptureSessionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.IdentityCaptureSessionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityCaptureSessionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.IdentityCaptureSessionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityCaptureSessionPayload>
+        }
+        findFirst: {
+          args: Prisma.IdentityCaptureSessionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityCaptureSessionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.IdentityCaptureSessionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityCaptureSessionPayload>
+        }
+        findMany: {
+          args: Prisma.IdentityCaptureSessionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityCaptureSessionPayload>[]
+        }
+        create: {
+          args: Prisma.IdentityCaptureSessionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityCaptureSessionPayload>
+        }
+        createMany: {
+          args: Prisma.IdentityCaptureSessionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.IdentityCaptureSessionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityCaptureSessionPayload>[]
+        }
+        delete: {
+          args: Prisma.IdentityCaptureSessionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityCaptureSessionPayload>
+        }
+        update: {
+          args: Prisma.IdentityCaptureSessionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityCaptureSessionPayload>
+        }
+        deleteMany: {
+          args: Prisma.IdentityCaptureSessionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.IdentityCaptureSessionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.IdentityCaptureSessionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityCaptureSessionPayload>[]
+        }
+        upsert: {
+          args: Prisma.IdentityCaptureSessionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityCaptureSessionPayload>
+        }
+        aggregate: {
+          args: Prisma.IdentityCaptureSessionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateIdentityCaptureSession>
+        }
+        groupBy: {
+          args: Prisma.IdentityCaptureSessionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IdentityCaptureSessionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.IdentityCaptureSessionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IdentityCaptureSessionCountAggregateOutputType> | number
+        }
+      }
+    }
+    IdentityVerificationAttempt: {
+      payload: Prisma.$IdentityVerificationAttemptPayload<ExtArgs>
+      fields: Prisma.IdentityVerificationAttemptFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.IdentityVerificationAttemptFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationAttemptPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.IdentityVerificationAttemptFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationAttemptPayload>
+        }
+        findFirst: {
+          args: Prisma.IdentityVerificationAttemptFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationAttemptPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.IdentityVerificationAttemptFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationAttemptPayload>
+        }
+        findMany: {
+          args: Prisma.IdentityVerificationAttemptFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationAttemptPayload>[]
+        }
+        create: {
+          args: Prisma.IdentityVerificationAttemptCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationAttemptPayload>
+        }
+        createMany: {
+          args: Prisma.IdentityVerificationAttemptCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.IdentityVerificationAttemptCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationAttemptPayload>[]
+        }
+        delete: {
+          args: Prisma.IdentityVerificationAttemptDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationAttemptPayload>
+        }
+        update: {
+          args: Prisma.IdentityVerificationAttemptUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationAttemptPayload>
+        }
+        deleteMany: {
+          args: Prisma.IdentityVerificationAttemptDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.IdentityVerificationAttemptUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.IdentityVerificationAttemptUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationAttemptPayload>[]
+        }
+        upsert: {
+          args: Prisma.IdentityVerificationAttemptUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdentityVerificationAttemptPayload>
+        }
+        aggregate: {
+          args: Prisma.IdentityVerificationAttemptAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateIdentityVerificationAttempt>
+        }
+        groupBy: {
+          args: Prisma.IdentityVerificationAttemptGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IdentityVerificationAttemptGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.IdentityVerificationAttemptCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IdentityVerificationAttemptCountAggregateOutputType> | number
         }
       }
     }
@@ -2320,6 +2695,8 @@ export const AttendanceScalarFieldEnum = {
   classification: 'classification',
   status: 'status',
   reviewRequired: 'reviewRequired',
+  clockInIdentityVerified: 'clockInIdentityVerified',
+  clockOutIdentityVerified: 'clockOutIdentityVerified',
   reviewedById: 'reviewedById',
   reviewedAt: 'reviewedAt',
   reviewRemarks: 'reviewRemarks',
@@ -2410,6 +2787,7 @@ export const EvaluationScalarFieldEnum = {
   assignmentId: 'assignmentId',
   evaluatorId: 'evaluatorId',
   evaluationType: 'evaluationType',
+  periodKey: 'periodKey',
   evaluationDate: 'evaluationDate',
   periodStart: 'periodStart',
   periodEnd: 'periodEnd',
@@ -2568,6 +2946,32 @@ export const PortfolioScalarFieldEnum = {
 export type PortfolioScalarFieldEnum = (typeof PortfolioScalarFieldEnum)[keyof typeof PortfolioScalarFieldEnum]
 
 
+export const InternshipCertificateScalarFieldEnum = {
+  id: 'id',
+  assignmentId: 'assignmentId',
+  certificateNumber: 'certificateNumber',
+  status: 'status',
+  issuedAt: 'issuedAt',
+  issuedById: 'issuedById',
+  signatoryName: 'signatoryName',
+  signatoryPosition: 'signatoryPosition',
+  internName: 'internName',
+  positionTitle: 'positionTitle',
+  companyName: 'companyName',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  completedAt: 'completedAt',
+  creditedMinutes: 'creditedMinutes',
+  requiredHours: 'requiredHours',
+  revokedAt: 'revokedAt',
+  revokedById: 'revokedById',
+  revokeReason: 'revokeReason',
+  createdAt: 'createdAt'
+} as const
+
+export type InternshipCertificateScalarFieldEnum = (typeof InternshipCertificateScalarFieldEnum)[keyof typeof InternshipCertificateScalarFieldEnum]
+
+
 export const NotificationScalarFieldEnum = {
   id: 'id',
   recipientId: 'recipientId',
@@ -2584,6 +2988,71 @@ export const NotificationScalarFieldEnum = {
 } as const
 
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const IdentityReferenceScalarFieldEnum = {
+  id: 'id',
+  internProfileId: 'internProfileId',
+  status: 'status',
+  storagePath: 'storagePath',
+  consentVersion: 'consentVersion',
+  consentedAt: 'consentedAt',
+  replacesId: 'replacesId',
+  decidedById: 'decidedById',
+  decidedAt: 'decidedAt',
+  decisionRemarks: 'decisionRemarks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IdentityReferenceScalarFieldEnum = (typeof IdentityReferenceScalarFieldEnum)[keyof typeof IdentityReferenceScalarFieldEnum]
+
+
+export const IdentityReferenceEventScalarFieldEnum = {
+  id: 'id',
+  referenceId: 'referenceId',
+  internProfileId: 'internProfileId',
+  actorUserId: 'actorUserId',
+  action: 'action',
+  remarks: 'remarks',
+  createdAt: 'createdAt'
+} as const
+
+export type IdentityReferenceEventScalarFieldEnum = (typeof IdentityReferenceEventScalarFieldEnum)[keyof typeof IdentityReferenceEventScalarFieldEnum]
+
+
+export const IdentityCaptureSessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  purpose: 'purpose',
+  secretHash: 'secretHash',
+  expiresAt: 'expiresAt',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type IdentityCaptureSessionScalarFieldEnum = (typeof IdentityCaptureSessionScalarFieldEnum)[keyof typeof IdentityCaptureSessionScalarFieldEnum]
+
+
+export const IdentityVerificationAttemptScalarFieldEnum = {
+  id: 'id',
+  internProfileId: 'internProfileId',
+  sessionId: 'sessionId',
+  referenceId: 'referenceId',
+  attendanceId: 'attendanceId',
+  purpose: 'purpose',
+  outcome: 'outcome',
+  liveness: 'liveness',
+  faceMatch: 'faceMatch',
+  similarity: 'similarity',
+  threshold: 'threshold',
+  provider: 'provider',
+  providerReference: 'providerReference',
+  failureReason: 'failureReason',
+  createdAt: 'createdAt'
+} as const
+
+export type IdentityVerificationAttemptScalarFieldEnum = (typeof IdentityVerificationAttemptScalarFieldEnum)[keyof typeof IdentityVerificationAttemptScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3054,6 +3523,104 @@ export type ListEnumPortfolioStatusFieldRefInput<$PrismaModel> = FieldRefInputTy
 
 
 /**
+ * Reference to a field of type 'CertificateStatus'
+ */
+export type EnumCertificateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CertificateStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CertificateStatus[]'
+ */
+export type ListEnumCertificateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CertificateStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'IdentityReferenceStatus'
+ */
+export type EnumIdentityReferenceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityReferenceStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'IdentityReferenceStatus[]'
+ */
+export type ListEnumIdentityReferenceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityReferenceStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'IdentityReferenceAction'
+ */
+export type EnumIdentityReferenceActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityReferenceAction'>
+    
+
+
+/**
+ * Reference to a field of type 'IdentityReferenceAction[]'
+ */
+export type ListEnumIdentityReferenceActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityReferenceAction[]'>
+    
+
+
+/**
+ * Reference to a field of type 'IdentityCapturePurpose'
+ */
+export type EnumIdentityCapturePurposeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityCapturePurpose'>
+    
+
+
+/**
+ * Reference to a field of type 'IdentityCapturePurpose[]'
+ */
+export type ListEnumIdentityCapturePurposeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityCapturePurpose[]'>
+    
+
+
+/**
+ * Reference to a field of type 'IdentityVerificationOutcome'
+ */
+export type EnumIdentityVerificationOutcomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityVerificationOutcome'>
+    
+
+
+/**
+ * Reference to a field of type 'IdentityVerificationOutcome[]'
+ */
+export type ListEnumIdentityVerificationOutcomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IdentityVerificationOutcome[]'>
+    
+
+
+/**
+ * Reference to a field of type 'LivenessCheckResult'
+ */
+export type EnumLivenessCheckResultFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LivenessCheckResult'>
+    
+
+
+/**
+ * Reference to a field of type 'LivenessCheckResult[]'
+ */
+export type ListEnumLivenessCheckResultFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LivenessCheckResult[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FaceMatchCheckResult'
+ */
+export type EnumFaceMatchCheckResultFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FaceMatchCheckResult'>
+    
+
+
+/**
+ * Reference to a field of type 'FaceMatchCheckResult[]'
+ */
+export type ListEnumFaceMatchCheckResultFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FaceMatchCheckResult[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -3238,7 +3805,12 @@ export type GlobalOmitConfig = {
   calendarEvent?: Prisma.CalendarEventOmit
   holiday?: Prisma.HolidayOmit
   portfolio?: Prisma.PortfolioOmit
+  internshipCertificate?: Prisma.InternshipCertificateOmit
   notification?: Prisma.NotificationOmit
+  identityReference?: Prisma.IdentityReferenceOmit
+  identityReferenceEvent?: Prisma.IdentityReferenceEventOmit
+  identityCaptureSession?: Prisma.IdentityCaptureSessionOmit
+  identityVerificationAttempt?: Prisma.IdentityVerificationAttemptOmit
 }
 
 /* Types for Logging */

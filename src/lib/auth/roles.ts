@@ -9,5 +9,6 @@ export const BUSINESS_ROLE_LABELS: Record<UserRole, string> = {
 };
 
 export function roleLabel(role: UserRole) { return BUSINESS_ROLE_LABELS[role]; }
-export function canManageCompanyOperations(role: UserRole) { return role === "REPRESENTATIVE" || role === "ADMIN"; }
-export function canApproveOperationalReviews(role: UserRole) { return role === "SUPERVISOR" || role === "REPRESENTATIVE" || role === "ADMIN"; }
+export function canManageCompanyOperations(role: UserRole) { return role === "REPRESENTATIVE"; }
+export function canApproveOperationalReviews(role: UserRole) { return role === "SUPERVISOR"; }
+export function isTechnicalAdministrator(role: UserRole) { return role === "ADMIN"; }

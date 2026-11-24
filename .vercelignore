@@ -3,6 +3,8 @@
 !.env.example
 .pilot-credentials.local.json
 .demo-credentials.local.json
+.evaluation-credentials.local.json
+.demo-user-credentials
 playwright-report/
 test-results/
 .playwright-artifacts/

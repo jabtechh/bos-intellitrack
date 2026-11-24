@@ -22,7 +22,8 @@ test("incomplete or unusual evidence becomes pending review",()=>assert.equal(fi
 test("rejecting attendance requires remarks",()=>{assert.equal(rejectionRemarksValid(""),false);assert.equal(rejectionRemarksValid("Evidence mismatch"),true)});
 test("intern ownership rejects another intern record",()=>assert.equal(ownsAttendance("intern-a","intern-b"),false));
 test("supervisor scope rejects another assignment",()=>assert.equal(canReviewAttendance({role:"SUPERVISOR",userId:"a",supervisorUserId:"b",representativeUserIds:[]}),false));
-test("representative scope rejects another Branch",()=>assert.equal(canReviewAttendance({role:"REPRESENTATIVE",userId:"a",supervisorUserId:"b",representativeUserIds:["c"]}),false));
+test("Representative cannot approve attendance even when company-linked",()=>assert.equal(canReviewAttendance({role:"REPRESENTATIVE",userId:"a",supervisorUserId:"b",representativeUserIds:["a"]}),false));
+test("Admin cannot approve routine attendance",()=>assert.equal(canReviewAttendance({role:"ADMIN",userId:"a",supervisorUserId:"a",representativeUserIds:["a"]}),false));
 test("non-reviewer roles cannot approve attendance",()=>assert.equal(canReviewAttendance({role:"COORDINATOR",userId:"a",supervisorUserId:"a",representativeUserIds:["a"]}),false));
 test("client-supplied status and assignment identifiers are ignored",()=>{const parsed=coordinatesSchema.parse({latitude:1,longitude:2,accuracy:3,status:"APPROVED",assignmentId:"unsafe"});assert.equal("status" in parsed,false);assert.equal("assignmentId" in parsed,false)});
 test("selfie validation enforces type and size",()=>{assert.match(validateSelfie({type:"text/plain",size:1})??"",/JPEG/);assert.match(validateSelfie({type:"image/jpeg",size:11*1024*1024})??"",/10 MB/)});

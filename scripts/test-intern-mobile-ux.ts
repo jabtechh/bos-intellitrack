@@ -1,11 +1,41 @@
-import assert from "node:assert/strict";import{readFileSync}from"node:fs";import test from"node:test";
-const mobile=readFileSync("src/components/mobile-navigation.tsx","utf8"),utilities=readFileSync("src/components/application-utilities.tsx","utf8"),shell=readFileSync("src/components/app-shell.tsx","utf8"),dashboard=readFileSync("src/components/intern-mobile-dashboard.tsx","utf8"),calendar=readFileSync("src/components/internship-calendar-view.tsx","utf8"),pdf=readFileSync("src/app/(authenticated)/reports/intern/[internId]/pdf/route.ts","utf8"),css=readFileSync("src/app/globals.css","utf8");
-test("account menu contains account actions rather than application navigation",()=>{for(const x of["View profile","Edit profile","Sign out"])assert.match(utilities,new RegExp(x));assert.doesNotMatch(utilities,/MobileNavigation|ShellNavigation/)});
-test("More sheet groups role-aware Intern navigation",()=>{for(const x of["Internship Calendar","Tasks","Evaluations","Feedback","Insights","Documents","Announcements","Portfolio","Reports"])assert.match(shell,new RegExp(x));assert.match(mobile,/role="dialog"/);assert.match(mobile,/mobile-sheet-open/)});
-test("menus close accessibly",()=>{assert.match(mobile,/event\.key\s*===\s*"Escape"/);assert.match(mobile,/event\.key\s*===\s*"Tab"/);assert.match(mobile,/onPointerDown/);assert.match(mobile,/\.focus\(\)/)});
-test("future schedule is not repeated in calendar cells",()=>{assert.doesNotMatch(calendar,/scheduled\?"Scheduled"/);assert.doesNotMatch(dashboard,/legend-scheduled|Needs attention/)});
-test("today, recorded attendance and genuine issues remain semantic",()=>{assert.match(dashboard,/is-today/);assert.match(dashboard,/calendar-present/);assert.match(dashboard,/Attendance issue/);assert.match(dashboard,/status!=="APPROVED"/)});
-test("progress uses canonical bounded calculation",()=>{assert.match(dashboard,/internshipProgress\(requiredHours,creditedMinutes\)/);assert.match(dashboard,/p\.visualPercentage/);assert.match(dashboard,/role="progressbar"/)});
-test("weekly chart uses approved credited attendance only",()=>{assert.match(dashboard,/row.status==="APPROVED"/);assert.match(dashboard,/row\.creditedMinutes/);assert.match(dashboard,/No credited attendance yet this week/);assert.doesNotMatch(dashboard,/productivity|performance score/i)});
-test("PDF is an authorized non-persistent attendance ledger",()=>{for(const x of["ATTENDANCE LEDGER","Clock In","Clock Out","Credited Hours","Days Attended","Completion"])assert.match(pdf,new RegExp(x));assert.doesNotMatch(pdf,/selfie|latitude|longitude|authId|signedUrl|storagePath|prisma\./i)});
-test("mobile surfaces respect viewport and safe area",()=>{assert.match(css,/max-height:92dvh/);assert.match(css,/env\(safe-area-inset-bottom\)/);assert.match(css,/mobile-sheet-open\{overflow:hidden/);assert.match(css,/grid-template-columns:repeat\(7,1fr\)/)});
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import test from "node:test";
+
+const mobile=readFileSync("src/components/mobile-navigation.tsx","utf8");
+const shell=readFileSync("src/components/app-shell.tsx","utf8");
+const dashboard=readFileSync("src/components/intern-dashboard.tsx","utf8");
+const css=readFileSync("src/app/globals.css","utf8");
+
+test("Intern mobile primary navigation is Home Attendance Work Logs Tasks Portfolio (DEC-2026-020)",()=>{
+  assert(mobile.includes('INTERN: ["/dashboard", "/attendance", "/work-logs", "/tasks", "/portfolio"]'));
+  assert(mobile.includes('INTERN: ["Home", "Attendance", "Work Logs", "Tasks", "Portfolio"]'));
+});
+
+test("Intern More contains approved Intern completeness destinations",()=>{
+  for(const label of["Internship Calendar","Insights","Portfolio","Evaluations & Feedback","Documents","Updates"])assert(shell.includes(label));
+  const intern=shell.split("const internNav: ShellNavItem[] = [")[1].split("\n];")[0];
+  for(const href of ["/attendance/corrections","/reports","/feedback"])assert(!intern.includes('href: "'+href+'"'));
+  assert(mobile.includes('return intern ? "Development" : "Progress"'));
+  assert(mobile.includes('role="dialog"'));
+  assert(mobile.includes("mobile-sheet-open"));
+});
+
+test("More sheet remains keyboard accessible",()=>{
+  assert(mobile.includes('event.key === "Escape"'));
+  assert(mobile.includes('event.key === "Tab"'));
+  assert(mobile.includes("onPointerDown"));
+  assert(mobile.includes(".focus()"));
+});
+
+test("Intern dashboard retains real Attendance and Work Log actions",()=>{
+  assert(dashboard.includes("DashboardAttendanceCard"));
+  assert(dashboard.includes("Today's Work Log"));
+  assert(dashboard.includes("This Week's Attendance"));
+  assert(!dashboard.includes("Upcoming Calendar"));
+});
+
+test("mobile surfaces retain safe-area containment",()=>{
+  assert(css.includes("safe-area-inset-bottom"));
+  assert(css.includes("mobile-sheet-open"));
+});

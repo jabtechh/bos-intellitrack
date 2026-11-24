@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
+
+const dmSans = DM_Sans({ subsets: ["latin"], display: "swap", variable: "--font-dm-sans" });
 
 export const metadata: Metadata = {
   title: { default: "IntelliTrack | Internship Management", template: "%s | IntelliTrack" },
@@ -13,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning>{children}</body>
+      <body className={`${dmSans.variable} ${dmSans.className}`} suppressHydrationWarning>{children}</body>
     </html>
   );
 }

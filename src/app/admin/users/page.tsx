@@ -1,2 +1,65 @@
-import Link from "next/link";import { prisma } from "@/lib/prisma";import { roleLabel } from "@/lib/auth/roles";
-export default async function UsersPage(){const users=await prisma.user.findMany({orderBy:[{lastName:"asc"},{firstName:"asc"}],include:{internProfile:{include:{school:true}},coordinatorProfile:{include:{school:true}}}});return <><div className="flex items-end justify-between gap-4"><div><p className="text-xs font-semibold uppercase tracking-wider text-primary">Company Operations</p><h1 className="mt-2 font-heading text-3xl font-semibold text-foreground">Users</h1></div><Link className="rounded-md bg-primary hover:bg-primary-hover px-4 py-3 text-sm font-semibold text-white" href="/admin/users/new">Invite user</Link></div><div className="mt-7 overflow-x-auto rounded-lg border border-border bg-surface"><table className="w-full text-left text-sm"><thead className="bg-surface-muted text-secondary"><tr><th>Name</th><th>Email</th><th>Role</th><th>Context</th><th>Status</th><th>Created</th></tr></thead><tbody>{users.map(user=><tr key={user.id}><td className="font-medium"><Link className="text-primary" href={`/admin/users/${user.id}`}>{user.firstName} {user.lastName}</Link></td><td>{user.email}</td><td>{roleLabel(user.role)}</td><td>{user.internProfile?.school.name??user.coordinatorProfile?.school.name??(user.role==="ADMIN"?"System maintenance":"Bo’s Coffee Main Office")}</td><td>{user.isActive?"Active":"Inactive"}</td><td>{user.createdAt.toLocaleDateString("en-PH")}</td></tr>)}</tbody></table></div></>}
+import Link from "next/link";
+import { Icon } from "@/components/icons";
+import { UsersDataTable, type DirectoryUser } from "@/components/users-data-table";
+import { MetricCard, PageHeader } from "@/components/ui";
+import { requireCurrentUser } from "@/lib/auth/require-current-user";
+import { roleLabel } from "@/lib/auth/roles";
+import { prisma } from "@/lib/prisma";
+
+export default async function UsersPage({ searchParams }: { searchParams: Promise<{ role?: string; status?: string; q?: string }> }) {
+  const actor = await requireCurrentUser();
+  const filters = await searchParams;
+  const representative = actor.role === "REPRESENTATIVE";
+
+  // The authorized scope is enforced on the server. Client-side filters only
+  // operate on rows already permitted for this user's role.
+  const users = await prisma.user.findMany({
+    where: representative ? { role: { not: "ADMIN" } } : {},
+    orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      email: true,
+      role: true,
+      isActive: true,
+      createdAt: true,
+      internProfile: { select: { school: { select: { name: true } } } },
+      coordinatorProfile: { select: { school: { select: { name: true } } } },
+      supervisorProfile: { select: { company: { select: { name: true } } } },
+      representativeProfile: { select: { company: { select: { name: true } } } },
+    },
+  });
+  const activeByRole = {
+    interns: users.filter((user) => user.role === "INTERN" && user.isActive).length,
+    supervisors: users.filter((user) => user.role === "SUPERVISOR" && user.isActive).length,
+    coordinators: users.filter((user) => user.role === "COORDINATOR" && user.isActive).length,
+  };
+  const rows: DirectoryUser[] = users.map((user) => ({
+    id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    role: user.role,
+    roleName: roleLabel(user.role),
+    context: user.internProfile?.school.name ?? user.coordinatorProfile?.school.name ??
+      user.supervisorProfile?.company.name ?? user.representativeProfile?.company.name ?? "System maintenance",
+    isActive: user.isActive,
+    createdAt: user.createdAt.toISOString(),
+  }));
+
+  return <div className="mx-auto w-full max-w-7xl space-y-6 px-5 py-7 sm:px-7 lg:px-8">
+    <PageHeader
+      eyebrow={representative ? "Company Operations" : "System Administrator"}
+      title="Users"
+      description={representative ? "Manage normal internship-program users and role assignments within the approved business scope." : "Technical account directory. Business workflow authority is not granted from this screen."}
+      actions={representative ? <Link className="button button-primary" href="/admin/users/new"><Icon name="plus" />Invite user</Link> : undefined}
+    />
+    {representative ? <section className="metric-grid" aria-label="Active user summary">
+      <MetricCard label="Active Interns" value={activeByRole.interns} detail="Internship participants" icon="users" />
+      <MetricCard label="Active Company Supervisors" value={activeByRole.supervisors} detail="Direct supervision accounts" icon="users" />
+      <MetricCard label="Active School Coordinators" value={activeByRole.coordinators} detail="Partner-school monitoring accounts" icon="school" />
+    </section> : null}
+    <UsersDataTable key={`${filters.role ?? ""}|${filters.status ?? ""}|${filters.q ?? ""}`} users={rows} representative={representative} initialRole={filters.role} initialStatus={filters.status} initialSearch={filters.q} />
+  </div>;
+}

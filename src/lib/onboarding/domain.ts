@@ -16,11 +16,13 @@ export const DOCUMENT_REQUIREMENTS = [
 
 export type OnboardingCounts = { required: number; complete: number; yourAction: number; percentage: number; done: boolean };
 
-export function onboardingCounts(input: { passwordChanged: boolean; profileComplete: boolean; documents: Record<string, boolean> }): OnboardingCounts {
+/** `facePhoto` (DEC-2026-019) is counted only when provided; it is required before attendance capture. */
+export function onboardingCounts(input: { passwordChanged: boolean; profileComplete: boolean; documents: Record<string, boolean>; facePhoto?: boolean }): OnboardingCounts {
   const requiredDocuments = DOCUMENT_REQUIREMENTS.filter((item) => item.required);
   const completeDocuments = requiredDocuments.filter((item) => input.documents[item.key]).length;
-  const required = 2 + requiredDocuments.length;
-  const complete = Number(input.passwordChanged) + Number(input.profileComplete) + completeDocuments;
+  const counted = input.facePhoto !== undefined;
+  const required = 2 + Number(counted) + requiredDocuments.length;
+  const complete = Number(input.passwordChanged) + Number(input.profileComplete) + Number(input.facePhoto === true) + completeDocuments;
   const missingDocuments = requiredDocuments.filter((item) => !input.documents[item.key]).length;
-  return { required, complete, yourAction: Number(!input.profileComplete) + missingDocuments, percentage: Math.round(complete / required * 100), done: complete === required };
+  return { required, complete, yourAction: Number(!input.profileComplete) + Number(counted && !input.facePhoto) + missingDocuments, percentage: Math.round(complete / required * 100), done: complete === required };
 }

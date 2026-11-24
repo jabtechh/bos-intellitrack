@@ -3,8 +3,72 @@ import type { Prisma } from "@/generated/prisma/client";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
 import { BO_COFFEE_OFFICE_CODE } from "@/lib/organization/bo-coffee";
 import { prisma } from "@/lib/prisma";
-export async function requireEvaluationViewer(){const user=await requireCurrentUser();if(user.role==="ADMIN")return{user,kind:"ADMIN" as const};if(user.role==="INTERN"){const p=await prisma.internProfile.findUnique({where:{userId:user.id},select:{id:true}});if(p)return{user,kind:"INTERN" as const,profileId:p.id}}if(user.role==="SUPERVISOR"){const p=await prisma.supervisorProfile.findFirst({where:{userId:user.id,company:{companyCode:BO_COFFEE_OFFICE_CODE,isActive:true}},select:{id:true}});if(p)return{user,kind:"SUPERVISOR" as const,profileId:p.id}}if(user.role==="COORDINATOR"){const p=await prisma.coordinatorProfile.findUnique({where:{userId:user.id},select:{schoolId:true}});if(p)return{user,kind:"COORDINATOR" as const,schoolId:p.schoolId}}if(user.role==="REPRESENTATIVE"){const p=await prisma.representativeProfile.findFirst({where:{userId:user.id,company:{companyCode:BO_COFFEE_OFFICE_CODE,isActive:true}},select:{companyId:true}});if(p)return{user,kind:"REPRESENTATIVE" as const,companyId:p.companyId}}redirect("/dashboard")}
-type Context=Awaited<ReturnType<typeof requireEvaluationViewer>>;
-export function evaluationWhere(c:Context):Prisma.EvaluationWhereInput{if(c.kind==="ADMIN")return{};if(c.kind==="INTERN")return{status:{in:["SUBMITTED","ACKNOWLEDGED"]},assignment:{internProfileId:c.profileId}};if(c.kind==="SUPERVISOR")return{assignment:{supervisorProfileId:c.profileId}};if(c.kind==="COORDINATOR")return{status:{in:["SUBMITTED","ACKNOWLEDGED"]},assignment:{internProfile:{schoolId:c.schoolId}}};return{assignment:{companyId:c.companyId}}}
-export function feedbackWhere(c:Context):Prisma.FeedbackWhereInput{if(c.kind==="ADMIN")return{};if(c.kind==="INTERN")return{recipientId:c.user.id,visibility:{in:["INTERN_AND_STAFF","INTERN_ONLY"]}};if(c.kind==="SUPERVISOR")return{assignment:{supervisorProfileId:c.profileId},visibility:{in:["INTERN_AND_STAFF","STAFF_ONLY"]}};if(c.kind==="COORDINATOR")return{assignment:{internProfile:{schoolId:c.schoolId}},visibility:{in:["INTERN_AND_STAFF","STAFF_ONLY"]}};return{assignment:{companyId:c.companyId},visibility:{in:["INTERN_AND_STAFF","STAFF_ONLY"]}}}
-export async function requireSupervisorEvaluationContext(){const c=await requireEvaluationViewer();if(c.kind!=="SUPERVISOR")redirect("/evaluations");return c}
+
+export async function requireEvaluationViewer() {
+  const user = await requireCurrentUser();
+  if (user.role === "INTERN") {
+    const profile = await prisma.internProfile.findUnique({
+      where: { userId: user.id },
+      select: { id: true },
+    });
+    if (profile) return { user, kind: "INTERN" as const, profileId: profile.id };
+  }
+  if (user.role === "SUPERVISOR") {
+    const profile = await prisma.supervisorProfile.findFirst({
+      where: {
+        userId: user.id,
+        company: { companyCode: BO_COFFEE_OFFICE_CODE, isActive: true },
+      },
+      select: { id: true },
+    });
+    if (profile) return { user, kind: "SUPERVISOR" as const, profileId: profile.id };
+  }
+  if (user.role === "COORDINATOR") {
+    const profile = await prisma.coordinatorProfile.findUnique({
+      where: { userId: user.id },
+      select: { schoolId: true },
+    });
+    if (profile) return { user, kind: "COORDINATOR" as const, schoolId: profile.schoolId };
+  }
+  redirect("/dashboard");
+}
+
+type Context = Awaited<ReturnType<typeof requireEvaluationViewer>>;
+
+export function evaluationWhere(c: Context): Prisma.EvaluationWhereInput {
+  if (c.kind === "INTERN") {
+    return {
+      status: { in: ["SUBMITTED", "ACKNOWLEDGED"] },
+      assignment: { internProfileId: c.profileId },
+    };
+  }
+  if (c.kind === "SUPERVISOR") {
+    return { assignment: { supervisorProfileId: c.profileId } };
+  }
+  return {
+    status: { in: ["SUBMITTED", "ACKNOWLEDGED"] },
+    assignment: { internProfile: { schoolId: c.schoolId } },
+  };
+}
+
+export function feedbackWhere(c: Context): Prisma.FeedbackWhereInput {
+  if (c.kind === "INTERN") {
+    return {
+      recipientId: c.user.id,
+      visibility: { in: ["INTERN_AND_STAFF", "INTERN_ONLY"] },
+    };
+  }
+  if (c.kind === "SUPERVISOR") {
+    return {
+      assignment: { supervisorProfileId: c.profileId },
+      visibility: { in: ["INTERN_AND_STAFF", "STAFF_ONLY"] },
+    };
+  }
+  return { id: "__coordinator_feedback_workspace_disabled__" };
+}
+
+export async function requireSupervisorEvaluationContext() {
+  const c = await requireEvaluationViewer();
+  if (c.kind !== "SUPERVISOR") redirect("/evaluations");
+  return c;
+}

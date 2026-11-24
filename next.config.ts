@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Add custom Next.js configuration here as the project grows.
+  distDir: process.env.GATEA_NEXT_DIST_DIR || ".next",
 };
 
 export default nextConfig;

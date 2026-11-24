@@ -1,13 +1,72 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-const read = (path: string) => readFileSync(path, "utf8"), dashboard = read("src/app/(authenticated)/dashboard/page.tsx"), primitives = read("src/components/role-dashboard.tsx"), shell = read("src/components/app-shell.tsx"), mobile = read("src/components/mobile-navigation.tsx"), admin = read("src/app/admin/layout.tsx"), css = read("src/app/globals.css");
-test("all authenticated roles share the same shell mechanics", () => { assert.match(admin, /<AppShell user=\{user\} navItems=\{navigation\}/); assert.doesNotMatch(admin, /admin-menu|Open navigation|<details/); for (const item of ["ApplicationUtilities", "MobileNavigation", "app-sidebar", "app-utility-bar"]) assert.match(shell, new RegExp(item)); });
-test("mobile bottom navigation is explicitly role mapped", () => { for (const role of ["INTERN", "SUPERVISOR", "COORDINATOR", "REPRESENTATIVE", "ADMIN"]) assert.match(mobile, new RegExp(`${role}:`)); for (const label of ["Home", "Attendance", "Work Logs", "Interns", "Reviews", "Students", "Reports", "Operations", "Users", "System"]) assert.match(mobile, new RegExp(`"${label}"`)); assert.match(mobile, /More/); });
-test("Supervisor has no Company Operations while Representative retains it", () => { assert.match(shell, /user\.role === "REPRESENTATIVE" \|\| user\.role === "ADMIN" \? operationsNav : reviewerNav/); assert.doesNotMatch(dashboard, /Company Supervisor[\s\S]{0,500}Company Operations/); assert.match(dashboard, /Bo’s Coffee Operations[\s\S]*Company Operations/); });
-test("shared dashboard primitives cover metrics progress queues and empty states", () => { for (const name of ["RoleDashboardHeader", "DashboardMetricGrid", "DashboardMetricCard", "DashboardSection", "ProgressRow", "AttentionQueue"]) assert.match(primitives, new RegExp(`function ${name}`)); assert.match(primitives, /ProgressBar/); assert.match(primitives, /All clear/); });
-test("Supervisor dashboard is scoped and operational", () => { assert.match(dashboard, /supervisorProfile\.findUnique/); assert.match(dashboard, /supervisorProfile: \{ userId: user\.id \}/); for (const label of ["Assigned Interns", "Needs Attention", "Task Submissions", "Evaluations Due", "Needs your attention", "Intern progress"]) assert.match(dashboard, new RegExp(label)); assert.doesNotMatch(dashboard, /Submitted work logs/i); });
-test("Coordinator is school-scoped and read-only with progress rows", () => { assert.match(dashboard, /coordinatorProfile\.findUnique/); assert.match(dashboard, /School Coordinator/); assert.match(dashboard, /Student progress/); assert.doesNotMatch(dashboard, /School Coordinator[\s\S]{0,900}(Approve|Reject)/); });
-test("Representative and Admin retain distinct scopes", () => { assert.match(dashboard, /representativeProfile\.findUnique/); assert.match(dashboard, /companyId/); assert.match(dashboard, /System Administrator/); assert.match(dashboard, /Manage users/); });
-test("progress rows handle unset zero and complete values safely", () => { assert.match(primitives, /if \(!required\)/); assert.match(primitives, /Math\.min\(100, Math\.max\(0/); assert.match(primitives, /remaining = Math\.max\(0/); });
-test("responsive dashboard styles cover mobile and desktop without fake trends", () => { assert.match(css, /role-metric-grid/); assert.match(css, /@media\(max-width:1023px\)/); assert.match(css, /@media\(max-width:639px\)/); assert.doesNotMatch(dashboard, /vs last week|trend|fake/i); });
+
+const read = (path: string) => readFileSync(path, "utf8");
+const dashboard = read("src/app/(authenticated)/dashboard/page.tsx");
+const shell = read("src/components/app-shell.tsx");
+const mobile = read("src/components/mobile-navigation.tsx");
+const operations = read("src/app/admin/page.tsx");
+const users = read("src/app/admin/users/page.tsx");
+const usersTable = read("src/components/users-data-table.tsx");
+const adminLayout = read("src/app/admin/layout.tsx");
+
+test("shared shell remains role-aware", () => {
+  for (const role of ["INTERN", "SUPERVISOR", "COORDINATOR", "REPRESENTATIVE", "ADMIN"]) {
+    assert(mobile.includes(role + ":"));
+  }
+  assert(shell.includes("navigationForRole"));
+});
+
+test("Supervisor dashboard is directly scoped and points to Reviews", () => {
+  assert(dashboard.includes("supervisorProfile.findUnique"));
+  assert(dashboard.includes("Company Supervisor"));
+  assert(dashboard.includes("/reviews"));
+  assert(dashboard.includes("Assigned Interns"));
+  assert(dashboard.includes("Task Submissions"));
+  assert(!dashboard.includes("Company Operations"));
+});
+
+test("Coordinator dashboard is focused and read-only", () => {
+  assert(dashboard.includes("coordinatorProfile.findUnique"));
+  assert(dashboard.includes("School Coordinator"));
+  assert(dashboard.includes("Student progress"));
+  assert(dashboard.includes("/students"));
+  assert(!dashboard.includes("Approve"));
+  assert(!dashboard.includes("Reject"));
+});
+
+test("Representative uses dedicated Stitch-aligned Dashboard", () => {
+  assert(dashboard.includes('redirect("/admin")'));
+  for (const label of ["Dashboard", "Program attention", "Program snapshot", "Workspace setup"]) {
+    assert(operations.includes(label));
+  }
+  for (const fake of ["Q2 INTERNSHIP COHORT", "Updated real-time", "Review queue", "Active Policy Rules"]) {
+    assert(!operations.includes(fake));
+  }
+  assert(operations.includes("Supervisor review ownership"));
+  assert(operations.includes("<DashboardKpiCard"));
+  assert(!operations.includes("border-warning/40 ring-1 ring-warning/10"));
+  assert(!operations.includes("absolute inset-x-0 top-0 h-1 bg-warning"));
+});
+
+test("user directory uses real filters and responsive table/card layouts", () => {
+  assert(users.includes("<UsersDataTable"));
+  assert(users.includes("Invite user"));
+  for (const summary of ["Active Interns", "Active Company Supervisors", "Active School Coordinators"]) assert(users.includes(summary));
+  for (const token of ["Search name or email", "All roles", "All statuses", "<table", "xl:hidden", "xl:block", "Rows per page", "Previous", "Next", "onChange", "toggleSort"]) {
+    assert(usersTable.includes(token), `Missing directory feature: ${token}`);
+  }
+  assert(usersTable.includes("setPage(1)"));
+  assert(!usersTable.includes("Apply filters"));
+  assert(!usersTable.includes("Export CSV"));
+});
+
+test("technical Admin navigation is separate from Representative operations", () => {
+  assert(adminLayout.includes("representativeNav"));
+  assert(adminLayout.includes("adminNav"));
+  assert(shell.includes('href: "/admin/system", label: "System"'));
+  for (const legacy of ["Attendance Review", "Correction Review", "Work log journals"]) {
+    assert(!adminLayout.includes(legacy));
+  }
+});

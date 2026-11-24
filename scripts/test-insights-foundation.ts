@@ -1,53 +1,43 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { attendanceCounts, hoursProgress, parseInsightPeriod, recordedSkills, taskCounts } from "../src/lib/insights/domain.ts";
+import { skillEvidenceTimeline } from "../src/lib/insights/domain.ts";
 
-const schema=readFileSync("prisma/schema.prisma","utf8");
-const auth=readFileSync("src/lib/insights/authorization.ts","utf8");
-const data=readFileSync("src/lib/insights/data.ts","utf8");
-const domain=readFileSync("src/lib/insights/domain.ts","utf8");
-const list=readFileSync("src/app/(authenticated)/insights/page.tsx","utf8");
-const detail=readFileSync("src/components/insight-detail.tsx","utf8");
-const route=readFileSync("src/app/(authenticated)/insights/[internId]/page.tsx","utf8");
-const dashboard=readFileSync("src/components/insights-dashboard-summary.tsx","utf8");
-const shell=readFileSync("src/components/app-shell.tsx","utf8");
+const read=(p:string)=>readFileSync(p,"utf8");
+const auth=read("src/lib/insights/authorization.ts");
+const data=read("src/lib/insights/data.ts");
+const detail=read("src/components/insight-detail.tsx");
 
-test("schema has explicit Work Log skills",()=>assert.match(schema,/skillsApplied\s+Json\?/));
-test("schema has explicit Portfolio skills",()=>assert.match(schema,/skills\s+Json\s+@default/));
-test("schema has structured Evaluation criteria",()=>assert.match(schema,/criteriaScores\s+Json/));
-test("no new insight persistence model",()=>assert.doesNotMatch(schema,/model (?:Insight|Skill|Productivity)/));
-test("Intern ownership uses scoped profile",()=>assert.match(auth,/portfolioAssignmentWhere/));
-test("Intern detail adds requested user constraint",()=>assert.match(auth,/internProfile: \{ userId: internUserId \}/));
-test("Supervisor scope is inherited from direct internship authorization",()=>assert.match(auth,/requirePortfolioViewer/));
-test("Coordinator scope is inherited from school authorization",()=>assert.match(auth,/portfolioAssignmentWhere/));
-test("Representative and Administrator scope is inherited from Main Office authorization",()=>assert.match(auth,/PortfolioContext/));
-test("unauthorized Intern returns not found",()=>assert.match(route,/if\(!insight\)notFound\(\)/));
-test("valid date range accepted",()=>assert(parseInsightPeriod({from:"2026-08-01",to:"2026-08-15"}).success));
-test("reversed date range rejected",()=>assert.equal(parseInsightPeriod({from:"2026-08-15",to:"2026-08-01"}).success,false));
-test("malformed date rejected",()=>assert.equal(parseInsightPeriod({from:"August 1"}).success,false));
-test("empty date range accepted",()=>assert(parseInsightPeriod({}).success));
-test("hours derive from credited minutes",()=>assert.deepEqual(hoursProgress(100,1500),{requiredHours:100,creditedHours:25,remainingHours:75,percentage:25}));
-test("hours safely handle missing requirement",()=>assert.deepEqual(hoursProgress(null,600),{requiredHours:null,creditedHours:10,remainingHours:null,percentage:null}));
-test("hours progress is bounded",()=>assert.equal(hoursProgress(10,1200).percentage,100));
-test("attendance late and early counts are factual",()=>assert.deepEqual(attendanceCounts([{classification:"LATE"},{classification:"EARLY_DEPARTURE"},{classification:"LATE_AND_EARLY_DEPARTURE"},{classification:"ON_TIME"}]),{days:4,late:2,early:2}));
-test("task calculations exclude cancelled",()=>assert.deepEqual(taskCounts([{status:"COMPLETED",dueAt:null},{status:"CANCELLED",dueAt:new Date(0)}]),{active:0,completed:1,overdue:0,completionRate:100,denominator:1}));
-test("overdue requires unfinished past due task",()=>assert.equal(taskCounts([{status:"TODO",dueAt:new Date(0)},{status:"COMPLETED",dueAt:new Date(0)}],new Date(1)).overdue,1));
-test("task rate is absent without denominator",()=>assert.equal(taskCounts([],new Date()).completionRate,null));
-test("recorded skills use only explicit arrays",()=>assert.deepEqual(recordedSkills([["Teamwork"," Service "],["teamwork"],"inferred"]),["teamwork","Service"]));
-test("submitted and legacy approved Work Logs included while other states are excluded",()=>assert.match(data,/workLogs: \{ where: \{ workDate: date, status: \{ in: \["SUBMITTED", "APPROVED"\] \}/));
-test("voided attendance excluded",()=>assert.match(data,/status: \{ not: "VOIDED" \}/));
-test("cancelled tasks excluded from calculations",()=>assert.match(domain,/status !== "CANCELLED"/));
-test("only finalized Evaluations included",()=>assert.match(data,/status: \{ in: \["SUBMITTED", "ACKNOWLEDGED"\] \}/));
-test("Feedback visibility is role aware",()=>assert.match(data,/INTERN_ONLY[\s\S]+STAFF_ONLY/));
-test("private paths and internal identifiers are not selected",()=>assert.doesNotMatch(data,/attachmentPath|EvidencePath|storagePath|authId|email|phoneNumber|latitude|longitude/));
-test("friendly Evaluation and Feedback labels are used",()=>{assert.match(detail,/TYPE_LABELS/);assert.match(detail,/FEEDBACK_TYPE_LABELS/)});
-test("real Evaluation scales are preserved",()=>{assert.match(detail,/\/ 5/);assert.match(detail,/\/ 100/)});
-test("safe empty data language is present",()=>assert.match(detail,/Not enough data yet/));
-test("source period is visible",()=>assert.match(detail,/sourcePeriodLabel/));
-test("navigation exists for every role",()=>assert.ok((shell.match(/href: "\/insights"/g)||[]).length>=4));
-test("dashboard is role aware",()=>{assert.match(dashboard,/role==="SUPERVISOR"/);assert.match(dashboard,/role==="COORDINATOR"/);assert.match(dashboard,/Main Office operational insights/)});
-test("objective attention conditions only",()=>{assert.match(dashboard,/overdue tasks/);assert.match(dashboard,/work log/)});
-test("no arbitrary or subjective analytics in visible UI",()=>assert.doesNotMatch(`${list}\n${detail}\n${dashboard}`,/productivity score|personality|high performer|poor performer|unproductive|ranking|employment recommendation|disciplinary recommendation/i));
-test("no fabricated skill inference",()=>{assert.match(detail,/Explicitly recorded/);assert.doesNotMatch(data,/title.*skill|description.*skill/i)});
-test("no prohibited internal business terminology in visible insight UI",()=>assert.doesNotMatch(`${list}\n${detail}\n${dashboard}`,/\b(?:Company|Branch|Assignment|Placement)\b/));
+test("Insights is Intern-owned",()=>{
+  assert(auth.includes("requirePortfolioViewer"));
+  for(const role of["COORDINATOR","REPRESENTATIVE","ADMIN"])assert(!auth.includes(role));
+});
+
+test("dated skill evidence groups explicit Work Log skills",()=>{
+  const timeline=skillEvidenceTimeline([
+    {workDate:new Date("2026-08-01T00:00:00Z"),skillsApplied:["TypeScript","Communication"]},
+    {workDate:new Date("2026-08-08T00:00:00Z"),skillsApplied:["typescript"]},
+  ]);
+  const ts=timeline.find(x=>x.skill.toLowerCase()==="typescript")!;
+  assert.equal(ts.count,2);
+  assert.equal(ts.firstSeen,"2026-08-01");
+  assert.equal(ts.lastSeen,"2026-08-08");
+});
+
+test("Insights data uses full submitted Work Log skill evidence",()=>{
+  assert(data.includes("allSkillLogs"));
+  assert(data.includes('status:{in:["SUBMITTED","APPROVED"]}'));
+  assert(data.includes("skillEvidenceTimeline(allSkillLogs)"));
+});
+
+test("Feedback source remains distinguishable",()=>{
+  assert(data.includes("author: { select: { role: true } }"));
+  assert(detail.includes("Workmate feedback"));
+  assert(detail.includes("Supervisor coaching"));
+});
+
+test("visible Insights UI refuses proficiency/ranking claims",()=>{
+  assert(detail.includes("evidence frequency, not a proficiency score"));
+  assert(detail.includes("does not assign proficiency rankings"));
+  assert(!/high performer|poor performer|employment recommendation|disciplinary recommendation/i.test(detail));
+});

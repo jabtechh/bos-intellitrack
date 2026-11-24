@@ -86,5 +86,9 @@ test("face detection makes no identity or liveness claim", () => {
   assert.match(capture, /setTimeout\(check,200\)/);
   assert.match(capture, /detectionActive/);
   assert.match(capture, /detectorRef\.current\?\.close/);
-  assert.doesNotMatch(capture + detector, /identity|recognition|embedding|liveness|anti-spoof/i);
+  // DEC-2026-019 supersedes DEC-2026-012: identity matching now happens server-side against an
+  // approved reference, so the capture UI may mention identity. The browser detector still makes
+  // no identity claim, and no client code may claim recognition, embeddings, liveness or anti-spoofing.
+  assert.doesNotMatch(detector, /identity|recognition|embedding|liveness|anti-spoof/i);
+  assert.doesNotMatch(capture, /recognition|embedding|liveness|anti-spoof/i);
 });

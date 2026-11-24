@@ -257,6 +257,8 @@ export type InternProfileWhereInput = {
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   school?: Prisma.XOR<Prisma.SchoolScalarRelationFilter, Prisma.SchoolWhereInput>
   assignments?: Prisma.InternshipAssignmentListRelationFilter
+  identityReferences?: Prisma.IdentityReferenceListRelationFilter
+  identityAttempts?: Prisma.IdentityVerificationAttemptListRelationFilter
 }
 
 export type InternProfileOrderByWithRelationInput = {
@@ -277,6 +279,8 @@ export type InternProfileOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   school?: Prisma.SchoolOrderByWithRelationInput
   assignments?: Prisma.InternshipAssignmentOrderByRelationAggregateInput
+  identityReferences?: Prisma.IdentityReferenceOrderByRelationAggregateInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptOrderByRelationAggregateInput
 }
 
 export type InternProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -301,6 +305,8 @@ export type InternProfileWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   school?: Prisma.XOR<Prisma.SchoolScalarRelationFilter, Prisma.SchoolWhereInput>
   assignments?: Prisma.InternshipAssignmentListRelationFilter
+  identityReferences?: Prisma.IdentityReferenceListRelationFilter
+  identityAttempts?: Prisma.IdentityVerificationAttemptListRelationFilter
 }, "id" | "userId" | "schoolId_studentNumber">
 
 export type InternProfileOrderByWithAggregationInput = {
@@ -359,6 +365,8 @@ export type InternProfileCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutInternProfileInput
   school: Prisma.SchoolCreateNestedOneWithoutInternProfilesInput
   assignments?: Prisma.InternshipAssignmentCreateNestedManyWithoutInternProfileInput
+  identityReferences?: Prisma.IdentityReferenceCreateNestedManyWithoutInternProfileInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptCreateNestedManyWithoutInternProfileInput
 }
 
 export type InternProfileUncheckedCreateInput = {
@@ -377,6 +385,8 @@ export type InternProfileUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   assignments?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutInternProfileInput
+  identityReferences?: Prisma.IdentityReferenceUncheckedCreateNestedManyWithoutInternProfileInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedCreateNestedManyWithoutInternProfileInput
 }
 
 export type InternProfileUpdateInput = {
@@ -395,6 +405,8 @@ export type InternProfileUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutInternProfileNestedInput
   school?: Prisma.SchoolUpdateOneRequiredWithoutInternProfilesNestedInput
   assignments?: Prisma.InternshipAssignmentUpdateManyWithoutInternProfileNestedInput
+  identityReferences?: Prisma.IdentityReferenceUpdateManyWithoutInternProfileNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUpdateManyWithoutInternProfileNestedInput
 }
 
 export type InternProfileUncheckedUpdateInput = {
@@ -413,6 +425,8 @@ export type InternProfileUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignments?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutInternProfileNestedInput
+  identityReferences?: Prisma.IdentityReferenceUncheckedUpdateManyWithoutInternProfileNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedUpdateManyWithoutInternProfileNestedInput
 }
 
 export type InternProfileCreateManyInput = {
@@ -628,6 +642,34 @@ export type InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.InternProfileUpdateToOneWithWhereWithoutAssignmentsInput, Prisma.InternProfileUpdateWithoutAssignmentsInput>, Prisma.InternProfileUncheckedUpdateWithoutAssignmentsInput>
 }
 
+export type InternProfileCreateNestedOneWithoutIdentityReferencesInput = {
+  create?: Prisma.XOR<Prisma.InternProfileCreateWithoutIdentityReferencesInput, Prisma.InternProfileUncheckedCreateWithoutIdentityReferencesInput>
+  connectOrCreate?: Prisma.InternProfileCreateOrConnectWithoutIdentityReferencesInput
+  connect?: Prisma.InternProfileWhereUniqueInput
+}
+
+export type InternProfileUpdateOneRequiredWithoutIdentityReferencesNestedInput = {
+  create?: Prisma.XOR<Prisma.InternProfileCreateWithoutIdentityReferencesInput, Prisma.InternProfileUncheckedCreateWithoutIdentityReferencesInput>
+  connectOrCreate?: Prisma.InternProfileCreateOrConnectWithoutIdentityReferencesInput
+  upsert?: Prisma.InternProfileUpsertWithoutIdentityReferencesInput
+  connect?: Prisma.InternProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InternProfileUpdateToOneWithWhereWithoutIdentityReferencesInput, Prisma.InternProfileUpdateWithoutIdentityReferencesInput>, Prisma.InternProfileUncheckedUpdateWithoutIdentityReferencesInput>
+}
+
+export type InternProfileCreateNestedOneWithoutIdentityAttemptsInput = {
+  create?: Prisma.XOR<Prisma.InternProfileCreateWithoutIdentityAttemptsInput, Prisma.InternProfileUncheckedCreateWithoutIdentityAttemptsInput>
+  connectOrCreate?: Prisma.InternProfileCreateOrConnectWithoutIdentityAttemptsInput
+  connect?: Prisma.InternProfileWhereUniqueInput
+}
+
+export type InternProfileUpdateOneRequiredWithoutIdentityAttemptsNestedInput = {
+  create?: Prisma.XOR<Prisma.InternProfileCreateWithoutIdentityAttemptsInput, Prisma.InternProfileUncheckedCreateWithoutIdentityAttemptsInput>
+  connectOrCreate?: Prisma.InternProfileCreateOrConnectWithoutIdentityAttemptsInput
+  upsert?: Prisma.InternProfileUpsertWithoutIdentityAttemptsInput
+  connect?: Prisma.InternProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InternProfileUpdateToOneWithWhereWithoutIdentityAttemptsInput, Prisma.InternProfileUpdateWithoutIdentityAttemptsInput>, Prisma.InternProfileUncheckedUpdateWithoutIdentityAttemptsInput>
+}
+
 export type InternProfileCreateWithoutUserInput = {
   id?: string
   studentNumber: string
@@ -643,6 +685,8 @@ export type InternProfileCreateWithoutUserInput = {
   updatedAt?: Date | string
   school: Prisma.SchoolCreateNestedOneWithoutInternProfilesInput
   assignments?: Prisma.InternshipAssignmentCreateNestedManyWithoutInternProfileInput
+  identityReferences?: Prisma.IdentityReferenceCreateNestedManyWithoutInternProfileInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptCreateNestedManyWithoutInternProfileInput
 }
 
 export type InternProfileUncheckedCreateWithoutUserInput = {
@@ -660,6 +704,8 @@ export type InternProfileUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   assignments?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutInternProfileInput
+  identityReferences?: Prisma.IdentityReferenceUncheckedCreateNestedManyWithoutInternProfileInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedCreateNestedManyWithoutInternProfileInput
 }
 
 export type InternProfileCreateOrConnectWithoutUserInput = {
@@ -693,6 +739,8 @@ export type InternProfileUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   school?: Prisma.SchoolUpdateOneRequiredWithoutInternProfilesNestedInput
   assignments?: Prisma.InternshipAssignmentUpdateManyWithoutInternProfileNestedInput
+  identityReferences?: Prisma.IdentityReferenceUpdateManyWithoutInternProfileNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUpdateManyWithoutInternProfileNestedInput
 }
 
 export type InternProfileUncheckedUpdateWithoutUserInput = {
@@ -710,6 +758,8 @@ export type InternProfileUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignments?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutInternProfileNestedInput
+  identityReferences?: Prisma.IdentityReferenceUncheckedUpdateManyWithoutInternProfileNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedUpdateManyWithoutInternProfileNestedInput
 }
 
 export type InternProfileCreateWithoutSchoolInput = {
@@ -727,6 +777,8 @@ export type InternProfileCreateWithoutSchoolInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutInternProfileInput
   assignments?: Prisma.InternshipAssignmentCreateNestedManyWithoutInternProfileInput
+  identityReferences?: Prisma.IdentityReferenceCreateNestedManyWithoutInternProfileInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptCreateNestedManyWithoutInternProfileInput
 }
 
 export type InternProfileUncheckedCreateWithoutSchoolInput = {
@@ -744,6 +796,8 @@ export type InternProfileUncheckedCreateWithoutSchoolInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   assignments?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutInternProfileInput
+  identityReferences?: Prisma.IdentityReferenceUncheckedCreateNestedManyWithoutInternProfileInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedCreateNestedManyWithoutInternProfileInput
 }
 
 export type InternProfileCreateOrConnectWithoutSchoolInput = {
@@ -807,6 +861,8 @@ export type InternProfileCreateWithoutAssignmentsInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutInternProfileInput
   school: Prisma.SchoolCreateNestedOneWithoutInternProfilesInput
+  identityReferences?: Prisma.IdentityReferenceCreateNestedManyWithoutInternProfileInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptCreateNestedManyWithoutInternProfileInput
 }
 
 export type InternProfileUncheckedCreateWithoutAssignmentsInput = {
@@ -824,6 +880,8 @@ export type InternProfileUncheckedCreateWithoutAssignmentsInput = {
   emergencyContactRelationship?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  identityReferences?: Prisma.IdentityReferenceUncheckedCreateNestedManyWithoutInternProfileInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedCreateNestedManyWithoutInternProfileInput
 }
 
 export type InternProfileCreateOrConnectWithoutAssignmentsInput = {
@@ -857,6 +915,8 @@ export type InternProfileUpdateWithoutAssignmentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutInternProfileNestedInput
   school?: Prisma.SchoolUpdateOneRequiredWithoutInternProfilesNestedInput
+  identityReferences?: Prisma.IdentityReferenceUpdateManyWithoutInternProfileNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUpdateManyWithoutInternProfileNestedInput
 }
 
 export type InternProfileUncheckedUpdateWithoutAssignmentsInput = {
@@ -874,6 +934,192 @@ export type InternProfileUncheckedUpdateWithoutAssignmentsInput = {
   emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  identityReferences?: Prisma.IdentityReferenceUncheckedUpdateManyWithoutInternProfileNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedUpdateManyWithoutInternProfileNestedInput
+}
+
+export type InternProfileCreateWithoutIdentityReferencesInput = {
+  id?: string
+  studentNumber: string
+  course: string
+  yearLevel?: string | null
+  section?: string | null
+  dateOfBirth?: Date | string | null
+  address?: string | null
+  emergencyContactName?: string | null
+  emergencyContactNumber?: string | null
+  emergencyContactRelationship?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutInternProfileInput
+  school: Prisma.SchoolCreateNestedOneWithoutInternProfilesInput
+  assignments?: Prisma.InternshipAssignmentCreateNestedManyWithoutInternProfileInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptCreateNestedManyWithoutInternProfileInput
+}
+
+export type InternProfileUncheckedCreateWithoutIdentityReferencesInput = {
+  id?: string
+  userId: string
+  schoolId: string
+  studentNumber: string
+  course: string
+  yearLevel?: string | null
+  section?: string | null
+  dateOfBirth?: Date | string | null
+  address?: string | null
+  emergencyContactName?: string | null
+  emergencyContactNumber?: string | null
+  emergencyContactRelationship?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  assignments?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutInternProfileInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedCreateNestedManyWithoutInternProfileInput
+}
+
+export type InternProfileCreateOrConnectWithoutIdentityReferencesInput = {
+  where: Prisma.InternProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.InternProfileCreateWithoutIdentityReferencesInput, Prisma.InternProfileUncheckedCreateWithoutIdentityReferencesInput>
+}
+
+export type InternProfileUpsertWithoutIdentityReferencesInput = {
+  update: Prisma.XOR<Prisma.InternProfileUpdateWithoutIdentityReferencesInput, Prisma.InternProfileUncheckedUpdateWithoutIdentityReferencesInput>
+  create: Prisma.XOR<Prisma.InternProfileCreateWithoutIdentityReferencesInput, Prisma.InternProfileUncheckedCreateWithoutIdentityReferencesInput>
+  where?: Prisma.InternProfileWhereInput
+}
+
+export type InternProfileUpdateToOneWithWhereWithoutIdentityReferencesInput = {
+  where?: Prisma.InternProfileWhereInput
+  data: Prisma.XOR<Prisma.InternProfileUpdateWithoutIdentityReferencesInput, Prisma.InternProfileUncheckedUpdateWithoutIdentityReferencesInput>
+}
+
+export type InternProfileUpdateWithoutIdentityReferencesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  studentNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  course?: Prisma.StringFieldUpdateOperationsInput | string
+  yearLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutInternProfileNestedInput
+  school?: Prisma.SchoolUpdateOneRequiredWithoutInternProfilesNestedInput
+  assignments?: Prisma.InternshipAssignmentUpdateManyWithoutInternProfileNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUpdateManyWithoutInternProfileNestedInput
+}
+
+export type InternProfileUncheckedUpdateWithoutIdentityReferencesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  schoolId?: Prisma.StringFieldUpdateOperationsInput | string
+  studentNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  course?: Prisma.StringFieldUpdateOperationsInput | string
+  yearLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignments?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutInternProfileNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedUpdateManyWithoutInternProfileNestedInput
+}
+
+export type InternProfileCreateWithoutIdentityAttemptsInput = {
+  id?: string
+  studentNumber: string
+  course: string
+  yearLevel?: string | null
+  section?: string | null
+  dateOfBirth?: Date | string | null
+  address?: string | null
+  emergencyContactName?: string | null
+  emergencyContactNumber?: string | null
+  emergencyContactRelationship?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutInternProfileInput
+  school: Prisma.SchoolCreateNestedOneWithoutInternProfilesInput
+  assignments?: Prisma.InternshipAssignmentCreateNestedManyWithoutInternProfileInput
+  identityReferences?: Prisma.IdentityReferenceCreateNestedManyWithoutInternProfileInput
+}
+
+export type InternProfileUncheckedCreateWithoutIdentityAttemptsInput = {
+  id?: string
+  userId: string
+  schoolId: string
+  studentNumber: string
+  course: string
+  yearLevel?: string | null
+  section?: string | null
+  dateOfBirth?: Date | string | null
+  address?: string | null
+  emergencyContactName?: string | null
+  emergencyContactNumber?: string | null
+  emergencyContactRelationship?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  assignments?: Prisma.InternshipAssignmentUncheckedCreateNestedManyWithoutInternProfileInput
+  identityReferences?: Prisma.IdentityReferenceUncheckedCreateNestedManyWithoutInternProfileInput
+}
+
+export type InternProfileCreateOrConnectWithoutIdentityAttemptsInput = {
+  where: Prisma.InternProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.InternProfileCreateWithoutIdentityAttemptsInput, Prisma.InternProfileUncheckedCreateWithoutIdentityAttemptsInput>
+}
+
+export type InternProfileUpsertWithoutIdentityAttemptsInput = {
+  update: Prisma.XOR<Prisma.InternProfileUpdateWithoutIdentityAttemptsInput, Prisma.InternProfileUncheckedUpdateWithoutIdentityAttemptsInput>
+  create: Prisma.XOR<Prisma.InternProfileCreateWithoutIdentityAttemptsInput, Prisma.InternProfileUncheckedCreateWithoutIdentityAttemptsInput>
+  where?: Prisma.InternProfileWhereInput
+}
+
+export type InternProfileUpdateToOneWithWhereWithoutIdentityAttemptsInput = {
+  where?: Prisma.InternProfileWhereInput
+  data: Prisma.XOR<Prisma.InternProfileUpdateWithoutIdentityAttemptsInput, Prisma.InternProfileUncheckedUpdateWithoutIdentityAttemptsInput>
+}
+
+export type InternProfileUpdateWithoutIdentityAttemptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  studentNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  course?: Prisma.StringFieldUpdateOperationsInput | string
+  yearLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutInternProfileNestedInput
+  school?: Prisma.SchoolUpdateOneRequiredWithoutInternProfilesNestedInput
+  assignments?: Prisma.InternshipAssignmentUpdateManyWithoutInternProfileNestedInput
+  identityReferences?: Prisma.IdentityReferenceUpdateManyWithoutInternProfileNestedInput
+}
+
+export type InternProfileUncheckedUpdateWithoutIdentityAttemptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  schoolId?: Prisma.StringFieldUpdateOperationsInput | string
+  studentNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  course?: Prisma.StringFieldUpdateOperationsInput | string
+  yearLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emergencyContactRelationship?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignments?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutInternProfileNestedInput
+  identityReferences?: Prisma.IdentityReferenceUncheckedUpdateManyWithoutInternProfileNestedInput
 }
 
 export type InternProfileCreateManySchoolInput = {
@@ -907,6 +1153,8 @@ export type InternProfileUpdateWithoutSchoolInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutInternProfileNestedInput
   assignments?: Prisma.InternshipAssignmentUpdateManyWithoutInternProfileNestedInput
+  identityReferences?: Prisma.IdentityReferenceUpdateManyWithoutInternProfileNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUpdateManyWithoutInternProfileNestedInput
 }
 
 export type InternProfileUncheckedUpdateWithoutSchoolInput = {
@@ -924,6 +1172,8 @@ export type InternProfileUncheckedUpdateWithoutSchoolInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignments?: Prisma.InternshipAssignmentUncheckedUpdateManyWithoutInternProfileNestedInput
+  identityReferences?: Prisma.IdentityReferenceUncheckedUpdateManyWithoutInternProfileNestedInput
+  identityAttempts?: Prisma.IdentityVerificationAttemptUncheckedUpdateManyWithoutInternProfileNestedInput
 }
 
 export type InternProfileUncheckedUpdateManyWithoutSchoolInput = {
@@ -949,10 +1199,14 @@ export type InternProfileUncheckedUpdateManyWithoutSchoolInput = {
 
 export type InternProfileCountOutputType = {
   assignments: number
+  identityReferences: number
+  identityAttempts: number
 }
 
 export type InternProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignments?: boolean | InternProfileCountOutputTypeCountAssignmentsArgs
+  identityReferences?: boolean | InternProfileCountOutputTypeCountIdentityReferencesArgs
+  identityAttempts?: boolean | InternProfileCountOutputTypeCountIdentityAttemptsArgs
 }
 
 /**
@@ -970,6 +1224,20 @@ export type InternProfileCountOutputTypeDefaultArgs<ExtArgs extends runtime.Type
  */
 export type InternProfileCountOutputTypeCountAssignmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.InternshipAssignmentWhereInput
+}
+
+/**
+ * InternProfileCountOutputType without action
+ */
+export type InternProfileCountOutputTypeCountIdentityReferencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.IdentityReferenceWhereInput
+}
+
+/**
+ * InternProfileCountOutputType without action
+ */
+export type InternProfileCountOutputTypeCountIdentityAttemptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.IdentityVerificationAttemptWhereInput
 }
 
 
@@ -991,6 +1259,8 @@ export type InternProfileSelect<ExtArgs extends runtime.Types.Extensions.Interna
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
   assignments?: boolean | Prisma.InternProfile$assignmentsArgs<ExtArgs>
+  identityReferences?: boolean | Prisma.InternProfile$identityReferencesArgs<ExtArgs>
+  identityAttempts?: boolean | Prisma.InternProfile$identityAttemptsArgs<ExtArgs>
   _count?: boolean | Prisma.InternProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["internProfile"]>
 
@@ -1054,6 +1324,8 @@ export type InternProfileInclude<ExtArgs extends runtime.Types.Extensions.Intern
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
   assignments?: boolean | Prisma.InternProfile$assignmentsArgs<ExtArgs>
+  identityReferences?: boolean | Prisma.InternProfile$identityReferencesArgs<ExtArgs>
+  identityAttempts?: boolean | Prisma.InternProfile$identityAttemptsArgs<ExtArgs>
   _count?: boolean | Prisma.InternProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type InternProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1071,6 +1343,8 @@ export type $InternProfilePayload<ExtArgs extends runtime.Types.Extensions.Inter
     user: Prisma.$UserPayload<ExtArgs>
     school: Prisma.$SchoolPayload<ExtArgs>
     assignments: Prisma.$InternshipAssignmentPayload<ExtArgs>[]
+    identityReferences: Prisma.$IdentityReferencePayload<ExtArgs>[]
+    identityAttempts: Prisma.$IdentityVerificationAttemptPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1484,6 +1758,8 @@ export interface Prisma__InternProfileClient<T, Null = never, ExtArgs extends ru
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   school<T extends Prisma.SchoolDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SchoolDefaultArgs<ExtArgs>>): Prisma.Prisma__SchoolClient<runtime.Types.Result.GetResult<Prisma.$SchoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   assignments<T extends Prisma.InternProfile$assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternProfile$assignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InternshipAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  identityReferences<T extends Prisma.InternProfile$identityReferencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternProfile$identityReferencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IdentityReferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  identityAttempts<T extends Prisma.InternProfile$identityAttemptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternProfile$identityAttemptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IdentityVerificationAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1949,6 +2225,54 @@ export type InternProfile$assignmentsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.InternshipAssignmentScalarFieldEnum | Prisma.InternshipAssignmentScalarFieldEnum[]
+}
+
+/**
+ * InternProfile.identityReferences
+ */
+export type InternProfile$identityReferencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the IdentityReference
+   */
+  select?: Prisma.IdentityReferenceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the IdentityReference
+   */
+  omit?: Prisma.IdentityReferenceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.IdentityReferenceInclude<ExtArgs> | null
+  where?: Prisma.IdentityReferenceWhereInput
+  orderBy?: Prisma.IdentityReferenceOrderByWithRelationInput | Prisma.IdentityReferenceOrderByWithRelationInput[]
+  cursor?: Prisma.IdentityReferenceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.IdentityReferenceScalarFieldEnum | Prisma.IdentityReferenceScalarFieldEnum[]
+}
+
+/**
+ * InternProfile.identityAttempts
+ */
+export type InternProfile$identityAttemptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the IdentityVerificationAttempt
+   */
+  select?: Prisma.IdentityVerificationAttemptSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the IdentityVerificationAttempt
+   */
+  omit?: Prisma.IdentityVerificationAttemptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.IdentityVerificationAttemptInclude<ExtArgs> | null
+  where?: Prisma.IdentityVerificationAttemptWhereInput
+  orderBy?: Prisma.IdentityVerificationAttemptOrderByWithRelationInput | Prisma.IdentityVerificationAttemptOrderByWithRelationInput[]
+  cursor?: Prisma.IdentityVerificationAttemptWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.IdentityVerificationAttemptScalarFieldEnum | Prisma.IdentityVerificationAttemptScalarFieldEnum[]
 }
 
 /**

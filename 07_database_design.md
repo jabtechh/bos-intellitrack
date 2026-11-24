@@ -3464,6 +3464,7 @@ This avoids introducing separate template and criteria tables before reusable ev
 | `assignment_id` | `UUID` | Yes | FK | None | Internship assignment being evaluated |
 | `evaluator_id` | `UUID` | Yes | FK | None | User who created the evaluation |
 | `evaluation_type` | `evaluation_type` | Yes | — | None | Evaluation stage or category |
+| `period_key` | `VARCHAR(20)` | Yes | — | None | Derived canonical period identity: `SINGLE` for INITIAL/MIDTERM/FINAL, ISO Monday `YYYY-MM-DD` for PROGRESS. See §8.4.1. |
 | `evaluation_date` | `DATE` | Yes | — | None | Official evaluation date |
 | `period_start` | `DATE` | No | — | `NULL` | Beginning of evaluated period |
 | `period_end` | `DATE` | No | — | `NULL` | End of evaluated period |
@@ -3492,17 +3493,38 @@ acknowledged_by_id → users.id
 
 ### Unique Constraints
 
-An assignment should normally have one evaluation of each formal type.
+An assignment has one INITIAL, one MIDTERM, and one FINAL evaluation, plus one
+PROGRESS evaluation per canonical week.
 
-Recommended constraint:
+Approved constraint (Gate B3: applied to the verified isolated Gate A test
+database; Production remains unapplied):
 
 ```text
-UNIQUE (assignment_id, evaluation_type)
+UNIQUE (assignment_id, evaluation_type, period_key)
 ```
 
-This works when Version 1 allows one midterm and one final evaluation.
+`period_key` is derived by the server, never supplied by a client:
 
-If recurring progress evaluations are required, the constraint should be reconsidered or changed to include the evaluation date.
+- `INITIAL`, `MIDTERM`, `FINAL` → `'SINGLE'`.
+- `PROGRESS` → ISO Monday of the canonical local week (`YYYY-MM-DD`).
+
+The canonical timezone is `branch.timezone` → `company.timezone` →
+`Asia/Manila`; weeks run Monday through Sunday.
+
+`VOIDED` evaluations keep occupying their unique identity in V1. Replacement
+semantics are deferred; do not add partial indexes or delete/merge rows.
+
+### 8.4.1 Weekly `period_key` rules
+
+| Rule | Detail |
+|---|---|
+| One-off types | `INITIAL` / `MIDTERM` / `FINAL` use the literal `'SINGLE'`. |
+| Repeatable type | `PROGRESS` uses the canonical Monday of the local internship week. |
+| Local week | Monday through Sunday in the canonical timezone. |
+| Legacy backfill | Derive `period_key` from the week containing `COALESCE(period_start, evaluation_date)`; preserve all stored content and boundaries. Example: `period_start = 2026-10-01` → `2026-09-28`. |
+| Past weeks | Allowed when the whole canonical week falls inside the assignment dates. |
+| Future weeks | Never allowed (Monday after the assignment-local today). |
+| Duplicates | Fail closed during migration; never auto-delete or auto-merge. |
 
 ### Check Constraints
 
@@ -3522,7 +3544,23 @@ CHECK (
   OR period_start IS NULL
   OR period_end >= period_start
 )
+
+CHECK (
+  CASE
+    WHEN evaluation_type = 'PROGRESS' THEN
+      CASE
+        WHEN period_key ~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'
+          THEN extract(isodow FROM period_key::date) = 1
+        ELSE false
+      END
+    ELSE period_key = 'SINGLE'
+  END
+)
 ```
+
+The final CHECK enforces OD-2: non-PROGRESS rows must use `'SINGLE'`, while
+PROGRESS rows must be a real `YYYY-MM-DD` date whose ISO weekday is Monday. The
+nested CASE guarantees the date cast is attempted only after the format check.
 
 The valid maximum for `overall_score` depends on the selected scoring scale. Version 1 should standardize the stored overall score to a percentage from 0 to 100.
 
@@ -3665,7 +3703,7 @@ Recommended behavior:
 | `DRAFT` | May be deleted by the evaluator |
 | `SUBMITTED` | Must be retained |
 | `ACKNOWLEDGED` | Must be retained |
-| Incorrect submitted evaluation | Set status to `VOIDED` and create a replacement |
+| Incorrect submitted evaluation | Set status to `VOIDED`. V1 replacement semantics are explicitly deferred (OD-3): the `VOIDED` row keeps its unique identity, so a replacement for the same assignment/type/period is not available in this phase. |
 
 Recommended foreign-key actions:
 
@@ -3679,13 +3717,18 @@ Recommended foreign-key actions:
 
 | Index | Columns | Type | Reason |
 |---|---|---|---|
-| `evaluations_assignment_type_key` | `assignment_id`, `evaluation_type` | Unique | Prevent duplicate formal evaluation types |
+| `evaluations_assignment_type_period_key_key` | `assignment_id`, `evaluation_type`, `period_key` | Unique | Prevent duplicate evaluation identity; also supports assignment/type/week lookups and chronological weekly ordering |
 | `evaluations_assignment_idx` | `assignment_id` | Standard | Evaluation history |
 | `evaluations_evaluator_idx` | `evaluator_id` | Standard | Evaluator activity |
 | `evaluations_type_idx` | `evaluation_type` | Standard | Evaluation-type reports |
 | `evaluations_status_idx` | `status` | Standard | Draft and submitted filtering |
 | `evaluations_date_idx` | `evaluation_date` | Standard | Date-based reports |
 | `evaluations_assignment_status_idx` | `assignment_id`, `status` | Composite | Assignment evaluation dashboard |
+
+No additional index is required: the composite unique index covers
+assignment-scoped weekly reads. The legacy `evaluations_assignment_type_key`
+index was replaced by this index on the verified test database at Gate B3;
+Production remains unapplied.
 
 ---
 

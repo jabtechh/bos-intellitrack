@@ -1,33 +1,67 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-import test, { after } from "node:test";
-import { correctionReasonSchema, progressValues, requiredHoursSchema, validateAgainstCredit } from "@/lib/required-hours/domain";
-import { prisma } from "@/lib/prisma";
+import { readFileSync } from "node:fs";
+import test from "node:test";
+import { correctionReasonSchema, progressValues, requiredHoursSchema, validateAgainstCredit } from "../src/lib/required-hours/domain.ts";
 
-const read = (path: string) => readFile(path, "utf8");
-after(() => prisma.$disconnect());
+const read=(p:string)=>readFileSync(p,"utf8");
+const schema=read("prisma/schema.prisma");
+const migration=read("prisma/migrations/20260804130000_support_required_hours_onboarding/migration.sql");
+const provisioning=read("src/lib/admin/provisioning.ts");
+const provisionForm=read("src/app/admin/users/new/provision-user-form.tsx");
+const provisionAction=read("src/app/admin/users/actions.ts");
+const onboardingAction=read("src/app/onboarding/internship-hours/actions.ts");
+const correctionAction=read("src/app/admin/users/required-hours-actions.ts");
+const correctionAuth=read("src/lib/required-hours/authorization.ts");
+const internDashboard=read("src/components/intern-dashboard-data.tsx");
 
-test("new internship may have null required hours", async () => assert.match(await read("prisma/schema.prisma"), /requiredHours\s+Int\?/));
-test("migration preserves existing positive values", async () => assert.doesNotMatch(await read("prisma/migrations/20260804130000_support_required_hours_onboarding/migration.sql"), /UPDATE\s+"internship_assignments"/i));
-test("database constraint allows null and rejects non-positive values", async () => assert.match(await read("prisma/migrations/20260804130000_support_required_hours_onboarding/migration.sql"), /required_hours" IS NULL OR "required_hours" > 0/));
-test("whole-number bounds are enforced", () => { assert.equal(requiredHoursSchema.safeParse(99).success,false); assert.equal(requiredHoursSchema.safeParse(100).success,true); assert.equal(requiredHoursSchema.safeParse(1500).success,true); assert.equal(requiredHoursSchema.safeParse(1501).success,false); assert.equal(requiredHoursSchema.safeParse(100.5).success,false); });
-test("value below credited hours is rejected", () => assert.ok(validateAgainstCredit(100,100.5)));
-test("null required hours never produce fake progress", () => assert.equal(progressValues(null,25),null));
-test("positive progress is calculated safely", () => assert.deepEqual(progressValues(500,125),{required:500,credited:125,remaining:375,percentage:25}));
-test("normal provisioning creates unset requirements", async () => assert.match(await read("src/app/admin/users/actions.ts"), /requiredHours: null/));
-test("normal provisioning does not collect required hours", async () => assert.doesNotMatch(await read("src/app/admin/users/new/provision-user-form.tsx"), /name="requiredHours"/));
-test("Intern submission requires confirmation", async () => assert.match(await read("src/app/onboarding/internship-hours/actions.ts"), /get\("confirmed"\) !== "on"/));
-test("Intern submission is conditional and one-time", async () => assert.match(await read("src/app/onboarding/internship-hours/actions.ts"), /requiredHours: null, requiredHoursConfirmedAt: null/));
-test("Intern submission resolves identity server-side", async () => assert.doesNotMatch(await read("src/app/onboarding/internship-hours/page.tsx"), /name="(?:userId|profileId|assignmentId|creditedHours|role|status)"/));
-test("incomplete Intern is redirected from dashboard", async () => assert.match(await read("src/app/(authenticated)/dashboard/page.tsx"), /requiredHours === null\) redirect\("\/onboarding\/internship-hours"\)/));
-test("attendance and work logs enforce onboarding", async () => { assert.match(await read("src/app/(authenticated)/attendance/page.tsx"), /requireInternAssignment/); assert.match(await read("src/app/(authenticated)/work-logs/page.tsx"), /requireInternAssignment/); });
-test("onboarding route permits completed Intern read-only access without a loop", async () => assert.match(await read("src/app/onboarding/internship-hours/page.tsx"), /assignment.requiredHours !== null/));
-test("Company Representative and System Administrator correction is guarded", async () => { const source=await read("src/app/admin/users/required-hours-actions.ts"); assert.match(source,/requireCompanyOperationsManager/); assert.match(source,/requiredHoursUpdatedById: actor.id/); });
-test("correction requires a reason", () => { assert.equal(correctionReasonSchema.safeParse("").success,false); assert.equal(correctionReasonSchema.safeParse("School document corrected").success,true); });
-test("Supervisor and Coordinator receive no correction control", async () => assert.match(await read("src/app/admin/users/[userId]/page.tsx"), /actor.role==="ADMIN"\|\|actor.role==="REPRESENTATIVE"/));
-test("correction preserves unrelated fields and rejects stale writes", async () => { const source=await read("src/app/admin/users/required-hours-actions.ts"); assert.match(source,/updateMany/); assert.match(source,/requiredHours: assignment.requiredHours/); assert.doesNotMatch(source,/data:\s*\{[\s\S]*?status:/); });
-test("pilot fixture remains deliberate and idempotent", async () => { const source=await read("scripts/setup-pilot-data.ts"); assert.match(source,/requiredHours:486/); assert.match(source,/if\(active.length===0\)/); });
-test("applied migration preserved existing positive requirements", async () => assert.ok(await prisma.internshipAssignment.count({where:{requiredHours:{gt:0}}})>0));
-test("database accepts null without persisting the verification change", async () => { const row=await prisma.internshipAssignment.findFirstOrThrow({where:{requiredHours:{gt:0}},select:{id:true}}); class Rollback extends Error{}; await assert.rejects(prisma.$transaction(async tx=>{await tx.internshipAssignment.update({where:{id:row.id},data:{requiredHours:null}});throw new Rollback()}),Rollback); });
-test("database rejects zero without persisting a change", async () => { const row=await prisma.internshipAssignment.findFirstOrThrow({where:{requiredHours:{gt:0}},select:{id:true}}); await assert.rejects(prisma.$transaction(tx=>tx.internshipAssignment.update({where:{id:row.id},data:{requiredHours:0}}))); });
-test("database rejects negative hours without persisting a change", async () => { const row=await prisma.internshipAssignment.findFirstOrThrow({where:{requiredHours:{gt:0}},select:{id:true}}); await assert.rejects(prisma.$transaction(tx=>tx.internshipAssignment.update({where:{id:row.id},data:{requiredHours:-1}}))); });
+test("schema keeps honest nullable required-hours state",()=>{
+  assert.match(schema,/requiredHours\s+Int\?/);
+  assert.match(migration,/required_hours" IS NULL OR "required_hours" > 0/);
+  assert.doesNotMatch(migration,/UPDATE\s+"internship_assignments"/i);
+});
+
+test("required-hours domain enforces whole-number bounds and truthful progress",()=>{
+  assert(!requiredHoursSchema.safeParse(99).success);
+  assert(requiredHoursSchema.safeParse(100).success);
+  assert(requiredHoursSchema.safeParse(1500).success);
+  assert(!requiredHoursSchema.safeParse(1501).success);
+  assert(!requiredHoursSchema.safeParse(100.5).success);
+  assert.equal(progressValues(null,25),null);
+  assert.deepEqual(progressValues(500,125),{required:500,credited:125,remaining:375,percentage:25});
+  assert.ok(validateAgainstCredit(100,100.5));
+});
+
+test("normal Intern provisioning does not collect or confirm required hours",()=>{
+  assert.doesNotMatch(provisioning,/requiredHours:\s*z\./);
+  assert.doesNotMatch(provisionForm,/name="requiredHours"/);
+  assert.match(provisionAction,/requiredHours: null/);
+  assert.match(provisionAction,/requiredHoursConfirmedAt: null/);
+  assert.match(provisionAction,/requiredHoursUpdatedById: null/);
+});
+
+test("Intern confirms initial required hours once through onboarding",()=>{
+  assert.match(onboardingAction,/get\("confirmed"\) !== "on"/);
+  assert.match(onboardingAction,/requiredHours: null, requiredHoursConfirmedAt: null/);
+  assert.match(onboardingAction,/requiredHoursConfirmedAt: new Date\(\)/);
+  assert.match(internDashboard,/requiredHours === null\) redirect\("\/onboarding\/internship-hours"\)/);
+});
+
+test("Representative correction requires reason and server-side current value",()=>{
+  assert(!correctionReasonSchema.safeParse("").success);
+  assert(correctionReasonSchema.safeParse("School document corrected").success);
+  assert.match(correctionAction,/requireRequiredHoursManager/);
+  assert.match(correctionAction,/requiredHours: assignment\.requiredHours/);
+  assert.match(correctionAction,/requiredHoursUpdateReason: reason\.data/);
+  assert.match(correctionAction,/updateMany/);
+});
+
+test("required-hours manager is Representative routine plus technical Admin emergency only",()=>{
+  assert.match(correctionAuth,/role === "REPRESENTATIVE"/);
+  assert.match(correctionAuth,/role === "ADMIN"/);
+  assert.doesNotMatch(correctionAuth,/SUPERVISOR|COORDINATOR/);
+});
+
+test("required-hours verification remains source/domain-only in Production-backed local environment",()=>{
+  const source=readFileSync("scripts/test-required-hours.ts","utf8");
+  assert.doesNotMatch(source,/prisma\.internshipAssignment\.(?:count|findFirst|update)|prisma\.\$transaction/);
+});

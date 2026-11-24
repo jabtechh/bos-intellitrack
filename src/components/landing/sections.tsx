@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/icons";
 import { ProductPreview } from "./product-preview";
@@ -5,7 +6,7 @@ import styles from "./landing.module.css";
 
 function Brand() {
   return <a className={styles.identity} href="#overview" aria-label="IntelliTrack overview">
-    <span className={styles.monogram} aria-hidden="true">IT</span>
+    <span className={styles.monogram} aria-hidden="true"><Image src="/brand/bos-cup-mark.png" alt="" width={80} height={80} priority /></span>
     <span><strong>IntelliTrack</strong><small>Internship Management for Bo’s Coffee</small></span>
   </a>;
 }
@@ -26,7 +27,7 @@ export function HeroSection() {
   return <section id="overview" className={styles.heroSection}>
     <div className={styles.heroLayout}>
       <div className={styles.heroContent}>
-        <p className={styles.eyebrowBadge}><span aria-hidden="true" />One workspace. Every internship day.</p>
+        <p className={styles.eyebrowBadge}><span aria-hidden="true" />Bo’s Coffee internships · One workspace, every day.</p>
         <h1>Internship<br className={styles.heroBreak} /> management,<br /><em>made effortless &amp; intelligent.</em></h1>
         <p className={styles.heroDescription}>Attendance, daily Work Logs, Tasks, and internship progress, connected. IntelliTrack brings your work and the people guiding it into one clear workspace.</p>
         <div className={styles.heroActions}>
@@ -51,6 +52,7 @@ export function FeatureGrid() {
   return <section id="features" className={styles.featureSection}>
     <div className={styles.container}>
       <header className={styles.sectionIntro}><p className={styles.eyebrowBadge}>One connected workspace</p><h2>Built for every part of<br />the internship journey.</h2><p>From the first Time In to the final record, keep the work organized and the right people informed.</p></header>
+      <figure className={styles.storeFeature}><Image src="/brand/bos-store-sign.jpg" alt="Bo’s Coffee store front with its illuminated sign" fill sizes="(max-width: 1279px) 100vw, 76rem" /><figcaption><span className={styles.storeFeatureMark} aria-hidden="true"><Image src="/brand/bos-cup-mark.png" alt="" width={64} height={64} /></span><span><strong>Bo’s Coffee</strong><small>Where your internship day happens.</small></span></figcaption></figure>
       <div className={styles.featureGrid}>{features.map(({icon,title,description,details}) =>
         <article key={title} className={styles.capability}>
           <div className={styles.capabilityHeading}><span className={styles.featureIcon}><Icon name={icon} /></span><h3>{title}</h3></div>

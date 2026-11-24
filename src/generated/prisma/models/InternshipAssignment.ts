@@ -406,6 +406,7 @@ export type InternshipAssignmentWhereInput = {
   feedback?: Prisma.FeedbackListRelationFilter
   documents?: Prisma.DocumentListRelationFilter
   portfolio?: Prisma.XOR<Prisma.PortfolioNullableScalarRelationFilter, Prisma.PortfolioWhereInput> | null
+  certificate?: Prisma.XOR<Prisma.InternshipCertificateNullableScalarRelationFilter, Prisma.InternshipCertificateWhereInput> | null
 }
 
 export type InternshipAssignmentOrderByWithRelationInput = {
@@ -449,6 +450,7 @@ export type InternshipAssignmentOrderByWithRelationInput = {
   feedback?: Prisma.FeedbackOrderByRelationAggregateInput
   documents?: Prisma.DocumentOrderByRelationAggregateInput
   portfolio?: Prisma.PortfolioOrderByWithRelationInput
+  certificate?: Prisma.InternshipCertificateOrderByWithRelationInput
 }
 
 export type InternshipAssignmentWhereUniqueInput = Prisma.AtLeast<{
@@ -495,6 +497,7 @@ export type InternshipAssignmentWhereUniqueInput = Prisma.AtLeast<{
   feedback?: Prisma.FeedbackListRelationFilter
   documents?: Prisma.DocumentListRelationFilter
   portfolio?: Prisma.XOR<Prisma.PortfolioNullableScalarRelationFilter, Prisma.PortfolioWhereInput> | null
+  certificate?: Prisma.XOR<Prisma.InternshipCertificateNullableScalarRelationFilter, Prisma.InternshipCertificateWhereInput> | null
 }, "id" | "assignmentCode">
 
 export type InternshipAssignmentOrderByWithAggregationInput = {
@@ -597,6 +600,7 @@ export type InternshipAssignmentCreateInput = {
   feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateInput = {
@@ -633,6 +637,7 @@ export type InternshipAssignmentUncheckedCreateInput = {
   feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUpdateInput = {
@@ -669,6 +674,7 @@ export type InternshipAssignmentUpdateInput = {
   feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateInput = {
@@ -705,6 +711,7 @@ export type InternshipAssignmentUncheckedUpdateInput = {
   feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentCreateManyInput = {
@@ -1297,6 +1304,20 @@ export type InternshipAssignmentUpdateOneRequiredWithoutPortfolioNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.InternshipAssignmentUpdateToOneWithWhereWithoutPortfolioInput, Prisma.InternshipAssignmentUpdateWithoutPortfolioInput>, Prisma.InternshipAssignmentUncheckedUpdateWithoutPortfolioInput>
 }
 
+export type InternshipAssignmentCreateNestedOneWithoutCertificateInput = {
+  create?: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutCertificateInput, Prisma.InternshipAssignmentUncheckedCreateWithoutCertificateInput>
+  connectOrCreate?: Prisma.InternshipAssignmentCreateOrConnectWithoutCertificateInput
+  connect?: Prisma.InternshipAssignmentWhereUniqueInput
+}
+
+export type InternshipAssignmentUpdateOneRequiredWithoutCertificateNestedInput = {
+  create?: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutCertificateInput, Prisma.InternshipAssignmentUncheckedCreateWithoutCertificateInput>
+  connectOrCreate?: Prisma.InternshipAssignmentCreateOrConnectWithoutCertificateInput
+  upsert?: Prisma.InternshipAssignmentUpsertWithoutCertificateInput
+  connect?: Prisma.InternshipAssignmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InternshipAssignmentUpdateToOneWithWhereWithoutCertificateInput, Prisma.InternshipAssignmentUpdateWithoutCertificateInput>, Prisma.InternshipAssignmentUncheckedUpdateWithoutCertificateInput>
+}
+
 export type InternshipAssignmentCreateWithoutCreatedByInput = {
   id?: string
   assignmentCode: string
@@ -1330,6 +1351,7 @@ export type InternshipAssignmentCreateWithoutCreatedByInput = {
   feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutCreatedByInput = {
@@ -1365,6 +1387,7 @@ export type InternshipAssignmentUncheckedCreateWithoutCreatedByInput = {
   feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentCreateOrConnectWithoutCreatedByInput = {
@@ -1410,6 +1433,7 @@ export type InternshipAssignmentCreateWithoutRequiredHoursUpdatedByInput = {
   feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutRequiredHoursUpdatedByInput = {
@@ -1445,6 +1469,7 @@ export type InternshipAssignmentUncheckedCreateWithoutRequiredHoursUpdatedByInpu
   feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentCreateOrConnectWithoutRequiredHoursUpdatedByInput = {
@@ -1554,6 +1579,7 @@ export type InternshipAssignmentCreateWithoutInternProfileInput = {
   feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutInternProfileInput = {
@@ -1589,6 +1615,7 @@ export type InternshipAssignmentUncheckedCreateWithoutInternProfileInput = {
   feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentCreateOrConnectWithoutInternProfileInput = {
@@ -1650,6 +1677,7 @@ export type InternshipAssignmentCreateWithoutSupervisorProfileInput = {
   feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutSupervisorProfileInput = {
@@ -1685,6 +1713,7 @@ export type InternshipAssignmentUncheckedCreateWithoutSupervisorProfileInput = {
   feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentCreateOrConnectWithoutSupervisorProfileInput = {
@@ -1746,6 +1775,7 @@ export type InternshipAssignmentCreateWithoutCoordinatorProfileInput = {
   feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutCoordinatorProfileInput = {
@@ -1781,6 +1811,7 @@ export type InternshipAssignmentUncheckedCreateWithoutCoordinatorProfileInput = 
   feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentCreateOrConnectWithoutCoordinatorProfileInput = {
@@ -1842,6 +1873,7 @@ export type InternshipAssignmentCreateWithoutCompanyInput = {
   feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutCompanyInput = {
@@ -1877,6 +1909,7 @@ export type InternshipAssignmentUncheckedCreateWithoutCompanyInput = {
   feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentCreateOrConnectWithoutCompanyInput = {
@@ -1938,6 +1971,7 @@ export type InternshipAssignmentCreateWithoutBranchInput = {
   feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutBranchInput = {
@@ -1973,6 +2007,7 @@ export type InternshipAssignmentUncheckedCreateWithoutBranchInput = {
   feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentCreateOrConnectWithoutBranchInput = {
@@ -2034,6 +2069,7 @@ export type InternshipAssignmentCreateWithoutAttendanceInput = {
   feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutAttendanceInput = {
@@ -2069,6 +2105,7 @@ export type InternshipAssignmentUncheckedCreateWithoutAttendanceInput = {
   feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentCreateOrConnectWithoutAttendanceInput = {
@@ -2120,6 +2157,7 @@ export type InternshipAssignmentUpdateWithoutAttendanceInput = {
   feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutAttendanceInput = {
@@ -2155,6 +2193,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutAttendanceInput = {
   feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentCreateWithoutWorkLogsInput = {
@@ -2190,6 +2229,7 @@ export type InternshipAssignmentCreateWithoutWorkLogsInput = {
   feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutWorkLogsInput = {
@@ -2225,6 +2265,7 @@ export type InternshipAssignmentUncheckedCreateWithoutWorkLogsInput = {
   feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentCreateOrConnectWithoutWorkLogsInput = {
@@ -2276,6 +2317,7 @@ export type InternshipAssignmentUpdateWithoutWorkLogsInput = {
   feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutWorkLogsInput = {
@@ -2311,6 +2353,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutWorkLogsInput = {
   feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentCreateWithoutTasksInput = {
@@ -2346,6 +2389,7 @@ export type InternshipAssignmentCreateWithoutTasksInput = {
   feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutTasksInput = {
@@ -2381,6 +2425,7 @@ export type InternshipAssignmentUncheckedCreateWithoutTasksInput = {
   feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentCreateOrConnectWithoutTasksInput = {
@@ -2432,6 +2477,7 @@ export type InternshipAssignmentUpdateWithoutTasksInput = {
   feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutTasksInput = {
@@ -2467,6 +2513,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutTasksInput = {
   feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentCreateWithoutEvaluationsInput = {
@@ -2502,6 +2549,7 @@ export type InternshipAssignmentCreateWithoutEvaluationsInput = {
   feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutEvaluationsInput = {
@@ -2537,6 +2585,7 @@ export type InternshipAssignmentUncheckedCreateWithoutEvaluationsInput = {
   feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentCreateOrConnectWithoutEvaluationsInput = {
@@ -2588,6 +2637,7 @@ export type InternshipAssignmentUpdateWithoutEvaluationsInput = {
   feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutEvaluationsInput = {
@@ -2623,6 +2673,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutEvaluationsInput = {
   feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentCreateWithoutFeedbackInput = {
@@ -2658,6 +2709,7 @@ export type InternshipAssignmentCreateWithoutFeedbackInput = {
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutFeedbackInput = {
@@ -2693,6 +2745,7 @@ export type InternshipAssignmentUncheckedCreateWithoutFeedbackInput = {
   evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentCreateOrConnectWithoutFeedbackInput = {
@@ -2744,6 +2797,7 @@ export type InternshipAssignmentUpdateWithoutFeedbackInput = {
   evaluations?: Prisma.EvaluationUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutFeedbackInput = {
@@ -2779,6 +2833,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutFeedbackInput = {
   evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentCreateWithoutDocumentsInput = {
@@ -2814,6 +2869,7 @@ export type InternshipAssignmentCreateWithoutDocumentsInput = {
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutAssignmentInput
   feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutDocumentsInput = {
@@ -2849,6 +2905,7 @@ export type InternshipAssignmentUncheckedCreateWithoutDocumentsInput = {
   evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAssignmentInput
   feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
   portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentCreateOrConnectWithoutDocumentsInput = {
@@ -2900,6 +2957,7 @@ export type InternshipAssignmentUpdateWithoutDocumentsInput = {
   evaluations?: Prisma.EvaluationUpdateManyWithoutAssignmentNestedInput
   feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutDocumentsInput = {
@@ -2935,6 +2993,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutDocumentsInput = {
   evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutAssignmentNestedInput
   feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentCreateWithoutPortfolioInput = {
@@ -2970,6 +3029,7 @@ export type InternshipAssignmentCreateWithoutPortfolioInput = {
   evaluations?: Prisma.EvaluationCreateNestedManyWithoutAssignmentInput
   feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentUncheckedCreateWithoutPortfolioInput = {
@@ -3005,6 +3065,7 @@ export type InternshipAssignmentUncheckedCreateWithoutPortfolioInput = {
   evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAssignmentInput
   feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
+  certificate?: Prisma.InternshipCertificateUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type InternshipAssignmentCreateOrConnectWithoutPortfolioInput = {
@@ -3056,6 +3117,7 @@ export type InternshipAssignmentUpdateWithoutPortfolioInput = {
   evaluations?: Prisma.EvaluationUpdateManyWithoutAssignmentNestedInput
   feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutPortfolioInput = {
@@ -3091,6 +3153,167 @@ export type InternshipAssignmentUncheckedUpdateWithoutPortfolioInput = {
   evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutAssignmentNestedInput
   feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
+}
+
+export type InternshipAssignmentCreateWithoutCertificateInput = {
+  id?: string
+  assignmentCode: string
+  positionTitle?: string | null
+  department?: string | null
+  startDate: Date | string
+  endDate: Date | string
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdateReason?: string | null
+  renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Date | string | null
+  scheduleEndTime?: Date | string | null
+  gracePeriodMinutes?: number
+  status?: $Enums.InternshipStatus
+  notes?: string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  branch?: Prisma.BranchCreateNestedOneWithoutAssignmentsInput
+  internProfile: Prisma.InternProfileCreateNestedOneWithoutAssignmentsInput
+  company: Prisma.CompanyCreateNestedOneWithoutAssignmentsInput
+  supervisorProfile: Prisma.SupervisorProfileCreateNestedOneWithoutAssignmentsInput
+  coordinatorProfile: Prisma.CoordinatorProfileCreateNestedOneWithoutAssignmentsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutAssignmentsCreatedInput
+  requiredHoursUpdatedBy?: Prisma.UserCreateNestedOneWithoutRequiredHoursUpdatesInput
+  attendance?: Prisma.AttendanceCreateNestedManyWithoutAssignmentInput
+  workLogs?: Prisma.WorkLogCreateNestedManyWithoutAssignmentInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutAssignmentInput
+  evaluations?: Prisma.EvaluationCreateNestedManyWithoutAssignmentInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutAssignmentInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutAssignmentInput
+  portfolio?: Prisma.PortfolioCreateNestedOneWithoutAssignmentInput
+}
+
+export type InternshipAssignmentUncheckedCreateWithoutCertificateInput = {
+  branchId?: string | null
+  id?: string
+  internProfileId: string
+  companyId: string
+  supervisorProfileId: string
+  coordinatorProfileId: string
+  assignmentCode: string
+  positionTitle?: string | null
+  department?: string | null
+  startDate: Date | string
+  endDate: Date | string
+  requiredHours?: number | null
+  requiredHoursConfirmedAt?: Date | string | null
+  requiredHoursUpdatedById?: string | null
+  requiredHoursUpdateReason?: string | null
+  renderedHours?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Date | string | null
+  scheduleEndTime?: Date | string | null
+  gracePeriodMinutes?: number
+  status?: $Enums.InternshipStatus
+  notes?: string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  createdById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  attendance?: Prisma.AttendanceUncheckedCreateNestedManyWithoutAssignmentInput
+  workLogs?: Prisma.WorkLogUncheckedCreateNestedManyWithoutAssignmentInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssignmentInput
+  evaluations?: Prisma.EvaluationUncheckedCreateNestedManyWithoutAssignmentInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssignmentInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAssignmentInput
+  portfolio?: Prisma.PortfolioUncheckedCreateNestedOneWithoutAssignmentInput
+}
+
+export type InternshipAssignmentCreateOrConnectWithoutCertificateInput = {
+  where: Prisma.InternshipAssignmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutCertificateInput, Prisma.InternshipAssignmentUncheckedCreateWithoutCertificateInput>
+}
+
+export type InternshipAssignmentUpsertWithoutCertificateInput = {
+  update: Prisma.XOR<Prisma.InternshipAssignmentUpdateWithoutCertificateInput, Prisma.InternshipAssignmentUncheckedUpdateWithoutCertificateInput>
+  create: Prisma.XOR<Prisma.InternshipAssignmentCreateWithoutCertificateInput, Prisma.InternshipAssignmentUncheckedCreateWithoutCertificateInput>
+  where?: Prisma.InternshipAssignmentWhereInput
+}
+
+export type InternshipAssignmentUpdateToOneWithWhereWithoutCertificateInput = {
+  where?: Prisma.InternshipAssignmentWhereInput
+  data: Prisma.XOR<Prisma.InternshipAssignmentUpdateWithoutCertificateInput, Prisma.InternshipAssignmentUncheckedUpdateWithoutCertificateInput>
+}
+
+export type InternshipAssignmentUpdateWithoutCertificateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentCode?: Prisma.StringFieldUpdateOperationsInput | string
+  positionTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gracePeriodMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumInternshipStatusFieldUpdateOperationsInput | $Enums.InternshipStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  branch?: Prisma.BranchUpdateOneWithoutAssignmentsNestedInput
+  internProfile?: Prisma.InternProfileUpdateOneRequiredWithoutAssignmentsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutAssignmentsNestedInput
+  supervisorProfile?: Prisma.SupervisorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
+  coordinatorProfile?: Prisma.CoordinatorProfileUpdateOneRequiredWithoutAssignmentsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutAssignmentsCreatedNestedInput
+  requiredHoursUpdatedBy?: Prisma.UserUpdateOneWithoutRequiredHoursUpdatesNestedInput
+  attendance?: Prisma.AttendanceUpdateManyWithoutAssignmentNestedInput
+  workLogs?: Prisma.WorkLogUpdateManyWithoutAssignmentNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutAssignmentNestedInput
+  evaluations?: Prisma.EvaluationUpdateManyWithoutAssignmentNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
+  portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+}
+
+export type InternshipAssignmentUncheckedUpdateWithoutCertificateInput = {
+  branchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  internProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  companyId?: Prisma.StringFieldUpdateOperationsInput | string
+  supervisorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  coordinatorProfileId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentCode?: Prisma.StringFieldUpdateOperationsInput | string
+  positionTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requiredHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  requiredHoursConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiredHoursUpdatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  requiredHoursUpdateReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  renderedHours?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  scheduleStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gracePeriodMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumInternshipStatusFieldUpdateOperationsInput | $Enums.InternshipStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attendance?: Prisma.AttendanceUncheckedUpdateManyWithoutAssignmentNestedInput
+  workLogs?: Prisma.WorkLogUncheckedUpdateManyWithoutAssignmentNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutAssignmentNestedInput
+  evaluations?: Prisma.EvaluationUncheckedUpdateManyWithoutAssignmentNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
+  portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentCreateManyCreatedByInput = {
@@ -3182,6 +3405,7 @@ export type InternshipAssignmentUpdateWithoutCreatedByInput = {
   feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutCreatedByInput = {
@@ -3217,6 +3441,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutCreatedByInput = {
   feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateManyWithoutCreatedByInput = {
@@ -3280,6 +3505,7 @@ export type InternshipAssignmentUpdateWithoutRequiredHoursUpdatedByInput = {
   feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutRequiredHoursUpdatedByInput = {
@@ -3315,6 +3541,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutRequiredHoursUpdatedByInpu
   feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateManyWithoutRequiredHoursUpdatedByInput = {
@@ -3406,6 +3633,7 @@ export type InternshipAssignmentUpdateWithoutInternProfileInput = {
   feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutInternProfileInput = {
@@ -3441,6 +3669,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutInternProfileInput = {
   feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateManyWithoutInternProfileInput = {
@@ -3532,6 +3761,7 @@ export type InternshipAssignmentUpdateWithoutSupervisorProfileInput = {
   feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutSupervisorProfileInput = {
@@ -3567,6 +3797,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutSupervisorProfileInput = {
   feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateManyWithoutSupervisorProfileInput = {
@@ -3658,6 +3889,7 @@ export type InternshipAssignmentUpdateWithoutCoordinatorProfileInput = {
   feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutCoordinatorProfileInput = {
@@ -3693,6 +3925,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutCoordinatorProfileInput = 
   feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateManyWithoutCoordinatorProfileInput = {
@@ -3784,6 +4017,7 @@ export type InternshipAssignmentUpdateWithoutCompanyInput = {
   feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutCompanyInput = {
@@ -3819,6 +4053,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutCompanyInput = {
   feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateManyWithoutCompanyInput = {
@@ -3910,6 +4145,7 @@ export type InternshipAssignmentUpdateWithoutBranchInput = {
   feedback?: Prisma.FeedbackUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateWithoutBranchInput = {
@@ -3945,6 +4181,7 @@ export type InternshipAssignmentUncheckedUpdateWithoutBranchInput = {
   feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssignmentNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAssignmentNestedInput
   portfolio?: Prisma.PortfolioUncheckedUpdateOneWithoutAssignmentNestedInput
+  certificate?: Prisma.InternshipCertificateUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type InternshipAssignmentUncheckedUpdateManyWithoutBranchInput = {
@@ -4092,6 +4329,7 @@ export type InternshipAssignmentSelect<ExtArgs extends runtime.Types.Extensions.
   feedback?: boolean | Prisma.InternshipAssignment$feedbackArgs<ExtArgs>
   documents?: boolean | Prisma.InternshipAssignment$documentsArgs<ExtArgs>
   portfolio?: boolean | Prisma.InternshipAssignment$portfolioArgs<ExtArgs>
+  certificate?: boolean | Prisma.InternshipAssignment$certificateArgs<ExtArgs>
   _count?: boolean | Prisma.InternshipAssignmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["internshipAssignment"]>
 
@@ -4212,6 +4450,7 @@ export type InternshipAssignmentInclude<ExtArgs extends runtime.Types.Extensions
   feedback?: boolean | Prisma.InternshipAssignment$feedbackArgs<ExtArgs>
   documents?: boolean | Prisma.InternshipAssignment$documentsArgs<ExtArgs>
   portfolio?: boolean | Prisma.InternshipAssignment$portfolioArgs<ExtArgs>
+  certificate?: boolean | Prisma.InternshipAssignment$certificateArgs<ExtArgs>
   _count?: boolean | Prisma.InternshipAssignmentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type InternshipAssignmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4250,6 +4489,7 @@ export type $InternshipAssignmentPayload<ExtArgs extends runtime.Types.Extension
     feedback: Prisma.$FeedbackPayload<ExtArgs>[]
     documents: Prisma.$DocumentPayload<ExtArgs>[]
     portfolio: Prisma.$PortfolioPayload<ExtArgs> | null
+    certificate: Prisma.$InternshipCertificatePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     branchId: string | null
@@ -4686,6 +4926,7 @@ export interface Prisma__InternshipAssignmentClient<T, Null = never, ExtArgs ext
   feedback<T extends Prisma.InternshipAssignment$feedbackArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternshipAssignment$feedbackArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documents<T extends Prisma.InternshipAssignment$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternshipAssignment$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   portfolio<T extends Prisma.InternshipAssignment$portfolioArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternshipAssignment$portfolioArgs<ExtArgs>>): Prisma.Prisma__PortfolioClient<runtime.Types.Result.GetResult<Prisma.$PortfolioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  certificate<T extends Prisma.InternshipAssignment$certificateArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InternshipAssignment$certificateArgs<ExtArgs>>): Prisma.Prisma__InternshipCertificateClient<runtime.Types.Result.GetResult<Prisma.$InternshipCertificatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5359,6 +5600,25 @@ export type InternshipAssignment$portfolioArgs<ExtArgs extends runtime.Types.Ext
    */
   include?: Prisma.PortfolioInclude<ExtArgs> | null
   where?: Prisma.PortfolioWhereInput
+}
+
+/**
+ * InternshipAssignment.certificate
+ */
+export type InternshipAssignment$certificateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InternshipCertificate
+   */
+  select?: Prisma.InternshipCertificateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InternshipCertificate
+   */
+  omit?: Prisma.InternshipCertificateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InternshipCertificateInclude<ExtArgs> | null
+  where?: Prisma.InternshipCertificateWhereInput
 }
 
 /**
