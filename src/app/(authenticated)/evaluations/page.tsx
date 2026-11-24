@@ -1,11 +1,18 @@
 import { internshipAssignmentBaseSelect } from "@/lib/assignments/projection";
 import Link from "next/link";
-import { EmptyState, PageHeader, StatusBadge } from "@/components/ui";
+import { PageHeader } from "@/components/ui";
 import { InternDevelopmentTabs } from "@/components/intern-development-tabs";
+import { RecordsDataTable } from "@/components/records-data-table";
+import { SummaryBand } from "@/components/summary-band";
+import type { RecordColumn, RecordRow } from "@/lib/tables/records";
 import { prisma } from "@/lib/prisma";
 import { evaluationWhere, feedbackWhere, requireEvaluationViewer } from "@/lib/evaluations/authorization";
 import { EVALUATION_LABELS, FEEDBACK_TYPE_LABELS, TYPE_LABELS, VISIBILITY_LABELS } from "@/lib/evaluations/domain";
 import { evaluationPeriodLabel } from "@/lib/evaluations/weekly-period";
+
+const dateText = (value: Date, utc = true) => value.toLocaleDateString("en-PH", { dateStyle: "medium", ...(utc ? { timeZone: "UTC" } : {}) });
+const typeText = (type: keyof typeof TYPE_LABELS) => type === "PROGRESS" ? "Weekly progress evaluation" : `${TYPE_LABELS[type]} evaluation`;
+const average = (scores: number[]) => scores.length ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) / 10 : null;
 
 export default async function Evaluations({
   searchParams,
@@ -26,6 +33,29 @@ export default async function Evaluations({
     },
     orderBy: [{ evaluationDate: "desc" }, { periodKey: "desc" }, { id: "desc" }],
   });
+  const finalizedScores = rows.filter((row) => row.status === "SUBMITTED" || row.status === "ACKNOWLEDGED").map((row) => row.overallScore === null ? NaN : Number(row.overallScore)).filter(Number.isFinite);
+
+  // One record shape for both views; the title cell carries the type and period so it stays the row link text.
+  const evaluationRecords = (showIntern: boolean): RecordRow[] => rows.map((row) => {
+    const period = evaluationPeriodLabel(row);
+    const person = showIntern ? row.assignment.internProfile.user : row.assignment.supervisorProfile.user;
+    return {
+      id: row.id,
+      href: `/evaluations/${row.id}`,
+      cells: {
+        title: { text: `${typeText(row.evaluationType)} · ${period.label}` },
+        type: { text: TYPE_LABELS[row.evaluationType] },
+        person: { text: `${person.firstName} ${person.lastName}` },
+        date: { text: dateText(row.evaluationDate), sort: row.evaluationDate.getTime() },
+        score: { text: row.overallScore === null ? "No overall score" : `${row.overallScore.toString()} / 100`, sort: row.overallScore === null ? -1 : Number(row.overallScore) },
+        status: { text: EVALUATION_LABELS[row.status], tone: row.status === "DRAFT" ? "warning" : "success" },
+      },
+    };
+  });
+  const evaluationColumns = (personLabel: string): RecordColumn[] => [
+    { key: "title", label: "Evaluation", primary: true }, { key: "person", label: personLabel }, { key: "date", label: "Date" }, { key: "score", label: "Score" }, { key: "status", label: "Status" },
+  ];
+  const typeFilter = { key: "type", label: "Type", options: Object.values(TYPE_LABELS).map((value) => ({ value, label: value })) };
 
   if (context.kind === "INTERN") {
     const query = await searchParams;
@@ -37,27 +67,26 @@ export default async function Evaluations({
       },
       orderBy: { createdAt: "desc" },
     });
+    const latest = rows.find((row) => (row.status === "SUBMITTED" || row.status === "ACKNOWLEDGED") && row.overallScore !== null);
 
-    const evaluations = <section className="ui-card overflow-hidden">
-      {rows.length ? <div className="divide-y divide-border">
-        {rows.map(row => <Link
-          key={row.id}
-          href={`/evaluations/${row.id}`}
-          className="grid gap-3 p-5 sm:grid-cols-[minmax(0,1fr)_12rem_10rem_auto] sm:items-center"
-        >
-          <span>
-            <strong className="block">{row.evaluationType === "PROGRESS" ? "Weekly progress evaluation" : `${TYPE_LABELS[row.evaluationType]} evaluation`}</strong>
-            <small className="mt-1 block text-secondary">{evaluationPeriodLabel(row).label}</small>
-            {evaluationPeriodLabel(row).note ? <small className="block text-muted">{evaluationPeriodLabel(row).note}</small> : null}
-            <small className="text-muted">By {row.assignment.supervisorProfile.user.firstName} {row.assignment.supervisorProfile.user.lastName}</small>
-          </span>
-          <span className="text-sm text-secondary">{row.evaluationDate.toLocaleDateString("en-PH", { dateStyle: "medium", timeZone: "UTC" })}</span>
-          <span className="text-sm text-secondary">{row.overallScore === null ? "No overall score" : `${row.overallScore.toString()} / 100`}</span>
-          <StatusBadge tone="success">{EVALUATION_LABELS[row.status]}</StatusBadge>
-        </Link>)}
-      </div> : <EmptyState title="No evaluations available" description="Finalized Supervisor evaluations will appear here." />}
-    </section>;
+    const evaluations = <RecordsDataTable caption="My evaluations" rows={evaluationRecords(false)} columns={evaluationColumns("Evaluated by")} searchPlaceholder="Search evaluations…"
+      defaultSort={{ key: "date", direction: "desc" }} filter={typeFilter} emptyTitle="No evaluations available" emptyDescription="Finalized Supervisor evaluations will appear here." />;
 
+    const feedbackRecords: RecordRow[] = feedbackRows.map((row) => {
+      const source = row.author.role === "INTERN" ? "Workmate feedback" : row.author.role === "SUPERVISOR" ? "Supervisor coaching" : "Feedback";
+      return {
+        id: row.id,
+        href: `/feedback/${row.id}`,
+        cells: {
+          title: { text: row.title || FEEDBACK_TYPE_LABELS[row.feedbackType] },
+          from: { text: `${row.author.firstName} ${row.author.lastName}` },
+          source: { text: source },
+          type: { text: FEEDBACK_TYPE_LABELS[row.feedbackType] },
+          date: { text: dateText(row.createdAt, false), sort: row.createdAt.getTime() },
+          status: { text: !row.isRead ? "New" : VISIBILITY_LABELS[row.visibility], tone: !row.isRead ? "info" : "neutral" },
+        },
+      };
+    });
     const feedback = <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="max-w-2xl text-sm text-secondary">
@@ -65,29 +94,10 @@ export default async function Evaluations({
         </p>
         <Link href="/feedback/workmate/new" className="button button-secondary">Give workmate feedback</Link>
       </div>
-      <section className="ui-card overflow-hidden">
-        {feedbackRows.length ? <div className="divide-y divide-border">
-          {feedbackRows.map(row => {
-            const source = row.author.role === "INTERN" ? "Workmate feedback" : row.author.role === "SUPERVISOR" ? "Supervisor coaching" : "Feedback";
-            return <Link
-              key={row.id}
-              href={`/feedback/${row.id}`}
-              className="grid gap-3 p-5 sm:grid-cols-[minmax(0,1fr)_12rem_12rem_auto] sm:items-center"
-            >
-              <span>
-                <strong className="block">{row.title || FEEDBACK_TYPE_LABELS[row.feedbackType]}</strong>
-                <small className="text-muted">{source} · From {row.author.firstName} {row.author.lastName}</small>
-              </span>
-              <span className="text-sm text-secondary">{FEEDBACK_TYPE_LABELS[row.feedbackType]}</span>
-              <span className="text-sm text-muted">{row.createdAt.toLocaleDateString("en-PH", { dateStyle: "medium" })}</span>
-              <StatusBadge tone={!row.isRead ? "info" : "neutral"}>{!row.isRead ? "New" : VISIBILITY_LABELS[row.visibility]}</StatusBadge>
-            </Link>;
-          })}
-        </div> : <EmptyState
-          title="No feedback available"
-          description="Supervisor coaching and shared workmate feedback will appear here."
-        />}
-      </section>
+      <RecordsDataTable caption="My feedback" rows={feedbackRecords} searchPlaceholder="Search feedback…" defaultSort={{ key: "date", direction: "desc" }}
+        columns={[{ key: "title", label: "Feedback", primary: true }, { key: "from", label: "From" }, { key: "source", label: "Source" }, { key: "date", label: "Date" }, { key: "status", label: "Status" }]}
+        filter={{ key: "source", label: "Source", options: ["Supervisor coaching", "Workmate feedback", "Feedback"].map((value) => ({ value, label: value })) }}
+        emptyTitle="No feedback available" emptyDescription="Supervisor coaching and shared workmate feedback will appear here." />
     </div>;
 
     return <div className="px-5 py-8 sm:px-8 lg:px-12">
@@ -97,6 +107,12 @@ export default async function Evaluations({
           title="Evaluations & Feedback"
           description="Review your finalized Supervisor evaluations and feedback received during your internship."
         />
+        <SummaryBand label="Evaluation summary" tiles={[
+          { label: "Finalized evaluations", value: rows.length, tone: "info" },
+          { label: "Latest score", value: latest?.overallScore ? `${latest.overallScore.toString()}` : "—", detail: latest ? dateText(latest.evaluationDate) : "No score yet", tone: latest && Number(latest.overallScore) < 75 ? "warning" : "success" },
+          { label: "Average score", value: average(finalizedScores) ?? "—", detail: "Out of 100" },
+          { label: "Feedback received", value: feedbackRows.length, detail: `${feedbackRows.filter((row) => !row.isRead).length} new`, tone: feedbackRows.some((row) => !row.isRead) ? "info" : "neutral", href: "/evaluations?tab=feedback" },
+        ]} />
         <InternDevelopmentTabs
           key={initialTab}
           initialTab={initialTab}
@@ -109,6 +125,9 @@ export default async function Evaluations({
     </div>;
   }
 
+  const drafts = rows.filter((row) => row.status === "DRAFT").length;
+  const weekAgo = new Date();
+  weekAgo.setUTCDate(weekAgo.getUTCDate() - 7);
   return <div className="px-5 py-8 sm:px-8 lg:px-12"><section className="mx-auto max-w-6xl">
     <PageHeader
       eyebrow="Intern development"
@@ -118,32 +137,15 @@ export default async function Evaluations({
         ? <><Link href="/evaluations/new" className="button button-primary">Create evaluation</Link><Link href="/evaluations/review" className="button button-secondary">Draft review</Link></>
         : undefined}
     />
-    <section className="ui-card overflow-hidden">
-      {rows.length ? <div className="divide-y divide-border">
-        {rows.map(row => {
-          const intern = row.assignment.internProfile.user;
-          return <Link
-            key={row.id}
-            href={`/evaluations/${row.id}`}
-            className="grid gap-3 p-5 sm:grid-cols-[minmax(0,1fr)_12rem_10rem_auto] sm:items-center"
-          >
-            <span>
-              <strong className="block">{row.evaluationType === "PROGRESS" ? "Weekly progress evaluation" : `${TYPE_LABELS[row.evaluationType]} evaluation`}</strong>
-              <small className="mt-1 block text-secondary">{evaluationPeriodLabel(row).label}</small>
-              {evaluationPeriodLabel(row).note ? <small className="block text-muted">{evaluationPeriodLabel(row).note}</small> : null}
-              <small className="text-muted">{intern.firstName} {intern.lastName}</small>
-            </span>
-            <span className="text-sm text-secondary">{row.evaluationDate.toLocaleDateString("en-PH", { dateStyle: "medium", timeZone: "UTC" })}</span>
-            <span className="text-sm text-secondary">{row.overallScore === null ? "No overall score" : `${row.overallScore.toString()} / 100`}</span>
-            <StatusBadge tone={row.status === "DRAFT" ? "warning" : "success"}>{EVALUATION_LABELS[row.status]}</StatusBadge>
-          </Link>;
-        })}
-      </div> : <EmptyState
-        title="No evaluations available"
-        description="Evaluations in your authorized scope will appear here."
-        action={context.kind === "SUPERVISOR" ? { href: "/evaluations/new", label: "Create evaluation" } : undefined}
-      />}
-    </section>
+    <SummaryBand label="Evaluation summary" tiles={[
+      { label: "Evaluations", value: rows.length, detail: `${rows.length - drafts} finalized`, tone: "info" },
+      { label: "Drafts", value: drafts, detail: "Not yet finalized", tone: drafts ? "warning" : "success", ...(context.kind === "SUPERVISOR" ? { href: "/evaluations/review" } : {}) },
+      { label: "Average score", value: average(finalizedScores) ?? "—", detail: "Finalized, out of 100" },
+      { label: "Last 7 days", value: rows.filter((row) => row.evaluationDate >= weekAgo).length, detail: "Evaluations dated this week" },
+    ]} />
+    <RecordsDataTable caption="Evaluations" rows={evaluationRecords(true)} columns={evaluationColumns("Intern")} searchPlaceholder="Search evaluation, Intern or period…"
+      defaultSort={{ key: "date", direction: "desc" }} filter={typeFilter}
+      emptyTitle="No evaluations available" emptyDescription="Evaluations in your authorized scope will appear here." />
     <div className="mt-6"><Link href="/feedback" className="button button-secondary">View feedback</Link></div>
   </section></div>;
 }

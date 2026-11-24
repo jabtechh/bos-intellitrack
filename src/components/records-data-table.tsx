@@ -9,12 +9,12 @@ import { filterAndSortRecords, pageOf, type RecordColumn, type RecordFilter, typ
 
 const PAGE_SIZES = [10, 25, 50] as const;
 
-export function RecordsDataTable({ caption, columns, rows, searchPlaceholder = "Search…", filter, defaultSort, emptyTitle = "No records", emptyDescription = "Records will appear here." }: {
-  caption: string; columns: RecordColumn[]; rows: RecordRow[]; searchPlaceholder?: string; filter?: RecordFilter;
+export function RecordsDataTable({ caption, columns, rows, searchPlaceholder = "Search…", filter, initialFilterValue = "", defaultSort, emptyTitle = "No records", emptyDescription = "Records will appear here." }: {
+  caption: string; columns: RecordColumn[]; rows: RecordRow[]; searchPlaceholder?: string; filter?: RecordFilter; initialFilterValue?: string;
   defaultSort?: { key: string; direction: SortDirection }; emptyTitle?: string; emptyDescription?: string;
 }) {
   const [search, setSearch] = useState("");
-  const [filterValue, setFilterValue] = useState("");
+  const [filterValue, setFilterValue] = useState(filter?.options.some((option) => option.value === initialFilterValue) ? initialFilterValue : "");
   const [sort, setSort] = useState(defaultSort?.key);
   const [direction, setDirection] = useState<SortDirection>(defaultSort?.direction ?? "asc");
   const [size, setSize] = useState<number>(10);

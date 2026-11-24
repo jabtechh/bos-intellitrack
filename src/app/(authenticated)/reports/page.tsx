@@ -1,11 +1,15 @@
 import Link from "next/link";
-import { EmptyState, PageHeader, StatusBadge } from "@/components/ui";
+import { EmptyState, PageHeader } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
 import { getCompanyReport, hoursLabel, rateLabel } from "@/lib/reports/company";
 import { reportAssignmentWhere, resolveReportViewer } from "@/lib/reports/authorization";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
 import { loadReportAnalytics } from "@/lib/reports/analytics";
 import { ReportAnalyticsPanel } from "@/components/report-analytics";
+import { RecordsDataTable } from "@/components/records-data-table";
+import { loadInternStatuses } from "@/lib/insights/intern-status-data";
+import { statusTone } from "@/lib/insights/intern-status";
+import { ROSTER_STATUS_FILTER } from "@/lib/insights/roster-tiles";
 
 export default async function Reports(){
   const c=await resolveReportViewer(await requireCurrentUser());
@@ -46,16 +50,30 @@ export default async function Reports(){
     </section></div>;
   }
 
-  const analytics=await loadReportAnalytics(reportAssignmentWhere(c));
-  const rows=await prisma.internshipAssignment.findMany({
-    where:reportAssignmentWhere(c),
-    select:{id:true,internProfile:{select:{userId:true,user:{select:{firstName:true,lastName:true}},school:{select:{name:true}}}},status:true},
-    orderBy:{internProfile:{user:{lastName:"asc"}}},
-  });
+  const [analytics,statuses,rows]=await Promise.all([
+    loadReportAnalytics(reportAssignmentWhere(c)),
+    loadInternStatuses(reportAssignmentWhere(c)), // DEC-2026-022
+    prisma.internshipAssignment.findMany({
+      where:reportAssignmentWhere(c),
+      select:{id:true,requiredHours:true,internProfile:{select:{userId:true,user:{select:{firstName:true,lastName:true}},school:{select:{name:true}}}},status:true,attendance:{where:{status:"APPROVED"},select:{creditedMinutes:true}}},
+      orderBy:{internProfile:{user:{lastName:"asc"}}},
+    }),
+  ]);
+  const statusById=new Map(statuses.map(s=>[s.assignmentId,s.status]));
+  const records=rows.map(x=>{const st=statusById.get(x.id),credited=x.attendance.reduce((sum,a)=>sum+a.creditedMinutes,0)/60;return{id:x.id,href:`/reports/intern/${x.internProfile.userId}`,cells:{
+    name:{text:`${x.internProfile.user.firstName} ${x.internProfile.user.lastName}`,sort:`${x.internProfile.user.lastName} ${x.internProfile.user.firstName}`},
+    school:{text:x.internProfile.school.name},
+    hours:{text:`${credited.toLocaleString("en-PH",{maximumFractionDigits:1})} h${x.requiredHours?` of ${x.requiredHours} h`:""}`,sort:credited},
+    progress:st?{text:st.level,tone:statusTone(st.level),sort:st.level==="At risk"?0:st.level==="Needs attention"?1:st.level==="On track"?2:3}:{text:"—"},
+    internship:{text:friendly(x.status),tone:x.status==="COMPLETED"?"neutral" as const:"success" as const},
+    report:{text:"Open report",href:`/reports/intern/${x.internProfile.userId}`},
+  }}});
   return <div className="px-5 py-8 sm:px-8 lg:px-12"><section className="mx-auto max-w-6xl">
     <PageHeader eyebrow={c.kind==="SUPERVISOR"?"Company Supervisor":"School Coordinator"} title="Internship reports" description={c.kind==="SUPERVISOR"?"Reports for your directly assigned Interns.":"Read-only reports for students in your school scope."}/>
     <ReportAnalyticsPanel data={analytics} scopeLabel={c.kind==="SUPERVISOR"?"Your assigned Interns":"Students in your school"}/>
-    <section className="ui-card overflow-hidden">{rows.length?<div className="divide-y divide-border">{rows.map(x=><Link key={x.id} href={`/reports/intern/${x.internProfile.userId}`} className="grid gap-2 p-5 sm:grid-cols-[1fr_1fr_auto] sm:items-center"><strong>{x.internProfile.user.firstName} {x.internProfile.user.lastName}</strong><span className="text-secondary">{x.internProfile.school.name}</span><StatusBadge>{friendly(x.status)}</StatusBadge></Link>)}</div>:<EmptyState title="No Interns in scope" description="Authorized reports will appear here."/>}</section>
+    <RecordsDataTable caption="Internship reports" rows={records} searchPlaceholder="Search Intern or school…" defaultSort={{key:"name",direction:"asc"}}
+      columns={[{key:"name",label:"Intern",primary:true},{key:"school",label:"School"},{key:"hours",label:"Credited hours"},{key:"progress",label:"Status"},{key:"internship",label:"Internship"},{key:"report",label:"Report",sortable:false}]}
+      filter={ROSTER_STATUS_FILTER} emptyTitle="No Interns in scope" emptyDescription="Authorized reports will appear here."/>
   </section></div>;
 }
 

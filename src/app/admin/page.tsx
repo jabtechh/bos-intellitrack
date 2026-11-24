@@ -5,6 +5,8 @@ import { DashboardKpiCard, PageHeader, StatusBadge } from "@/components/ui";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
 import { requireCompanyOperationsManager } from "@/lib/auth/require-company-operations-manager";
 import { prisma } from "@/lib/prisma";
+import { InternsNeedingAttention } from "@/components/interns-needing-attention";
+import { loadInternStatuses } from "@/lib/insights/intern-status-data";
 
 export default async function AdminPage() {
   const current = await requireCurrentUser();
@@ -18,6 +20,7 @@ export default async function AdminPage() {
   tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
   const assignmentScope = { assignment: { companyId } };
 
+  const statuses = await loadInternStatuses({ companyId }); // DEC-2026-022, company-wide
   const [
     office,
     activeInterns,
@@ -75,6 +78,7 @@ export default async function AdminPage() {
       <Kpi label="Pending corrections" value={String(pendingCorrections)} detail="Supervisor decision ownership" icon="journal" tone={pendingCorrections ? "warning" : "success"} />
     </section>
 
+    <InternsNeedingAttention rows={statuses} viewAllHref="/admin/assignments" showSupervisor filterable={false}/>
     <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1.65fr)_minmax(18rem,.85fr)]">
       <div className="space-y-6">
         <section className="ui-card overflow-hidden">

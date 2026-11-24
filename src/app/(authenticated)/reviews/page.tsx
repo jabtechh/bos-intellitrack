@@ -1,9 +1,16 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Icon } from "@/components/icons";
-import { EmptyState, PageHeader, StatusBadge } from "@/components/ui";
+import { PageHeader } from "@/components/ui";
+import { RecordsDataTable } from "@/components/records-data-table";
+import { SummaryBand } from "@/components/summary-band";
+import type { RecordRow } from "@/lib/tables/records";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
 import { prisma } from "@/lib/prisma";
+
+const DAY = 86_400_000;
+const name = (u: { firstName: string; lastName: string }) => `${u.firstName} ${u.lastName}`;
+const day = (value: Date) => value.toLocaleDateString("en-PH", { dateStyle: "medium", timeZone: "UTC" });
+const waitingDays = (since: Date, now: Date) => Math.max(0, Math.floor((now.getTime() - since.getTime()) / DAY));
+const waitingText = (days: number) => days === 0 ? "Today" : `${days} day${days === 1 ? "" : "s"}`;
 
 export default async function ReviewsPage() {
   const user = await requireCurrentUser();
@@ -11,30 +18,48 @@ export default async function ReviewsPage() {
   const profile = await prisma.supervisorProfile.findUnique({ where: { userId: user.id }, select: { id: true } });
   if (!profile) redirect("/dashboard");
   const scope = { assignment: { supervisorProfileId: profile.id } };
+  // Work Logs are read-only journals (nothing to decide): show only the last 7 days as recent reading.
+  const recent = new Date(); recent.setUTCDate(recent.getUTCDate() - 7);
   const [attendance, corrections, workLogs] = await Promise.all([
-    prisma.attendance.count({ where: { ...scope, status: "PENDING_REVIEW" } }),
-    prisma.attendanceCorrection.count({ where: { status: "PENDING", attendance: scope } }),
-    prisma.workLog.findMany({
-      where: { assignment: { supervisorProfileId: profile.id }, status: "SUBMITTED" },
-      orderBy: { submittedAt: "desc" },
-      take: 8,
-      select: { id: true, workDate: true, submittedAt: true, assignment: { select: { internProfile: { select: { user: { select: { firstName: true, lastName: true } } } } } } },
-    }),
+    prisma.attendance.findMany({ where: { ...scope, status: "PENDING_REVIEW" }, orderBy: { attendanceDate: "asc" }, take: 500, select: { id: true, attendanceDate: true, assignment: { select: { internProfile: { select: { user: { select: { firstName: true, lastName: true } } } } } } } }),
+    prisma.attendanceCorrection.findMany({ where: { status: "PENDING", attendance: scope }, orderBy: { createdAt: "asc" }, take: 500, select: { id: true, createdAt: true, attendance: { select: { attendanceDate: true, assignment: { select: { internProfile: { select: { user: { select: { firstName: true, lastName: true } } } } } } } } } }),
+    prisma.workLog.findMany({ where: { ...scope, status: "SUBMITTED", workDate: { gte: recent } }, orderBy: { submittedAt: "desc" }, take: 500, select: { id: true, workDate: true, submittedAt: true, assignment: { select: { internProfile: { select: { user: { select: { firstName: true, lastName: true } } } } } } } }),
   ]);
+
+  // DEC-2026-022: one review queue with a number banner (scope: this Supervisor's directly assigned Interns).
+  const now = new Date();
+  const rows: RecordRow[] = [
+    ...attendance.map((row) => ({ kind: "Attendance exception", id: `a-${row.id}`, href: `/attendance/review/${row.id}`, intern: name(row.assignment.internProfile.user), date: row.attendanceDate, since: row.attendanceDate, action: "Decide" })),
+    ...corrections.map((row) => ({ kind: "Correction request", id: `c-${row.id}`, href: `/attendance/corrections/review/${row.id}`, intern: name(row.attendance.assignment.internProfile.user), date: row.attendance.attendanceDate, since: row.createdAt, action: "Decide" })),
+    ...workLogs.map((row) => ({ kind: "Work Log", id: `w-${row.id}`, href: `/work-logs/${row.id}`, intern: name(row.assignment.internProfile.user), date: row.workDate, since: row.submittedAt ?? row.workDate, action: "Read" })),
+  ].map((item) => {
+    const days = waitingDays(item.since, now);
+    return {
+      id: item.id, href: item.href,
+      cells: {
+        item: { text: `${item.kind} · ${item.intern}` },
+        kind: { text: item.kind, tone: item.kind === "Work Log" ? "info" as const : "warning" as const },
+        intern: { text: item.intern },
+        date: { text: day(item.date), sort: item.date.getTime() },
+        waiting: item.kind === "Work Log" ? { text: "Read only", sort: -1 } : { text: waitingText(days), sort: days, ...(days > 2 ? { tone: "danger" as const } : {}) },
+        action: { text: item.action, href: item.href },
+      },
+    };
+  });
+  const decisions = [...attendance.map((r) => r.attendanceDate), ...corrections.map((r) => r.createdAt)];
+  const oldest = decisions.length ? Math.max(...decisions.map((d) => waitingDays(d, now))) : 0;
+
   return <div className="px-5 py-8 sm:px-8 lg:px-12"><section className="mx-auto max-w-6xl">
     <PageHeader eyebrow="Supervisor workspace" title="Reviews" description="Attendance exceptions, correction requests, and submitted Work Logs for your directly assigned Interns." />
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-      <ReviewCard href="/attendance/review" title="Attendance exceptions" count={attendance} description="Evidence requiring your decision." />
-      <ReviewCard href="/attendance/corrections/review" title="Correction requests" count={corrections} description="Intern correction requests awaiting decision." />
-      <ReviewCard href="/work-logs" title="Work Log journals" count={workLogs.length} description="Submitted journals are read-only." />
-    </div>
-    <section className="ui-card mt-6 overflow-hidden">
-      <div className="flex items-center justify-between border-b border-border px-5 py-4"><div><h2 className="font-semibold">Recent submitted Work Logs</h2><p className="mt-1 text-xs text-muted">Read-only journal review</p></div><StatusBadge tone="info">{workLogs.length} shown</StatusBadge></div>
-      {workLogs.length ? <div className="divide-y divide-border">{workLogs.map((row) => <Link key={row.id} href={`/work-logs/${row.id}`} className="flex items-center justify-between gap-4 p-5 transition-colors hover:bg-canvas"><span><strong className="block">{row.assignment.internProfile.user.firstName} {row.assignment.internProfile.user.lastName}</strong><small className="text-muted">{row.workDate.toLocaleDateString("en-PH",{dateStyle:"medium",timeZone:"UTC"})}</small></span><span className="inline-flex items-center gap-2 text-sm font-semibold text-primary">Read journal <Icon name="arrow" className="h-4 w-4"/></span></Link>)}</div> : <EmptyState title="No submitted Work Logs" description="Submitted journals from your assigned Interns will appear here." />}
-    </section>
+    <SummaryBand label="Review summary" tiles={[
+      { label: "Attendance exceptions", value: attendance.length, detail: "Evidence requiring your decision", tone: attendance.length ? "warning" : "success", href: "/attendance/review" },
+      { label: "Correction requests", value: corrections.length, detail: "Awaiting your decision", tone: corrections.length ? "warning" : "success", href: "/attendance/corrections/review" },
+      { label: "Work Logs this week", value: workLogs.length, detail: "Read-only journals, last 7 days", tone: "info", href: "/work-logs" },
+      { label: "Oldest decision waiting", value: decisions.length ? waitingText(oldest) : "—", detail: decisions.length ? "Attendance or correction" : "Nothing waiting", tone: oldest > 2 ? "danger" : "success" },
+    ]} />
+    <RecordsDataTable caption="Review queue" rows={rows} searchPlaceholder="Search Intern or item…" defaultSort={{ key: "waiting", direction: "desc" }}
+      columns={[{ key: "item", label: "Item", primary: true }, { key: "kind", label: "Type" }, { key: "date", label: "Record date" }, { key: "waiting", label: "Waiting" }, { key: "action", label: "Action", sortable: false }]}
+      filter={{ key: "kind", label: "Type", options: ["Attendance exception", "Correction request", "Work Log"].map((value) => ({ value, label: value })) }}
+      emptyTitle="Nothing to review" emptyDescription="Attendance exceptions, correction requests and submitted Work Logs will appear here." />
   </section></div>;
-}
-
-function ReviewCard({href,title,count,description}:{href:string;title:string;count:number;description:string}) {
-  return <Link href={href} className="ui-card group p-5 transition-shadow hover:shadow-md"><div className="flex items-start justify-between gap-4"><span className="metric-icon"><Icon name="review"/></span><StatusBadge tone={count?"warning":"success"}>{count ? `${count} pending` : "Clear"}</StatusBadge></div><h2 className="mt-4 font-semibold">{title}</h2><p className="mt-1 text-sm text-secondary">{description}</p><span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary">Open <Icon name="arrow" className="h-4 w-4 transition-transform group-hover:translate-x-1"/></span></Link>;
 }

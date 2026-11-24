@@ -12,6 +12,7 @@ import { AnnouncementReaderSummary } from "./announcement-dashboard-summary";
 import { EmptyState, PageHeader } from "./ui";
 import { InternDashboardView } from "./intern-dashboard";
 import { CertificateProgressCard } from "./certificate-progress-card";
+import { MyStatusCard } from "./my-status-card";
 import { BO_COFFEE_OFFICE_CODE } from "@/lib/organization/bo-coffee";
 
 const dashboardSelect = {
@@ -62,6 +63,6 @@ export async function InternDashboard({ user, children }: { user: Awaited<Return
     attendance={attendance} selfieUrl={selfieUrl} log={log} tasks={assignment.tasks}
     onboarding={onboarding?.counts ?? null} pendingCorrections={pendingCorrections} insights={children}
     completed={completed ? { assignmentId: assignment.id, completedAt: assignment.completedAt } : undefined}
-    certificate={<CertificateProgressCard assignmentId={assignment.id} />}
+    certificate={<><MyStatusCard assignmentId={assignment.id} /><CertificateProgressCard assignmentId={assignment.id} /></>}
   ><AnnouncementReaderSummary viewer={viewer} /></InternDashboardView>;
 }

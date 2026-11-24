@@ -232,3 +232,18 @@ The following decisions were explicitly approved by the human product owner on *
   - *Unchanged:* visibility scope, Admin denial, Representative revocation with a reason, on-demand PDFs, deferred public verification.
   - *Completed internships* use the same Intern dashboard in a read-only completed mode (no Time In or new Work Log), and Supervisor/Coordinator rosters list active and completed interns in one data table.
 
+### DEC-2026-022 — Rule-based Intern status, summary banners and consistent data tables
+- **Status:** Approved (product owner, 2026-11-25 session: "rules OK", "phase 2 too").
+- **Affected requirements:** REQ-FR-REP-4 (internship statistics and summaries), REQ-FR-ATT-9 (attendance analytics and summaries). Supersedes the earlier Company Report note "no inferred on-track status" for the status indicator only; persisted assignment states are unchanged.
+- **Decision:** Every active internship gets an explainable, rule-based status computed on page load from existing records (no AI, no stored score, no judgment of the person). Each flag displays its reason.
+  - *Behind on hours:* credited Attendance hours more than 10% below the required hours spread evenly over the internship's working days elapsed (not judged in the first 5 working days).
+  - *Late often:* 3 or more late Time Ins in the last 10 working days.
+  - *Missing attendance:* no attendance on 2 or more of the last 5 working days.
+  - *Missing Work Logs:* 2 or more attended days in the last 10 working days without a submitted or approved Work Log.
+  - *Overdue Tasks:* any Task past its due date that is not completed or cancelled.
+  - *Low evaluation:* latest finalized Evaluation score below 75.
+  - *Levels:* On track = no flags; Needs attention = 1 flag; At risk = behind on hours or 2+ flags; completed internships show Completed. Attendance waiting more than 2 days for review is shown as staff work and never counts against the Intern.
+  - Working days are Monday–Friday (Manila); holidays are not yet excluded.
+- **Where shown:** summary banners (number tiles) on Interns/Students with tiles that filter the table and Status/Issues columns; "Interns needing attention" on Supervisor, Coordinator and Representative home pages; "My internship status" with reminders on the Intern dashboard; number banners on Tasks, Evaluations, Reviews and Documents; record lists on Reports, Reviews, Documents and Evaluations use the shared data table. All counts stay inside each role's existing scope.
+- **Deferred:** automatic notifications when a status changes (needs a daily scheduled job), holiday-aware working days, and migrating the remaining legacy tables (Attendance history, Corrections review, Feedback, Admin Users and Partner Schools).
+

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Icon } from "@/components/icons";
 import { RecordsDataTable } from "@/components/records-data-table";
+import { SummaryBand } from "@/components/summary-band";
 import { PageHeader } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
 import type { RecordColumn, RecordRow } from "@/lib/tables/records";
@@ -15,6 +16,12 @@ export default async function WorkLogs() {
     include: { assignment: { select: { internProfile: { select: { user: { select: { firstName: true, lastName: true } } } } } } },
   });
   const intern = context.kind === "INTERN";
+  // DEC-2026-022: number banner inside the same Work Log scope.
+  const submittedDates = new Set(rows.filter((row) => row.status === "SUBMITTED" || row.status === "APPROVED").map((row) => row.workDate.toISOString().slice(0, 10)));
+  const attendedDays = intern ? await prisma.attendance.findMany({ where: { assignment: workLogAssignmentWhere(context), clockIn: { not: null }, status: { notIn: ["VOIDED", "REJECTED"] } }, select: { attendanceDate: true } }) : [];
+  const missingLogs = attendedDays.filter((row) => !submittedDates.has(row.attendanceDate.toISOString().slice(0, 10))).length;
+  const drafts = rows.filter((row) => row.status === "DRAFT").length;
+  const weekAgo = new Date(); weekAgo.setUTCDate(weekAgo.getUTCDate() - 7);
   const records: RecordRow[] = rows.map((row) => {
     const skills = Array.isArray(row.skillsApplied) ? row.skillsApplied.filter((value): value is string => typeof value === "string") : [];
     return { id: row.id, href: `/work-logs/${row.id}`, cells: {
@@ -37,6 +44,12 @@ export default async function WorkLogs() {
 
   return <div className="operational-page">
     <PageHeader eyebrow="Daily journal" title="Daily Work Logs" description={intern ? "A simple history of the work you recorded each day." : "Read-only daily journal records in your authorized Intern scope."} actions={intern ? <Link href="/work-logs/new" className="button button-primary"><Icon name="plus" />Create work log</Link> : undefined} />
+    <SummaryBand label="Work Log summary" tiles={[
+      { label: "Work Logs", value: rows.length, detail: `${submittedDates.size} submitted`, tone: "info" },
+      { label: "Drafts", value: drafts, detail: "Not yet submitted", tone: drafts ? "warning" : "success" },
+      ...(intern ? [{ label: "Days missing a log", value: missingLogs, detail: `of ${attendedDays.length} attended days`, tone: missingLogs ? "danger" as const : "success" as const }] : []),
+      { label: "Last 7 days", value: rows.filter((row) => row.workDate >= weekAgo).length, detail: "Work Logs dated this week" },
+    ]} />
     {/* journal-history: the daily journal, presented as a searchable data table */}
     <section className="journal-history-table" data-journal-history>
       <RecordsDataTable caption="Work Logs" rows={records} columns={columns} searchPlaceholder="Search title, work or skills…" defaultSort={{ key: "date", direction: "desc" }}

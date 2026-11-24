@@ -1,3 +1,51 @@
 import { internshipAssignmentBaseSelect } from "@/lib/assignments/projection";
-import Link from"next/link";import type{Prisma}from"@/generated/prisma/client";import{EmptyState,PageHeader,StatusBadge}from"@/components/ui";import{prisma}from"@/lib/prisma";import{canManageDocuments,documentWhere,requireDocumentViewer}from"@/lib/documents/authorization";import{CATEGORY_LABELS,STATUS_LABELS}from"@/lib/documents/domain";
-export default async function Documents({searchParams}:{searchParams:Promise<{category?:string;status?:string}>}){const c=await requireDocumentViewer(),q=await searchParams,where:Prisma.DocumentWhereInput={...documentWhere(c),...(q.category&&q.category in CATEGORY_LABELS?{category:q.category as keyof typeof CATEGORY_LABELS}:{}),...(q.status&&q.status in STATUS_LABELS?{status:q.status as keyof typeof STATUS_LABELS}:{})};const rows=await prisma.document.findMany({where,include:{assignment:{select:{ ...internshipAssignmentBaseSelect, internProfile:{include:{user:{select:{firstName:true,lastName:true}}}}}},uploadedBy:{select:{firstName:true,lastName:true}}},orderBy:{createdAt:"desc"}});const upload=c.kind==="INTERN"||canManageDocuments(c);return <div className="px-5 py-8 sm:px-8 lg:px-12"><section className="mx-auto max-w-6xl"><PageHeader eyebrow="Secure records" title="Documents" description="Authorized internship documents stored privately and shared through short-lived access." actions={upload?<Link href="/documents/new" className="button button-primary">Upload document</Link>:undefined}/><form className="mb-5 flex flex-wrap gap-3"><select name="category" defaultValue={q.category??""} aria-label="Filter by category"><option value="">All categories</option>{Object.entries(CATEGORY_LABELS).map(([x,y])=><option key={x} value={x}>{y}</option>)}</select><select name="status" defaultValue={q.status??""} aria-label="Filter by status"><option value="">All statuses</option>{Object.entries(STATUS_LABELS).map(([x,y])=><option key={x} value={x}>{y}</option>)}</select><button className="button button-secondary">Apply filters</button></form><section className="ui-card overflow-hidden">{rows.length?<div className="divide-y divide-border">{rows.map(row=><Link key={row.id} href={`/documents/${row.id}`} className="grid gap-3 p-5 sm:grid-cols-[minmax(0,1fr)_13rem_9rem_auto] sm:items-center"><span><strong className="block">{row.fileName}</strong><small className="text-muted">{c.kind==="INTERN"?`Uploaded by ${row.uploadedBy.firstName} ${row.uploadedBy.lastName}`:`For ${row.assignment.internProfile.user.firstName} ${row.assignment.internProfile.user.lastName}`}</small></span><span className="text-sm text-secondary">{CATEGORY_LABELS[row.category]}</span><span className="text-sm text-muted">{row.fileExtension?.toUpperCase()??"File"} · {row.createdAt.toLocaleDateString("en-PH",{dateStyle:"medium"})}</span><StatusBadge tone={row.status==="APPROVED"?"success":row.status==="REJECTED"?"danger":row.status==="PENDING_REVIEW"?"warning":"neutral"}>{STATUS_LABELS[row.status]}</StatusBadge></Link>)}</div>:<EmptyState title="No documents available" description="Authorized documents will appear here." action={upload?{href:"/documents/new",label:"Upload document"}:undefined}/>}</section>{canManageDocuments(c)?<Link href="/documents/manage" className="button button-secondary mt-5">Open document management</Link>:null}</section></div>}
+import Link from "next/link";
+import { PageHeader } from "@/components/ui";
+import { RecordsDataTable } from "@/components/records-data-table";
+import { SummaryBand } from "@/components/summary-band";
+import type { RecordRow } from "@/lib/tables/records";
+import { prisma } from "@/lib/prisma";
+import { canManageDocuments, documentWhere, requireDocumentViewer } from "@/lib/documents/authorization";
+import { CATEGORY_LABELS, STATUS_LABELS } from "@/lib/documents/domain";
+
+const tone = (status: keyof typeof STATUS_LABELS) => status === "APPROVED" ? "success" as const : status === "PENDING_REVIEW" ? "warning" as const : status === "REJECTED" ? "danger" as const : "neutral" as const;
+
+export default async function Documents({ searchParams }: { searchParams: Promise<{ status?: string }> }) {
+  const c = await requireDocumentViewer();
+  const q = await searchParams;
+  const rows = await prisma.document.findMany({
+    where: documentWhere(c),
+    include: { assignment: { select: { ...internshipAssignmentBaseSelect, internProfile: { include: { user: { select: { firstName: true, lastName: true } } } } } }, uploadedBy: { select: { firstName: true, lastName: true } } },
+    orderBy: { createdAt: "desc" },
+  });
+  const upload = c.kind === "INTERN" || canManageDocuments(c);
+  const records: RecordRow[] = rows.map((row) => ({
+    id: row.id,
+    href: `/documents/${row.id}`,
+    cells: {
+      name: { text: row.fileName },
+      person: { text: c.kind === "INTERN" ? `${row.uploadedBy.firstName} ${row.uploadedBy.lastName}` : `${row.assignment.internProfile.user.firstName} ${row.assignment.internProfile.user.lastName}` },
+      category: { text: CATEGORY_LABELS[row.category] },
+      date: { text: row.createdAt.toLocaleDateString("en-PH", { dateStyle: "medium" }), sort: row.createdAt.getTime() },
+      status: { text: STATUS_LABELS[row.status], tone: tone(row.status) },
+    },
+  }));
+  // DEC-2026-022: number banner; status tiles filter the table (same document scope).
+  const count = (status: keyof typeof STATUS_LABELS) => rows.filter((row) => row.status === status).length;
+  const selected = q.status && q.status in STATUS_LABELS ? STATUS_LABELS[q.status as keyof typeof STATUS_LABELS] : "";
+  const link = (status?: keyof typeof STATUS_LABELS) => status ? `/documents?status=${status}` : "/documents";
+  return <div className="px-5 py-8 sm:px-8 lg:px-12"><section className="mx-auto max-w-6xl">
+    <PageHeader eyebrow="Secure records" title="Documents" description="Authorized internship documents stored privately and shared through short-lived access." actions={upload ? <Link href="/documents/new" className="button button-primary">Upload document</Link> : undefined} />
+    <SummaryBand label="Document summary" tiles={[
+      { label: "All documents", value: rows.length, href: link(), active: !selected },
+      { label: "Pending review", value: count("PENDING_REVIEW"), tone: count("PENDING_REVIEW") ? "warning" : "success", href: link("PENDING_REVIEW"), active: selected === STATUS_LABELS.PENDING_REVIEW },
+      { label: "Approved", value: count("APPROVED"), tone: "success", href: link("APPROVED"), active: selected === STATUS_LABELS.APPROVED },
+      { label: "Needs replacement", value: count("REJECTED"), tone: count("REJECTED") ? "danger" : "neutral", href: link("REJECTED"), active: selected === STATUS_LABELS.REJECTED },
+    ]} />
+    <RecordsDataTable key={selected} caption="Documents" rows={records} searchPlaceholder={c.kind === "INTERN" ? "Search document or category…" : "Search document, Intern or category…"}
+      columns={[{ key: "name", label: "Document", primary: true }, { key: "person", label: c.kind === "INTERN" ? "Uploaded by" : "Intern" }, { key: "category", label: "Category" }, { key: "date", label: "Uploaded" }, { key: "status", label: "Status" }]}
+      defaultSort={{ key: "date", direction: "desc" }} initialFilterValue={selected}
+      filter={{ key: "status", label: "Status", options: Object.values(STATUS_LABELS).map((value) => ({ value, label: value })) }}
+      emptyTitle="No documents available" emptyDescription="Authorized internship documents will appear here." />
+  </section></div>;
+}

@@ -123,7 +123,8 @@ test("Intern Evaluations and Feedback share accessible tabs, not records or perm
   assert(hub.includes("feedbackWhere(context)"));
   assert(hub.includes('query.tab === "feedback"'));
   assert(hub.includes('href="/feedback/workmate/new"'));
-  assert(hub.includes('href={`/evaluations/${row.id}`}') && hub.includes('href={`/feedback/${row.id}`}'));
+  // Rows link to each record (data-table rows since DEC-2026-022).
+  assert(/href:? ?=?\{?`\/evaluations\/\$\{row\.id\}`/.test(hub) && /href:? ?=?\{?`\/feedback\/\$\{row\.id\}`/.test(hub));
   assert(feedbackList.includes('if (c.kind === "INTERN") redirect("/evaluations?tab=feedback")'));
   for (const role of ["tablist", "tab", "tabpanel"]) assert(tabs.includes(`role="${role}"`));
   for (const key of ["ArrowLeft", "ArrowRight", "Home", "End"]) assert(tabs.includes(key));
