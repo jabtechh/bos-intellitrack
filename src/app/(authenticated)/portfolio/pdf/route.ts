@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     generatedAt: new Date(),
   });
 
-  const pdf = createReportPdf(lines);
+  const pdf = await createReportPdf(lines);
   const period = assignment.startDate.toISOString().slice(0, 7);
   return new NextResponse(new Uint8Array(pdf), {
     headers: {

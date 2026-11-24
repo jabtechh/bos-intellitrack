@@ -56,6 +56,8 @@ export default async function PortfolioPage({ searchParams }: { searchParams: Pr
 
     <PortfolioArchive entries={archive} selectedId={assignment.id}/>
 
+    {/* Archive buttons jump here, so "Viewing Portfolio" visibly takes the reader to the selected Portfolio. */}
+    <span id="portfolio-content" className="block scroll-mt-24" aria-hidden="true"/>
     <AutomaticPortfolioEvidence data={evidence} mode={mode}/>
 
     <section aria-labelledby="portfolio-personal-title" className="mt-7 space-y-4">
@@ -103,7 +105,7 @@ function PortfolioArchive({ entries, selectedId }: { entries: PortfolioArchiveEn
           <div className="col-span-2"><dt className="text-muted">Portfolio</dt><dd className="mt-0.5 text-foreground">{entry.mode === "LIVE" ? "Live evidence, updates automatically" : entry.mode === "SNAPSHOT" ? `Saved automatically at completion${entry.snapshotAt ? ` (${dateLabel(entry.snapshotAt)})` : ""}` : "On-demand evidence (completed before automatic snapshots)"}</dd></div>
         </dl>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Link href={portfolioHref(entry.assignmentId)} aria-current={selected ? "page" : undefined} className={`button ${selected ? "button-primary" : "button-secondary"}`}>{selected ? "Viewing Portfolio" : "Open Portfolio"}</Link>
+          <Link href={`${portfolioHref(entry.assignmentId)}#portfolio-content`} aria-current={selected ? "page" : undefined} className={`button ${selected ? "button-primary" : "button-secondary"}`}>{selected ? "Viewing Portfolio" : "Open Portfolio"}</Link>
           <a href={portfolioHref(entry.assignmentId, "/pdf")} className="button button-secondary">Download PDF</a>
           <Link href={`/certificates/${entry.assignmentId}`} className="button button-secondary">{entry.certificateStatus === "ISSUED" ? "Certificate" : "Certificate preview"}</Link>
         </div>

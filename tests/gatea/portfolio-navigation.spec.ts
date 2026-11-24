@@ -183,7 +183,7 @@ test("Intern Portfolio is a primary destination with a per-internship archive an
   expect(new Set(ids).size).toBe(ids.length);
   for (const id of ids) {
     const entry = page.locator(`[data-portfolio-entry="${id}"]`);
-    await expect(entry.getByRole("link", { name: /Open Portfolio|Viewing Portfolio/ })).toHaveAttribute("href", `/portfolio?assignment=${id}`);
+    await expect(entry.getByRole("link", { name: /Open Portfolio|Viewing Portfolio/ })).toHaveAttribute("href", `/portfolio?assignment=${id}#portfolio-content`);
     await expect(entry.getByRole("link", { name: "Download PDF" })).toHaveAttribute("href", `/portfolio/pdf?assignment=${id}`);
   }
 
