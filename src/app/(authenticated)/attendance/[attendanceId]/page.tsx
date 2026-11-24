@@ -12,6 +12,7 @@ import { getAttendanceExceptions } from "@/lib/attendance/domain";
 import { signedEvidenceUrl } from "@/lib/attendance/storage";
 import { requireCurrentUser } from "@/lib/auth/require-current-user";
 import { prisma } from "@/lib/prisma";
+import { formatKm } from "@/lib/attendance/distance";
 
 export default async function AttendanceDetailPage({ params }: { params: Promise<{ attendanceId: string }> }) {
   const user = await requireCurrentUser(); if (user.role !== "INTERN") notFound(); const { attendanceId } = await params;
@@ -44,4 +45,4 @@ function schedule(start: Date | null, end: Date | null) { const format = (value:
 function attendanceStatus(status: string, timeOut: Date | null) { if (status === "PENDING_REVIEW") return "Needs review"; if (status === "APPROVED") return "Completed"; if (status === "CLOCKED_IN") return "Timed in"; if (status === "INCOMPLETE" || !timeOut) return "Incomplete"; if (status === "REJECTED") return "Rejected"; return "Attendance recorded"; }
 function correctionStatus(status: string) { return status === "PENDING" ? "requested" : status === "APPROVED" ? "approved" : status === "REJECTED" ? "rejected" : status.toLowerCase(); }
 function accuracyLabel(value: number | null) { return value === null ? "Unavailable" : value <= attendancePolicy.gpsAccuracyMeters ? "Good" : "Poor"; }
-function humanDistance(value: number) { return value >= 1000 ? `${(value / 1000).toFixed(1)} km` : `${Math.round(value)} m`; }
+function humanDistance(value: number) { return formatKm(value); }
